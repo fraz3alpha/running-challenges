@@ -6,7 +6,8 @@
 
 function challenge_generate_data(results) {
     return {
-        "tourist": challenge_tourist(results),
+        "tourist": challenge_tourist(results, "tourist", "Tourist", 20),
+        "cowell-club": challenge_tourist(results, "cowell-club", "Cowell Club", 100),
         "alphabeteer": challenge_alphabeteer(results),
         "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
         "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
@@ -18,9 +19,7 @@ function challenge_generate_data(results) {
 }
 
 // Complete 20 different parkruns
-function challenge_tourist(results) {
-    shortname = "tourist"
-    longname = "Tourist"
+function challenge_tourist(results, shortname, longname, count) {
     complete = false
     completed_on = null
     subparts = []
@@ -31,7 +30,7 @@ function challenge_tourist(results) {
     distinct_parkruns_completed = {}
 
     // Add all the subparts to the list
-    for (i=0; i<20; i++) {
+    for (i=0; i<count; i++) {
         subparts.push("parkrun_"+i)
     }
 
