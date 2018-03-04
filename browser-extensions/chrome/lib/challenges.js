@@ -8,19 +8,20 @@ function challenge_generate_data(results) {
     return {
         "tourist": challenge_tourist(results, "tourist", "Tourist", 20),
         "cowell-club": challenge_tourist(results, "cowell-club", "Cowell Club", 100),
-        "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]),
+        "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", "abcdefghijklmnopqrstuvwxyz"),
         "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
         "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
         "single-ton": challenge_single_parkrun_count(results, "single_ton", "Single-Ton", 100),
         "double-ton": challenge_single_parkrun_count(results, "double_ton", "Double-Ton", 200),
         "stopwatch-bingo": challenge_stopwatch_bingo(results),
-        "pirates": challenge_start_letters(results, "pirates", "Pirates!", ["c","c","c","c","c","c","c","r"]),
-        "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", ["b","b","b","g","g","g"]),
-        "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
+        "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
+        "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
+        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpedoverthelazydogs"),
+        "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"])
     }
 }
 
-function challenge_start_letters(results, shortname, longname, letters_array) {
+function challenge_start_letters(results, shortname, longname, letters) {
     complete = false
     completed_on = null
     subparts = []
@@ -28,12 +29,12 @@ function challenge_start_letters(results, shortname, longname, letters_array) {
     subparts_detail = []
 
     // Add all the subparts to the list
-    letters_array.forEach(function (letter) {
+    for (i=0; i<letters.length; i++) {
         // Store each one as the parts we need to do
-        subparts.push(letter)
+        subparts.push(letters[i])
         // Create placeholders for each contributing result
         subparts_detail.push(null)
-    })
+    }
 
     checked_parkruns = []
 
