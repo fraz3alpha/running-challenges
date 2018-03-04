@@ -17,7 +17,8 @@ function challenge_generate_data(results) {
         "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
         "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
-        "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"])
+        "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
+        "full-ponty": challenge_words(results, "full-ponty", "The Full Ponty", ["pontefract","pontypool","pontypridd"])
     }
 }
 
