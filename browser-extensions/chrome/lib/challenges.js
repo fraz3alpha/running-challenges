@@ -19,7 +19,7 @@ function challenge_generate_data(results) {
         "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
-        "pilgramage": challenge_parkruns(results, "pilgramage", "Bushy Pilgramage", ["Bushy Park"]),
+        "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
         "nyd-double": challenge_nyd_double(results),
         "double-time": challenge_double_time(results)
     }
