@@ -18,7 +18,8 @@ function challenge_generate_data(results) {
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
         "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
-        "full-ponty": challenge_words(results, "full-ponty", "The Full Ponty", ["pontefract","pontypool","pontypridd"])
+        "full-ponty": challenge_words(results, "full-ponty", "The Full Ponty", ["pontefract","pontypool","pontypridd"]),
+        "pilgramage": challenge_parkruns(results, "pilgramage", "Bushy Pilgramage", ["Bushy Park"])
     }
 }
 
@@ -137,6 +138,64 @@ function challenge_words(results, shortname, longname, word_array) {
 
             // Lets not process this parkrun again, even if we have run it more than once
             checked_parkruns.push(parkrun_event.name)
+        }
+    })
+
+    // Add in all the missing ones
+    for (i=0; i< subparts.length; i++) {
+        if (subparts_detail[i] == null) {
+            subparts_detail[i] = {
+                "subpart": subparts[i],
+                "info": "-"
+            }
+        }
+    }
+
+    // Return an object representing this challenge
+    return {
+        "shortname": shortname,
+        "name": longname,
+        "complete": complete,
+        "completed_on": completed_on,
+        "subparts": subparts,
+        "subparts_count": subparts.length,
+        "subparts_detail": subparts_detail,
+        "subparts_completed_count": subparts_completed_count
+    }
+}
+
+function challenge_parkruns(results, shortname, longname, parkrun_array) {
+    complete = false
+    completed_on = null
+    subparts = []
+    subparts_completed_count = 0
+    subparts_detail = []
+
+    // Add all the subparts to the list
+    parkrun_array.forEach(function (parkrun_name) {
+        // Store each one as the parts we need to do
+        subparts.push(parkrun_name.toLowerCase())
+        // Create placeholders for each contributing result
+        subparts_detail.push(null)
+    })
+
+    events = group_results_by_event(results)
+    console.log(events)
+    Object.keys(events).forEach(function (parkrun_name) {
+
+        if (subparts.includes(parkrun_name.toLowerCase())) {
+            subparts_index = subparts.indexOf(parkrun_name.toLowerCase())
+
+            p = Object.create(events[parkrun_name][0])
+            p.subpart = subparts[subparts_index]
+            p.info = p.date
+            subparts_detail[subparts_index] = p
+            subparts_completed_count += 1
+
+            if (subparts.length == subparts_completed_count) {
+                complete = true
+                completed_on = p.date
+            }
         }
     })
 
