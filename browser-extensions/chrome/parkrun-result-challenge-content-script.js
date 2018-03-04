@@ -26,9 +26,9 @@ function get_table(id, caption) {
 }
 
 // Checks the table fetching function
-console.log(get_table())
-console.log(get_table('results'))
-console.log(get_table('results', 'All Results'))
+// console.log(get_table())
+// console.log(get_table('results'))
+// console.log(get_table('results', 'All Results'))
 
 parkruns_completed = []
 

@@ -21,6 +21,7 @@ function challenge_generate_data(results) {
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
         "pilgramage": challenge_parkruns(results, "pilgramage", "Bushy Pilgramage", ["Bushy Park"]),
         "nyd-double": challenge_nyd_double(results),
+        "double-time": challenge_double_time(results)
     }
 }
 
@@ -181,7 +182,7 @@ function challenge_parkruns(results, shortname, longname, parkrun_array) {
     })
 
     events = group_results_by_event(results)
-    console.log(events)
+
     Object.keys(events).forEach(function (parkrun_name) {
 
         if (subparts.includes(parkrun_name.toLowerCase())) {
@@ -443,7 +444,61 @@ function challenge_nyd_double(results) {
                 "info": parkrun_event.date,
                 "subpart": subparts_detail.length + 1
             })
+            subparts_completed_count += 1
+            // Mark it complete the first time it occurs
+            if (!complete) {
+                complete = true
+                completed_on = parkrun_event.date
+            }
 
+        }
+
+        previous_parkrun = parkrun_event
+
+    });
+
+    if (subparts_detail.length == 0) {
+        subparts_detail.push({
+            "subpart": subparts_detail.length + 1,
+            "info": "-"
+        })
+    }
+
+    // Return an object representing this challenge
+    return {
+        "shortname": shortname,
+        "name": longname,
+        "complete": complete,
+        "completed_on": completed_on,
+        "subparts": subparts,
+        "subparts_count": subparts.length,
+        "subparts_detail": subparts_detail,
+        "subparts_completed_count": subparts_completed_count
+    }
+}
+
+function challenge_double_time(results) {
+    shortname = "double_time"
+    longname = "Double Time"
+    var complete = false
+    var completed_on = null
+    subparts = ["1"]
+    subparts_completed_count = 0
+    subparts_detail = []
+
+    var previous_parkrun = null
+
+    results.parkruns_completed.forEach(function (parkrun_event) {
+
+        if (previous_parkrun != null && parkrun_event.time == previous_parkrun.time && parkrun_event.name == previous_parkrun.name) {
+
+            subparts_detail.push({
+                "name": parkrun_event.name,
+                "date": previous_parkrun.date+" and "+parkrun_event.date,
+                "info": parkrun_event.time+" on "+previous_parkrun.date+" and "+parkrun_event.date,
+                "subpart": subparts_detail.length + 1
+            })
+            subparts_completed_count += 1
             // Mark it complete the first time it occurs
             if (!complete) {
                 complete = true
