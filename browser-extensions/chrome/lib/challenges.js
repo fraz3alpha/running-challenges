@@ -18,8 +18,9 @@ function challenge_generate_data(results) {
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
         "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
-        "full-ponty": challenge_words(results, "full-ponty", "The Full Ponty", ["pontefract","pontypool","pontypridd"]),
-        "pilgramage": challenge_parkruns(results, "pilgramage", "Bushy Pilgramage", ["Bushy Park"])
+        "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
+        "pilgramage": challenge_parkruns(results, "pilgramage", "Bushy Pilgramage", ["Bushy Park"]),
+        "nyd-double": challenge_nyd_double(results),
     }
 }
 
@@ -419,14 +420,58 @@ function challenge_single_parkrun_count(results, shortname, longname, count) {
     }
 }
 
-function challenge_pirates(results) {
-    shortname = "pirates"
-    longname = "Pirates!"
+function challenge_nyd_double(results) {
+    shortname = "nyd_double"
+    longname = "NYD Double"
     complete = false
+    completed_on = null
+    subparts = ["1"]
+    subparts_completed_count = 0
+    subparts_detail = []
 
+    var previous_parkrun = null
+
+    results.parkruns_completed.forEach(function (parkrun_event) {
+        // Take the first 6 characters of the date to get the '01/01/' part
+        day_month = parkrun_event.date.substr(0, 6)
+
+        if (previous_parkrun != null && day_month == "01/01/" && parkrun_event.date == previous_parkrun.date) {
+
+            subparts_detail.push({
+                "name": parkrun_event.name+" and "+previous_parkrun.name,
+                "date": parkrun_event.date,
+                "info": parkrun_event.date,
+                "subpart": subparts_detail.length + 1
+            })
+
+            // Mark it complete the first time it occurs
+            if (!complete) {
+                complete = true
+                completed_on = parkrun_event.date
+            }
+
+        }
+
+        previous_parkrun = parkrun_event
+
+    });
+
+    if (subparts_detail.length == 0) {
+        subparts_detail.push({
+            "subpart": subparts_detail.length + 1,
+            "info": "-"
+        })
+    }
+
+    // Return an object representing this challenge
     return {
         "shortname": shortname,
         "name": longname,
-        "complete": complete
+        "complete": complete,
+        "completed_on": completed_on,
+        "subparts": subparts,
+        "subparts_count": subparts.length,
+        "subparts_detail": subparts_detail,
+        "subparts_completed_count": subparts_completed_count
     }
 }
