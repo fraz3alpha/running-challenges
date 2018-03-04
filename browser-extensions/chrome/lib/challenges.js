@@ -21,7 +21,10 @@ function challenge_generate_data(results) {
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
         "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
         "nyd-double": challenge_nyd_double(results),
-        "double-time": challenge_double_time(results)
+        "double-time": challenge_double_time(results),
+        "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
+        "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
+        "obsessive-bronze": challenge_in_a_year(results, "obsessive-bronze", "Bronze Level Obsessive", 30),
     }
 }
 
@@ -514,6 +517,63 @@ function challenge_double_time(results) {
     if (subparts_detail.length == 0) {
         subparts_detail.push({
             "subpart": subparts_detail.length + 1,
+            "info": "-"
+        })
+    }
+
+    // Return an object representing this challenge
+    return {
+        "shortname": shortname,
+        "name": longname,
+        "complete": complete,
+        "completed_on": completed_on,
+        "subparts": subparts,
+        "subparts_count": subparts.length,
+        "subparts_detail": subparts_detail,
+        "subparts_completed_count": subparts_completed_count
+    }
+}
+
+function challenge_in_a_year(results, shortname, longname, count) {
+    complete = false
+    completed_on = null
+    subparts = ["1"]
+    subparts_completed_count = 0
+    subparts_detail = []
+
+    by_year = {}
+
+    results.parkruns_completed.forEach(function (parkrun_event) {
+        // Take the first 6 characters of the date to get the '01/01/' part
+        year = parkrun_event.date.substr(6, 4)
+
+        if (!(year in by_year)) {
+            by_year[year] = []
+        }
+
+        by_year[year].push(parkrun_event)
+
+    })
+
+    Object.keys(by_year).sort().forEach(function (year) {
+        if (by_year[year].length >= count) {
+            subparts_detail.push({
+                "name": year,
+                "date": year,
+                "info": by_year[year].length,
+                "subpart": count+"+"
+            })
+            subparts_completed_count += 1
+            if (!complete) {
+                complete = true
+                completed_on = year
+            }
+        }
+    })
+
+    if (subparts_detail.length == 0) {
+        subparts_detail.push({
+            "subpart": count+"+",
             "info": "-"
         })
     }
