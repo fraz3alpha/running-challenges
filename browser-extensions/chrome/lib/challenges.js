@@ -16,7 +16,7 @@ function challenge_generate_data(results) {
         "stopwatch-bingo": challenge_stopwatch_bingo(results),
         "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
-        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydogs"),
+        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"])
     }
 }
