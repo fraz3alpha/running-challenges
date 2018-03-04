@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+
+  "name": "parkrun Result Challenges",
+  "description": "This extension adds challenge information to your parkrun athlete results page.",
+  "version": "0.1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["http://www.parkrun.org.uk/results/athleteeventresultshistory/*"],
+      "js": [
+          "third-party/jquery-3.3.1.js",
+          "lib/challenges.js",
+          "lib/challenges_ui.js",
+          "parkrun-result-challenge-content-script.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}
