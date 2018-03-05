@@ -25,6 +25,27 @@ function get_table(id, caption) {
     })
 }
 
+function generate_challenge_badges(data) {
+    var badge_div = $('<div></div>')
+    var badge_p = $('<p></p>')
+
+    Object.keys(data).forEach(function (challenge) {
+        if (data[challenge].complete == true) {
+            var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+            img.attr('src', chrome.extension.getURL("/images/badges/64x64/"+challenge+".png"));
+            badge_p.append(img)
+        }
+    })
+
+    badge_div.append(badge_p)
+
+    return badge_div
+}
+
+function get_badge_location() {
+    return $("div[id=content]").find("p:first")
+}
+
 // Checks the table fetching function
 // console.log(get_table())
 // console.log(get_table('results'))
@@ -86,3 +107,8 @@ console.log(challenge_data)
 
 var challenge_table = generate_challenge_table(challenge_data)
 get_table('results', 'All Results').before(challenge_table)
+
+var challenge_badges = generate_challenge_badges(challenge_data)
+get_badge_location().after(challenge_badges)
+
+console.log(challenge_badges)
