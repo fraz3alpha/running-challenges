@@ -60,6 +60,12 @@ function generate_challenge_table(data) {
    visible_challenges.forEach(function (challenge_name) {
        challenge = data[challenge_name]
 
+       challenge_tbody_header = $('<tbody></tbody>')
+       challenge_tbody_header.attr('id', "challenge_tbody_header_"+challenge_name)
+
+       challenge_tbody_detail = $('<tbody></tbody>')
+       challenge_tbody_detail.attr('id', "challenge_tbody_detail_"+challenge_name)
+
        // Print the main summary row
        main_row = $('<tr></tr>')
 
@@ -69,6 +75,9 @@ function generate_challenge_table(data) {
        badge_img.attr('title',challenge.name)
        badge_img.attr('width',24)
        badge_img.attr('height',24)
+       badge_img.click(function(){
+           $("tbody[id=challenge_tbody_detail_"+challenge_name+"]").toggle();
+       });
 
        var anchor_tag = $('<a/>')
        anchor_tag.attr('name', challenge_name)
@@ -86,7 +95,7 @@ function generate_challenge_table(data) {
            main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
        }
        // main_row.append($('<th></th>').text(challenge.complete))
-       table.append(main_row)
+       challenge_tbody_header.append(main_row)
 
        // Print the subparts
        challenge.subparts_detail.forEach(function (subpart_detail) {
@@ -98,13 +107,16 @@ function generate_challenge_table(data) {
                subpart_row.append($('<td></td>').text(subpart_detail.name))
                subpart_row.append($('<td></td>').text(subpart_detail.info))
 
-               table.append(subpart_row)
+               challenge_tbody_detail.append(subpart_row)
            } else {
                 subpart_row.append($('<td></td>').text('Missing'))
-                table.append(subpart_row)
+                challenge_tbody_detail.append(subpart_row)
            }
 
        });
+
+       table.append(challenge_tbody_header)
+       table.append(challenge_tbody_detail)
 
    });
 
