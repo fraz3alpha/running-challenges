@@ -65,8 +65,8 @@ function generate_challenge_table(data) {
 
        var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
        badge_img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"));
-       // badge_img.attr('alt',challenge.name)
-       // badge_img.attr('title',challenge.name)
+       badge_img.attr('alt',challenge.name)
+       badge_img.attr('title',challenge.name)
        badge_img.attr('width',24)
        badge_img.attr('height',24)
 

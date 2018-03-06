@@ -17,3 +17,5 @@ Two other people
 [Andrew TAYLOR](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1309364&eventNumber=0)
 
 Sparse Example: [Andy STANFORD-CLARK](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1770518&eventNumber=0)
+
+[Paul Sinton-Hewitt](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0)

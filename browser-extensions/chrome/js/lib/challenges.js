@@ -21,7 +21,7 @@ function challenge_generate_data(results) {
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
         "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
         "nyd-double": challenge_nyd_double(results),
-        "double-time": challenge_double_time(results),
+        "groundhog-day": challenge_groundhog_day(results),
         "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
         "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
         "obsessive-bronze": challenge_in_a_year(results, "obsessive-bronze", "Bronze Level Obsessive", 30),
@@ -493,9 +493,9 @@ function challenge_nyd_double(results) {
     }
 }
 
-function challenge_double_time(results) {
-    shortname = "double_time"
-    longname = "Double Time"
+function challenge_groundhog_day(results) {
+    shortname = "groundhog-day"
+    longname = "Groundhog Day"
     var complete = false
     var completed_on = null
     subparts = ["1"]
