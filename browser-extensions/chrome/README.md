@@ -8,14 +8,12 @@ Someone who has done a lot of parkruns: [Glenna GREENSLADE](http://www.parkrun.o
 
 The Famous Cowells: [Chris COWELL](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=11865&eventNumber=0) and [Linda COWELL](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=18414&eventNumber=0)
 
-[Tim GP](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=78426&eventNumber=0) and [May GP](http://www.parkrun.org.uk/winchester/results/athletehistory/?athleteNumber=81219)
+People responsible for getting more involved: [Tim GP](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=78426&eventNumber=0) & [May GP](http://www.parkrun.org.uk/winchester/results/athletehistory/?athleteNumber=81219)
 
-Two other people
-
-[Laura COWEN](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1386351&eventNumber=0)
-
-[Andrew TAYLOR](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1309364&eventNumber=0)
+Two other people [Laura COWEN](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1386351&eventNumber=0) & [Andrew TAYLOR](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1309364&eventNumber=0)
 
 Sparse Example: [Andy STANFORD-CLARK](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1770518&eventNumber=0)
 
-[Paul Sinton-Hewitt](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0)
+Founder: [Paul Sinton-Hewitt](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0)
+
+Unfeasibly large number of different parkuns, and totals in a year: [Paul FREYNE](http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=5227&eventNumber=0)
