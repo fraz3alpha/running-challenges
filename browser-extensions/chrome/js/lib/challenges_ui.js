@@ -69,7 +69,12 @@ function generate_challenge_table(data) {
        // badge_img.attr('title',challenge.name)
        badge_img.attr('width',24)
        badge_img.attr('height',24)
-       main_row.append($('<th></th>').append(badge_img))
+
+       var anchor_tag = $('<a/>')
+       anchor_tag.attr('name', challenge_name)
+       anchor_tag.append(badge_img)
+
+       main_row.append($('<th></th>').append(anchor_tag))
 
        // main_row.append($('<th></th>').text(challenge.shortname))
        main_row.append($('<th></th>').text(challenge.name))

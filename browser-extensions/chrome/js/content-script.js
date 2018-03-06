@@ -31,13 +31,19 @@ function generate_challenge_badges(data) {
 
     Object.keys(data).forEach(function (challenge) {
         if (data[challenge].complete == true) {
+            var challenge_link = $('<a></a>')
+            challenge_link.attr('href', '#'+challenge)
+
             var img = $('<img>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+data[challenge].badge_icon+".png"));
             img.attr('alt',data[challenge].name)
             img.attr('title',data[challenge].name)
             img.attr('width',64)
             img.attr('height',64)
-            badge_p.append(img)
+
+            challenge_link.append(img)
+
+            badge_p.append(challenge_link)
         }
     })
 
