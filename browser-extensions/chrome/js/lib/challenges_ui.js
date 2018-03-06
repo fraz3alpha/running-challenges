@@ -62,13 +62,21 @@ function generate_challenge_table(data) {
 
        // Print the main summary row
        main_row = $('<tr></tr>')
-       main_row.append($('<th></th>').text("O"))
+
+       var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
+       badge_img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"));
+       // badge_img.attr('alt',challenge.name)
+       // badge_img.attr('title',challenge.name)
+       badge_img.attr('width',24)
+       badge_img.attr('height',24)
+       main_row.append($('<th></th>').append(badge_img))
+
        // main_row.append($('<th></th>').text(challenge.shortname))
        main_row.append($('<th></th>').text(challenge.name))
        main_row.append($('<th></th>'))
        main_row.append($('<th></th>').text(challenge.completed_on))
        if (challenge.subparts_count == 1 && challenge.subparts_completed_count > 0) {
-           main_row.append($('<th></th>').text("x"+challenge.subparts_completed_count))   
+           main_row.append($('<th></th>').text("x"+challenge.subparts_completed_count))
        } else {
            main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
        }
