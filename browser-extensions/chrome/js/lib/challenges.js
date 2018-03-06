@@ -9,14 +9,14 @@ function challenge_generate_data(results) {
         "tourist": challenge_tourist(results, "tourist", "Tourist", 20),
         "cowell-club": challenge_tourist(results, "cowell-club", "Cowell Club", 100),
         "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", "abcdefghijklmnopqrstuvwxyz"),
-        "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
-        "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
-        "single-ton": challenge_single_parkrun_count(results, "single_ton", "Single-Ton", 100),
-        "double-ton": challenge_single_parkrun_count(results, "double_ton", "Double-Ton", 200),
+        // "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
+        // "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
+        "single-ton": challenge_single_parkrun_count(results, "single-ton", "Single-Ton", 100),
+        "double-ton": challenge_single_parkrun_count(results, "double-ton", "Double-Ton", 200),
         "stopwatch-bingo": challenge_stopwatch_bingo(results),
         "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
-        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fix", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
+        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fox", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
         "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
@@ -34,6 +34,7 @@ function challenge_start_letters(results, shortname, longname, letters) {
     subparts = []
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     // Add all the subparts to the list
     for (i=0; i<letters.length; i++) {
@@ -96,7 +97,8 @@ function challenge_start_letters(results, shortname, longname, letters) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -106,6 +108,7 @@ function challenge_words(results, shortname, longname, word_array) {
     subparts = []
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     // Add all the subparts to the list
     word_array.forEach(function (word) {
@@ -165,7 +168,8 @@ function challenge_words(results, shortname, longname, word_array) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -175,6 +179,7 @@ function challenge_parkruns(results, shortname, longname, parkrun_array) {
     subparts = []
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     // Add all the subparts to the list
     parkrun_array.forEach(function (parkrun_name) {
@@ -223,7 +228,8 @@ function challenge_parkruns(results, shortname, longname, parkrun_array) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -251,6 +257,7 @@ function challenge_tourist(results, shortname, longname, count) {
     subparts_completed_count = 0
     subparts_detail = []
     include_missing = false
+    badge_icon = "runner-"+shortname
 
     distinct_parkruns_completed = {}
 
@@ -291,6 +298,7 @@ function challenge_tourist(results, shortname, longname, count) {
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
         "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -302,7 +310,7 @@ function challenge_stopwatch_bingo(results) {
     subparts = []
     subparts_completed_count = 0
     subparts_detail = []
-    include_missing = true
+    badge_icon = "runner-"+shortname
 
     // Add all the subparts to the list
     for (i=0; i<60; i++) {
@@ -351,7 +359,8 @@ function challenge_stopwatch_bingo(results) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -362,6 +371,7 @@ function challenge_single_parkrun_count(results, shortname, longname, count) {
     subparts = ["1"]
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     parkruns_completed = {}
     max_count = 0
@@ -421,17 +431,19 @@ function challenge_single_parkrun_count(results, shortname, longname, count) {
         "subparts_count": subparts.length,
         "subparts_completed_count": subparts_completed_count,
         "subparts_detail": subparts_detail,
+        "badge_icon": badge_icon
     }
 }
 
 function challenge_nyd_double(results) {
-    shortname = "nyd_double"
+    shortname = "nyd-double"
     longname = "NYD Double"
     complete = false
     completed_on = null
     subparts = ["1"]
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     var previous_parkrun = null
 
@@ -476,7 +488,8 @@ function challenge_nyd_double(results) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -488,6 +501,7 @@ function challenge_double_time(results) {
     subparts = ["1"]
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     var previous_parkrun = null
 
@@ -530,7 +544,8 @@ function challenge_double_time(results) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }
 
@@ -540,6 +555,7 @@ function challenge_in_a_year(results, shortname, longname, count) {
     subparts = ["1"]
     subparts_completed_count = 0
     subparts_detail = []
+    badge_icon = "runner-"+shortname
 
     by_year = {}
 
@@ -587,6 +603,7 @@ function challenge_in_a_year(results, shortname, longname, count) {
         "subparts": subparts,
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
-        "subparts_completed_count": subparts_completed_count
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
     }
 }

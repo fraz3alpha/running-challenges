@@ -67,7 +67,11 @@ function generate_challenge_table(data) {
        main_row.append($('<th></th>').text(challenge.name))
        main_row.append($('<th></th>'))
        main_row.append($('<th></th>').text(challenge.completed_on))
-       main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+       if (challenge.subparts_count == 1 && challenge.subparts_completed_count > 0) {
+           main_row.append($('<th></th>').text("x"+challenge.subparts_completed_count))   
+       } else {
+           main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+       }
        // main_row.append($('<th></th>').text(challenge.complete))
        table.append(main_row)
 

@@ -32,7 +32,11 @@ function generate_challenge_badges(data) {
     Object.keys(data).forEach(function (challenge) {
         if (data[challenge].complete == true) {
             var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-            img.attr('src', chrome.extension.getURL("/images/badges/64x64/"+challenge+".png"));
+            img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+data[challenge].badge_icon+".png"));
+            img.attr('alt',data[challenge].name)
+            img.attr('title',data[challenge].name)
+            img.attr('width',64)
+            img.attr('height',64)
             badge_p.append(img)
         }
     })
@@ -95,20 +99,62 @@ $("table[id=results]").filter(function(index) {
 // Process parkruns oldest first
 parkruns_completed.reverse()
 
-// Construct all the challenges
-challenge_data = challenge_generate_data({
+challenge_settings = {
     "parkruns_completed": parkruns_completed,
     "geo_data": null,
     "geo_local_region": null,
     "home_parkrun": null
+}
+
+chrome.storage.sync.get({
+  home_parkrun: ''
+}, function(items) {
+  challenge_settings.home_parkrun = items.home_parkrun;
 })
 
-console.log(challenge_data)
+var timeout_for_geo_data_ms = 5000
 
-var challenge_table = generate_challenge_table(challenge_data)
-get_table('results', 'All Results').before(challenge_table)
+// Timeout suggestion taken from
+// https://stackoverflow.com/questions/8377777/implementing-timeouts-for-node-js-callbacks
+// Setup the timeout handler
+var timeoutProtect = setTimeout(function() {
+  // Clear the local timer variable, indicating the timeout has been triggered.
+  timeoutProtect = null;
+  console.log("timer timed out")
+  // Display the data without geo data
+  display_data(challenge_settings)
 
-var challenge_badges = generate_challenge_badges(challenge_data)
-get_badge_location().after(challenge_badges)
+}, timeout_for_geo_data_ms);
 
-console.log(challenge_badges)
+chrome.runtime.sendMessage({data: "geo"}, function(response) {
+    // Proceed only if the timeout handler has not yet fired.
+    if (timeoutProtect) {
+      console.log("timer still running when geo data came back")
+      // Clear the scheduled timeout handler
+      clearTimeout(timeoutProtect);
+      // Display the data with real geo data
+      challenge_settings.geo_data = response.geo
+      display_data(challenge_settings)
+  } else {
+      console.log("geo data came after timer timed out")
+  }
+
+});
+
+function display_data(challenge_settings) {
+
+    console.log(challenge_settings)
+
+    // Construct all the challenges
+    challenge_data = challenge_generate_data(challenge_settings)
+
+    console.log(challenge_data)
+
+    var challenge_table = generate_challenge_table(challenge_data)
+    get_table('results', 'All Results').before(challenge_table)
+
+    var challenge_badges = generate_challenge_badges(challenge_data)
+    get_badge_location().after(challenge_badges)
+
+    console.log(challenge_badges)
+}
