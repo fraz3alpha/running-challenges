@@ -5,8 +5,14 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.storage.sync.get({
       athlete_number: ''
     }, function(items) {
-      results_url = "https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
-      chrome.tabs.create({ url: results_url });
+        // If no athlete number has been set, load the options page
+        if (items.athlete_number == '') {
+            chrome.runtime.openOptionsPage();
+        } else {
+            results_url = "https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            chrome.tabs.create({ url: results_url });
+        }
+
     });
 
 });
