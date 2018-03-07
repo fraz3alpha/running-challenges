@@ -39,7 +39,7 @@
       "chrome_style": true
   },
   "background": {
-    "persistent": false,
+    "persistent": true,
     "scripts": [
         "js/lib/third-party/jquery-3.3.1.js",
         "js/background.js"
