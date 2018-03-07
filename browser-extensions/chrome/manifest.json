@@ -2,13 +2,17 @@
   "manifest_version": 2,
 
   "name": "Running Challenges",
-  "description": "This extension adds challenge information to your parkrun athlete results page. This extension is not affliated with parkrun, but is done out of love for the very active community of tourist and stats geeks.",
-  "version": "0.0.0.1",
+  "description": "Adds challenge progress information to your parkrun athlete results page.",
+  "version": "0.0.0.2",
 
   "content_security_policy": "default-src 'self' https://www.parkrun.org.uk",
 
   "browser_action": {
     "default_icon": "images/logo/logo-128x128.png"
+  },
+
+  "icons": {
+      "128": "images/logo/logo-128x128.png"
   },
 
   "content_scripts": [
