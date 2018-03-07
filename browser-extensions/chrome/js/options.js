@@ -30,6 +30,33 @@ function restore_options() {
     document.getElementById('home_parkrun').value = items.home_parkrun;
     document.getElementById('is_pedant').checked = items.is_pedant;
   });
+
+  // Load the GEO data with a timeout
+  var timeout_for_geo_data_ms = 5000
+
+  var timeoutProtect = setTimeout(function() {
+    // Clear the local timer variable, indicating the timeout has been triggered.
+    timeoutProtect = null;
+    // Display the data without geo data
+    display_data(challenge_settings)
+
+  }, timeout_for_geo_data_ms);
+
+  chrome.runtime.sendMessage({data: "geo"}, function(response) {
+      // Proceed only if the timeout handler has not yet fired.
+      if (timeoutProtect) {
+        // Clear the scheduled timeout handler
+        clearTimeout(timeoutProtect);
+        var geoxml = response.geo
+
+        // Fill in some summary data on the options page
+        document.getElementById('cached_geo_updated').innerText = geoxml.updated;
+        document.getElementById('cached_geo_events').innerText = Object.keys(geoxml.data.events).length;
+        document.getElementById('cached_geo_regions').innerText = Object.keys(geoxml.data.regions).length;
+        document.getElementById('cached_geo_bytes').innerText =  JSON.stringify(geoxml).length;
+    }
+  });
+
 }
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click',

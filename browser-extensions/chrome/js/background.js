@@ -9,8 +9,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
       chrome.tabs.create({ url: results_url });
     });
 
-    get_geo_data()
-
 });
 
 // The geo data will be updated when there is no data, or it is over 24 hours old
@@ -77,7 +75,7 @@ function get_geo_data(notify_func) {
                  // Send the response back via a message to whoever asked for it
                  if (notify_func !== undefined) {
                      console.log('Notifying caller with live data')
-                     notify_func({'farewell': geo_data})
+                     notify_func(cached_geo)
                  }
 
              },
@@ -90,28 +88,13 @@ function get_geo_data(notify_func) {
          // Send the response back via a message to whoever asked for it
          if (notify_func !== undefined) {
              console.log('Notifying caller with cached data')
-             notify_func({'farewell': cached_geo.data})
+             notify_func(cached_geo)
          }
 
-         return cached_geo.data
+         return cached_geo
      }
 
 }
-
-// // Listen for messages
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     console.log(sender.tab ?
-//                 "from a content script:" + sender.tab.url :
-//                 "from the extension");
-//     // If they have requested some cached data, look to see what type, and return it
-//     if (request.cached_data == "geo") {
-//         console.log("Returning the cache value")
-//         cached_data = {"cached_data": get_geo_data()}
-//         console.log(cached_data)
-//       sendResponse(cached_data);
-//     }
-//   });
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -122,7 +105,9 @@ function get_geo_data(notify_func) {
           // sendResponse({farewell: 'argh'});
         get_geo_data(function(geo_data) {
             console.log('Sending response back to the page')
-            sendResponse({geo: geo_data});
+            returned_data = {"geo": geo_data}
+            console.log(returned_data)
+            sendResponse(returned_data);
         });
 
         // Indicate we are going to return a response asynchronously

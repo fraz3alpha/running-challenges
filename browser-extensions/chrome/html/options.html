@@ -3,6 +3,7 @@
 <head><title>Running Challenges Options</title></head>
 <body>
 
+<h4>General Options</h4>
 <p>
 Athlete Number: <input type="textbox" id="athlete_number" value="A">
 </p>
@@ -17,6 +18,16 @@ Home Parkrun: <input type="textbox" id="home_parkrun" value="">
 </p>
 <div id="status"></div>
 <button id="save">Save</button>
+
+<p>
+<h4>Geo Cache Info</h4>
+Last updated: <span id='cached_geo_updated'>unknown</span><br/>
+Known Events: <span id='cached_geo_events'>unknown</span><br/>
+Known Regions: <span id='cached_geo_regions'>unknown</span><br/>
+Size (bytes): <span id='cached_geo_bytes'>unknown</span><br/>
+</p>
+
+<div id="debug"></div>
 
 <script src="/js/options.js"></script>
 </body>
