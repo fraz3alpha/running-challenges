@@ -5,13 +5,15 @@
   "description": "This extension adds challenge information to your parkrun athlete results page. This extension is not affliated with parkrun, but is done out of love for the very active community of tourist and stats geeks.",
   "version": "0.1.0",
 
+  "content_security_policy": "default-src 'self' https://www.parkrun.org.uk",
+
   "browser_action": {
     "default_icon": "images/logo/logo-128x128.png"
   },
 
   "content_scripts": [
     {
-      "matches": ["http://www.parkrun.org.uk/results/athleteeventresultshistory/*"],
+      "matches": ["https://www.parkrun.org.uk/results/athleteeventresultshistory/*"],
       "js": [
           "js/lib/third-party/jquery-3.3.1.js",
           "js/lib/challenges.js",

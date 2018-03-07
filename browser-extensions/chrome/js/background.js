@@ -5,7 +5,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.storage.sync.get({
       athlete_number: ''
     }, function(items) {
-      results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
+      results_url = "https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
       chrome.tabs.create({ url: results_url });
     });
 
@@ -28,7 +28,7 @@ function get_geo_data(notify_func) {
     if (cached_geo.updated == null || ((now - cached_geo.updated) > cached_geo_expiry_ms)) {
         cached_geo.updating = true
         $.ajax({
-             url: "http://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
+             url: "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
              success: function (result) {
                  console.log(result)
 
