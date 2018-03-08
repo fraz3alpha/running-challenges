@@ -25,6 +25,7 @@ function challenge_generate_data(results) {
         "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
         "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
         "obsessive-bronze": challenge_in_a_year(results, "obsessive-bronze", "Bronze Level Obsessive", 30),
+        "regionnaire": challenge_by_region(results)
     }
 }
 
@@ -594,6 +595,104 @@ function challenge_in_a_year(results, shortname, longname, count) {
         })
     }
 
+    // Return an object representing this challenge
+    return {
+        "shortname": shortname,
+        "name": longname,
+        "complete": complete,
+        "completed_on": completed_on,
+        "subparts": subparts,
+        "subparts_count": subparts.length,
+        "subparts_detail": subparts_detail,
+        "subparts_completed_count": subparts_completed_count,
+        "badge_icon": badge_icon
+    }
+}
+
+function calculate_child_regions(regions, results, parent_region) {
+
+    var region_info = {
+        'name': parent_region,
+        "child_regions": [],
+        "child_events": [],
+        "child_events_total": 0,
+        "child_events_completed": [],
+        "child_events_completed_count": 0
+    }
+
+    // child_region_info = []
+    console.log(parent_region)
+    if (regions[parent_region].child_region_names.length == 0) {
+        console.log('No sub-regions under ' + regions[parent_region].name)
+        // return regions[parent_region].name
+    } else {
+        regions[parent_region].child_region_names.sort().forEach(function (region_name) {
+            console.log("Looking under: " + region_name)
+            child_region_parkrun_info = calculate_child_regions(regions, results, region_name)
+            console.log("Looked under: " + region_name + " got " + JSON.stringify(child_region_parkrun_info))
+            region_info["child_regions"].push(child_region_parkrun_info)
+            region_info["child_events_total"] += child_region_parkrun_info["child_events_total"]
+            region_info["child_events_completed_count"] += child_region_parkrun_info["child_events_completed_count"]
+            // child_region_info.push(child_region_parkrun_info)
+        })
+    }
+
+    console.log('Events under ' + regions[parent_region].name + ": " + regions[parent_region].child_event_names.length)
+    region_info["child_events_total"] += regions[parent_region].child_event_names.length
+    if (regions[parent_region].child_event_names.length > 0) {
+        regions[parent_region].child_event_names.sort().forEach(function (event_name) {
+            // Work out if we have completed this parkrun
+            // Lets just say yes for now
+            region_info["child_events"].push(event_name)
+            if (event_name in results) {
+                region_info["child_events_completed_count"] += 1
+            }
+        })
+    }
+
+    console.log("Region info for " + parent_region)
+    console.log(region_info["child_regions"])
+    console.log('Region Info: ' + JSON.stringify(region_info))
+    return region_info
+
+}
+
+function challenge_by_region(results) {
+    shortname = "regionnaire"
+    longname = "Regionnaire"
+    var complete = false
+    var completed_on = null
+    subparts = []
+    subparts_completed_count = 0
+    subparts_detail = []
+    badge_icon = "runner-"+shortname
+
+    // Do we have geo data available?
+    geo_data = results.geo_data
+    if (geo_data == null) {
+        return null
+    }
+
+    console.log(geo_data)
+    console.log(geo_data.data)
+    console.log(geo_data.data.regions)
+
+    regions = geo_data.data.regions
+    results_by_event = group_results_by_event(results)
+    sorted_region_heirachy = calculate_child_regions(regions, results_by_event, "World")
+
+    console.log("regionstuff: " + sorted_region_heirachy)
+
+    // Object.keys(geo_data.data.regions).forEach(function (index) {
+    //     console.log(index)
+    //     region = geo_data.data.regions[index]
+    //     if (region != null) {
+    //         console.log(region.name)
+    //         region_heirachy[region] = {
+    //             'events': {}
+    //         }
+    //     }
+    // })
     // Return an object representing this challenge
     return {
         "shortname": shortname,

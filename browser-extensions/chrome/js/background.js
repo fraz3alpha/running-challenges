@@ -36,37 +36,73 @@ function get_geo_data(notify_func) {
         $.ajax({
              url: "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
              success: function (result) {
-                 console.log(result)
+                 // console.log(result)
 
                  var geo_data = {
-                     'regions': [],
+                     'regions': {},
                      'events': {}
                  }
 
+                 region_id_to_name_map = {}
+                 region_name_to_id_map = {}
+
                  // Find all the regions
                  $(result).find('r').each(function(region_index) {
-                     geo_data['regions'][$(this).attr('id')] = {
-                         "id": $(this).attr('id'),
-                         "name": $(this).attr('n'),
-                         "lat": $(this).attr('la'),
-                         "lon": $(this).attr('lo'),
-                         "zoom": $(this).attr('z'),
-                         "parent_id": $(this).attr('pid'),
-                         "url": $(this).attr('u')
+                     this_region = $(this)
+                     region_name = this_region.attr('n')
+                     geo_data['regions'][region_name] = {
+                         "id": this_region.attr('id'),
+                         "name": region_name,
+                         "lat": this_region.attr('la'),
+                         "lon": this_region.attr('lo'),
+                         "zoom": this_region.attr('z'),
+                         "parent_id": this_region.attr('pid'),
+                         "child_region_ids": [],
+                         "child_region_names": [],
+                         "child_event_ids": [],
+                         "child_event_names": [],
+                         "url": this_region.attr('u')
                      }
+                     region_id_to_name_map[this_region.attr('id')] = region_name
+                     region_name_to_id_map[region_name] = this_region.attr('id')
+
+                     // console.log("Looking for children of " + $(this).attr('n') )
+                     // Find the children
+                     this_region.children('r').each(function(child_region_index) {
+                         this_child = $(this)
+                         geo_data['regions'][region_name]["child_region_ids"].push(this_child.attr('id'))
+                         geo_data['regions'][region_name]["child_region_names"].push(this_child.attr('n'))
+                     })
+                     console.log(geo_data['regions'][region_name])
                  })
 
                  // Find all the events
                  $(result).find('e').each(function(region_index) {
-                     geo_data['events'][$(this).attr('m')] = {
-                         "shortname": $(this).attr('n'),
-                         "name": $(this).attr('m'),
-                         "country_id": $(this).attr('c'),
-                         "region_id": $(this).attr('r'),
-                         "id": $(this).attr('id'),
-                         "lat": $(this).attr('la'),
-                         "lon": $(this).attr('lo')
+                     this_event = $(this)
+                     this_event_name = this_event.attr('m')
+                     this_event_region_id = this_event.attr('r')
+                     geo_data['events'][this_event_name] = {
+                         "shortname": this_event.attr('n'),
+                         "name": this_event.attr('m'),
+                         "country_id": this_event.attr('c'),
+                         "region_id": this_event_region_id,
+                         "id": this_event.attr('id'),
+                         "lat": this_event.attr('la'),
+                         "lon": this_event.attr('lo'),
+                         "region_name": "unknown"
                      }
+
+                     // Find region
+                     if (this_event_region_id in region_id_to_name_map) {
+                         this_event_region_name = region_id_to_name_map[this_event_region_id]
+                         geo_data['events'][this_event_name]["region_name"] = this_event_region_name
+                         // Store this even in the appropriate region
+                         geo_data['regions'][this_event_region_name]["child_event_ids"].push(this_event.attr('id'))
+                         geo_data['regions'][this_event_region_name]["child_event_names"].push(this_event_name)
+                     } else {
+                         console.log("Unknown region for " + JSON.stringify(geo_data['events'][this_event_name]))
+                     }
+
                  })
 
                  console.log(geo_data)
