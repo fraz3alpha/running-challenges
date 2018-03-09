@@ -22,10 +22,11 @@ function challenge_generate_data(results) {
         "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
         "nyd-double": challenge_nyd_double(results),
         "groundhog-day": challenge_groundhog_day(results),
-        "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
-        "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
+        "regionnaire": challenge_by_region(results),
         "obsessive-bronze": challenge_in_a_year(results, "obsessive-bronze", "Bronze Level Obsessive", 30),
-        "regionnaire": challenge_by_region(results)
+        "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
+        "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
+
     }
 }
 
@@ -657,7 +658,9 @@ function generate_regionnaire_detail_info(region, depth) {
     if (region["child_events_total"] > 0) {
         details.push({
                 "subpart": prefix + region["name"],
-                "info": region["child_events_completed_count"] + "/" + region["child_events_total"]
+                "info": region["child_events_completed_count"] + "/" + region["child_events_total"],
+                "complete": region["child_events_completed_count"] == region["child_events_total"],
+                "completed_on": ""
         })
     }
 
@@ -680,6 +683,7 @@ function challenge_by_region(results) {
     subparts_completed_count = 0
     subparts_detail = []
     badge_icon = "runner-"+shortname
+    summary_text = ""
 
     // Do we have geo data available?
     geo_data = results.geo_data
@@ -697,6 +701,18 @@ function challenge_by_region(results) {
 
     subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
 
+    // Work out of any regions have been completed
+    subparts_detail.forEach(function (detail) {
+        if (detail.complete) {
+            subparts_completed_count += 1
+            complete = true
+        }
+    })
+
+    if (subparts_completed_count > 0) {
+        summary_text = "x"+subparts_completed_count
+    }
+
     // Return an object representing this challenge
     return {
         "shortname": shortname,
@@ -707,6 +723,7 @@ function challenge_by_region(results) {
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
         "subparts_completed_count": subparts_completed_count,
-        "badge_icon": badge_icon
+        "badge_icon": badge_icon,
+        "summary_text": summary_text
     }
 }
