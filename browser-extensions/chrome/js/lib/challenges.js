@@ -446,6 +446,7 @@ function challenge_nyd_double(results) {
     subparts_completed_count = 0
     subparts_detail = []
     badge_icon = "runner-"+shortname
+    summary_text = "0"
 
     var previous_parkrun = null
 
@@ -481,6 +482,11 @@ function challenge_nyd_double(results) {
         })
     }
 
+    // Change the summary to indicate number of times completed
+    if (subparts_completed_count > 0) {
+        summary_text = "x"+subparts_completed_count
+    }
+
     // Return an object representing this challenge
     return {
         "shortname": shortname,
@@ -491,7 +497,8 @@ function challenge_nyd_double(results) {
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
         "subparts_completed_count": subparts_completed_count,
-        "badge_icon": badge_icon
+        "badge_icon": badge_icon,
+        "summary_text": summary_text
     }
 }
 
@@ -504,6 +511,7 @@ function challenge_groundhog_day(results) {
     subparts_completed_count = 0
     subparts_detail = []
     badge_icon = "runner-"+shortname
+    summary_text = "0"
 
     var previous_parkrun = null
 
@@ -537,6 +545,11 @@ function challenge_groundhog_day(results) {
         })
     }
 
+    // Change the summary to indicate number of times completed
+    if (subparts_completed_count > 0) {
+        summary_text = "x"+subparts_completed_count
+    }
+
     // Return an object representing this challenge
     return {
         "shortname": shortname,
@@ -547,7 +560,8 @@ function challenge_groundhog_day(results) {
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
         "subparts_completed_count": subparts_completed_count,
-        "badge_icon": badge_icon
+        "badge_icon": badge_icon,
+        "summary_text": summary_text
     }
 }
 
@@ -558,6 +572,7 @@ function challenge_in_a_year(results, shortname, longname, count) {
     subparts_completed_count = 0
     subparts_detail = []
     badge_icon = "runner-"+shortname
+    summary_text = "0"
 
     by_year = {}
 
@@ -596,6 +611,11 @@ function challenge_in_a_year(results, shortname, longname, count) {
         })
     }
 
+    // Change the summary to indicate number of times completed
+    if (subparts_completed_count > 0) {
+        summary_text = "x"+subparts_completed_count
+    }
+
     // Return an object representing this challenge
     return {
         "shortname": shortname,
@@ -606,7 +626,8 @@ function challenge_in_a_year(results, shortname, longname, count) {
         "subparts_count": subparts.length,
         "subparts_detail": subparts_detail,
         "subparts_completed_count": subparts_completed_count,
-        "badge_icon": badge_icon
+        "badge_icon": badge_icon,
+        "summary_text": summary_text
     }
 }
 
