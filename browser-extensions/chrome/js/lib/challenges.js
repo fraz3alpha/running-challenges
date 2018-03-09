@@ -609,7 +609,7 @@ function challenge_in_a_year(results, shortname, longname, count) {
     }
 }
 
-function calculate_child_regions(regions, results, parent_region) {
+function calculate_child_regions(regions, events_completed_map, parent_region) {
 
     var region_info = {
         'name': parent_region,
@@ -621,15 +621,11 @@ function calculate_child_regions(regions, results, parent_region) {
     }
 
     // child_region_info = []
-    console.log(parent_region)
     if (regions[parent_region].child_region_names.length == 0) {
-        console.log('No sub-regions under ' + regions[parent_region].name)
-        // return regions[parent_region].name
+        // No sub regions
     } else {
         regions[parent_region].child_region_names.sort().forEach(function (region_name) {
-            console.log("Looking under: " + region_name)
-            child_region_parkrun_info = calculate_child_regions(regions, results, region_name)
-            console.log("Looked under: " + region_name + " got " + JSON.stringify(child_region_parkrun_info))
+            child_region_parkrun_info = calculate_child_regions(regions, events_completed_map, region_name)
             region_info["child_regions"].push(child_region_parkrun_info)
             region_info["child_events_total"] += child_region_parkrun_info["child_events_total"]
             region_info["child_events_completed_count"] += child_region_parkrun_info["child_events_completed_count"]
@@ -637,24 +633,40 @@ function calculate_child_regions(regions, results, parent_region) {
         })
     }
 
-    console.log('Events under ' + regions[parent_region].name + ": " + regions[parent_region].child_event_names.length)
     region_info["child_events_total"] += regions[parent_region].child_event_names.length
     if (regions[parent_region].child_event_names.length > 0) {
         regions[parent_region].child_event_names.sort().forEach(function (event_name) {
             // Work out if we have completed this parkrun
             // Lets just say yes for now
             region_info["child_events"].push(event_name)
-            if (event_name in results) {
+            if (event_name in events_completed_map) {
                 region_info["child_events_completed_count"] += 1
             }
         })
     }
 
-    console.log("Region info for " + parent_region)
-    console.log(region_info["child_regions"])
-    console.log('Region Info: ' + JSON.stringify(region_info))
     return region_info
 
+}
+
+function generate_regionnaire_detail_info(region, depth) {
+    var details = []
+
+    prefix = Array(depth).join("- ")
+
+    details.push({
+            "subpart": prefix + region["name"],
+            "info": region["child_events_completed_count"] + "/" + region["child_events_total"]
+    })
+
+    region["child_regions"].forEach(function(child_region) {
+        sub_region_info = generate_regionnaire_detail_info(child_region, depth+1);
+        sub_region_info.forEach(function (array_entry) {
+            details.push(array_entry)
+        })
+    })
+
+    return details
 }
 
 function challenge_by_region(results) {
@@ -678,21 +690,11 @@ function challenge_by_region(results) {
     console.log(geo_data.data.regions)
 
     regions = geo_data.data.regions
-    results_by_event = group_results_by_event(results)
-    sorted_region_heirachy = calculate_child_regions(regions, results_by_event, "World")
+    events_completed_map = group_results_by_event(results)
+    sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
 
-    console.log("regionstuff: " + sorted_region_heirachy)
+    subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
 
-    // Object.keys(geo_data.data.regions).forEach(function (index) {
-    //     console.log(index)
-    //     region = geo_data.data.regions[index]
-    //     if (region != null) {
-    //         console.log(region.name)
-    //         region_heirachy[region] = {
-    //             'events': {}
-    //         }
-    //     }
-    // })
     // Return an object representing this challenge
     return {
         "shortname": shortname,
