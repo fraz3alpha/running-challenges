@@ -654,10 +654,12 @@ function generate_regionnaire_detail_info(region, depth) {
 
     prefix = Array(depth).join("- ")
 
-    details.push({
-            "subpart": prefix + region["name"],
-            "info": region["child_events_completed_count"] + "/" + region["child_events_total"]
-    })
+    if (region["child_events_total"] > 0) {
+        details.push({
+                "subpart": prefix + region["name"],
+                "info": region["child_events_completed_count"] + "/" + region["child_events_total"]
+        })
+    }
 
     region["child_regions"].forEach(function(child_region) {
         sub_region_info = generate_regionnaire_detail_info(child_region, depth+1);
