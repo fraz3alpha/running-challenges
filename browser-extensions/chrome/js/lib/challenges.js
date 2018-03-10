@@ -8,7 +8,7 @@ function challenge_generate_data(results) {
     return {
         "tourist": challenge_tourist(results, "tourist", "Tourist", 20),
         "cowell-club": challenge_tourist(results, "cowell-club", "Cowell Club", 100),
-        "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", "abcdefghijklmnopqrstuvwxyz"),
+        "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", "abcdefghijklmnopqrstuvwyz"),
         // "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
         // "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
         "single-ton": challenge_single_parkrun_count(results, "single-ton", "Single-Ton", 100),
@@ -16,7 +16,7 @@ function challenge_generate_data(results) {
         "stopwatch-bingo": challenge_stopwatch_bingo(results),
         "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
         "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
-        "quick-brown-fox": challenge_start_letters(results, "quick-brown-fox", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
+        // "quick-brown-fox": challenge_start_letters(results, "quick-brown-fox", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
         "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
         "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
         "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
