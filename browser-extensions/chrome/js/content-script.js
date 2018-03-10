@@ -29,6 +29,7 @@ function generate_challenge_badges(data) {
     var badge_div = $('<div></div>')
     var badge_p = $('<p></p>')
 
+    var index_counter = 1
     Object.keys(data).forEach(function (challenge) {
         if (data[challenge].complete == true) {
             var challenge_link = $('<a></a>')
@@ -44,6 +45,11 @@ function generate_challenge_badges(data) {
             challenge_link.append(img)
 
             badge_p.append(challenge_link)
+
+            if (index_counter > 0 && index_counter % 8 == 0) {
+                badge_p.append($('<br/>'))
+            }
+            index_counter += 1
         }
     })
 
