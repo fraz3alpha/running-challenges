@@ -57,6 +57,12 @@ function generate_challenge_table(data) {
    // Optionally add a class with .addClass(this.tableClass)
    table.append($('<caption></caption>').text('Challenges'))
 
+   // Add a set of links on the top row
+   help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
+   help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
+   help_td.append(help_link)
+   table.append($('<tr></tr>').append(help_td))
+
    visible_challenges.forEach(function (challenge_name) {
        challenge = data[challenge_name]
 
@@ -93,6 +99,9 @@ function generate_challenge_table(data) {
            main_row.append($('<th></th>').text(challenge.summary_text))
        } else {
            main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+       }
+       if (challenge.complete) {
+           main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/256x256/tick.png")).attr('width',24).attr('height',24))
        }
        // main_row.append($('<th></th>').text(challenge.complete))
        challenge_tbody_header.append(main_row)

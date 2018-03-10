@@ -28,7 +28,8 @@
     }
   ],
   "web_accessible_resources": [
-      "/images/badges/*.png"
+      "/images/badges/*.png",
+      "/html/*.html"
   ],
   "permissions": [
     "activeTab",
