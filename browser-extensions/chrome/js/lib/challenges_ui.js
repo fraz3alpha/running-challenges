@@ -59,8 +59,12 @@ function generate_challenge_table(data) {
 
    // Add a set of links on the top row
    help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
+   options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
    help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
+   help_td.append(options_link)
+   help_td.append(" | ")
    help_td.append(help_link)
+
    table.append($('<tr></tr>').append(help_td))
 
    visible_challenges.forEach(function (challenge_name) {
