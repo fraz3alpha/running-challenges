@@ -30,6 +30,45 @@ function challenge_generate_data(results) {
     }
 }
 
+function generate_volunteer_challenge_data(volunteer_data) {
+
+    var volunteer_roles = [
+        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+        {"shortname": "close-down", "name": "Post-event Close Down"},
+        {"shortname": "funnel-manager", "name": "Funnel Manager"},
+        {"shortname": "manual-entry", "name": "Number Checker"},
+        {"shortname": "photographer", "name": "Photographer"},
+        {"shortname": "results-processing", "name": "Results Processor"},
+        {"shortname": "run-director", "name": "Run Director"},
+        {"shortname": "run-report-writer", "name": "Run Report Writer"},
+        {"shortname": "setup", "name": "Pre-event Setup"},
+        {"shortname": "finish-tokens", "name": "Finish Tokens"},
+        {"shortname": "marshal", "name": "Marshal"},
+        {"shortname": "token-sorting", "name": "Token Sorting"},
+        {"shortname": "timer", "name": "Timekeeper", "matching-roles": ["Timekeeper", "Backup Timer"]},
+        {"shortname": "tail-walker", "name": "Tail Walker"},
+        {"shortname": "pacer", "name": "Pacer (5k only)"}
+    ]
+
+    var data = {}
+
+    // Populate the results with the above
+    volunteer_roles.forEach(function (role) {
+        data[role.shortname] = create_data_object(role.shortname, role.name, "volunteer")
+        data[role.shortname].summary_text = ""
+        if (role.name in volunteer_data) {
+            console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+            data[role.shortname].subparts_completed_count = volunteer_data[role.name]
+            data[role.shortname].summary_text = "x"+volunteer_data[role.name]
+            data[role.shortname].complete = true
+        }
+        update_data_object(data[role.shortname])
+    })
+
+    return data
+}
+
+
 function create_data_object(shortname, longname, category) {
     var o = {
         "shortname": shortname,
@@ -605,16 +644,16 @@ function challenge_by_region(results) {
         return null
     }
 
-    console.log(geo_data)
-    console.log(geo_data.data)
-    console.log(geo_data.data.regions)
+    // console.log(geo_data)
+    // console.log(geo_data.data)
+    // console.log(geo_data.data.regions)
 
     regions = geo_data.data.regions
     // Sort all of the completed parkruns by event so that we can pick out which
     // has been run, and when that was
     events_completed_map = group_results_by_event(results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
-    console.log(sorted_region_heirachy)
+    // console.log(sorted_region_heirachy)
 
     o.regions = sorted_region_heirachy
     o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)

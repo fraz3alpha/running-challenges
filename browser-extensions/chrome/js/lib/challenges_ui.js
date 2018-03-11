@@ -25,7 +25,32 @@
  * ]
  */
 
-function generate_challenge_table(data) {
+function generate_challenge_table() {
+
+    console.log('Generating Challenge Table')
+    var table = $('<table></table>')
+    // Set the ID so that we can easily find it again
+    // table.attr("id", "challenge-table")
+    // Use the 'results' id so that we pick up the standard styling
+    table.attr("id", "results")
+    // Optionally add a class with .addClass(this.tableClass)
+    table.append($('<caption></caption>').text('Challenges'))
+
+    // Add a set of links on the top row
+    help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
+    options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
+    help_td.append(options_link)
+    help_td.append(" | ")
+    help_td.append(help_link)
+
+    table.append($('<tr></tr>').append(help_td))
+
+    return table
+
+}
+
+function add_challenges_to_table(table, data) {
 
    popular_challenges = ['alphabeteer', 'tourist', 'pirates']
 
@@ -48,24 +73,6 @@ function generate_challenge_table(data) {
 
    console.log('visible_challenges: '+visible_challenges)
    console.log('hidden_challenges: '+hidden_challenges)
-
-   console.log('Generating Challenge Table')
-   var table = $('<table></table>')
-   // Set the ID so that we can easily find it again
-   table.attr("id", "challenge-table")
-   table.attr("id", "results")
-   // Optionally add a class with .addClass(this.tableClass)
-   table.append($('<caption></caption>').text('Challenges'))
-
-   // Add a set of links on the top row
-   help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
-   options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
-   help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
-   help_td.append(options_link)
-   help_td.append(" | ")
-   help_td.append(help_link)
-
-   table.append($('<tr></tr>').append(help_td))
 
    var ui_challenge_generation_duration = 0
 
@@ -170,7 +177,7 @@ function iterate_regionnaire_data(table, region, level, region_group) {
         level = 0
     }
 
-    console.log(region["name"])
+    // console.log(region["name"])
 
     var region_name_sanitised = region["name"].toLowerCase().replace(/\s/g, "_")
 
