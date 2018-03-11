@@ -22,13 +22,22 @@
           "js/lib/third-party/jquery-3.3.1.js",
           "js/lib/challenges.js",
           "js/lib/challenges_ui.js",
-          "js/content-script.js"
+          "js/content-scripts/content-script-athleteeventresultshistory.js"
       ],
       "run_at": "document_end"
-    }
+  },
+  {
+    "matches": ["*://www.parkrun.org.uk/results/athleteresultshistory/*"],
+    "js": [
+        "js/lib/third-party/jquery-3.3.1.js",
+        "js/content-scripts/content-script-athleteresultshistory.js"
+    ],
+    "run_at": "document_end"
+  }
   ],
   "web_accessible_resources": [
       "/images/badges/*.png",
+      "/images/logo/*.png",
       "/html/*.html"
   ],
   "permissions": [
