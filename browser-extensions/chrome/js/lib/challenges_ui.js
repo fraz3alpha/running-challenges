@@ -101,7 +101,7 @@ function get_tbody_header_id(challenge) {
 }
 
 function get_tbody_content_id(challenge) {
-    return "challenge_tbody_header_"+challenge['shortname']
+    return "challenge_tbody_content_"+challenge['shortname']
 }
 
 function get_challenge_icon(challenge, height, width) {
@@ -121,7 +121,7 @@ function get_challenge_header_row(challenge) {
 
     var badge_img = get_challenge_icon(challenge, 24, 24)
     badge_img.click(function(){
-        $("tbody[id=challenge_tbody_detail_"+challenge['shortname']+"]").toggle();
+        $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
     });
 
     var anchor_tag = $('<a/>')
