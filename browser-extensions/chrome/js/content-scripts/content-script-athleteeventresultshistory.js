@@ -221,10 +221,13 @@ function get_volunteer_data() {
                                  }
                                  if (volunteer_data[challenge].subparts_completed_count >= 25){
                                      badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
+                                     badge_info.name += " (25+ times)"
                                  } else if (volunteer_data[challenge].subparts_completed_count >= 10){
                                      badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-2-stars.png")
+                                     badge_info.name += " (10+ times)"
                                  } else if (volunteer_data[challenge].subparts_completed_count >= 5){
                                      badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-1-star.png")
+                                     badge_info.name += " (5+ times)"
                                  }
                                  badges.push(badge_info)
                              }
