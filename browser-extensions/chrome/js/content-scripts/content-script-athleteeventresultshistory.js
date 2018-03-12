@@ -214,11 +214,19 @@ function get_volunteer_data() {
                          // Add the badges to the list
                          Object.keys(volunteer_data).forEach(function (challenge) {
                              if (volunteer_data[challenge].complete == true) {
-                                 badges.push({
+                                 var badge_info = {
                                      "name": volunteer_data[challenge].name,
                                      "icon": chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+".png"),
                                      "link": "#"+challenge
-                                 })
+                                 }
+                                 if (volunteer_data[challenge].subparts_completed_count >= 25){
+                                     badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
+                                 } else if (volunteer_data[challenge].subparts_completed_count >= 10){
+                                     badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-2-stars.png")
+                                 } else if (volunteer_data[challenge].subparts_completed_count >= 5){
+                                     badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-1-star.png")
+                                 }
+                                 badges.push(badge_info)
                              }
                          })
                          add_challenge_badges(badges_div, badges)

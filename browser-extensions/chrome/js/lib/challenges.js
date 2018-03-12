@@ -33,20 +33,20 @@ function challenge_generate_data(results) {
 function generate_volunteer_challenge_data(volunteer_data) {
 
     var volunteer_roles = [
+        {"shortname": "marshal", "name": "Marshal"},
+        {"shortname": "tail-walker", "name": "Tail Walker"},
+        {"shortname": "run-director", "name": "Run Director"},
+        {"shortname": "setup", "name": "Pre-event Setup"},
         {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
         {"shortname": "close-down", "name": "Post-event Close Down"},
         {"shortname": "funnel-manager", "name": "Funnel Manager"},
         {"shortname": "manual-entry", "name": "Number Checker"},
         {"shortname": "photographer", "name": "Photographer"},
         {"shortname": "results-processing", "name": "Results Processor"},
-        {"shortname": "run-director", "name": "Run Director"},
         {"shortname": "run-report-writer", "name": "Run Report Writer"},
-        {"shortname": "setup", "name": "Pre-event Setup"},
         {"shortname": "finish-tokens", "name": "Finish Tokens"},
-        {"shortname": "marshal", "name": "Marshal"},
         {"shortname": "token-sorting", "name": "Token Sorting"},
         {"shortname": "timer", "name": "Timekeeper", "matching-roles": ["Timekeeper", "Backup Timer"]},
-        {"shortname": "tail-walker", "name": "Tail Walker"},
         {"shortname": "pacer", "name": "Pacer (5k only)"}
     ]
 
