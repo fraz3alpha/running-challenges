@@ -33,21 +33,28 @@ function challenge_generate_data(results) {
 function generate_volunteer_challenge_data(volunteer_data) {
 
     var volunteer_roles = [
+        {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
+        {"shortname": "comms-person", "name": "Communications Person"},
+        {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+        {"shortname": "setup", "name": "Pre-event Setup"},
+        {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+        {"shortname": "sign-language", "name": "Sign Language Support"},
         {"shortname": "marshal", "name": "Marshal"},
         {"shortname": "tail-walker", "name": "Tail Walker"},
         {"shortname": "run-director", "name": "Run Director"},
-        {"shortname": "setup", "name": "Pre-event Setup"},
-        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
-        {"shortname": "close-down", "name": "Post-event Close Down"},
-        {"shortname": "funnel-manager", "name": "Funnel Manager"},
-        {"shortname": "manual-entry", "name": "Number Checker"},
+        {"shortname": "lead-bike", "name": "Lead Bike"},
+        {"shortname": "pacer", "name": "Pacer (5k only)"},
+        {"shortname": "vi-guide", "name": "VI Guide"},
         {"shortname": "photographer", "name": "Photographer"},
-        {"shortname": "results-processing", "name": "Results Processor"},
-        {"shortname": "run-report-writer", "name": "Run Report Writer"},
-        {"shortname": "finish-tokens", "name": "Finish Tokens"},
-        {"shortname": "token-sorting", "name": "Token Sorting"},
         {"shortname": "timer", "name": "Timekeeper", "matching-roles": ["Timekeeper", "Backup Timer"]},
-        {"shortname": "pacer", "name": "Pacer (5k only)"}
+        {"shortname": "funnel-manager", "name": "Funnel Manager"},
+        {"shortname": "finish-tokens", "name": "Finish Tokens", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+        {"shortname": "manual-entry", "name": "Number Checker"},
+        {"shortname": "close-down", "name": "Post-event Close Down"},
+        {"shortname": "results-processing", "name": "Results Processor"},
+        {"shortname": "token-sorting", "name": "Token Sorting"},
+        {"shortname": "run-report-writer", "name": "Run Report Writer"}
     ]
 
     var data = {}
