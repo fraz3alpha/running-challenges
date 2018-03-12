@@ -46,9 +46,9 @@ function generate_volunteer_challenge_data(volunteer_data) {
         {"shortname": "pacer", "name": "Pacer (5k only)"},
         {"shortname": "vi-guide", "name": "VI Guide"},
         {"shortname": "photographer", "name": "Photographer"},
-        {"shortname": "timer", "name": "Timekeeper", "matching-roles": ["Timekeeper", "Backup Timer"]},
+        {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
         {"shortname": "funnel-manager", "name": "Funnel Manager"},
-        {"shortname": "finish-tokens", "name": "Finish Tokens", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+        {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
         {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
         {"shortname": "manual-entry", "name": "Number Checker"},
         {"shortname": "close-down", "name": "Post-event Close Down"},
@@ -63,12 +63,23 @@ function generate_volunteer_challenge_data(volunteer_data) {
     volunteer_roles.forEach(function (role) {
         data[role.shortname] = create_data_object(role.shortname, role.name, "volunteer")
         data[role.shortname].summary_text = ""
+        data[role.shortname].subparts_completed_count = 0
+        if (role["matching-roles"] !== undefined){
+            for (var i=0; i<role["matching-roles"].length; i++) {
+                if (role["matching-roles"][i] in volunteer_data) {
+                    data[role.shortname].subparts_completed_count += volunteer_data[role["matching-roles"][i]]
+                }
+            }
+        }
         if (role.name in volunteer_data) {
             console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
             data[role.shortname].subparts_completed_count = volunteer_data[role.name]
-            data[role.shortname].summary_text = "x"+volunteer_data[role.name]
+        }
+        if (data[role.shortname].subparts_completed_count > 0) {
+            data[role.shortname].summary_text = "x"+data[role.shortname].subparts_completed_count
             data[role.shortname].complete = true
         }
+
         update_data_object(data[role.shortname])
     })
 
