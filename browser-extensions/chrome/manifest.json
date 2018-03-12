@@ -17,7 +17,16 @@
 
   "content_scripts": [
     {
-      "matches": ["*://www.parkrun.org.uk/results/athleteeventresultshistory/*"],
+      "matches": [
+          "*://www.parkrun.org.uk/results/athleteeventresultshistory/*",
+          "*://www.parkrun.com.au/results/athleteeventresultshistory/*",
+          "*://www.parkrun.co.nz/results/athleteeventresultshistory/*",
+          "*://www.parkrun.ca/results/athleteeventresultshistory/*",
+          "*://www.parkrun.ie/results/athleteeventresultshistory/*",
+          "*://www.parkrun.co.za/results/athleteeventresultshistory/*",
+          "*://www.parkrun.us/results/athleteeventresultshistory/*",
+          "*://www.parkrun.sg/results/athleteeventresultshistory/*"
+      ],
       "js": [
           "js/lib/third-party/jquery-3.3.1.js",
           "js/lib/challenges.js",
@@ -27,7 +36,16 @@
       "run_at": "document_end"
   },
   {
-    "matches": ["*://www.parkrun.org.uk/results/athleteresultshistory/*"],
+    "matches": [
+        "*://www.parkrun.org.uk/results/athleteresultshistory/*",
+        "*://www.parkrun.com.au/results/athleteresultshistory/*",
+        "*://www.parkrun.co.nz/results/athleteresultshistory/*",
+        "*://www.parkrun.ca/results/athleteresultshistory/*",
+        "*://www.parkrun.ie/results/athleteresultshistory/*",
+        "*://www.parkrun.co.za/results/athleteresultshistory/*",
+        "*://www.parkrun.us/results/athleteresultshistory/*",
+        "*://www.parkrun.sg/results/athleteresultshistory/*"
+    ],
     "js": [
         "js/lib/third-party/jquery-3.3.1.js",
         "js/content-scripts/content-script-athleteresultshistory.js"
