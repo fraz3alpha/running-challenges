@@ -23,10 +23,10 @@ var cached_geo = {
     'updated': null,
     'updating': false
 }
-// 24 Hours
-var cached_geo_expiry_ms = 24 * 60 * 60 * 1000
-// 5 Minutes
-// var cached_geo_expiry_ms = 5 * 1000
+// 3 Days
+// A good balance between not every day, but not as long as a week - when new
+// events may have been added
+var cached_geo_expiry_ms = 3 * 24 * 60 * 60 * 1000
 
 function get_geo_data(notify_func) {
     now = Date()
