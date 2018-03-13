@@ -53,7 +53,16 @@
     "run_at": "document_end"
   },
   {
-    "matches": ["*://www.parkrun.org.uk/*/results/athletehistory/*"],
+    "matches": [
+        "*://www.parkrun.org.uk/*/results/athletehistory/*",
+        "*://www.parkrun.com.au/*/results/athletehistory/*",
+        "*://www.parkrun.co.nz/*/results/athletehistory/*",
+        "*://www.parkrun.ca/*/results/athletehistory/*",
+        "*://www.parkrun.ie/*/results/athletehistory/*",
+        "*://www.parkrun.co.za/*/results/athletehistory/*",
+        "*://www.parkrun.us/*/results/athletehistory/*",
+        "*://www.parkrun.sg/*/results/athletehistory/*"
+    ],
     "js": [
         "js/lib/third-party/jquery-3.3.1.js",
         "js/content-scripts/content-script-athleteeventhistory.js"
