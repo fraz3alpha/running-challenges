@@ -50,6 +50,17 @@ function generate_challenge_table() {
 
 }
 
+function add_table_break_row(table, title) {
+    var tbody = $('<tbody/>')
+    var gap_row = $('<tr/>')
+    gap_row.append($('<th/>').attr('colspan', 6).append('<span>&nbsp;</span>'))
+    tbody.append(gap_row)
+    var main_row = $('<tr/>')
+    main_row.append($('<th/>').attr('colspan', 6).append('<span><b>'+title+'</b></span>'))
+    tbody.append(main_row)
+    table.append(tbody)
+}
+
 function add_challenges_to_table(table, data) {
 
    popular_challenges = ['alphabeteer', 'tourist', 'pirates']

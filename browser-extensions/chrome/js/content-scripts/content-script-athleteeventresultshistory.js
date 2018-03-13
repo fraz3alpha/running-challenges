@@ -213,6 +213,7 @@ function get_volunteer_data() {
                  var volunteer_data = generate_volunteer_challenge_data(completed_volunteer_roles)
                  console.log(volunteer_data)
                  console.log("Adding volunteer challenge data to table")
+                 add_table_break_row(challenges_table, "Volunteer Challenges")
                  add_challenges_to_table(challenges_table, volunteer_data)
                  console.log("Volunteer data added")
 
