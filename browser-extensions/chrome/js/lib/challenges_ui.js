@@ -50,54 +50,36 @@ function generate_challenge_table() {
 
 }
 
-function add_table_break_row(table, title) {
+function add_table_break_row(table, title, help) {
     var tbody = $('<tbody/>')
     var gap_row = $('<tr/>')
     gap_row.append($('<th/>').attr('colspan', 6).append('<span>&nbsp;</span>'))
     tbody.append(gap_row)
     var main_row = $('<tr/>')
-    main_row.append($('<th/>').attr('colspan', 6).append('<span><b>'+title+'</b></span>'))
+    var tooltip = ''
+    if (help !== undefined) {
+        tooltip = '<span style="font-size: 10px; vertical-align: middle; cursor: default" title="'+help+'">[?]</span>'
+    }
+    main_row.append($('<th/>').attr('colspan', 6).append('<span><b>'+title+'</b></span> '+tooltip))
     tbody.append(main_row)
     table.append(tbody)
 }
 
 function add_challenges_to_table(table, data) {
 
-   popular_challenges = ['alphabeteer', 'tourist', 'pirates']
-
-   visible_challenges = []
-   hidden_challenges = []
-
-   // Sort the data into different sections.
-   // Those which are complete will be shown
-   // Those that are popular, will be shown
-   // Everything else comes under a 'more' link
-
-   for (var challenge in data) {
-       visible_challenges.push(challenge)
-       // if (popular_challenges.indexOf(challenge) != -1 || data[challenge].complete) {
-       //     visible_challenges.push(challenge)
-       // } else {
-       //     hidden_challenges.push(challenge)
-       // }
-   }
-
-   console.log('visible_challenges: '+visible_challenges)
-   console.log('hidden_challenges: '+hidden_challenges)
-
    var ui_challenge_generation_duration = 0
 
-   visible_challenges.forEach(function (challenge_name) {
-       console.log("Generating table rows for " + challenge_name)
+   data.forEach(function (challenge) {
+       // console.log("Generating table rows for " + challenge.shortname)
        var start_time = new Date()
-       if (challenge_name == 'regionnaire') {
-           generate_regionnaire_table_entry(data[challenge_name], table)
+       if (challenge.shortname == 'regionnaire') {
+           generate_regionnaire_table_entry(challenge, table)
        } else {
-           generate_standard_table_entry(data[challenge_name], table)
+           generate_standard_table_entry(challenge, table)
        }
        var duration = new Date() - start_time
        ui_challenge_generation_duration += duration
-       console.log("Completed generating table rows for " + challenge_name + " in " + duration + "ms")
+       // console.log("Completed generating table rows for " + challenge.shortname + " in " + duration + "ms")
 
    });
 
@@ -149,7 +131,12 @@ function get_challenge_header_row(challenge) {
     main_row.append($('<th></th>').append(anchor_tag))
 
     // main_row.append($('<th></th>').text(challenge.shortname))
-    main_row.append($('<th></th>').text(challenge.name))
+    var help = ''
+    if (challenge.help !== undefined) {
+        help = '<span style="font-size: 10px; vertical-align: middle; cursor: default" title="'+challenge.help+'">[?]</span>'
+    }
+
+    main_row.append($('<th></th>').append(challenge.name + ' ' + help))
     main_row.append($('<th></th>'))
     main_row.append($('<th></th>').text(challenge.completed_on))
     if (challenge.summary_text !== undefined) {

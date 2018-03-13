@@ -213,7 +213,7 @@ function get_volunteer_data() {
                  var volunteer_data = generate_volunteer_challenge_data(completed_volunteer_roles)
                  console.log(volunteer_data)
                  console.log("Adding volunteer challenge data to table")
-                 add_table_break_row(challenges_table, "Volunteer Challenges")
+                 add_table_break_row(challenges_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
                  add_challenges_to_table(challenges_table, volunteer_data)
                  console.log("Volunteer data added")
 
@@ -258,12 +258,12 @@ function display_data(challenge_settings) {
     add_challenges_to_table(challenges_table, challenge_data)
 
     // Add the badges to the list
-    Object.keys(challenge_data).forEach(function (challenge) {
-        if (challenge_data[challenge].complete == true) {
+    challenge_data.forEach(function (challenge) {
+        if (challenge.complete == true) {
             badges.push({
-                "name": challenge_data[challenge].name,
-                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge_data[challenge].badge_icon+".png"),
-                "link": "#"+challenge
+                "name": challenge.name,
+                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"),
+                "link": "#"+challenge.shortname
             })
         }
     })
