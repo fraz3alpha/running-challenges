@@ -258,12 +258,12 @@ function display_data(challenge_settings) {
     add_challenges_to_table(challenges_table, challenge_data)
 
     // Add the badges to the list
-    Object.keys(challenge_data).forEach(function (challenge) {
-        if (challenge_data[challenge].complete == true) {
+    challenge_data.forEach(function (challenge) {
+        if (challenge.complete == true) {
             badges.push({
-                "name": challenge_data[challenge].name,
-                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge_data[challenge].badge_icon+".png"),
-                "link": "#"+challenge
+                "name": challenge.name,
+                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"),
+                "link": "#"+challenge.shortname
             })
         }
     })

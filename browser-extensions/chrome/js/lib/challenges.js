@@ -5,29 +5,25 @@
  */
 
 function challenge_generate_data(results) {
-    return {
-        "tourist": challenge_tourist(results, "tourist", "Tourist", 20),
-        "cowell-club": challenge_tourist(results, "cowell-club", "Cowell Club", 100),
-        "alphabeteer": challenge_start_letters(results, "alphabeteer", "Alphabeteer", "abcdefghijklmnopqrstuvwyz"),
-        // "fiver": challenge_single_parkrun_count(results, "fiver", "Fiver", 5),
-        // "tenner": challenge_single_parkrun_count(results, "tenner", "Tenner", 10),
-        "single-ton": challenge_single_parkrun_count(results, "single-ton", "Single-Ton", 100),
-        "double-ton": challenge_single_parkrun_count(results, "double-ton", "Double-Ton", 200),
-        "stopwatch-bingo": challenge_stopwatch_bingo(results),
-        "pirates": challenge_start_letters(results, "pirates", "Pirates!", "cccccccr"),
-        "stayin-alive": challenge_start_letters(results, "stayin-alive", "Stayin' Alive", "bbbggg"),
-        // "quick-brown-fox": challenge_start_letters(results, "quick-brown-fox", "The Quick Brown Fox", "thequickbrownfoxjumpsoverthelazydog"),
-        "compass-club": challenge_words(results, "compass-club", "Compass Club", ["north","south","east","west"]),
-        "full-ponty": challenge_parkruns(results, "full-ponty", "The Full Ponty", ["Pontefract","Pontypool","Pontypridd"]),
-        "pilgrimage": challenge_parkruns(results, "pilgrimage", "Bushy Pilgrimage", ["Bushy Park"]),
-        "nyd-double": challenge_nyd_double(results),
-        "groundhog-day": challenge_groundhog_day(results),
-        "regionnaire": challenge_by_region(results),
-        "obsessive-bronze": challenge_in_a_year(results, "obsessive-bronze", "Bronze Level Obsessive", 30),
-        "obsessive-silver": challenge_in_a_year(results, "obsessive-silver", "Silver Level Obsessive", 40),
-        "obsessive-gold": challenge_in_a_year(results, "obsessive-gold", "Gold Level Obsessive", 50),
-
-    }
+    return [
+        challenge_tourist(results, {"shortname": "tourist", "name": "Tourist", "data": 20, "help": "Run at 20+ different parkrun locations anywhere in the world."}),
+        challenge_tourist(results, {"shortname": "cowell-club", "name": "Cowell Club", "data": 100, "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it."}),
+        challenge_start_letters(results, {"shortname": "alphabeteer", "name": "Alphabeteer", "data": "abcdefghijklmnopqrstuvwyz", "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."}),
+        challenge_single_parkrun_count(results, {"shortname": "single-ton", "name": "Single-Ton", "data": 100, "help": "Run 100+ parkruns at the same location."}),
+        challenge_single_parkrun_count(results, {"shortname": "double-ton", "name": "Double-Ton", "data": 200, "help": "Run 200+ parkruns at the same location."}),
+        challenge_stopwatch_bingo(results, {"shortname": "stopwatch-bingo", "name": "Stopwatch Bingo", "help": " Collect all the seconds from 00 to 59 in your finishing times."}), //{}, ,
+        challenge_start_letters(results, {"shortname": "pirates", "name": "Pirates!", "data": "cccccccr", "help": "Run seven Cs and an R (say it out loud)."}),
+        challenge_start_letters(results, {"shortname": "stayin-alive", "name": "Stayin' Alive", "data": "bbbggg", "help": "Run three Bees and three Gees."}),
+        challenge_words(results, {"shortname": "compass-club", "name": "Compass Club", "data": ["north","south","east","west"], "help": " Run at a parkrun named after each of the four compass points."}),
+        challenge_parkruns(results, {"shortname": "full-ponty", "name": "The Full Ponty", "data": ["Pontefract","Pontypool","Pontypridd"], "help": "Run at all the parkruns named ponty... or ponte..."}),
+        challenge_parkruns(results, {"shortname": "pilgrimage", "name": "Bushy Pilgrimage", "data": ["Bushy Park"], "help": "Run at Bushy parkrun, where it all began."}),
+        challenge_nyd_double(results, {"shortname": "nyd-double", "name":  "NYD Double", "help": "Run two parkruns on one New Year's Day."}), // ,
+        challenge_groundhog_day(results, {"shortname": "groundhog-day", "name": "Groundhog Day", "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}), // ",
+        challenge_by_region(results, {"shortname": "regionnaire", "name": "Regionnaire", "help": "Run all the parkrun locations in a geographical region."}), //,
+        challenge_in_a_year(results, {"shortname": "obsessive-bronze", "name": "Bronze Level Obsessive", "data": 30, "help": " Run 30+ parkruns in one calendar year."}),
+        challenge_in_a_year(results, {"shortname": "obsessive-silver", "name": "Silver Level Obsessive", "data": 40, "help": " Run 40+ parkruns in one calendar year."}),
+        challenge_in_a_year(results, {"shortname": "obsessive-gold", "name": "Gold Level Obsessive", "data": 50, "help": " Run 50+ parkruns in one calendar year."})
+    ]
 }
 
 function generate_volunteer_challenge_data(volunteer_data) {
@@ -57,49 +53,51 @@ function generate_volunteer_challenge_data(volunteer_data) {
         {"shortname": "run-report-writer", "name": "Run Report Writer"}
     ]
 
-    var data = {}
+    var data = []
 
     // Populate the results with the above
     volunteer_roles.forEach(function (role) {
-        data[role.shortname] = create_data_object(role.shortname, role.name, "volunteer")
-        data[role.shortname].summary_text = ""
-        data[role.shortname].subparts_completed_count = 0
+        var this_role_data = create_data_object(role, "volunteer")
+        this_role_data.summary_text = ""
+        this_role_data.subparts_completed_count = 0
         if (role["matching-roles"] !== undefined){
             for (var i=0; i<role["matching-roles"].length; i++) {
                 if (role["matching-roles"][i] in volunteer_data) {
-                    data[role.shortname].subparts_completed_count += volunteer_data[role["matching-roles"][i]]
+                    this_role_data.subparts_completed_count += volunteer_data[role["matching-roles"][i]]
                 }
             }
         }
         if (role.name in volunteer_data) {
-            console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
-            data[role.shortname].subparts_completed_count = volunteer_data[role.name]
+            // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+            this_role_data.subparts_completed_count = volunteer_data[role.name]
         }
-        if (data[role.shortname].subparts_completed_count > 0) {
-            data[role.shortname].summary_text = "x"+data[role.shortname].subparts_completed_count
-            data[role.shortname].complete = true
+        if (this_role_data.subparts_completed_count > 0) {
+            this_role_data.summary_text = "x"+this_role_data.subparts_completed_count
+            this_role_data.complete = true
         } else {
-            data[role.shortname].summary_text = '-'
+            this_role_data.summary_text = '-'
         }
 
-        update_data_object(data[role.shortname])
+        update_data_object(this_role_data)
+        data.push(this_role_data)
     })
 
     return data
 }
 
 
-function create_data_object(shortname, longname, category) {
+function create_data_object(params, category) {
     var o = {
-        "shortname": shortname,
-        "name": longname,
+        "shortname": params.shortname,
+        "name": params.name,
+        "help": params.help,
         "start_time": new Date(),
         "complete": false,
         "completed_on": null,
         "subparts": [],
         "subparts_completed_count": 0,
         "subparts_detail": [],
-        "badge_icon": category+"-"+shortname
+        "badge_icon": category+"-"+params.shortname
     }
     return o
 }
@@ -129,9 +127,11 @@ function group_results_by_event(results) {
 }
 
 
-function challenge_start_letters(results, shortname, longname, letters) {
+function challenge_start_letters(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var letters = params.data
+
+    var o = create_data_object(params, "runner")
 
     // Add all the subparts to the list
     for (i=0; i<letters.length; i++) {
@@ -189,9 +189,11 @@ function challenge_start_letters(results, shortname, longname, letters) {
     return update_data_object(o)
 }
 
-function challenge_words(results, shortname, longname, word_array) {
+function challenge_words(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var word_array = params.data
+
+    var o = create_data_object(params, "runner")
 
     // Add all the subparts to the list
     word_array.forEach(function (word) {
@@ -246,9 +248,11 @@ function challenge_words(results, shortname, longname, word_array) {
     return update_data_object(o)
 }
 
-function challenge_parkruns(results, shortname, longname, parkrun_array) {
+function challenge_parkruns(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var parkrun_array = params.data
+
+    var o = create_data_object(params, "runner")
 
     // Add all the subparts to the list
     parkrun_array.forEach(function (parkrun_name) {
@@ -293,9 +297,11 @@ function challenge_parkruns(results, shortname, longname, parkrun_array) {
 }
 
 // Complete x different parkruns (20 and 100 are standard)
-function challenge_tourist(results, shortname, longname, count) {
+function challenge_tourist(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var count = params.data
+
+    var o = create_data_object(params, "runner")
 
     distinct_parkruns_completed = {}
 
@@ -330,9 +336,9 @@ function challenge_tourist(results, shortname, longname, count) {
     return update_data_object(o)
 }
 
-function challenge_stopwatch_bingo(results) {
+function challenge_stopwatch_bingo(results, params) {
 
-    var o = create_data_object("stopwatch-bingo", "Stopwatch Bingo", "runner")
+    var o = create_data_object(params, "runner")
 
     // Add all the subparts to the list
     for (i=0; i<60; i++) {
@@ -377,9 +383,11 @@ function challenge_stopwatch_bingo(results) {
 }
 
 // Complete 100 parkruns at the same venue
-function challenge_single_parkrun_count(results, shortname, longname, count) {
+function challenge_single_parkrun_count(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var count = params.data
+
+    var o = create_data_object(params, "runner")
     o.subparts = ["1"]
 
     parkruns_completed = {}
@@ -434,9 +442,9 @@ function challenge_single_parkrun_count(results, shortname, longname, count) {
     return update_data_object(o)
 }
 
-function challenge_nyd_double(results) {
+function challenge_nyd_double(results, params) {
 
-    var o = create_data_object("nyd-double", "NYD Double", "runner")
+    var o = create_data_object(params, "runner")
     o.subparts = ["1"]
     o.summary_text = "0"
 
@@ -483,9 +491,9 @@ function challenge_nyd_double(results) {
     return update_data_object(o)
 }
 
-function challenge_groundhog_day(results) {
+function challenge_groundhog_day(results, params) {
 
-    var o = create_data_object("groundhog-day", "Groundhog Day", "runner")
+    var o = create_data_object(params, "runner")
     o.subparts = ["1"]
     o.summary_text = "0"
 
@@ -530,9 +538,11 @@ function challenge_groundhog_day(results) {
     return update_data_object(o)
 }
 
-function challenge_in_a_year(results, shortname, longname, count) {
+function challenge_in_a_year(results, params) {
 
-    var o = create_data_object(shortname, longname, "runner")
+    var count = params.data
+
+    var o = create_data_object(params, "runner")
     o.subparts = ["1"]
     o.summary_text = "0"
 
@@ -654,8 +664,8 @@ function generate_regionnaire_detail_info(region, depth) {
     return details
 }
 
-function challenge_by_region(results) {
-    var o = create_data_object("regionnaire", "Regionnaire", "runner")
+function challenge_by_region(results, params) {
+    var o = create_data_object(params, "runner")
     o.summary_text = ""
 
     // Do we have geo data available?
