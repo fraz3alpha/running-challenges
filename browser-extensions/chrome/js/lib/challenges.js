@@ -78,6 +78,8 @@ function generate_volunteer_challenge_data(volunteer_data) {
         if (data[role.shortname].subparts_completed_count > 0) {
             data[role.shortname].summary_text = "x"+data[role.shortname].subparts_completed_count
             data[role.shortname].complete = true
+        } else {
+            data[role.shortname].summary_text = '-'
         }
 
         update_data_object(data[role.shortname])
