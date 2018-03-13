@@ -213,7 +213,7 @@ function get_volunteer_data() {
                  var volunteer_data = generate_volunteer_challenge_data(completed_volunteer_roles)
                  console.log(volunteer_data)
                  console.log("Adding volunteer challenge data to table")
-                 add_table_break_row(challenges_table, "Volunteer Challenges")
+                 add_table_break_row(challenges_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
                  add_challenges_to_table(challenges_table, volunteer_data)
                  console.log("Volunteer data added")
 

@@ -50,13 +50,17 @@ function generate_challenge_table() {
 
 }
 
-function add_table_break_row(table, title) {
+function add_table_break_row(table, title, help) {
     var tbody = $('<tbody/>')
     var gap_row = $('<tr/>')
     gap_row.append($('<th/>').attr('colspan', 6).append('<span>&nbsp;</span>'))
     tbody.append(gap_row)
     var main_row = $('<tr/>')
-    main_row.append($('<th/>').attr('colspan', 6).append('<span><b>'+title+'</b></span>'))
+    var tooltip = ''
+    if (help !== undefined) {
+        tooltip = '<span style="font-size: 10px; vertical-align: middle; cursor: default" title="'+help+'">[?]</span>'
+    }
+    main_row.append($('<th/>').attr('colspan', 6).append('<span><b>'+title+'</b></span> '+tooltip))
     tbody.append(main_row)
     table.append(tbody)
 }
