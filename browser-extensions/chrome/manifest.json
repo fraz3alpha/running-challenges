@@ -51,6 +51,14 @@
         "js/content-scripts/content-script-athleteresultshistory.js"
     ],
     "run_at": "document_end"
+  },
+  {
+    "matches": ["*://www.parkrun.org.uk/*/results/athletehistory/*"],
+    "js": [
+        "js/lib/third-party/jquery-3.3.1.js",
+        "js/content-scripts/content-script-athleteeventhistory.js"
+    ],
+    "run_at": "document_end"
   }
   ],
   "web_accessible_resources": [

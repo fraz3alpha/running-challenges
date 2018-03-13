@@ -9,7 +9,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         if (items.athlete_number == '') {
             chrome.runtime.openOptionsPage();
         } else {
-            results_url = "https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
             chrome.tabs.create({ url: results_url });
         }
 
