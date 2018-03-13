@@ -25,37 +25,44 @@ function get_table(id, caption) {
     })
 }
 
-function generate_challenge_badges(data) {
-    var badge_div = $('<div></div>')
+function generate_challenge_badges_element() {
+    var badge_div = $('<div></div>').attr("id","badges")
     var badge_p = $('<p></p>')
+    badge_div.append(badge_p)
+    return badge_div
+}
+
+function add_challenge_badges(div, data) {
+
+    badge_p = $("p", div)
+    badge_p.empty()
+    console.log(badge_p)
 
     var index_counter = 1
-    Object.keys(data).forEach(function (challenge) {
-        if (data[challenge].complete == true) {
-            var challenge_link = $('<a></a>')
-            challenge_link.attr('href', '#'+challenge)
+    data.forEach(function (challenge) {
+        var challenge_link = $('<a></a>')
+        challenge_link.attr('href', data.link)
 
-            var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-            img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+data[challenge].badge_icon+".png"));
-            img.attr('alt',data[challenge].name)
-            img.attr('title',data[challenge].name)
-            img.attr('width',64)
-            img.attr('height',64)
+        var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+        img.attr('src', challenge.icon);
+        img.attr('alt',challenge.name)
+        img.attr('title',challenge.name)
+        img.attr('width',64)
+        img.attr('height',64)
 
-            challenge_link.append(img)
+        challenge_link.append(img)
 
-            badge_p.append(challenge_link)
+        badge_p.append(challenge_link)
 
-            if (index_counter > 0 && index_counter % 8 == 0) {
-                badge_p.append($('<br/>'))
-            }
-            index_counter += 1
+        if (index_counter > 0 && index_counter % 8 == 0) {
+            badge_p.append($('<br/>'))
         }
+        index_counter += 1
     })
 
-    badge_div.append(badge_p)
-
-    return badge_div
+    // badge_div.append(badge_p)
+    //
+    // get_badge_location().after(challenge_badges)
 }
 
 function get_badge_location() {
@@ -67,19 +74,19 @@ function get_badge_location() {
 // console.log(get_table('results'))
 // console.log(get_table('results', 'All Results'))
 
+// Generate the table structure, and add it to the page
+var challenges_table = generate_challenge_table()
+get_table('results', 'All Results').before(challenges_table)
+
+var badges_div = generate_challenge_badges_element()
+get_badge_location().after(badges_div)
+
+// Of the format {"name": something, "link": something, "icon": something}
+var badges = []
+
 parkruns_completed = []
 
-// Find all the tables with an id of 'results'
-$("table[id=results]").filter(function(index) {
-    // Get the captions for these tables
-    table_captions = $("caption", this)
-    // Skip anything without exactly one caption
-    if (table_captions.length !== 1) {
-        return false
-    }
-    // Only include this table if the caption is for the All Results table
-    return table_captions[0].innerText == "All Results"
-}).each(function(results_table) {
+get_table("results", "All Results").each(function(results_table) {
     // Gather the data for this table
 
     // Find all the table body rows
@@ -153,20 +160,117 @@ chrome.runtime.sendMessage({data: "geo"}, function(response) {
 
 });
 
+function get_athlete_id() {
+    // Find the Athlete ID by looking on the page for the link which contains the
+    // text "View stats for all parkruns by this athlete" to get '<a href="/athleteresultshistory?athleteNumber=1386351"></a>
+    var athlete_id = null
+    $("a:contains('View stats for all parkruns by this athlete')").each(function (i) {
+        athlete_id = $(this).attr('href').split("=")[1]
+    })
+
+    return athlete_id
+
+}
+
+function get_volunteer_data() {
+
+    var athlete_id = get_athlete_id()
+    console.log('Athlete ID is '+athlete_id)
+
+    if (athlete_id != null) {
+        console.log("Fetching volunteer data")
+        $.ajax({
+             url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+athlete_id,
+             dataType: 'html',
+             success: function (result) {
+                console.log("Received volunteer info")
+
+                 // Find all the results tables in this page
+                 var completed_volunteer_roles = {}
+                 $("table[id=results]",result).each(function (results_table_index) {
+                     // Try and find the table that also has a <h1> containing
+                     // "Volunteer Summary"
+                     var results_table = $(this)
+                     parent = $(this).parent()
+                     $("h1:contains('Volunteer Summary')", parent).each(function (index) {
+                         completed_volunteer_roles = {}
+                         $("tbody>tr", results_table).each(function (role_index) {
+                             table_cells = $("td", this)
+                             volunteer_role = table_cells[1].innerText
+                             volunteer_role_quantity = table_cells[2].innerText
+
+                             if (!(volunteer_role in completed_volunteer_roles)) {
+                                 completed_volunteer_roles[volunteer_role] = 0
+                             }
+                             completed_volunteer_roles[volunteer_role] += parseInt(volunteer_role_quantity)
+                         })
+                         console.log(completed_volunteer_roles)
+                     })
+
+                 })
+
+                 console.log("Generating volunteer challenge data")
+                 var volunteer_data = generate_volunteer_challenge_data(completed_volunteer_roles)
+                 console.log(volunteer_data)
+                 console.log("Adding volunteer challenge data to table")
+                 add_table_break_row(challenges_table, "Volunteer Challenges")
+                 add_challenges_to_table(challenges_table, volunteer_data)
+                 console.log("Volunteer data added")
+
+                 // Add the badges to the list
+                 Object.keys(volunteer_data).forEach(function (challenge) {
+                     if (volunteer_data[challenge].complete == true) {
+                         var badge_info = {
+                             "name": volunteer_data[challenge].name,
+                             "icon": chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+".png"),
+                             "link": "#"+challenge
+                         }
+                         if (volunteer_data[challenge].subparts_completed_count >= 25){
+                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
+                             badge_info.name += " (25+ times)"
+                         } else if (volunteer_data[challenge].subparts_completed_count >= 10){
+                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-2-stars.png")
+                             badge_info.name += " (10+ times)"
+                         } else if (volunteer_data[challenge].subparts_completed_count >= 5){
+                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-1-star.png")
+                             badge_info.name += " (5+ times)"
+                         }
+                         badges.push(badge_info)
+                     }
+                 })
+                 add_challenge_badges(badges_div, badges)
+
+             },
+         });
+     }
+}
+
 function display_data(challenge_settings) {
 
     console.log(challenge_settings)
+
+    get_volunteer_data()
 
     // Construct all the challenges
     challenge_data = challenge_generate_data(challenge_settings)
 
     console.log(challenge_data)
+    add_challenges_to_table(challenges_table, challenge_data)
 
-    var challenge_table = generate_challenge_table(challenge_data)
-    get_table('results', 'All Results').before(challenge_table)
+    // Add the badges to the list
+    Object.keys(challenge_data).forEach(function (challenge) {
+        if (challenge_data[challenge].complete == true) {
+            badges.push({
+                "name": challenge_data[challenge].name,
+                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge_data[challenge].badge_icon+".png"),
+                "link": "#"+challenge
+            })
+        }
+    })
+    add_challenge_badges(badges_div, badges)
 
-    var challenge_badges = generate_challenge_badges(challenge_data)
-    get_badge_location().after(challenge_badges)
+    // var challenge_badges = generate_challenge_badges(challenge_data)
+    // get_badge_location().after(challenge_badges)
 
-    console.log(challenge_badges)
+    console.log(badges)
 }

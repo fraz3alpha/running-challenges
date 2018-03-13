@@ -30,6 +30,65 @@ function challenge_generate_data(results) {
     }
 }
 
+function generate_volunteer_challenge_data(volunteer_data) {
+
+    var volunteer_roles = [
+        {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
+        {"shortname": "comms-person", "name": "Communications Person"},
+        {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+        {"shortname": "setup", "name": "Pre-event Setup"},
+        {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+        {"shortname": "sign-language", "name": "Sign Language Support"},
+        {"shortname": "marshal", "name": "Marshal"},
+        {"shortname": "tail-walker", "name": "Tail Walker"},
+        {"shortname": "run-director", "name": "Run Director"},
+        {"shortname": "lead-bike", "name": "Lead Bike"},
+        {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
+        {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
+        {"shortname": "photographer", "name": "Photographer"},
+        {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
+        {"shortname": "funnel-manager", "name": "Funnel Manager"},
+        {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+        {"shortname": "manual-entry", "name": "Number Checker"},
+        {"shortname": "close-down", "name": "Post-event Close Down"},
+        {"shortname": "results-processing", "name": "Results Processor"},
+        {"shortname": "token-sorting", "name": "Token Sorting"},
+        {"shortname": "run-report-writer", "name": "Run Report Writer"}
+    ]
+
+    var data = {}
+
+    // Populate the results with the above
+    volunteer_roles.forEach(function (role) {
+        data[role.shortname] = create_data_object(role.shortname, role.name, "volunteer")
+        data[role.shortname].summary_text = ""
+        data[role.shortname].subparts_completed_count = 0
+        if (role["matching-roles"] !== undefined){
+            for (var i=0; i<role["matching-roles"].length; i++) {
+                if (role["matching-roles"][i] in volunteer_data) {
+                    data[role.shortname].subparts_completed_count += volunteer_data[role["matching-roles"][i]]
+                }
+            }
+        }
+        if (role.name in volunteer_data) {
+            console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+            data[role.shortname].subparts_completed_count = volunteer_data[role.name]
+        }
+        if (data[role.shortname].subparts_completed_count > 0) {
+            data[role.shortname].summary_text = "x"+data[role.shortname].subparts_completed_count
+            data[role.shortname].complete = true
+        } else {
+            data[role.shortname].summary_text = '-'
+        }
+
+        update_data_object(data[role.shortname])
+    })
+
+    return data
+}
+
+
 function create_data_object(shortname, longname, category) {
     var o = {
         "shortname": shortname,
@@ -605,16 +664,16 @@ function challenge_by_region(results) {
         return null
     }
 
-    console.log(geo_data)
-    console.log(geo_data.data)
-    console.log(geo_data.data.regions)
+    // console.log(geo_data)
+    // console.log(geo_data.data)
+    // console.log(geo_data.data.regions)
 
     regions = geo_data.data.regions
     // Sort all of the completed parkruns by event so that we can pick out which
     // has been run, and when that was
     events_completed_map = group_results_by_event(results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
-    console.log(sorted_region_heirachy)
+    // console.log(sorted_region_heirachy)
 
     o.regions = sorted_region_heirachy
     o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
