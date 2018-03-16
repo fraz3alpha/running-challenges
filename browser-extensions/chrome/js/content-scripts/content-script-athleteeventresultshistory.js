@@ -33,20 +33,45 @@ function generate_challenge_badges_element() {
 }
 
 function generate_flags_element() {
-    var size = 64
+    // var size = 64
     var flags_div = $('<div></div>').attr("id","flags")
     var flags_p = $('<p></p>')
-    flags_p.append(get_flag_icon({
-        "flag_icon": "flag-uk"
-    }, size, size))
-    flags_p.append(get_flag_icon({
-        "flag_icon": "flag-ca"
-    }, size, size))
-    flags_p.append(get_flag_icon({
-        "flag_icon": "flag-nz"
-    }, size, size))
+    // flags_p.append(get_flag_icon({
+    //     "flag_icon": "flag-uk"
+    // }, size, size))
+    // flags_p.append(get_flag_icon({
+    //     "flag_icon": "flag-ca"
+    // }, size, size))
+    // flags_p.append(get_flag_icon({
+    //     "flag_icon": "flag-nz"
+    // }, size, size))
     flags_div.append(flags_p)
     return flags_div
+}
+
+function add_global_tourism_flags(div, data) {
+
+    flags_p = $("p", div)
+    flags_p.empty()
+    console.log(flags_p)
+
+    var index_counter = 1
+    data.forEach(function (country) {
+        if (country.visited) {
+            var img = $('<img>');
+            img.attr('src', country.icon);
+            img.attr('alt',country.name)
+            img.attr('title',country.name)
+            img.attr('width',48)
+            img.attr('height',48)
+            flags_p.append(img)
+
+            if (index_counter > 0 && index_counter % 8 == 0) {
+                flags_p.append($('<br/>'))
+            }
+            index_counter += 1
+        }
+    })
 }
 
 function add_challenge_badges(div, data) {
@@ -271,9 +296,13 @@ function display_data(challenge_settings) {
 
     get_volunteer_data()
 
+    // Find the global tourism info (flags)
+    global_tourism_info = generate_global_tourism_data(challenge_settings)
+    console.log(global_tourism_info)
+    add_global_tourism_flags(flags_div, global_tourism_info)
+
     // Construct all the challenges
     challenge_data = challenge_generate_data(challenge_settings)
-
     console.log(challenge_data)
     add_challenges_to_table(challenges_table, challenge_data)
 

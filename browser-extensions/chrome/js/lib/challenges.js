@@ -85,6 +85,83 @@ function generate_volunteer_challenge_data(volunteer_data) {
     return data
 }
 
+function generate_global_tourism_data(results) {
+    // Generate essentially the same results as the regionnaire challenge all over again
+    console.log("generate_global_tourism_data()")
+    var global_tourism = []
+
+    // Mapping countries to flag image files
+    var flag_map = {
+        "New Zealand": "flag-nz",
+        "Australia": "flag-au",
+        "Denmark": "flag-dk",
+        "Finland": "flag-fi",
+        "France": "flag-fra",
+        "Germany": "flag-de",
+        // "Iceland"--
+        "Ireland": "flag-ie",
+        "Italy": "flag-ita",
+        // "Malaysia"--
+        "Canada": "flag-ca",
+        "Norway": "flag-no",
+        "Poland": "flag-pl",
+        "Russia": "flag-ru",
+        "Singapore": "flag-sg",
+        "South Africa": "flag-sa",
+        "Sweden": "flag-se",
+        "UK": "flag-uk",
+        "USA": "flag-usa"
+        // "Zimbabwe"--
+    }
+
+    // Do we have geo data available?
+    geo_data = results.geo_data
+    if (geo_data == null) {
+        return null
+    }
+
+    regions = geo_data.data.regions
+    events_completed_map = group_results_by_event(results)
+    sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
+
+    sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
+        // Skip the world
+        if (top_level_country.name == "World") {
+            return
+        }
+
+        var country_info = {
+            "name": top_level_country.name,
+            "visited": false,
+            "icon": chrome.extension.getURL("/images/flags/png/flag-unknown.png")
+        }
+        // Update the icon if it exists
+        if (top_level_country.name in flag_map) {
+            country_info.icon = chrome.extension.getURL("/images/flags/png/"+flag_map[top_level_country.name]+".png")
+        }
+
+        var child_events = find_region_child_events(top_level_country)
+
+        if (top_level_country.child_events_completed_count > 0) {
+            country_info["visited"] = true
+        }
+        global_tourism.push(country_info)
+    })
+    return global_tourism
+}
+
+function find_region_child_events(region, events=[]) {
+    // Add the direct child events of this region
+    region.child_events.forEach(function (region_event) {
+        events.push(region_event)
+    })
+    // Further query all the child regions of this region
+    region.child_regions.forEach(function (child_region) {
+        find_region_child_events(child_region, events)
+    })
+    return events
+}
+
 
 function create_data_object(params, category) {
     var o = {
