@@ -73,6 +73,7 @@
   "web_accessible_resources": [
       "/images/badges/*.png",
       "/images/logo/*.png",
+      "/images/flags/**/*.png",
       "/html/*.html"
   ],
   "permissions": [

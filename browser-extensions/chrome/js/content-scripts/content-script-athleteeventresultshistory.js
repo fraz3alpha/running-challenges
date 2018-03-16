@@ -32,6 +32,23 @@ function generate_challenge_badges_element() {
     return badge_div
 }
 
+function generate_flags_element() {
+    var size = 64
+    var flags_div = $('<div></div>').attr("id","flags")
+    var flags_p = $('<p></p>')
+    flags_p.append(get_flag_icon({
+        "flag_icon": "flag-uk"
+    }, size, size))
+    flags_p.append(get_flag_icon({
+        "flag_icon": "flag-ca"
+    }, size, size))
+    flags_p.append(get_flag_icon({
+        "flag_icon": "flag-nz"
+    }, size, size))
+    flags_div.append(flags_p)
+    return flags_div
+}
+
 function add_challenge_badges(div, data) {
 
     badge_p = $("p", div)
@@ -80,6 +97,9 @@ get_table('results', 'All Results').before(challenges_table)
 
 var badges_div = generate_challenge_badges_element()
 get_badge_location().after(badges_div)
+
+var flags_div = generate_flags_element()
+badges_div.after(flags_div)
 
 // Of the format {"name": something, "link": something, "icon": something}
 var badges = []

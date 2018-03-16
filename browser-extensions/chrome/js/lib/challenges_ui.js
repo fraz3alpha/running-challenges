@@ -104,6 +104,18 @@ function get_tbody_content_id(challenge) {
     return "challenge_tbody_content_"+challenge['shortname']
 }
 
+function get_flag_icon(country, height, width) {
+    var flag_img = $('<img>'); //Equivalent: $(document.createElement('img'))
+    flag_img.attr('src', chrome.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
+    // badge_img.attr('alt', challenge.name)
+    // badge_img.attr('title', challenge.name)
+    flag_img.attr('height', height)
+    flag_img.attr('width', width)
+
+    return flag_img
+}
+
+
 function get_challenge_icon(challenge, height, width) {
     var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
     badge_img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"));
