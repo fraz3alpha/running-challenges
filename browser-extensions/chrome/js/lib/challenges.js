@@ -87,7 +87,7 @@ function generate_volunteer_challenge_data(volunteer_data) {
 
 function generate_global_tourism_data(results) {
     // Generate essentially the same results as the regionnaire challenge all over again
-    console.log("generate_global_tourism_data()")
+    // console.log("generate_global_tourism_data()")
     var global_tourism = []
 
     // Mapping countries to flag image files
@@ -123,7 +123,6 @@ function generate_global_tourism_data(results) {
     regions = geo_data.data.regions
     events_completed_map = group_results_by_event(results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
-    console.log(sorted_region_heirachy)
 
     sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
         // Skip the world
@@ -185,7 +184,7 @@ function update_data_object(o) {
     o['stop_time'] = new Date()
     o['duration'] = o.stop_time - o.start_time
     o['subparts_count'] = o.subparts.length
-    console.log("Completed data for " + o.shortname + " in " + o['duration'] + "ms")
+    // console.log("Completed data for " + o.shortname + " in " + o['duration'] + "ms")
     return o
 }
 
@@ -714,7 +713,6 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
                 // Add the first completed run at this event to our list
                 region_info["child_events_completed"][event_name] = events_completed_map[event_name][0]
                 first_run_date = events_completed_map[event_name][0].date_obj
-                console.log(first_run_date)
                 if (region_info.first_ran_on == null ||
                     first_run_date < region_info.first_ran_on) {
                     region_info.first_ran_on = first_run_date

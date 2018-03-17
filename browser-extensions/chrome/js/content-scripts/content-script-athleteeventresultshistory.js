@@ -33,18 +33,8 @@ function generate_challenge_badges_element() {
 }
 
 function generate_flags_element() {
-    // var size = 64
     var flags_div = $('<div></div>').attr("id","flags")
     var flags_p = $('<p></p>')
-    // flags_p.append(get_flag_icon({
-    //     "flag_icon": "flag-uk"
-    // }, size, size))
-    // flags_p.append(get_flag_icon({
-    //     "flag_icon": "flag-ca"
-    // }, size, size))
-    // flags_p.append(get_flag_icon({
-    //     "flag_icon": "flag-nz"
-    // }, size, size))
     flags_div.append(flags_p)
     return flags_div
 }
@@ -53,7 +43,6 @@ function add_global_tourism_flags(div, data) {
 
     flags_p = $("p", div)
     flags_p.empty()
-    console.log(data)
 
     var index_counter = 1
     data.sort(function (o1,o2) {
@@ -70,7 +59,6 @@ function add_global_tourism_flags(div, data) {
         }
         return o1.first_visited - o2.first_visited
     }).forEach(function (country) {
-        console.log(country)
         if (country.visited) {
             // Find out when it was first run and make a nice string
             var first_run = country.first_visited.toISOString().split("T")[0]
@@ -94,7 +82,6 @@ function add_challenge_badges(div, data) {
 
     badge_p = $("p", div)
     badge_p.empty()
-    console.log(badge_p)
 
     var index_counter = 1
     data.forEach(function (challenge) {
@@ -208,7 +195,7 @@ var timeout_for_geo_data_ms = 5000
 var timeoutProtect = setTimeout(function() {
   // Clear the local timer variable, indicating the timeout has been triggered.
   timeoutProtect = null;
-  console.log("timer timed out")
+  console.log("Timed out receiving geo data")
   // Display the data without geo data
   display_data(challenge_settings)
 
@@ -217,14 +204,14 @@ var timeoutProtect = setTimeout(function() {
 chrome.runtime.sendMessage({data: "geo"}, function(response) {
     // Proceed only if the timeout handler has not yet fired.
     if (timeoutProtect) {
-      console.log("timer still running when geo data came back")
+      // console.log("timer still running when geo data came back")
       // Clear the scheduled timeout handler
       clearTimeout(timeoutProtect);
       // Display the data with real geo data
       challenge_settings.geo_data = response.geo
       display_data(challenge_settings)
   } else {
-      console.log("geo data came after timer timed out")
+      // console.log("geo data came after timer timed out")
   }
 
 });
@@ -244,15 +231,15 @@ function get_athlete_id() {
 function get_volunteer_data() {
 
     var athlete_id = get_athlete_id()
-    console.log('Athlete ID is '+athlete_id)
+    // console.log('Athlete ID is '+athlete_id)
 
     if (athlete_id != null) {
-        console.log("Fetching volunteer data")
+        // console.log("Fetching volunteer data")
         $.ajax({
              url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+athlete_id,
              dataType: 'html',
              success: function (result) {
-                console.log("Received volunteer info")
+                // console.log("Received volunteer info")
 
                  // Find all the results tables in this page
                  var completed_volunteer_roles = {}
@@ -273,18 +260,18 @@ function get_volunteer_data() {
                              }
                              completed_volunteer_roles[volunteer_role] += parseInt(volunteer_role_quantity)
                          })
-                         console.log(completed_volunteer_roles)
+                         // console.log(completed_volunteer_roles)
                      })
 
                  })
 
-                 console.log("Generating volunteer challenge data")
+                 // console.log("Generating volunteer challenge data")
                  var volunteer_data = generate_volunteer_challenge_data(completed_volunteer_roles)
-                 console.log(volunteer_data)
-                 console.log("Adding volunteer challenge data to table")
+                 // console.log(volunteer_data)
+                 // console.log("Adding volunteer challenge data to table")
                  add_table_break_row(challenges_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
                  add_challenges_to_table(challenges_table, volunteer_data)
-                 console.log("Volunteer data added")
+                 // console.log("Volunteer data added")
 
                  // Add the badges to the list
                  Object.keys(volunteer_data).forEach(function (challenge) {
@@ -316,18 +303,18 @@ function get_volunteer_data() {
 
 function display_data(challenge_settings) {
 
-    console.log(challenge_settings)
+    // console.log(challenge_settings)
 
     get_volunteer_data()
 
     // Find the global tourism info (flags)
     global_tourism_info = generate_global_tourism_data(challenge_settings)
-    console.log(global_tourism_info)
+    // console.log(global_tourism_info)
     add_global_tourism_flags(flags_div, global_tourism_info)
 
     // Construct all the challenges
     challenge_data = challenge_generate_data(challenge_settings)
-    console.log(challenge_data)
+    // console.log(challenge_data)
     add_challenges_to_table(challenges_table, challenge_data)
 
     // Add the badges to the list
@@ -345,5 +332,5 @@ function display_data(challenge_settings) {
     // var challenge_badges = generate_challenge_badges(challenge_data)
     // get_badge_location().after(challenge_badges)
 
-    console.log(badges)
+    // console.log(badges)
 }
