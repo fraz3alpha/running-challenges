@@ -53,10 +53,24 @@ function add_global_tourism_flags(div, data) {
 
     flags_p = $("p", div)
     flags_p.empty()
-    console.log(flags_p)
+    console.log(data)
 
     var index_counter = 1
-    data.forEach(function (country) {
+    data.sort(function (o1,o2) {
+        // Equal
+        if (o1.first_visited === o2.first_visited) {
+            return 0
+        }
+        // If either are null they should go to the back
+        if (o1.first_visited === null) {
+            return 1
+        }
+        if (o2.first_visited === null) {
+            return -1
+        }
+        return o1.first_visited - o2.first_visited
+    }).forEach(function (country) {
+        console.log(country)
         if (country.visited) {
             var img = $('<img>');
             img.attr('src', country.icon);
@@ -147,10 +161,18 @@ get_table("results", "All Results").each(function(results_table) {
             parkrun_position = table_cells[3].innerText
             parkrun_time = table_cells[4].innerText
 
+            // Create a date object, useful for comparing
+            parkrun_date_obj = new Date()
+            date_parts = parkrun_date.split("/")
+            if (date_parts.length == 3) {
+                parkrun_date_obj = new Date(date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0])
+            }
+
             // Store this parkrun instance in our big data structure
             parkrun_stats = {
                 "name": parkrun_name,
                 "date": parkrun_date,
+                "date_obj": parkrun_date_obj,
                 "position": parkrun_position,
                 "time": parkrun_time
             }

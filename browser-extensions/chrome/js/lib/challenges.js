@@ -123,6 +123,7 @@ function generate_global_tourism_data(results) {
     regions = geo_data.data.regions
     events_completed_map = group_results_by_event(results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
+    console.log(sorted_region_heirachy)
 
     sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
         // Skip the world
@@ -133,6 +134,7 @@ function generate_global_tourism_data(results) {
         var country_info = {
             "name": top_level_country.name,
             "visited": false,
+            "first_visited": top_level_country.first_ran_on,
             "icon": chrome.extension.getURL("/images/flags/png/flag-unknown.png")
         }
         // Update the icon if it exists
@@ -679,7 +681,8 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
         "child_events": [],
         "child_events_total": 0,
         "child_events_completed": {},
-        "child_events_completed_count": 0
+        "child_events_completed_count": 0,
+        "first_ran_on": null
     }
 
     // child_region_info = []
@@ -691,6 +694,11 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
             region_info["child_regions"].push(child_region_parkrun_info)
             region_info["child_events_total"] += child_region_parkrun_info["child_events_total"]
             region_info["child_events_completed_count"] += child_region_parkrun_info["child_events_completed_count"]
+            if (region_info.first_ran_on == null ||
+                (child_region_parkrun_info.first_ran_on != null &&
+                    child_region_parkrun_info.first_ran_on < region_info.first_ran_on)) {
+                region_info.first_ran_on = child_region_parkrun_info.first_ran_on
+            }
             // child_region_info.push(child_region_parkrun_info)
         })
     }
@@ -705,6 +713,12 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
                 region_info["child_events_completed_count"] += 1
                 // Add the first completed run at this event to our list
                 region_info["child_events_completed"][event_name] = events_completed_map[event_name][0]
+                first_run_date = events_completed_map[event_name][0].date_obj
+                console.log(first_run_date)
+                if (region_info.first_ran_on == null ||
+                    first_run_date < region_info.first_ran_on) {
+                    region_info.first_ran_on = first_run_date
+                }
             }
         })
     }
