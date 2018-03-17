@@ -72,10 +72,12 @@ function add_global_tourism_flags(div, data) {
     }).forEach(function (country) {
         console.log(country)
         if (country.visited) {
+            // Find out when it was first run and make a nice string
+            var first_run = country.first_visited.toISOString().split("T")[0]
             var img = $('<img>');
             img.attr('src', country.icon);
             img.attr('alt',country.name)
-            img.attr('title',country.name)
+            img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
             img.attr('height',48)
             flags_p.append(img)
