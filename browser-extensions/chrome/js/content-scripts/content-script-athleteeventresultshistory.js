@@ -41,7 +41,7 @@ function add_challenge_badges(div, data) {
     var index_counter = 1
     data.forEach(function (challenge) {
         var challenge_link = $('<a></a>')
-        challenge_link.attr('href', data.link)
+        challenge_link.attr('href', challenge.link)
 
         var img = $('<img>'); //Equivalent: $(document.createElement('img'))
         img.attr('src', challenge.icon);
@@ -263,6 +263,12 @@ function display_data(challenge_settings) {
             badges.push({
                 "name": challenge.name,
                 "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"),
+                "link": "#"+challenge.shortname
+            })
+        } else if (challenge.partial_completion == true) {
+            badges.push({
+                "name": challenge.partial_completion_name,
+                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.partial_completion_badge_icon+".png"),
                 "link": "#"+challenge.shortname
             })
         }
