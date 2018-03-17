@@ -27,7 +27,7 @@
 
 function generate_challenge_table() {
 
-    console.log('Generating Challenge Table')
+    // console.log('Generating Challenge Table')
     var table = $('<table></table>')
     // Set the ID so that we can easily find it again
     // table.attr("id", "challenge-table")
@@ -83,7 +83,7 @@ function add_challenges_to_table(table, data) {
 
    });
 
-   console.log("Completed generating challenge table rows in " + ui_challenge_generation_duration + "ms")
+   // console.log("Completed generating challenge table rows in " + ui_challenge_generation_duration + "ms")
 
    return table
 }
@@ -103,6 +103,18 @@ function get_tbody_header_id(challenge) {
 function get_tbody_content_id(challenge) {
     return "challenge_tbody_content_"+challenge['shortname']
 }
+
+function get_flag_icon(country, height, width) {
+    var flag_img = $('<img>'); //Equivalent: $(document.createElement('img'))
+    flag_img.attr('src', chrome.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
+    // badge_img.attr('alt', challenge.name)
+    // badge_img.attr('title', challenge.name)
+    flag_img.attr('height', height)
+    flag_img.attr('width', width)
+
+    return flag_img
+}
+
 
 function get_challenge_icon(challenge, height, width) {
     var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
