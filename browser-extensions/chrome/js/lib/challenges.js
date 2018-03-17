@@ -7,7 +7,7 @@
 function challenge_generate_data(results) {
     return [
         challenge_tourist(results, {"shortname": "tourist", "name": "Tourist", "data": 20, "help": "Run at 20+ different parkrun locations anywhere in the world."}),
-        challenge_tourist(results, {"shortname": "cowell-club", "name": "Cowell Club", "data": 100, "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it."}),
+        challenge_tourist(results, {"shortname": "cowell-club", "name": "Cowell Club", "data": 100, "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75"}),
         challenge_start_letters(results, {"shortname": "alphabeteer", "name": "Alphabeteer", "data": "abcdefghijklmnopqrstuvwyz", "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."}),
         challenge_single_parkrun_count(results, {"shortname": "single-ton", "name": "Single-Ton", "data": 100, "help": "Run 100+ parkruns at the same location."}),
         challenge_single_parkrun_count(results, {"shortname": "double-ton", "name": "Double-Ton", "data": 200, "help": "Run 200+ parkruns at the same location."}),
@@ -331,6 +331,23 @@ function challenge_tourist(results, params) {
         }
 
     });
+
+    // Work out if it is possible to have a partial completion
+    if (params.shortname == "cowell-club" && o.complete == false) {
+        if (o.subparts_completed_count >= 75) {
+            o.partial_completion = true
+            o.partial_completion_name = "Three-Quarter Cowell"
+            o.partial_completion_badge_icon = "runner-three-quarter-cowell-club"
+        } else if (o.subparts_completed_count >= 50) {
+            o.partial_completion = true
+            o.partial_completion_name = "Half Cowell"
+            o.partial_completion_badge_icon = "runner-half-cowell-club"
+        } else if (o.subparts_completed_count >= 25) {
+            o.partial_completion = true
+            o.partial_completion_name = "Quarter Cowell"
+            o.partial_completion_badge_icon = "runner-quarter-cowell-club"
+        }
+    }
 
     // Return an object representing this challenge
     return update_data_object(o)
