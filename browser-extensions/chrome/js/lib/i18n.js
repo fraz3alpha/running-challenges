@@ -57,6 +57,40 @@ var domains = {
         // http://www.parkrun.fi/results/athleteresultshistory/?athleteNumber=4064283
         // http://www.parkrun.fi/results/athleteeventresultshistory/?athleteNumber=4064283&eventNumber=0
         // It is all in English
+    },
+    "www.parkrun.fr": {
+        // French pages
+        // http://www.parkrun.fr/boisdeboulogne/results/athletehistory/?athleteNumber=422364
+        // http://www.parkrun.fr/results/athleteresultshistory/?athleteNumber=422364
+        // http://www.parkrun.se/results/athleteeventresultshistory/?athleteNumber=3899897&eventNumber=0
+        "table_all_results": "Toutes les participations",
+        "link_view_stats_for_all_parkruns": "Consulter les stats de cet athlète tous parkruns confondus",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Consulter les stats de cet athlète tous parkruns confondus",
+        // Volunteers are translated here too
+    },
+    "www.parkrun.com.de": {
+        // German pages
+        // http://www.parkrun.com.de/georgengarten/results/athletehistory/?athleteNumber=4099000
+        // http://www.parkrun.com.de/results/athleteresultshistory/?athleteNumber=4099000
+        // http://www.parkrun.com.de/results/athleteeventresultshistory/?athleteNumber=4099000&eventNumber=0
+        "table_all_results": "Alle Ergebnisse",
+        "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
+    },
+    "www.parkrun.no": {
+        // Norweigen pages
+
+        // It's all in English
+    },
+    "www.parkrun.ru": {
+        // Russian pages
+        // http://www.parkrun.ru/bitsa/results/athletehistory/?athleteNumber=1551222
+        // http://www.parkrun.ru/results/athleteresultshistory/?athleteNumber=1551222
+        // http://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=1551222&eventNumber=0
+        // Randomly partly in English
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Показать статистику этого спортсмена по всем забегам"
+        // But annoyingly, the volunteer roles have been translated in Russian,
+        // which doesn't happen on any other site
     }
 }
 

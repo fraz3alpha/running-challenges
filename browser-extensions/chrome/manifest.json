@@ -30,7 +30,11 @@
           "*://www.parkrun.it/results/athleteeventresultshistory/*",
           "*://www.parkrun.dk/results/athleteeventresultshistory/*",
           "*://www.parkrun.se/results/athleteeventresultshistory/*",
-          "*://www.parkrun.fi/results/athleteeventresultshistory/*"
+          "*://www.parkrun.fi/results/athleteeventresultshistory/*",
+          "*://www.parkrun.fr/results/athleteeventresultshistory/*",
+          "*://www.parkrun.no/results/athleteeventresultshistory/*",
+          "*://www.parkrun.com.de/results/athleteeventresultshistory/*",
+          "*://www.parkrun.ru/results/athleteeventresultshistory/*"
       ],
       "js": [
           "js/lib/third-party/jquery-3.3.1.js",
@@ -55,7 +59,11 @@
         "*://www.parkrun.it/results/athleteresultshistory/*",
         "*://www.parkrun.dk/results/athleteresultshistory/*",
         "*://www.parkrun.se/results/athleteresultshistory/*",
-        "*://www.parkrun.fi/results/athleteresultshistory/*"
+        "*://www.parkrun.fi/results/athleteresultshistory/*",
+        "*://www.parkrun.fr/results/athleteresultshistory/*",
+        "*://www.parkrun.com.de/results/athleteresultshistory/*",
+        "*://www.parkrun.no/results/athleteresultshistory/*",
+        "*://www.parkrun.ru/results/athleteresultshistory/*"
     ],
     "js": [
         "js/lib/third-party/jquery-3.3.1.js",
@@ -78,7 +86,11 @@
         "*://www.parkrun.it/*/athletehistory/*",
         "*://www.parkrun.dk/*/athletehistory/*",
         "*://www.parkrun.se/*/athletehistory/*",
-        "*://www.parkrun.fi/*/athletehistory/*"
+        "*://www.parkrun.fi/*/athletehistory/*",
+        "*://www.parkrun.fr/*/athletehistory/*",
+        "*://www.parkrun.com.de/*/athletehistory/*",
+        "*://www.parkrun.no/*/athletehistory/*",
+        "*://www.parkrun.ru/*/athletehistory/*"
     ],
     "js": [
         "js/lib/third-party/jquery-3.3.1.js",
