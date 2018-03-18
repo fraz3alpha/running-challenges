@@ -277,7 +277,7 @@ var domains = {
             "Einweiser für Erstläufer": "First Timers Briefing",
             // "Sign Language Support": "Sign Language Support",
             "Streckenposten": "Marshal",
-            // "Tail Walker": "Tail Walker",
+            "Schlussbegleitung": "Tail Walker",
             "Veranstaltungsleiter": "Run Director",
             // "Lead Bike": "Lead Bike",
             // "Pacer (5k only)": "Pacer (5k only)",
@@ -319,7 +319,7 @@ var domains = {
             "Preparation of the race": "Pre-event Setup",
             "Инструктаж новых бегунов": "First Timers Briefing",
             // "Sign Language Support"
-            "Маршал": "Marshal"
+            "Маршал": "Marshal",
             // "Tail Walker"
             "Руководитель забега": "Run Director",
             // "Lead Bike"
@@ -372,7 +372,6 @@ function get_normalised_volunteer_role(role) {
     })
     if (mapped_role === null) {
         console.log("I18N: UNKNOWN VOLUNTEER ROLE: "+role)
-        alert(role)
     } else {
         if (role != mapped_role) {
             // console.log("I18N: mapped "+role+" to "+mapped_role)
