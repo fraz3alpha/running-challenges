@@ -7,11 +7,14 @@ function save_options() {
 
   var saved_data = {
     athlete_number: athlete_number,
+    home_parkrun_info: {}
   }
 
   // Look up extra pieces of information for this parkrun.
   if (athlete_home_parkrun in geo_data.data.events) {
       home_event_info = geo_data.data.events[athlete_home_parkrun]
+      console.log('Found info: ')
+      console.log(home_event_info)
       saved_data.home_parkrun_info = home_event_info
   }
 
@@ -35,9 +38,10 @@ function restore_options() {
   var restored_options = null
   chrome.storage.sync.get({
     athlete_number: '',
-    home_parkrun_info: null
+    home_parkrun_info: {}
   }, function(items) {
     restored_options = items
+    console.log('Loaded: '+JSON.stringify(restored_options))
     document.getElementById('athlete_number').value = items.athlete_number;
   });
 
@@ -79,7 +83,7 @@ function restore_options() {
             // }
         })
 
-        if (restored_options.home_parkrun_info !== null) {
+        if ("name" in restored_options.home_parkrun_info) {
             home_parkrun_select.val(restored_options.home_parkrun_info.name)
         }
         update_home_country()
