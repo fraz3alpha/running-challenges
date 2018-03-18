@@ -13,7 +13,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         } else {
             var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
             if ("local_url" in items.home_parkrun_info) {
-                results_url = items.home_parkrun_info.local_url+"/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
+                results_url = items.home_parkrun_info.local_url+"/"+get_localised_value("url_athleteeventresultshistory", items.home_parkrun_info.local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             }
             chrome.tabs.create({ url: results_url });
         }

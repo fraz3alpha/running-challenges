@@ -23,12 +23,12 @@ if (url != null) {
 
     var icon =  $('<img/>')
     icon.attr('src', chrome.extension.getURL("/images/logo/logo-128x128.png"))
-    icon.attr('alt', "Running Challenges")
-    icon.attr('title', "Running Challenges")
+    icon.attr('alt', get_localised_value("text_running_challenges"))
+    icon.attr('title', get_localised_value("text_running_challenges"))
     icon.attr('height', 24)
     icon.attr('width', 24)
 
     challenge_link.append(icon)
-    challenge_link.append($("<span/>").text("See Challenge Progress"))
+    challenge_link.append($("<span/>").text(get_localised_value("text_see_challenge_progress")))
     get_challenge_link_location().after($('<div/>').append($('<p/>').append(challenge_link)))
 }
