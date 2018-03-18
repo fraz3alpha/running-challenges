@@ -50,6 +50,13 @@ var domains = {
         "table_all_results": "Alla resultat",
         "link_view_stats_for_all_parkruns": "Se statistik för alla parkruns av denna löpare",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Se statistik för alla parkruns av denna löpare",
+    },
+    "www.parkrun.fi": {
+        // Finnish pages
+        // http://www.parkrun.fi/tampere/results/athletehistory/?athleteNumber=4064283
+        // http://www.parkrun.fi/results/athleteresultshistory/?athleteNumber=4064283
+        // http://www.parkrun.fi/results/athleteeventresultshistory/?athleteNumber=4064283&eventNumber=0
+        // It is all in English
     }
 }
 
