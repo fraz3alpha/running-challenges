@@ -5,8 +5,16 @@
 
 <h4>General Options</h4>
 <p>
-<i>Add your athlete number to make the extension icon link directly to your profile page.</i><br/>
+<i>Add your athlete number to make the extension icon link directly to your profile page. Set your home parkrun to make the link point to your local parkrun website.</i><br/>
 Athlete Number: <b>A</b><input type="textbox" id="athlete_number" value="">
+</p>
+<p>
+Home parkrun: <span id="athlete_home_parkrun_div">
+<select id="athlete_home_parkrun">
+    <option value="Not Set">Not Set</option>
+</select>
+</span><br/>
+Home country: <span id="athlete_home_country_div">loading...</span>
 </p>
 <div id="status"></div>
 <button id="save">Save</button>
@@ -15,6 +23,7 @@ Athlete Number: <b>A</b><input type="textbox" id="athlete_number" value="">
 <h4>Geo Cache Info</h4>
 Last updated: <span id='cached_geo_updated'>unknown</span><br/>
 Known Events: <span id='cached_geo_events'>unknown</span><br/>
+Known Countries: <span id='cached_geo_countries'>unknown</span><br/>
 Known Regions: <span id='cached_geo_regions'>unknown</span><br/>
 Size (bytes): <span id='cached_geo_bytes'>unknown</span><br/>
 </p>
@@ -30,6 +39,7 @@ Size (bytes): <span id='cached_geo_bytes'>unknown</span><br/>
 
 <div id="debug"></div>
 
+<script src="/js/lib/third-party/jquery-3.3.1.js"></script>
 <script src="/js/options.js"></script>
 </body>
 </html>
