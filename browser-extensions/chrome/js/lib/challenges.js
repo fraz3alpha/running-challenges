@@ -527,9 +527,11 @@ function challenge_single_parkrun_count(results, params) {
             }
         })
     } else {
-        // If it isn't complete, give the biggest one so far as detail info
-        max_parkrun.info = max_parkrun.count
-        o.subparts_detail.push(max_parkrun)
+        if (max_parkrun !== null) {
+            // If it isn't complete, give the biggest one so far as detail info
+            max_parkrun.info = max_parkrun.count
+            o.subparts_detail.push(max_parkrun)
+        }
     }
 
 
