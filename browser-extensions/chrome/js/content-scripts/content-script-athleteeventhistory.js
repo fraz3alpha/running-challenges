@@ -6,12 +6,10 @@ function get_athlete_id() {
     // Find the Athlete ID by looking on the page for the link which contains the
     // text "View stats for all parkruns by this athlete" to get '<a href="/athleteresultshistory?athleteNumber=1386351"></a>
     var athlete_id = null
-    $("a:contains('"+get_localised_value("link_view_stats_for_all_parkruns2")+"')").each(function (i) {
+    $("a:contains('"+get_localised_value("link_view_stats_for_all_parkruns_athleteeventhistory")+"')").each(function (i) {
         athlete_id = $(this).attr('href').split("=")[1]
     })
-
     return athlete_id
-
 }
 
 var athlete_id = get_athlete_id()
