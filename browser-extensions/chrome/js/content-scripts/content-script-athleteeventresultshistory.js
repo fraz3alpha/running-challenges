@@ -260,10 +260,13 @@ function get_volunteer_data() {
                              volunteer_role = table_cells[1].innerText
                              volunteer_role_quantity = table_cells[2].innerText
 
-                             if (!(volunteer_role in completed_volunteer_roles)) {
-                                 completed_volunteer_roles[volunteer_role] = 0
+                             // Try and translate from whatever language it is in
+                             normalised_volunteer_role = get_normalised_volunteer_role(volunteer_role)
+
+                             if (!(normalised_volunteer_role in completed_volunteer_roles)) {
+                                 completed_volunteer_roles[normalised_volunteer_role] = 0
                              }
-                             completed_volunteer_roles[volunteer_role] += parseInt(volunteer_role_quantity)
+                             completed_volunteer_roles[normalised_volunteer_role] += parseInt(volunteer_role_quantity)
                          })
                          // console.log(completed_volunteer_roles)
                      })
