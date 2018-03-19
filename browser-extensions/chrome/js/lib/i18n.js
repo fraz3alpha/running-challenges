@@ -31,7 +31,8 @@
 // "Results Processor"
 // "Token Sorting"
 // "Run Report Writer"
-// + Other?, Warm Up (Juniors)
+// "Other"
+// Warm Up (Juniors)
 var domains = {
     // Default english language options, good for most of the domains
     "default": {
@@ -68,7 +69,8 @@ var domains = {
             "Post-event Close Down": "Post-event Close Down",
             "Results Processor": "Results Processor",
             "Token Sorting": "Token Sorting",
-            "Run Report Writer": "Run Report Writer"
+            "Run Report Writer": "Run Report Writer",
+            "Other": "Other",
         }
     },
     "www.parkrun.pl": {
@@ -104,7 +106,8 @@ var domains = {
             "Zamykając(a)y stawkę": "Post-event Close Down",
             "Wprowadzając(a)y wyniki": "Results Processor",
             // "Token Sorting": "Token Sorting",
-            // "Run Report Writer": "Run Report Writer"
+            // "Run Report Writer": "Run Report Writer",
+            // "Other": "Other",
         }
     },
     "www.parkrun.it": {
@@ -139,7 +142,8 @@ var domains = {
             // "Post-event Close Down": "Post-event Close Down",
             "Elaboratore risultati": "Results Processor",
             // "Token Sorting": "Token Sorting",
-            // "Run Report Writer": "Run Report Writer"
+            // "Run Report Writer": "Run Report Writer",
+            // "Other": "Other",
         }
 
     },
@@ -175,7 +179,8 @@ var domains = {
             // "Post-event Close Down": "Post-event Close Down",
             "Resultatregistrering": "Results Processor",
             // "Token Sorting": "Token Sorting",
-            // "Run Report Writer": "Run Report Writer"
+            // "Run Report Writer": "Run Report Writer",
+            // "Other": "Other",
         }
     },
     "www.parkrun.se": {
@@ -212,7 +217,8 @@ var domains = {
             // "Post-event Close Down": "Post-event Close Down",
             // "Results Processor": "Results Processor",
             // "Token Sorting": "Token Sorting",
-            "Journalist": "Run Report Writer"
+            "Journalist": "Run Report Writer",
+            // "Other": "Other",
         }
     },
     "www.parkrun.fi": {
@@ -257,7 +263,8 @@ var domains = {
             "Débalisage du parcours": "Post-event Close Down",
             "Mise en ligne des participations": "Results Processor",
             // "Token Sorting",
-            "Rédacteur du compte-rendu": "Run Report Writer"
+            "Rédacteur du compte-rendu": "Run Report Writer",
+            // "Other": "Other",
         }
     },
     "www.parkrun.com.de": {
@@ -293,7 +300,8 @@ var domains = {
             // "Post-event Close Down": "Post-event Close Down",
             "Ergebnis Auswerter": "Results Processor",
             // "Token Sorting": "Token Sorting",
-            "Berichterstattung": "Run Report Writer"
+            "Berichterstattung": "Run Report Writer",
+            // "Other": "Other",
         }
     },
     "www.parkrun.no": {
@@ -337,7 +345,8 @@ var domains = {
             "Обработка результатов": "Results Processor",
             "Сортировка карточек": "Token Sorting",
             "Составление отчёта": "Run Report Writer",
-            // + Other?, Warm Up (Juniors)
+            // "Other": "Other",
+            // Warm Up (Juniors)
         }
     }
 }
