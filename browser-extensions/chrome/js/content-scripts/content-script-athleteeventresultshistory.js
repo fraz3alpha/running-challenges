@@ -287,7 +287,7 @@ function get_volunteer_data() {
                          var badge_info = {
                              "name": volunteer_data[challenge].name,
                              "icon": chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+".png"),
-                             "link": "#"+challenge
+                             "link": "#"+volunteer_data[challenge].shortname
                          }
                          if (volunteer_data[challenge].subparts_completed_count >= 25){
                              badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
