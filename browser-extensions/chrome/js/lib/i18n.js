@@ -71,6 +71,7 @@ var domains = {
             "Token Sorting": "Token Sorting",
             "Run Report Writer": "Run Report Writer",
             "Other": "Other",
+            "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.pl": {
@@ -108,6 +109,7 @@ var domains = {
             // "Token Sorting": "Token Sorting",
             // "Run Report Writer": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.it": {
@@ -144,6 +146,7 @@ var domains = {
             // "Token Sorting": "Token Sorting",
             // "Run Report Writer": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
 
     },
@@ -181,6 +184,7 @@ var domains = {
             // "Token Sorting": "Token Sorting",
             // "Run Report Writer": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.se": {
@@ -219,6 +223,7 @@ var domains = {
             // "Token Sorting": "Token Sorting",
             "Journalist": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.fi": {
@@ -265,6 +270,7 @@ var domains = {
             // "Token Sorting",
             "Rédacteur du compte-rendu": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.com.de": {
@@ -302,6 +308,7 @@ var domains = {
             // "Token Sorting": "Token Sorting",
             "Berichterstattung": "Run Report Writer",
             // "Other": "Other",
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     },
     "www.parkrun.no": {
@@ -346,7 +353,7 @@ var domains = {
             "Сортировка карточек": "Token Sorting",
             "Составление отчёта": "Run Report Writer",
             // "Other": "Other",
-            // Warm Up (Juniors)
+            // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
     }
 }
