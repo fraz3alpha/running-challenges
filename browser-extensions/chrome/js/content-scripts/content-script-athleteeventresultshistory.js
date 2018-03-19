@@ -121,7 +121,7 @@ function get_badge_location() {
 
 // Generate the table structure, and add it to the page
 var challenges_table = generate_challenge_table()
-get_table('results', 'All Results').before(challenges_table)
+get_table('results', get_localised_value('table_all_results')).before(challenges_table)
 
 var badges_div = generate_challenge_badges_element()
 get_badge_location().after(badges_div)
@@ -134,7 +134,7 @@ var badges = []
 
 parkruns_completed = []
 
-get_table("results", "All Results").each(function(results_table) {
+get_table("results", get_localised_value('table_all_results')).each(function(results_table) {
     // Gather the data for this table
 
     // Find all the table body rows
@@ -220,7 +220,7 @@ function get_athlete_id() {
     // Find the Athlete ID by looking on the page for the link which contains the
     // text "View stats for all parkruns by this athlete" to get '<a href="/athleteresultshistory?athleteNumber=1386351"></a>
     var athlete_id = null
-    $("a:contains('View stats for all parkruns by this athlete')").each(function (i) {
+    $("a:contains('"+get_localised_value('link_view_stats_for_all_parkruns')+"')").each(function (i) {
         athlete_id = $(this).attr('href').split("=")[1]
     })
 
@@ -236,6 +236,11 @@ function get_volunteer_data() {
     if (athlete_id != null) {
         // console.log("Fetching volunteer data")
         $.ajax({
+             // If we translate this URL into the local one, not only do we have to
+             // parse the page separately (no big deal), but we need to add every
+             // domain into our CSP, which is a bit annoying, but would maybe
+             // turn out to be more efficient for the user in a country far away
+             // from the UK (depending on where parkrun host these servers)
              url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+athlete_id,
              dataType: 'html',
              success: function (result) {
@@ -255,10 +260,13 @@ function get_volunteer_data() {
                              volunteer_role = table_cells[1].innerText
                              volunteer_role_quantity = table_cells[2].innerText
 
-                             if (!(volunteer_role in completed_volunteer_roles)) {
-                                 completed_volunteer_roles[volunteer_role] = 0
+                             // Try and translate from whatever language it is in
+                             normalised_volunteer_role = get_normalised_volunteer_role(volunteer_role)
+
+                             if (!(normalised_volunteer_role in completed_volunteer_roles)) {
+                                 completed_volunteer_roles[normalised_volunteer_role] = 0
                              }
-                             completed_volunteer_roles[volunteer_role] += parseInt(volunteer_role_quantity)
+                             completed_volunteer_roles[normalised_volunteer_role] += parseInt(volunteer_role_quantity)
                          })
                          // console.log(completed_volunteer_roles)
                      })
