@@ -104,7 +104,8 @@
       "/images/badges/*.png",
       "/images/logo/*.png",
       "/images/flags/**/*.png",
-      "/html/*.html"
+      "/html/*.html",
+      "/css/*.css"
   ],
   "permissions": [
     "activeTab",
