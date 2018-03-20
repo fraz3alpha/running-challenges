@@ -56,6 +56,11 @@ function restore_options() {
 
   }, timeout_for_geo_data_ms);
 
+  // Prepopulate the event info cache why not
+  chrome.runtime.sendMessage({data: "event_info"}, function(response) {
+      console.log(response)
+  })
+
   chrome.runtime.sendMessage({data: "geo"}, function(response) {
       // Proceed only if the timeout handler has not yet fired.
       if (timeoutProtect) {
@@ -63,9 +68,18 @@ function restore_options() {
         clearTimeout(timeoutProtect);
         geo_data = response.geo
 
+        known_events_states = {}
+
+        $.each(geo_data.data.events, function (event_name, event_info) {
+            if (!(event_info.status in known_events_states)) {
+                known_events_states[event_info.status] = 0
+            }
+            known_events_states[event_info.status] += 1
+        })
+
         // Fill in some summary data on the options page
         document.getElementById('cached_geo_updated').innerText = geo_data.updated;
-        document.getElementById('cached_geo_events').innerText = Object.keys(geo_data.data.events).length;
+        document.getElementById('cached_geo_events').innerText = JSON.stringify(known_events_states);
         document.getElementById('cached_geo_countries').innerText = Object.keys(geo_data.data.countries).length;
         document.getElementById('cached_geo_regions').innerText = Object.keys(geo_data.data.regions).length;
         document.getElementById('cached_geo_bytes').innerText =  JSON.stringify(geo_data).length;
@@ -78,7 +92,11 @@ function restore_options() {
             var select_option = $('<option/>', {
                 value: event_o.name
             })
-            select_option.text(event_o.name)
+            if (event_o.status === 'Live') {
+                select_option.text(event_o.name)
+            } else {
+                select_option.text(event_o.name + " ("+event_o.status+")")
+            }
             home_parkrun_select.append(select_option)
             // }
         })
