@@ -50,7 +50,10 @@ function generate_volunteer_challenge_data(volunteer_data) {
         {"shortname": "close-down", "name": "Post-event Close Down"},
         {"shortname": "results-processing", "name": "Results Processor"},
         {"shortname": "token-sorting", "name": "Token Sorting"},
-        {"shortname": "run-report-writer", "name": "Run Report Writer"}
+        {"shortname": "run-report-writer", "name": "Run Report Writer"},
+        {"shortname": "other", "name": "Other"},
+        {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+
     ]
 
     var data = []
