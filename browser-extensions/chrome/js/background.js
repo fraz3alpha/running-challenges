@@ -22,7 +22,34 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 });
 
-// The geo data will be updated when there is no data, or it is over 24 hours old
+// The data will be updated when there is no data, or it is over the
+// configured age
+
+var cache = {
+    'geo': {
+        'raw_data': undefined,
+        'updated_at': undefined,
+        'last_update_attempt': undefined,
+        'updating': false,
+        'max_age': 3 * 24 * 60 * 60 * 1000,
+        'url': "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
+        'datatype': 'xml',
+        'timeout': 5000
+    },
+    'technical_event_information': {
+        'raw_data': undefined,
+        'updated_at': undefined,
+        'last_update_attempt': undefined,
+        'updating': false,
+        'max_age': 3 * 24 * 60 * 60 * 1000,
+        'url': "https://wiki.parkrun.com/index.php/Technical_Event_Information",
+        'datatype': 'html',
+        'timeout': 5000
+    },
+    'data': null,
+    'updated_at': null
+}
+
 var cached_geo = {
     'data': null,
     'updated': null,
@@ -34,10 +61,12 @@ var cached_geo = {
 var cached_geo_expiry_ms = 3 * 24 * 60 * 60 * 1000
 
 function traverse_geo_data(geo_data, region_name, depth=0) {
+
+    console.log('traverse_geo_data('+region_name+')')
+
     var regions = geo_data.regions
     var events = geo_data.events
 
-    console.log(region_name)
     $.each(regions[region_name].child_region_names, function(index, child_region_name) {
         traverse_geo_data(geo_data, child_region_name)
     })
@@ -73,6 +102,10 @@ function traverse_geo_data(geo_data, region_name, depth=0) {
 }
 
 function parse_geo_data_regions(geo_data, geo_xml) {
+
+    console.log('parse_geo_data_regions()')
+    console.log(geo_xml)
+
     // Find all the regions
     $(geo_xml).find('r').each(function(region_index) {
         this_region = $(this)
@@ -111,10 +144,14 @@ function parse_geo_data_regions(geo_data, geo_xml) {
     //     }
     // })
 
+    console.log(geo_data)
+
     return geo_data
 }
 
 function parse_geo_data_events(geo_data, geo_xml) {
+
+    console.log('parse_geo_data_events()')
 
     // Find all the events
     $(geo_xml).find('e').each(function(region_index) {
@@ -138,6 +175,8 @@ function parse_geo_data_events(geo_data, geo_xml) {
 }
 
 function compute_geo_data_heirachy(geo_data) {
+
+    console.log('compute_geo_data_heirachy()')
 
     // Create maps between ids and names
     region_id_to_name_map = {}
@@ -183,10 +222,10 @@ function compute_geo_data_heirachy(geo_data) {
                 geo_data.regions[event_region_name].child_event_ids.push(event_info.id)
                 geo_data.regions[event_region_name].child_event_names.push(event_info.name)
            } else {
-               console.log("Skipping "+event_info.name+" as it is in state "+event_info.status)
+               // console.log("Skipping "+event_info.name+" as it is in state "+event_info.status)
            }
         } else {
-            console.log("Unknown region '"+event_info.region_id+"' for "+event_info.name)
+            // console.log("Unknown region '"+event_info.region_id+"' for "+event_info.name)
         }
     })
 
@@ -198,7 +237,7 @@ function compute_geo_data_heirachy(geo_data) {
     $.each(geo_data.countries, function(index, country_info) {
         $.each(geo_data.regions[country_info.name].child_event_recursive_names, function(index, event_name) {
             geo_data.events[event_name].country_name = country_info.name
-            console.log(geo_data.regions[country_info.name].url)
+            // console.log(geo_data.regions[country_info.name].url)
             geo_data.events[event_name].local_url = geo_data.regions[country_info.name].url
         })
     })
@@ -206,99 +245,180 @@ function compute_geo_data_heirachy(geo_data) {
     return geo_data
 }
 
-function get_geo_data(notify_func) {
-    now = Date()
+function parse_tee_data_event_status(data, result) {
 
-    if (cached_geo.updated == null || ((now - cached_geo.updated) > cached_geo_expiry_ms)) {
-        cached_geo.updating = true
+    console.log('parse_tee_data_event_status()')
+    // Reset the event status data to a blank map
+    data.event_status = {}
+     $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+         var content_table = $(this)
 
-        $.ajax({
-             url: "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
-             success: function (result) {
-                 console.log(result)
-
-                 var geo_data = {
-                     'regions': {},
-                     'events': {},
-                     'countries': {}
+         content_table.find('tbody>tr').each(function(row_index) {
+             var content_table_row_cell = $('td', this)
+             if (content_table_row_cell[0] !== undefined) {
+                 var parkrun_info = {
+                     parkrun_name: content_table_row_cell[0].innerText.trim(),
+                     parkrun_event_director: content_table_row_cell[1].innerText.trim(),
+                     parkrun_event_number: content_table_row_cell[2].innerText.trim(),
+                     parkrun_status: content_table_row_cell[3].innerText.trim(),
+                     parkrun_country: content_table_row_cell[4].innerText.trim(),
+                     parkrun_portal_number: content_table_row_cell[5].innerText.trim()
                  }
+                 data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
+                 // console.log(parkrun_info)
+             }
+         })
+     })
 
-                 // First of all lets go and parse all the regions and all of
-                 // the events in the XML file and put them in out data structure.
-                 // Any additional parsing or additions to this data will be
-                 // done afterwards
-                 parse_geo_data_regions(geo_data, result)
-                 parse_geo_data_events(geo_data, result)
+     return data
 
-                 // Now lets go off and try and fetch the event information
-                 $.ajax({
-                     url: "https://wiki.parkrun.com/index.php/Technical_Event_Information",
-                     dataType: 'html',
+}
+
+function compute_event_status(data) {
+    console.log('compute_event_status()')
+    if (data.event_status !== undefined) {
+         // Loop through the existing geo_data, and supplement it with the
+         // extra event data we have found if there is a match
+         $.each(data.events, function(event_name, event_info) {
+             if (event_info.id in data.event_status) {
+                 // console.log('Found state '+live_parkrun_event_data[event_info.id].parkrun_status+" for "+event_name)
+                 data.events[event_name].status = data.event_status[event_info.id].parkrun_status
+             } else {
+                 data.events[event_name].status = 'unknown'
+             }
+         })
+
+    }
+    return data
+
+}
+
+function get_geo_data(notify_func) {
+    var now = new Date()
+
+    // Work out if any of the files in 'cache' need updating
+    // and construct a parallel ajax call to fetch whichever ones we need
+    // this allows for easy extension in the future by adding data sources
+    // with not a lot of code changes
+    var data_sources = ['geo', 'technical_event_information']
+    var ajax_calls = []
+    // Make a not if any deferred ajax calls are created
+    var update_needed = false
+    $.each(data_sources, function (index, page) {
+        console.log('.ajax - '+page)
+        // Check if see if the data is:
+        // not yet available (1), or never updated (2), or expired (3)
+        if (cache[page].raw_data === undefined || // 1
+            cache[page].updated_at === undefined || // 2
+            cache[page].updated_at < (now - cache[page].max_age) // 3
+        ) {
+            update_needed = true
+            console.log('.ajax - '+page+' update needed')
+            // Add the call to the list with the configured parameters
+            // This will return the entire page
+            ajax_calls.push($.Deferred(function (defer) {
+                $.ajax({
+                     url: cache[page].url,
+                     dataType: cache[page].datatype,
+                     timeout: cache[page].timeout,
                      success: function (result) {
-                         // console.log(result)
-                         $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
-                             var content_table = $(this)
-                             var live_parkrun_event_data = {}
-                             content_table.find('tbody>tr').each(function(row_index) {
-                                 var content_table_row_cell = $('td', this)
-                                 if (content_table_row_cell[0] !== undefined) {
-                                     var parkrun_info = {
-                                         parkrun_name: content_table_row_cell[0].innerText.trim(),
-                                         parkrun_event_director: content_table_row_cell[1].innerText.trim(),
-                                         parkrun_event_number: content_table_row_cell[2].innerText.trim(),
-                                         parkrun_status: content_table_row_cell[3].innerText.trim(),
-                                         parkrun_country: content_table_row_cell[4].innerText.trim(),
-                                         parkrun_portal_number: content_table_row_cell[5].innerText.trim()
-                                     }
-                                     live_parkrun_event_data[parkrun_info.parkrun_event_number] = parkrun_info
-                                     // console.log(parkrun_info)
-                                 }
-                             })
-
-                             // Loop through the existing geo_data, and supplement it with the
-                             // extra event data we have found if there is a match
-                             $.each(geo_data.events, function(event_name, event_info) {
-                                 if (event_info.id in live_parkrun_event_data) {
-                                     console.log('Found state '+live_parkrun_event_data[event_info.id].parkrun_status+" for "+event_name)
-                                     geo_data.events[event_name].status = live_parkrun_event_data[event_info.id].parkrun_status
-                                 }
-                             })
-
-                             compute_geo_data_heirachy(geo_data)
-
-                             console.log(geo_data)
-
-                             // Update the cached data with what we have just fetched
-                             cached_geo = {
-                                 'data': geo_data,
-                                 'updated': now,
-                                 'updating': false
-                             }
-
-                             // Send the response back via a message to whoever asked for it
-                             if (notify_func !== undefined) {
-                                 console.log('Notifying caller with live geo data')
-                                 notify_func(cached_geo)
-                             }
-                         })
+                         console.log('Fresh fetch of '+cache[page].url)
+                         cache[page].raw_data = result
+                         cache[page].updated_at = new Date()
+                         defer.resolve(result)
+                     },
+                     error: function (xhr, status, error) {
+                         console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
+                         defer.resolve(null)
                      }
                  })
-             },
-             dataType: 'xml'
-         });
+            }))
+        } else {
+            // Add a call that only returns the previously returned data
+            // This means we can do the same things in the when function
+            console.log('.ajax - '+page+' posting cached request response, expires in '+
+                Math.round((cache[page].max_age - (now - cache[page].updated_at))/1000)+'s')
+            ajax_calls.push($.Deferred(function (defer) {
+                defer.resolve(cache[page].raw_data)
+            }))
+        }
+    })
 
-     } else {
-         console.log('Returning cached geo data, last updated at ' + cached_geo.updated)
+    if (update_needed) {
+        console.log('Updated required, executing deferred AJAX requests')
+        $.when( ajax_calls[0], ajax_calls[1] ).done(
+            function ( data_geo, data_tee ) {
+                console.log('Processing returned data')
 
-         // Send the response back via a message to whoever asked for it
-         if (notify_func !== undefined) {
-             console.log('Notifying caller with cached geo data, last updated at ' + cached_geo.updated)
-             notify_func(cached_geo)
-         }
+                // We absolutely need the geo data, without which we can't do
+                // anything.
+                if (data_geo === null) {
+                    // See if we have a previous one to fall back on
+                    if (cache.geo.raw_data === null) {
+                        // If not, send something back
+                        notify_geo_data(notify_func)
+                        return
+                    } else {
+                        // Else make the best use of what we had previously
+                        data_geo = cache['geo'].raw_data
+                    }
+                }
 
-         return cached_geo
-     }
+                // Check if we have technical event information and fall back if not
+                if (data_tee === null) {
+                    data_tee = cache.technical_event_information.raw_data
+                }
 
+                // Build up our new data
+                var data = {
+                  'regions': {},
+                  'events': {},
+                  'countries': {},
+                  'event_status': undefined
+                }
+
+                // First of all lets go and parse all the regions and all of
+                // the events in the XML file and put them in out data structure.
+                // Any additional parsing or additions to this data will be
+                // done afterwards
+                parse_geo_data_regions(data, data_geo)
+                parse_geo_data_events(data, data_geo)
+
+                // If the technical event information has been obtained, then
+                // lets parse that.
+                if (data_tee !== null) {
+                    parse_tee_data_event_status(data, data_tee)
+                }
+
+                // This could potentially do nothing if no event info is available
+                compute_event_status(data)
+                console.log(data)
+                // Create the heirachy of events by region
+                compute_geo_data_heirachy(data)
+
+                // Update the global cache
+                cache.data = data
+                cache.updated_at = now
+
+                notify_geo_data(notify_func)
+                return
+            }
+        )
+    } else {
+        // Just return the cached data
+        notify_geo_data(notify_func)
+    }
+
+}
+
+function notify_geo_data(f) {
+    if (f !== undefined) {
+        console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
+        f({
+            'data': cache.data,
+            'updated': cache.updated_at
+        })
+    }
 }
 
   chrome.runtime.onMessage.addListener(
