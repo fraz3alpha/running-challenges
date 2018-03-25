@@ -293,7 +293,7 @@ function compute_event_status(data) {
 
 }
 
-function get_geo_data(notify_func) {
+function get_geo_data(notify_func, freshen=false) {
     var now = new Date()
 
     // Work out if any of the files in 'cache' need updating
@@ -305,12 +305,13 @@ function get_geo_data(notify_func) {
     // Make a not if any deferred ajax calls are created
     var update_needed = false
     $.each(data_sources, function (index, page) {
-        console.log('.ajax - '+page)
+        console.log('.ajax - '+page+' - freshen='+freshen)
         // Check if see if the data is:
-        // not yet available (1), or never updated (2), or expired (3)
+        // not yet available (1), or never updated (2), or expired (3), or we want a fresh copy (4)
         if (cache[page].raw_data === undefined || // 1
             cache[page].updated_at === undefined || // 2
-            cache[page].updated_at < (now - cache[page].max_age) // 3
+            cache[page].updated_at < (now - cache[page].max_age) || // 3
+            freshen // 4
         ) {
             update_needed = true
             console.log('.ajax - '+page+' update needed')
@@ -413,11 +414,18 @@ function get_geo_data(notify_func) {
 
 function notify_geo_data(f) {
     if (f !== undefined) {
-        console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
-        f({
-            'data': cache.data,
-            'updated': cache.updated_at
-        })
+        if (cache.data !== null) {
+            console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
+            f({
+                'data': cache.data,
+                'updated': cache.updated_at.toString()
+            })
+        } else {
+            f({
+                'data': null,
+                'updated': 'never'
+            })
+        }
     }
 }
 
@@ -428,12 +436,19 @@ function notify_geo_data(f) {
                   "from the extension");
       if (request.data == "geo") {
           // sendResponse({farewell: 'argh'});
+          var freshen = false
+          if ('freshen' in request) {
+              if (request.freshen === true) {
+                  freshen = true
+              }
+          }
+          console.log('freshen='+freshen)
         get_geo_data(function(geo_data) {
             console.log('Sending response back to the page')
             returned_data = {"geo": geo_data}
             console.log(returned_data)
             sendResponse(returned_data);
-        });
+        }, freshen);
 
         // Indicate we are going to return a response asynchronously
         // https://developer.chrome.com/extensions/runtime#event-onMessage
