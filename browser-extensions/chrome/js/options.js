@@ -48,7 +48,8 @@ function show_debug_elements(visible=false) {
     // A set of element IDs that will be shown/hidden depending on whether
     // we are in a debug mode, as determined by the parameter to this function
     var debug_elements = [
-        "debug_parkrun_info"
+        "debug_parkrun_info",
+        "debug_home_parkrun_info"
     ]
     $.each(debug_elements, function(index, id) {
         // Find the element IDs and show or hide them as appropriate
@@ -248,6 +249,8 @@ function update_home_parkrun_country() {
     } else {
         h_parkrun_div.text("Unknown")
     }
+
+    $("#home_parkrun_info").text(JSON.stringify(p_info, null, 4))
 
 }
 
