@@ -217,15 +217,13 @@ chrome.runtime.sendMessage({data: "geo"}, function(response) {
 });
 
 function get_athlete_id() {
-    // Find the Athlete ID by looking on the page for the link which contains the
-    // text "View stats for all parkruns by this athlete" to get '<a href="/athleteresultshistory?athleteNumber=1386351"></a>
+    // Very basic method to get only the parameter we care about
+    var page_parameters = window.location.search
     var athlete_id = null
-    $("a:contains('"+get_localised_value('link_view_stats_for_all_parkruns')+"')").each(function (i) {
-        athlete_id = $(this).attr('href').split("=")[1]
-    })
-
+    if (page_parameters.includes('athleteNumber=')) {
+        athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
+    }
     return athlete_id
-
 }
 
 function get_volunteer_data() {
