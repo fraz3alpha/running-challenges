@@ -3,28 +3,13 @@ function get_challenge_link_location() {
 }
 
 function get_athlete_id() {
-    // Find the Athlete ID by looking on the page for the link which contains the
-    // text "View stats for all parkruns by this athlete" to get '<a href="/athleteresultshistory?athleteNumber=1386351"></a>
+    // Very basic method to get only the parameter we care about
+    var page_parameters = window.location.search
     var athlete_id = null
-    $("a:contains('"+get_localised_value("link_all")+"'):first").each(function (i) {
-        console.log($(this).attr('href'))
-        athlete_id = $(this).attr('href').split("=")[1]
-    })
+    if (page_parameters.includes('athleteNumber=')) {
+        athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
+    }
     return athlete_id
-}
-
-function get_athleteeventresultshistory_url() {
-    var returned_url = null
-    $('a').each(function (index) {
-        // console.log(this)
-        if ($(this).text() == 'All') {
-            var url = $(this).attr('href')
-            if (url.search('athleteeventresultshistory') > 0) {
-                returned_url = url
-            }
-        }
-    })
-    return returned_url
 }
 
 var athlete_id = get_athlete_id()
