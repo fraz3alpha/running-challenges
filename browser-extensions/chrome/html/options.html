@@ -16,17 +16,27 @@ Home parkrun: <span id="athlete_home_parkrun_div">
 </span><br/>
 Home country: <span id="athlete_home_country_div">loading...</span>
 </p>
-<div id="status"></div>
-<button id="save">Save</button>
 
+<button id="save">Save</button> <span id="status"></span>
+
+<div id=debug_home_parkrun_info>
 <p>
-<h4>Geo Cache Info</h4>
+<h4>Home Parkrun Info</h4>
+Info: <span id='home_parkrun_info'>unknown</span><br/>
+</p>
+</div>
+
+<div id=debug_parkrun_info>
+<p>
+<h4>Parkrun Info</h4>
 Last updated: <span id='cached_geo_updated'>unknown</span><br/>
 Known Events: <span id='cached_geo_events'>unknown</span><br/>
 Known Countries: <span id='cached_geo_countries'>unknown</span><br/>
 Known Regions: <span id='cached_geo_regions'>unknown</span><br/>
 Size (bytes): <span id='cached_geo_bytes'>unknown</span><br/>
+<button id="update_cache">Update Cache</button>
 </p>
+</div>
 
 <h4>Feedback</h4>
 <p>
