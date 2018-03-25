@@ -9,7 +9,7 @@ function draw_translation_table() {
     })
 
     english_translations = Object.keys(domains.default.text_volunteer_role_map).sort()
-    console.log(english_translations)
+    // console.log(english_translations)
 
     domain = Object.keys(domains.default.text_volunteer_role_map).sort()
 
@@ -19,17 +19,17 @@ function draw_translation_table() {
         if (domain == "default") {
             return
         }
-        console.log(domain)
+        // console.log(domain)
         if ("text_volunteer_role_map" in translations) {
             var mapping = {}
-            console.log(translations.text_volunteer_role_map)
+            // console.log(translations.text_volunteer_role_map)
             $.each(translations.text_volunteer_role_map, function(foreign, english) {
                 mapping[english] = foreign
             })
             translation_map[domain] = mapping
         }
     })
-    console.log(translation_map)
+    // console.log(translation_map)
     var h_row = $('<tr/>')
     h_row.append($('<th/>').text('International English'))
     $.each(Object.keys(translation_map).sort(), function(j, pr_lang) {
@@ -46,7 +46,7 @@ function draw_translation_table() {
         table.append(row)
     })
 
-    console.log(table)
+    // console.log(table)
     $('[id=volunteer_roles]').append(table)
 }
 

@@ -6,7 +6,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
       athlete_number: '',
       home_parkrun_info: {}
     }, function(items) {
-        console.log('Icon clicked, loading based on '+JSON.stringify(items))
+        // console.log('Icon clicked, loading based on '+JSON.stringify(items))
         // If no athlete number has been set, load the options page
         if (items.athlete_number == '') {
             chrome.runtime.openOptionsPage();
@@ -62,7 +62,7 @@ var cached_geo_expiry_ms = 3 * 24 * 60 * 60 * 1000
 
 function traverse_geo_data(geo_data, region_name, depth=0) {
 
-    console.log('traverse_geo_data('+region_name+')')
+    // console.log('traverse_geo_data('+region_name+')')
 
     var regions = geo_data.regions
     var events = geo_data.events
@@ -103,8 +103,8 @@ function traverse_geo_data(geo_data, region_name, depth=0) {
 
 function parse_geo_data_regions(geo_data, geo_xml) {
 
-    console.log('parse_geo_data_regions()')
-    console.log(geo_xml)
+    // console.log('parse_geo_data_regions()')
+    // console.log(geo_xml)
 
     // Find all the regions
     $(geo_xml).find('r').each(function(region_index) {
@@ -144,14 +144,14 @@ function parse_geo_data_regions(geo_data, geo_xml) {
     //     }
     // })
 
-    console.log(geo_data)
+    // console.log(geo_data)
 
     return geo_data
 }
 
 function parse_geo_data_events(geo_data, geo_xml) {
 
-    console.log('parse_geo_data_events()')
+    // console.log('parse_geo_data_events()')
 
     // Find all the events
     $(geo_xml).find('e').each(function(region_index) {
@@ -176,7 +176,7 @@ function parse_geo_data_events(geo_data, geo_xml) {
 
 function compute_geo_data_heirachy(geo_data) {
 
-    console.log('compute_geo_data_heirachy()')
+    // console.log('compute_geo_data_heirachy()')
 
     // Create maps between ids and names
     region_id_to_name_map = {}
@@ -247,7 +247,7 @@ function compute_geo_data_heirachy(geo_data) {
 
 function parse_tee_data_event_status(data, result) {
 
-    console.log('parse_tee_data_event_status()')
+    // console.log('parse_tee_data_event_status()')
     // Reset the event status data to a blank map
     data.event_status = {}
      $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
@@ -275,7 +275,7 @@ function parse_tee_data_event_status(data, result) {
 }
 
 function compute_event_status(data) {
-    console.log('compute_event_status()')
+    // console.log('compute_event_status()')
     if (data.event_status !== undefined) {
          // Loop through the existing geo_data, and supplement it with the
          // extra event data we have found if there is a match
@@ -305,7 +305,7 @@ function get_geo_data(notify_func, freshen=false) {
     // Make a not if any deferred ajax calls are created
     var update_needed = false
     $.each(data_sources, function (index, page) {
-        console.log('.ajax - '+page+' - freshen='+freshen)
+        // console.log('.ajax - '+page+' - freshen='+freshen)
         // Check if see if the data is:
         // not yet available (1), or never updated (2), or expired (3), or we want a fresh copy (4)
         if (cache[page].raw_data === undefined || // 1
@@ -314,7 +314,7 @@ function get_geo_data(notify_func, freshen=false) {
             freshen // 4
         ) {
             update_needed = true
-            console.log('.ajax - '+page+' update needed')
+            // console.log('.ajax - '+page+' update needed')
             // Add the call to the list with the configured parameters
             // This will return the entire page
             ajax_calls.push($.Deferred(function (defer) {
@@ -323,13 +323,13 @@ function get_geo_data(notify_func, freshen=false) {
                      dataType: cache[page].datatype,
                      timeout: cache[page].timeout,
                      success: function (result) {
-                         console.log('Fresh fetch of '+cache[page].url)
+                         // console.log('Fresh fetch of '+cache[page].url)
                          cache[page].raw_data = result
                          cache[page].updated_at = new Date()
                          defer.resolve(result)
                      },
                      error: function (xhr, status, error) {
-                         console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
+                         // console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
                          defer.resolve(null)
                      }
                  })
@@ -337,8 +337,8 @@ function get_geo_data(notify_func, freshen=false) {
         } else {
             // Add a call that only returns the previously returned data
             // This means we can do the same things in the when function
-            console.log('.ajax - '+page+' posting cached request response, expires in '+
-                Math.round((cache[page].max_age - (now - cache[page].updated_at))/1000)+'s')
+            // console.log('.ajax - '+page+' posting cached request response, expires in '+
+            //     Math.round((cache[page].max_age - (now - cache[page].updated_at))/1000)+'s')
             ajax_calls.push($.Deferred(function (defer) {
                 defer.resolve(cache[page].raw_data)
             }))
@@ -346,10 +346,10 @@ function get_geo_data(notify_func, freshen=false) {
     })
 
     if (update_needed) {
-        console.log('Updated required, executing deferred AJAX requests')
+        // console.log('Updated required, executing deferred AJAX requests')
         $.when( ajax_calls[0], ajax_calls[1] ).done(
             function ( data_geo, data_tee ) {
-                console.log('Processing returned data')
+                // console.log('Processing returned data')
 
                 // We absolutely need the geo data, without which we can't do
                 // anything.
@@ -393,7 +393,7 @@ function get_geo_data(notify_func, freshen=false) {
 
                 // This could potentially do nothing if no event info is available
                 compute_event_status(data)
-                console.log(data)
+                // console.log(data)
                 // Create the heirachy of events by region
                 compute_geo_data_heirachy(data)
 
@@ -415,7 +415,7 @@ function get_geo_data(notify_func, freshen=false) {
 function notify_geo_data(f) {
     if (f !== undefined) {
         if (cache.data !== null) {
-            console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
+            // console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
             f({
                 'data': cache.data,
                 'updated': cache.updated_at.toString()
@@ -431,9 +431,9 @@ function notify_geo_data(f) {
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      console.log(sender.tab ?
-                  "from a content script:" + sender.tab.url :
-                  "from the extension");
+      // console.log(sender.tab ?
+      //             "from a content script:" + sender.tab.url :
+      //             "from the extension");
       if (request.data == "geo") {
           // sendResponse({farewell: 'argh'});
           var freshen = false
@@ -442,11 +442,11 @@ function notify_geo_data(f) {
                   freshen = true
               }
           }
-          console.log('freshen='+freshen)
+          // console.log('freshen='+freshen)
         get_geo_data(function(geo_data) {
-            console.log('Sending response back to the page')
+            // console.log('Sending response back to the page')
             returned_data = {"geo": geo_data}
-            console.log(returned_data)
+            // console.log(returned_data)
             sendResponse(returned_data);
         }, freshen);
 
