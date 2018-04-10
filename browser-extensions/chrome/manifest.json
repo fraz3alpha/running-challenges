@@ -38,10 +38,14 @@
       ],
       "js": [
           "js/lib/third-party/jquery-3.3.1.js",
+          "js/lib/third-party/ol-4.6.5.js",
           "js/lib/i18n.js",
           "js/lib/challenges.js",
           "js/lib/challenges_ui.js",
           "js/content-scripts/content-script-athleteeventresultshistory.js"
+      ],
+      "css": [
+        "css/third-party/ol.css"
       ],
       "run_at": "document_end"
   },
@@ -101,9 +105,7 @@
   }
   ],
   "web_accessible_resources": [
-      "/images/badges/*.png",
-      "/images/logo/*.png",
-      "/images/flags/**/*.png",
+      "/images/**/*.png",
       "/html/*.html",
       "/css/*.css"
   ],

@@ -88,6 +88,71 @@ function generate_volunteer_challenge_data(volunteer_data) {
     return data
 }
 
+function calculate_great_circle_distance(point1, point2) {
+  var R = 6371e3; // metres
+  var φ1 = point1.lat.toRadians();
+  var φ2 = point2.lat.toRadians();
+  var Δφ = (point2.lat-point1.lat).toRadians();
+  var Δλ = (point2.lon-point1.lon).toRadians();
+
+  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  var d = R * c;
+
+  return d
+}
+
+function generate_stats_from_results(results) {
+  stats = {
+    'total_runs': 0,
+    'total_pbs': 0,
+    'total_distance': 0
+  }
+  var locations = []
+  var previous_event = undefined
+  results.parkruns_completed.forEach(function (parkrun_event) {
+    console.log(parkrun_event)
+    // Count the total runs
+    stats.total_runs += 1
+    // Count the PBs for this athlete
+    if (parkrun_event.pb) {
+      stats.total_pbs += 1
+    }
+    // Find the distance this athlete has run (juniors is 2k, else 5k)
+    if (parkrun_event.name.toLowerCase().includes('juniors')) {
+      stats.total_distance += 2
+    } else {
+      stats.total_distance += 5
+    }
+
+    if (results.geo_data.data.events[parkrun_event.name] !== undefined) {
+      locations.push(results.geo_data.data.events[parkrun_event.name])
+    }
+
+  })
+
+  stats.lat = 0
+  stats.lon = 0
+  $.each(locations, function (index, event_location) {
+    console.log(event_location)
+    stats.lat += parseFloat(event_location.lat)
+    stats.lon += parseFloat(event_location.lon)
+  })
+  if (locations.length > 0) {
+    stats.lat /= locations.length
+    stats.lon /= locations.length
+  }
+
+  console.log(stats)
+}
+
+// function generate_stats_from_volunteer_data(volunteer_data) {
+//
+// }
+
 function generate_global_tourism_data(results) {
     // Generate essentially the same results as the regionnaire challenge all over again
     // console.log("generate_global_tourism_data()")

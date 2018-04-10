@@ -176,9 +176,83 @@ function generate_regionnaire_table_entry(challenge, table) {
 
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
 
+    add_map_element(challenge_tbody_detail)
+
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
 
+    create_map(challenge)
+
+}
+
+function create_map(challenge) {
+  console.log(challenge)
+  // var map = new ol.Map({
+  //   target: 'map',
+  //   layers: [
+  //     new ol.layer.Tile({
+  //       source: new ol.source.OSM()
+  //     })
+  //   ],
+  //   view: new ol.View({
+  //     center: ol.proj.fromLonLat([37.41, 8.82]),
+  //     zoom: 4
+  //   })
+  // });
+
+  var vectorSource = new ol.source.Vector({
+    //create empty vector
+  });
+
+  //create a bunch of icons and add to source vector
+  for (var i=0;i<50;i++){
+
+      var iconFeature = new ol.Feature({
+        geometry: new
+          ol.geom.Point(ol.proj.transform([Math.random()*360-180, Math.random()*180-90], 'EPSG:4326',   'EPSG:3857')),
+      name: 'Null Island ' + i,
+      population: 4000,
+      rainfall: 500
+      });
+      vectorSource.addFeature(iconFeature);
+  }
+
+  //create the style
+  var iconStyle = new ol.style.Style({
+    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 46],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 0.75,
+      scale: 0.1,
+      src: chrome.extension.getURL("/images/maps/markers/green-marker.png")
+    }))
+  });
+
+
+
+  //add the feature vector to the layer vector, and apply a style to whole layer
+  var vectorLayer = new ol.layer.Vector({
+    source: vectorSource,
+    style: iconStyle
+  });
+
+  var map = new ol.Map({
+    layers: [new ol.layer.Tile({ source: new ol.source.OSM() }), vectorLayer],
+    target: document.getElementById('map'),
+    view: new ol.View({
+      center: [-1.310849, 51.069286],
+      zoom: 3
+    })
+  });
+}
+
+function add_map_element(table) {
+  var row = $('<tr></tr>')
+  var map = $('<td colspan="4"><div id="map" style="height:400; width:400"></div></td>')
+
+  row.append(map)
+  table.append(row)
 }
 
 function iterate_regionnaire_data(table, region, level, region_group) {

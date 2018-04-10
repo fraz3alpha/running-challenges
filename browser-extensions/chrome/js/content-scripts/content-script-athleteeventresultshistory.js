@@ -149,6 +149,7 @@ get_table("results", get_localised_value('table_all_results')).each(function(res
             parkrun_date = table_cells[1].innerText
             parkrun_position = table_cells[3].innerText
             parkrun_time = table_cells[4].innerText
+            parkrun_pb = table_cells[6].innerText.trim()
 
             // Create a date object, useful for comparing
             parkrun_date_obj = new Date()
@@ -163,7 +164,8 @@ get_table("results", get_localised_value('table_all_results')).each(function(res
                 "date": parkrun_date,
                 "date_obj": parkrun_date_obj,
                 "position": parkrun_position,
-                "time": parkrun_time
+                "time": parkrun_time,
+                "pb": parkrun_pb.length > 0
             }
             parkruns_completed.push(parkrun_stats)
 
@@ -322,6 +324,8 @@ function display_data(challenge_settings) {
     challenge_data = challenge_generate_data(challenge_settings)
     // console.log(challenge_data)
     add_challenges_to_table(challenges_table, challenge_data)
+    // Generate stats
+    generate_stats_from_results(challenge_settings)
 
     // Add the badges to the list
     challenge_data.forEach(function (challenge) {
