@@ -37,6 +37,7 @@ rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 # Overwrite the CNAME file
 # Don't set this for now
 #echo "staging.running-challenges.co.uk" > CNAME
+rm -f CNAME
 # Adjust the url file
 sed -i -e 's/https:\/\/www.running-challenges.co.uk/https:\/\/staging.running-challenges.co.uk/' _config.yml
 sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
