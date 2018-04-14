@@ -1,0 +1,23 @@
+
+.center-image {
+    margin: 0 auto;
+    display: block;
+}
+
+.image-border {
+    border-width: 1px;
+    border-color: gray;
+    border-style: solid;
+}
+
+.badge-list-item {
+  height: 64px;
+  width: 64px;
+  float: left;
+  overflow: auto;
+  // display: block;
+  // margin-left: auto;
+  // margin-right: auto;
+  // float: left;
+  padding: 10px;
+}

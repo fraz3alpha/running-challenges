@@ -1,0 +1,11 @@
+docs_list_title: Running Challenges docs
+docs:
+
+- title: About
+  url: about.md
+
+- title: Get Started
+  url: getstarted.md
+
+- title: FAQ
+  url: faq.md
