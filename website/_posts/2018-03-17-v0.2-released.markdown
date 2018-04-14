@@ -9,4 +9,15 @@ We have released version 0.2 which now includes volunteer badges!
 If you have already installed the extension it should update soon, if not you can get it
 from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
 
+The volunteer badges are, appropriately, purple, and are shown together with the
+green running badges:
+
+![Athlete Profile Volunteer Badges]({{ site.baseurl }}/img/screenshots/screenshot-03-badges-inc-volunteer.png "Athlete Profile Volunteer Badges"){: .center-image}
+
+In addition a separate section in the challenge progress table has been created
+to keep track of what volunteering roles have been completed, and how many times
+each one has been done:
+
+![Athlete Profile Volunteer Table]({{ site.baseurl }}/img/screenshots/screenshot-04-volunteer-challenges.png "Athlete Profile Volunteer Table"){: .center-image}
+
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
