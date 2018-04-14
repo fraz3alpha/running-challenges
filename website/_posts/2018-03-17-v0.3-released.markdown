@@ -12,7 +12,7 @@ from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-lin
 
 The flags are shown just below all the badges you have been awarded:
 
-![Athlete Profile Flags]({{ site.baseurl }}/img/screenshots/screenshot-06-badges-inc-flags.png "Athlete Profile Flags"){: .center-image}
+![Athlete Profile Flags]({{ site.baseurl }}/img/screenshots/screenshot-06-badges-inc-flags.png "Athlete Profile Flags"){: .center-image .image-border}
 
 
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})

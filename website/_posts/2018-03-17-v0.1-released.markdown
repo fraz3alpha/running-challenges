@@ -19,9 +19,9 @@ page on the parkrun website to work out which challenges you have completed and
 display the appropriate set of badges at the top of the page, and the challenge
 progress in a table at the bottom of the page:
 
-![Athlete Profile Badges]({{ site.baseurl }}/img/screenshots/screenshot-01-badges.png "Athlete Profile Badges"){: .center-image}
+![Athlete Profile Badges]({{ site.baseurl }}/img/screenshots/screenshot-01-badges.png "Athlete Profile Badges"){: .center-image .image-border}
 
-![Athlete Profile Challenge Progress Table]({{ site.baseurl }}/img/screenshots/screenshot-02-table.png "Athlete Profile Challenge Progress Table"){: .center-image}
+![Athlete Profile Challenge Progress Table]({{ site.baseurl }}/img/screenshots/screenshot-02-table.png "Athlete Profile Challenge Progress Table"){: .center-image .image-border}
 
 Get it from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
 

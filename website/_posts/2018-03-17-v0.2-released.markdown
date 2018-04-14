@@ -12,12 +12,12 @@ from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-lin
 The volunteer badges are, appropriately, purple, and are shown together with the
 green running badges:
 
-![Athlete Profile Volunteer Badges]({{ site.baseurl }}/img/screenshots/screenshot-03-badges-inc-volunteer.png "Athlete Profile Volunteer Badges"){: .center-image}
+![Athlete Profile Volunteer Badges]({{ site.baseurl }}/img/screenshots/screenshot-03-badges-inc-volunteer.png "Athlete Profile Volunteer Badges"){: .center-image .image-border}
 
 In addition a separate section in the challenge progress table has been created
 to keep track of what volunteering roles have been completed, and how many times
 each one has been done:
 
-![Athlete Profile Volunteer Table]({{ site.baseurl }}/img/screenshots/screenshot-04-volunteer-challenges.png "Athlete Profile Volunteer Table"){: .center-image}
+![Athlete Profile Volunteer Table]({{ site.baseurl }}/img/screenshots/screenshot-04-volunteer-challenges.png "Athlete Profile Volunteer Table"){: .center-image .image-border}
 
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})

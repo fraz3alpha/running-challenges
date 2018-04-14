@@ -10,8 +10,7 @@ See how much of a parkrun 'obsessive' you are, see how close you are to being an
 
 Collect badges and stars when you volunteer in different roles - are you a three-star marshal yet? Check in on your friends' progress by visiting their profiles too.
 
-{: .image}
-![Laura's runner page on the parkrun website]({{ site.baseurl }}/img/runner_page.png "Laura's runner page on the parkrun website")
+![Laura's runner page on the parkrun website]({{ site.baseurl }}/img/runner_page.png "Laura's runner page on the parkrun website"){: .center-image .image-border}
 
 Running Challenges is an extension for the Google Chrome web browser. It is created and maintained with love by keen parkrunners, [Andy](https://twitter.com/fraz3alpha) and [Laura](https://twitter.com/lauracowen). We just wanted to share the fun with other parkrunners around the world, regardless of whether you volunteer, run, walk, or jog, at your home parkrun or elsewhere.
 
