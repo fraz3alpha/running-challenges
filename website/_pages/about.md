@@ -15,6 +15,17 @@ Collect badges and stars when you volunteer in different roles - are you a three
 
 Running Challenges is an extension for the Google Chrome web browser. It is created and maintained with love by keen parkrunners, [Andy](https://twitter.com/fraz3alpha) and [Laura](https://twitter.com/lauracowen). We just wanted to share the fun with other parkrunners around the world, regardless of whether you volunteer, run, walk, or jog, at your home parkrun or elsewhere.
 
+# Ethos
+
+We want everyone to have a bit of fun with this, and hopefully it encourages a few
+more people to get out on a Saturday (or Sunday for Juniors) to progress towards
+getting a new badge. We passionately believe that parkrun is not just about running -
+it is also about the community spirit, and volunteering for the good of everyone,
+which is why it was very important to us to get the volunteer badges available as
+soon as possible. We will continue to try and do a few little extra things to ensure the
+focus is not about running every week, and that those who give back to parkrun are appropriately
+rewarded.
+
 Let us know what you think:
 
 * [Leave a review](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews)
