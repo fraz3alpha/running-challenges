@@ -41,6 +41,7 @@ sed -i -e 's/https:\/\/www.running-challenges.co.uk/https:\/\/staging.running-ch
 sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
 
 # Build the site
+bundle install
 bundle exec jekyll build
 
 # Print summary
