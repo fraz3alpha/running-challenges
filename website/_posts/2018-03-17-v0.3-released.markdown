@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Version 0.3 Released"
-date:   2018-03-17 16:56:25 -0500
+date:   2018-03-23 20:00:00 +0000
 categories: chrome-extension release
 ---
 We have released version 0.3 which includes flags, the missing volunteer badges,
