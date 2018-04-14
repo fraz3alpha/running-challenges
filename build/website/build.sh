@@ -35,7 +35,8 @@ rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
 # Fiddle around with some files so that it works for the staging environment
 # Overwrite the CNAME file
-echo "staging.running-challenges.co.uk" > CNAME
+# Don't set this for now
+#echo "staging.running-challenges.co.uk" > CNAME
 # Adjust the url file
 sed -i -e 's/https:\/\/www.running-challenges.co.uk/https:\/\/staging.running-challenges.co.uk/' _config.yml
 sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
