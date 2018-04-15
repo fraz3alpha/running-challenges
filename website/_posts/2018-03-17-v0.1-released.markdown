@@ -1,0 +1,28 @@
+---
+layout: post
+title:  "Version 0.1 Released"
+date:   2018-03-10 20:00:00 +0000
+categories: chrome-extension release
+---
+Welcome to version 0.1 of the Running Challenges Chrome Extension!
+
+This extension is the result of a week's worth of development by [Andy Taylor](https://twitter.com/fraz3alpha)
+ & [Laura Cowen](https://twitter.com/lauracowen). We saw how much fun people were
+ having on the [UK parkrun Tourists](https://www.facebook.com/groups/571983126241545)
+ Facebook Group and thought that the games people played with their results were
+ great, but very manual to work out. There seemed to be a proliferation of
+ individual Excel spreadsheets and various other ways of tracking, and it was
+ screaming out for some technical wizardry!
+
+The extension works with the information available on your athlete results history
+page on the parkrun website to work out which challenges you have completed and
+display the appropriate set of badges at the top of the page, and the challenge
+progress in a table at the bottom of the page:
+
+![Athlete Profile Badges]({{ site.baseurl }}/img/screenshots/screenshot-01-badges.png "Athlete Profile Badges"){: .center-image .image-border}
+
+![Athlete Profile Challenge Progress Table]({{ site.baseurl }}/img/screenshots/screenshot-02-table.png "Athlete Profile Challenge Progress Table"){: .center-image .image-border}
+
+Get it from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})

@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "Version 0.3 Released"
+date:   2018-03-23 20:00:00 +0000
+categories: chrome-extension release
+---
+Now including flags, the missing volunteer badges, and initial support for the
+remaining parkrun websites!
+
+If you have already installed the extension it should update soon, if not you can get it
+from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
+
+The flags are shown just below all the badges you have been awarded:
+
+![Athlete Profile Flags]({{ site.baseurl }}/img/screenshots/screenshot-06-badges-inc-flags.png "Athlete Profile Flags"){: .center-image .image-border}
+
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
