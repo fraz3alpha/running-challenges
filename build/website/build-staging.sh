@@ -33,6 +33,15 @@ SITE_DIR=_site
 # Clear out the build directory
 rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
+# Fiddle around with some files so that it works for the staging environment
+# Overwrite the CNAME file
+echo "staging.running-challenges.co.uk" > CNAME
+# Don't set this for now
+# rm -f CNAME
+# Adjust the url file
+sed -i -e 's/https:\/\/www.running-challenges.co.uk/https:\/\/staging.running-challenges.co.uk/' _config.yml
+sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
+
 # Build the site
 bundle install
 bundle exec jekyll build
@@ -48,10 +57,10 @@ touch .nojekyll
 # Setup git to push to the staging repo
 git init
 # Add the target remote
-git remote add production https://${RUNNING_CHALLENGES_GITHUB_TOKEN}@github.com/fraz3alpha/running-challenges.git
+git remote add staging https://${RUNNING_CHALLENGES_GITHUB_TOKEN}@github.com/fraz3alpha/running-challenges-staging.git
 # Create a new branch, and commit all the code
 git checkout -b gh-pages
 git add -A
-git commit -m 'Travis build for production'
+git commit -m 'Travis build for staging'
 git log -1
-git push --force production gh-pages
+git push --force staging gh-pages
