@@ -1,0 +1,21 @@
+
+# based on https://jekyllrb.com/docs/continuous-integration/travis-ci/
+language: ruby
+rvm:
+- 2.3.3
+
+before_script:
+ - chmod +x ./build/website/build.sh
+ - chmod +x ./build/website/build-staging.sh
+
+script:
+   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./build/website/build-staging.sh; fi'
+   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./build/website/build.sh; fi'
+
+# branch whitelist, only for GitHub Pages - we push raw code to master,
+# the build code goes to gh-pages
+branches:
+  only:
+  - master
+
+sudo: false # route your build to the container-based infrastructure for a faster build
