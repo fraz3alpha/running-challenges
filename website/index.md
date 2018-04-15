@@ -12,7 +12,8 @@ Each completed challenge gives you a badge on your profile to show off to all yo
 To use this extension you must be using the **Chrome Web Browser** on a **laptop/desktop computer** -
 it is not available to install on mobile devices, phones or tablets - e.g. Android devices, Apple iPhones/iPads.
 
-Click the link below to install it, or visit our [Getting Started](/getstarted/) page to see a walkthrough of the steps involved
+![Athlete Profile With Badges]({{ site.baseurl }}/img/screenshots/screenshot-06-badges-inc-flags.png "Athlete Profile With Badges"){: .center-image .image-border}
 
+Click the link below to install it, or visit our [Getting Started](/getstarted/) page to see a walkthrough of the steps involved
 
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif)
