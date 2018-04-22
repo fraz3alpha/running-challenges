@@ -33,6 +33,9 @@ SITE_DIR=_site
 # Clear out the build directory
 rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
+# Set the production flag
+export JEKYLL_ENV=production
+
 # Build the site
 bundle install
 bundle exec jekyll build
