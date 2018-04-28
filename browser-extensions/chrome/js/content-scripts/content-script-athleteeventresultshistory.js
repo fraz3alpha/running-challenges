@@ -68,6 +68,7 @@ function add_global_tourism_flags(div, data) {
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
             img.attr('height',48)
+            img.attr('style', 'padding-left:6px; padding-right:6px')
             flags_p.append(img)
 
             if (index_counter > 0 && index_counter % 8 == 0) {
