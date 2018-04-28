@@ -103,7 +103,7 @@
   "web_accessible_resources": [
       "/images/badges/*.png",
       "/images/logo/*.png",
-      "/images/flags/**/*.png",
+      "/images/flags/*.png",
       "/html/*.html",
       "/css/*.css"
   ],

@@ -5,7 +5,10 @@ rm -rf ${TMP_BUILD_DIR} && mkdir -p ${TMP_BUILD_DIR}
 mkdir -p ${TMP_BUILD_DIR}/images
 # Copy the images that need to be bundled (we will actually only pack the .png files)
 cp -r images/badges ${TMP_BUILD_DIR}/images/
-cp -r images/flags ${TMP_BUILD_DIR}/images/
+
+mkdir ${TMP_BUILD_DIR}/images/flags
+cp -r images/flags/twemoji/png/* ${TMP_BUILD_DIR}/images/flags/
+
 cp -r images/logo ${TMP_BUILD_DIR}/images/
 
 # Copy the code

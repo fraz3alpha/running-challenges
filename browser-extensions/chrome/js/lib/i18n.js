@@ -355,7 +355,18 @@ var domains = {
             // "Other": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
         }
-    }
+    },
+    "www.parkrun.my": {
+        // Malaysian pages
+        // http://www.parkrun.my/tamanpuduulu/results/athletehistory/?athleteNumber=4493261
+        // The following two pages do not exist, and the links to them are dead.
+        // I wonder if this is just new-website teething problems, or an
+        // intentional action
+        // http://www.parkrun.my/results/athleteresultshistory/?athleteNumber=4493261
+        // http://www.parkrun.my/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
+        // It's all in English, so all links should work as-is
+        // Volunteer roles are in ENGLISH
+    },
 }
 
 function get_localised_value(param, domain=location.host) {
