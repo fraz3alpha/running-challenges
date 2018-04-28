@@ -39,7 +39,10 @@ function generate_challenge_table() {
     // Add a set of links on the top row
     help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
     options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    website_link = $('<a></a>').attr("href", "https://running-challenges.co.uk").attr("target", '_blank').text('website')
     help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
+    help_td.append(website_link)
+    help_td.append(" | ")
     help_td.append(options_link)
     help_td.append(" | ")
     help_td.append(help_link)
