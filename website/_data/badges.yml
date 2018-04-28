@@ -218,8 +218,8 @@ flags:
   - shortname: sg
     name: Singapore
 
-  - shortname: uk
+  - shortname: gb
     name: UK
 
-  - shortname: usa
+  - shortname: us
     name: USA
