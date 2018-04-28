@@ -118,7 +118,7 @@ function get_flag_icon(country, height, width) {
 
 function get_challenge_icon(challenge, height, width) {
     var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    badge_img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"));
+    badge_img.attr('src', chrome.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
     badge_img.attr('alt', challenge.name)
     badge_img.attr('title', challenge.name)
     badge_img.attr('height', height)
@@ -157,7 +157,7 @@ function get_challenge_header_row(challenge) {
         main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
     }
     if (challenge.complete) {
-        main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/256x256/tick.png")).attr('width',24).attr('height',24))
+        main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
     }
 
     return main_row
