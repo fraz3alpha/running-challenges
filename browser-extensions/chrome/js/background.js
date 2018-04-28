@@ -12,8 +12,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
             chrome.runtime.openOptionsPage();
         } else {
             var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
-            if ("local_url" in items.home_parkrun_info) {
-                results_url = items.home_parkrun_info.local_url+"/"+get_localised_value("url_athleteeventresultshistory", items.home_parkrun_info.local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            // Don't redirect Malaysian users as their website doesn't work
+            if ("local_url" in items.home_parkrun_info && items.home_parkrun_info.local_url.indexOf('parkrun.my') === -1) {
+              var local_url = items.home_parkrun_info.local_url
+              results_url = local_url+"/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             }
             chrome.tabs.create({ url: results_url });
         }

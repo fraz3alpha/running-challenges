@@ -39,7 +39,10 @@ function generate_challenge_table() {
     // Add a set of links on the top row
     help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
     options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    website_link = $('<a></a>').attr("href", "https://running-challenges.co.uk").attr("target", '_blank').text('website')
     help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
+    help_td.append(website_link)
+    help_td.append(" | ")
     help_td.append(options_link)
     help_td.append(" | ")
     help_td.append(help_link)
@@ -118,7 +121,7 @@ function get_flag_icon(country, height, width) {
 
 function get_challenge_icon(challenge, height, width) {
     var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    badge_img.attr('src', chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"));
+    badge_img.attr('src', chrome.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
     badge_img.attr('alt', challenge.name)
     badge_img.attr('title', challenge.name)
     badge_img.attr('height', height)
@@ -157,7 +160,7 @@ function get_challenge_header_row(challenge) {
         main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
     }
     if (challenge.complete) {
-        main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/256x256/tick.png")).attr('width',24).attr('height',24))
+        main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
     }
 
     return main_row

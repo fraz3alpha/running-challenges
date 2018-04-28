@@ -6,7 +6,7 @@ layout: home
 ---
 
 Welcome to Running Challenges! This [Chrome extension](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif) allows you to play games with
-your [parkrun](www.parkrun.com) results, including tourist challenges and tracking your volunteering at parkrun.
+your [parkrun](https://www.parkrun.com) results, including tourist challenges and tracking your volunteering at parkrun.
 Each completed challenge gives you a badge on your profile to show off to all your friends!
 
 To use this extension you must be using the **Chrome Web Browser** on a **laptop/desktop computer** -
