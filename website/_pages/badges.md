@@ -42,7 +42,7 @@ You will also get a flag for each of the countries you have touristed in (in the
 
 {% for entry in site.data.badges.flags %}
   <div style="clear:left" markdown="1">
-  ![{{ entry.name }}]({{ site.baseurl }}/img/flags/flag-{{ entry.shortname }}.png){: .badge-list-item}
+  ![{{ entry.name }}]({{ site.baseurl }}/img/flags/{{ entry.shortname }}.png){: .badge-list-item}
   **{{ entry.name }}**
   </div>
 {% endfor %}
