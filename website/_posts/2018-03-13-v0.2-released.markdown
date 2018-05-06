@@ -2,7 +2,9 @@
 layout: post
 title:  "Version 0.2 Released"
 date:   2018-03-13 20:00:00 +0000
-categories: chrome-extension release
+categories:
+  - chrome-extension
+  - release
 ---
 Now including volunteer badges!
 

@@ -2,7 +2,9 @@
 layout: post
 title:  "Version 0.3 Released"
 date:   2018-03-23 20:00:00 +0000
-categories: chrome-extension release
+categories:
+  - chrome-extension
+  - release
 ---
 Now including flags, the missing volunteer badges, and initial support for the
 remaining parkrun websites!
