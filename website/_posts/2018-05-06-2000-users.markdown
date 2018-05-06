@@ -1,0 +1,36 @@
+---
+layout: post
+title:  "2000 Users!"
+date:   2018-05-06 10:00:00 +0000
+categories: milestone
+---
+Wow, we've now got 2000 users!
+
+In just under 2 months we've gone from nothing, to over 2000 parkrunners with
+the Chrome extension installed. To be honest we have been overwhelmed by the
+way the community have taken it to heart, and to hear it being referred to in
+casual conversation on Facebook and Twitter makes it feel like it has just
+become part of parkrun!
+
+When we found parkrun founder Paul Sinton-Hewitt had liked our announcement post
+on Facebook we were chuffed, but to see parkrun COO Tom Williams and Xempo
+casually discussing who might have achieved the most Groundhog Days - that
+really made us smile.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Awesome isn’t it. Loads of people I know have completed Finish Time Bingo (including <a href="https://twitter.com/HelenTWilliams?ref_src=twsrc%5Etfw">@HelenTWilliams</a>, I’m on 59, annoyingly) but only one person I know (<a href="https://twitter.com/gillifordyce?ref_src=twsrc%5Etfw">@gillifordyce</a>) has managed Groundhog Day! <a href="https://t.co/1R4fh7enKa">https://t.co/1R4fh7enKa</a></p>&mdash; Tom Williams (@tomwilliams1974) <a href="https://twitter.com/tomwilliams1974/status/992446687506522112?ref_src=twsrc%5Etfw">May 4, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Stats are core part of parkrun; whether it be for knowing how many runs you have
+completed, age-graded scores, or average finishing times, and tracking the uptake
+of this extension is no exception :)
+
+We don't add any analytics to the extension itself, so we don't know how many people
+have added a home parkrun, where those parkruns might be, or how many badges we
+had displayed for people - but the Google Webstore does show many installs/uninstalls
+of the extension have occurred, and therefore how many active installs there are.
+
+[![Two months of installs]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png "Two months of installs"){: .center-image}]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png)̨
+
+[![2000 Users!]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png "2000 Users!"){: .center-image}]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png)̨
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
