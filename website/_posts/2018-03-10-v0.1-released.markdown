@@ -2,7 +2,9 @@
 layout: post
 title:  "Version 0.1 Released"
 date:   2018-03-10 20:00:00 +0000
-categories: chrome-extension release
+categories:
+  - chrome-extension
+  - release
 ---
 Welcome to version 0.1 of the Running Challenges Chrome Extension!
 

@@ -2,7 +2,9 @@
 layout: post
 title:  "2000 Users!"
 date:   2018-05-06 10:00:00 +0100
-categories: milestone
+categories:
+  - chrome-extension
+  - milestone
 ---
 Wow, we've now got 2000 users!
 
@@ -31,9 +33,9 @@ have added a home parkrun, where those parkruns might be, or how many badges we
 had displayed for people - but the Google Webstore does show many installs/uninstalls
 of the extension have occurred, and therefore how many active installations there are.
 
-[![Two months of installs]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png "Two months of installs"){: .center-image}]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png)̨
+[![Two months of installs]({{ site.baseurl }}/img/posts/installations-to-2018-05-05.png "Two months of installs"){: .center-image}]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png)̨
 
-[![2000 Users!]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png "2000 Users!"){: .center-image}]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png)̨
+[![Over 2000 Users]({{ site.baseurl }}/img/posts/users-to-2018-05-05.png "Over 2000 Users"){: .center-image}]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png)̨
 
 There have been 3 main boosts to the number of installations, and we believe that
 they correspond to the following:
@@ -43,7 +45,7 @@ they correspond to the following:
 - 25th April, The extension was featured on the first episode of the [Free Weekly Timed podcast!](http://www.freeweeklytimed.com/)
 
 It is not only UK parkrunners that have been adding this extension to their browser
-though we also have users all over the world, with Australia forming the largest
+though. We also have users all over the world, with Australia forming the largest
 userbase outside of the UK. The top 3 are:
 
 - 74% - UK
