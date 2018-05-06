@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "2000 Users!"
-date:   2018-05-06 10:00:00 +0000
+date:   2018-05-06 10:00:00 +0100
 categories: milestone
 ---
 Wow, we've now got 2000 users!
