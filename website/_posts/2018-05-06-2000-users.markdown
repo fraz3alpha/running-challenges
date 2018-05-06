@@ -17,20 +17,56 @@ on Facebook we were chuffed, but to see parkrun COO Tom Williams and Xempo
 casually discussing who might have achieved the most Groundhog Days - that
 really made us smile.
 
+<div align="center">
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Awesome isn’t it. Loads of people I know have completed Finish Time Bingo (including <a href="https://twitter.com/HelenTWilliams?ref_src=twsrc%5Etfw">@HelenTWilliams</a>, I’m on 59, annoyingly) but only one person I know (<a href="https://twitter.com/gillifordyce?ref_src=twsrc%5Etfw">@gillifordyce</a>) has managed Groundhog Day! <a href="https://t.co/1R4fh7enKa">https://t.co/1R4fh7enKa</a></p>&mdash; Tom Williams (@tomwilliams1974) <a href="https://twitter.com/tomwilliams1974/status/992446687506522112?ref_src=twsrc%5Etfw">May 4, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 
-Stats are core part of parkrun; whether it be for knowing how many runs you have
+Stats are a core part of parkrun; whether it be for knowing how many runs you have
 completed, age-graded scores, or average finishing times, and tracking the uptake
 of this extension is no exception :)
 
 We don't add any analytics to the extension itself, so we don't know how many people
 have added a home parkrun, where those parkruns might be, or how many badges we
 had displayed for people - but the Google Webstore does show many installs/uninstalls
-of the extension have occurred, and therefore how many active installs there are.
+of the extension have occurred, and therefore how many active installations there are.
 
 [![Two months of installs]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png "Two months of installs"){: .center-image}]({{ site.baseurl }}/img/posts/installations-to-2018-05-06.png)̨
 
 [![2000 Users!]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png "2000 Users!"){: .center-image}]({{ site.baseurl }}/img/posts/users-to-2018-05-06.png)̨
+
+There have been 3 main boosts to the number of installations, and we believe that
+they correspond to the following:
+
+- 10th March, announcement on the UK parkrun Tourists Facebook Group
+- 26th March, one of the Event Directors posted about it in the UK parkrun ED Group
+- 25th April, The extension was featured on the first episode of the [Free Weekly Timed podcast!](http://www.freeweeklytimed.com/)
+
+It is not only UK parkrunners that have been adding this extension to their browser
+though we also have users all over the world, with Australia forming the largest
+userbase outside of the UK. The top 3 are:
+
+- 74% - UK
+- 16% - Australia
+- 4% - South Africa
+
+This has thrown up all sorts of interesting questions and comments, but the
+most frequent one from our fellow runners in Australia was that they already
+had a `Compass Club` challenge, and that was to visit the most Northerly, Easterly,
+Southerly, and Westerly parkruns in Australia, compared to the current definition
+of runs with `north`, `south`, `east`, and `west` in the names - I think it is fair
+to say we weren't expecting to have to cope with things like that when we started!
+
+Also, we noticed that volunteering credits would not be applied for those parkrunners
+based in countries where the roles were displayed in the local language. Although
+a good proportion are in English, there was no credit for roles such as
+`Assistant distribution des jetons`, `Instruktor nowych uczestników`, and
+`Руководитель забега` - so we introduced a means to translate as many examples as
+we could find in version `0.3`. Now even more people can get in on the fun!
+
+We also recently launched this website, and a Twitter account -
+[@TeamTCMakers](https://twitter.com/TeamTCMakers), hopefully to keep everyone up
+to date with the new additions. As always you can contact us on our email account
+(link at the bottom of the page) if you want to get in touch.
 
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
