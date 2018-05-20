@@ -113,7 +113,8 @@ function generate_stats_from_results(results) {
     'total_distance_ran': 0,
     'longest_pb_streak': 0,
     'total_distance_travelled': 0,
-    'distinct_parkrun_count': 0
+    'distinct_parkrun_count': 0,
+    'countries_visited': 0,
   }
   var locations = []
   var previous_event = undefined
@@ -121,6 +122,7 @@ function generate_stats_from_results(results) {
   var this_pb_streak = 0
 
   var parkrun_events = {}
+  var parkrun_countries_visited = {}
   results.parkruns_completed.forEach(function (parkrun_event) {
     console.log(parkrun_event)
     // Count the total runs
@@ -152,6 +154,15 @@ function generate_stats_from_results(results) {
 
     if (results.geo_data.data.events[parkrun_event.name] !== undefined) {
       locations.push(results.geo_data.data.events[parkrun_event.name])
+    }
+
+    // Work out how many countries have been visited
+    if (results.geo_data.data.events[parkrun_event.name] !== undefined) {
+      var event_location_info = results.geo_data.data.events[parkrun_event.name]
+      if (!(event_location_info.country_name in parkrun_countries_visited)) {
+        parkrun_countries_visited[event_location_info.country_name] = true
+        stats.countries_visited = Object.keys(parkrun_countries_visited).length
+      }
     }
 
     // Work out how far the parkrunner has travelled (between consecutive events)
