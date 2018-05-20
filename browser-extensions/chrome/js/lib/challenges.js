@@ -112,16 +112,25 @@ function generate_stats_from_results(results) {
     'total_pbs': 0,
     'total_distance_ran': 0,
     'longest_pb_streak': 0,
-    'total_distance_travelled': 0
+    'total_distance_travelled': 0,
+    'distinct_parkrun_count': 0
   }
   var locations = []
   var previous_event = undefined
   var previous_event_location = undefined
   var this_pb_streak = 0
+
+  var parkrun_events = {}
   results.parkruns_completed.forEach(function (parkrun_event) {
     console.log(parkrun_event)
     // Count the total runs
     stats.total_runs += 1
+
+    // Find the distinct parkruns run
+    if (!(parkrun_event.name in parkrun_events)) {
+      parkrun_events[parkrun_event.name] = true
+    }
+
     // Count the PBs for this athlete
     if (parkrun_event.pb) {
       stats.total_pbs += 1
@@ -183,6 +192,12 @@ function generate_stats_from_results(results) {
     previous_event = parkrun_event
 
   })
+
+  // Work out how many different events this person has been to
+  stats.distinct_parkrun_count = Object.keys(parkrun_events).length
+  if (stats.distinct_parkrun_count > 0) {
+    stats.average_runs_per_event = stats.total_runs / stats.distinct_parkrun_count
+  }
 
   var avg_lat = 0
   var avg_lon = 0
