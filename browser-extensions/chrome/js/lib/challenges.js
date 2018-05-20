@@ -88,12 +88,13 @@ function generate_volunteer_challenge_data(volunteer_data) {
     return data
 }
 
+// Function adapted from https://www.movable-type.co.uk/scripts/latlong.html
 function calculate_great_circle_distance(point1, point2) {
-  var R = 6371e3; // metres
-  var φ1 = point1.lat.toRadians();
-  var φ2 = point2.lat.toRadians();
-  var Δφ = (point2.lat-point1.lat).toRadians();
-  var Δλ = (point2.lon-point1.lon).toRadians();
+  var R = 6371; // km
+  var φ1 = point1.lat * Math.PI / 180;
+  var φ2 = point2.lat * Math.PI / 180;
+  var Δφ = (point2.lat-point1.lat) * Math.PI / 180;
+  var Δλ = (point2.lon-point1.lon) * Math.PI / 180;
 
   var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
         Math.cos(φ1) * Math.cos(φ2) *
@@ -109,10 +110,14 @@ function generate_stats_from_results(results) {
   stats = {
     'total_runs': 0,
     'total_pbs': 0,
-    'total_distance': 0
+    'total_distance_ran': 0,
+    'longest_pb_streak': 0,
+    'total_distance_travelled': 0
   }
   var locations = []
   var previous_event = undefined
+  var previous_event_location = undefined
+  var this_pb_streak = 0
   results.parkruns_completed.forEach(function (parkrun_event) {
     console.log(parkrun_event)
     // Count the total runs
@@ -120,32 +125,80 @@ function generate_stats_from_results(results) {
     // Count the PBs for this athlete
     if (parkrun_event.pb) {
       stats.total_pbs += 1
+      // Increment this PB streak, and if it exceeds the max, make it that too
+      this_pb_streak += 1
+      if (this_pb_streak > stats.longest_pb_streak) {
+        stats.longest_pb_streak = this_pb_streak
+      }
+    } else {
+      // Reset the PB streak
+      this_pb_streak = 0
     }
     // Find the distance this athlete has run (juniors is 2k, else 5k)
     if (parkrun_event.name.toLowerCase().includes('juniors')) {
-      stats.total_distance += 2
+      stats.total_distance_ran += 2
     } else {
-      stats.total_distance += 5
+      stats.total_distance_ran += 5
     }
 
     if (results.geo_data.data.events[parkrun_event.name] !== undefined) {
       locations.push(results.geo_data.data.events[parkrun_event.name])
     }
 
+    // Work out how far the parkrunner has travelled (between consecutive events)
+    if (results.geo_data.data.events[parkrun_event.name] !== undefined) {
+
+      var event_location_info = results.geo_data.data.events[parkrun_event.name]
+
+      // We need to know the previous event location to work out the distance
+      // so we keep track of this separately to the previous event - in case we
+      // don't know where someone inbetween is
+      if (previous_event_location !== undefined) {
+        // Compare the names of the parkruns and don't compute the distance if they
+        // are the same - it should be fine without this, but we might get odd
+        // small numbers being added if there are rounding errors
+        if (parkrun_event.name != previous_event_location.name) {
+          // Both event_location_info and previous_event_location have properties
+          // of .lat and .lon, so we can pass them to this function
+          // These distances can clock up fast if you regularly visit friends and
+          // family in different parts of the country. A weekend in Manchester
+          // from Winchester could easily add on another 250km for two consecutive
+          // weeks
+          delta_distance = Math.round(calculate_great_circle_distance(event_location_info, previous_event_location))
+          // console.log('Distance between '+previous_event_location.name+' and '+parkrun_event.name+": "+delta_distance+'km')
+          stats.total_distance_travelled += delta_distance
+        }
+      }
+
+      // Make a note of this parkrun location for reference later
+      previous_event_location = {
+        'name': parkrun_event.name,
+        'lat': event_location_info.lat,
+        'lon': event_location_info.lon
+      }
+    }
+
+    // Make a note of where we were previously so that we work out things week
+    // to week
+    previous_event = parkrun_event
+
   })
 
-  stats.lat = 0
-  stats.lon = 0
+  var avg_lat = 0
+  var avg_lon = 0
   $.each(locations, function (index, event_location) {
     console.log(event_location)
-    stats.lat += parseFloat(event_location.lat)
-    stats.lon += parseFloat(event_location.lon)
+    avg_lat += parseFloat(event_location.lat)
+    avg_lon += parseFloat(event_location.lon)
   })
   if (locations.length > 0) {
-    stats.lat /= locations.length
-    stats.lon /= locations.length
+    stats['average_parkrun_location'] = {}
+    stats['average_parkrun_location'].lat = avg_lon/ locations.length
+    stats['average_parkrun_location'].lon = avg_lat / locations.length
+    stats['average_parkrun_location'].count = locations.length
   }
 
+  console.log("Stats:")
   console.log(stats)
 }
 
