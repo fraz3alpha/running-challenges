@@ -16,6 +16,7 @@ cp -r images/logo ${TMP_BUILD_DIR}/images/
 # Copy the code
 cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/chrome/html ${TMP_BUILD_DIR}/
+cp -r browser-extensions/chrome/css ${TMP_BUILD_DIR}/
 
 # Copy the metadata
 cp -r browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
