@@ -115,6 +115,7 @@ function generate_stats_from_results(results) {
     'total_distance_travelled': 0,
     'distinct_parkrun_count': 0,
     'countries_visited': 0,
+    'p_value': 0
   }
   var locations = []
   var previous_event = undefined
@@ -130,8 +131,9 @@ function generate_stats_from_results(results) {
 
     // Find the distinct parkruns run
     if (!(parkrun_event.name in parkrun_events)) {
-      parkrun_events[parkrun_event.name] = true
+      parkrun_events[parkrun_event.name] = 0
     }
+    parkrun_events[parkrun_event.name] += 1
 
     // Count the PBs for this athlete
     if (parkrun_event.pb) {
@@ -209,6 +211,23 @@ function generate_stats_from_results(results) {
   if (stats.distinct_parkrun_count > 0) {
     stats.average_runs_per_event = stats.total_runs / stats.distinct_parkrun_count
   }
+
+  // Work out the p-value
+  // First sort the parkrun event keys by number of times visited, descending
+  var distinct_events = Object.keys(parkrun_events);
+  distinct_events = distinct_events.sort(function(a, b) {
+      return parkrun_events[b] - parkrun_events[a]
+  });
+  // Next, iterate through the runs and increment the p_value until the number
+  // of runs of the next parkrun is insufficient to count, i.e. less than the
+  // counting index
+  var p_value_counter = 1;
+  distinct_events.forEach(function(k) {
+    if (parkrun_events[k] >= p_value_counter) {
+      stats.p_value = p_value_counter
+    }
+    p_value_counter += 1
+  });
 
   var avg_lat = 0
   var avg_lon = 0
