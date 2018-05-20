@@ -3,7 +3,7 @@
 
   "name": "Running Challenges",
   "description": "Adds challenge progress information to your parkrun athlete results page.",
-  "version": "0.3.0.9",
+  "version": "0.4.0.10",
 
   "content_security_policy": "default-src 'self' https://www.parkrun.org.uk https://wiki.parkrun.com",
 
@@ -105,7 +105,9 @@
   }
   ],
   "web_accessible_resources": [
-      "/images/**/*.png",
+      "/images/badges/*.png",
+      "/images/logo/*.png",
+      "/images/flags/*.png",
       "/html/*.html",
       "/css/*.css"
   ],

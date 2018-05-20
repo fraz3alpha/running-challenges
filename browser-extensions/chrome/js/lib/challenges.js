@@ -160,25 +160,25 @@ function generate_global_tourism_data(results) {
 
     // Mapping countries to flag image files
     var flag_map = {
-        "New Zealand": "flag-nz",
-        "Australia": "flag-au",
-        "Denmark": "flag-dk",
-        "Finland": "flag-fi",
-        "France": "flag-fra",
-        "Germany": "flag-de",
+        "New Zealand": "nz",
+        "Australia": "au",
+        "Denmark": "dk",
+        "Finland": "fi",
+        "France": "fr",
+        "Germany": "de",
         // "Iceland"--
-        "Ireland": "flag-ie",
-        "Italy": "flag-ita",
-        // "Malaysia"--
-        "Canada": "flag-ca",
-        "Norway": "flag-no",
-        "Poland": "flag-pl",
-        "Russia": "flag-ru",
-        "Singapore": "flag-sg",
-        "South Africa": "flag-sa",
-        "Sweden": "flag-se",
-        "UK": "flag-uk",
-        "USA": "flag-usa"
+        "Ireland": "ie",
+        "Italy": "it",
+        "Malaysia": "my",
+        "Canada": "ca",
+        "Norway": "no",
+        "Poland": "pl",
+        "Russia": "ru",
+        "Singapore": "sg",
+        "South Africa": "za",
+        "Sweden": "se",
+        "UK": "gb",
+        "USA": "us"
         // "Zimbabwe"--
     }
 
@@ -202,11 +202,11 @@ function generate_global_tourism_data(results) {
             "name": top_level_country.name,
             "visited": false,
             "first_visited": top_level_country.first_ran_on,
-            "icon": chrome.extension.getURL("/images/flags/png/flag-unknown.png")
+            "icon": chrome.extension.getURL("/images/flags/flag-unknown.png")
         }
         // Update the icon if it exists
         if (top_level_country.name in flag_map) {
-            country_info.icon = chrome.extension.getURL("/images/flags/png/"+flag_map[top_level_country.name]+".png")
+            country_info.icon = chrome.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
         }
 
         var child_events = find_region_child_events(top_level_country)

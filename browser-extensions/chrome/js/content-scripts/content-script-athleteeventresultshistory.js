@@ -68,6 +68,7 @@ function add_global_tourism_flags(div, data) {
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
             img.attr('height',48)
+            img.attr('style', 'padding-left:6px; padding-right:6px')
             flags_p.append(img)
 
             if (index_counter > 0 && index_counter % 8 == 0) {
@@ -286,17 +287,17 @@ function get_volunteer_data() {
                      if (volunteer_data[challenge].complete == true) {
                          var badge_info = {
                              "name": volunteer_data[challenge].name,
-                             "icon": chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+".png"),
+                             "icon": chrome.extension.getURL("/images/badges/"+volunteer_data[challenge].badge_icon+".png"),
                              "link": "#"+volunteer_data[challenge].shortname
                          }
                          if (volunteer_data[challenge].subparts_completed_count >= 25){
-                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
+                             badge_info.icon = chrome.extension.getURL("/images/badges/"+volunteer_data[challenge].badge_icon+"-3-stars.png")
                              badge_info.name += " (25+ times)"
                          } else if (volunteer_data[challenge].subparts_completed_count >= 10){
-                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-2-stars.png")
+                             badge_info.icon = chrome.extension.getURL("/images/badges/"+volunteer_data[challenge].badge_icon+"-2-stars.png")
                              badge_info.name += " (10+ times)"
                          } else if (volunteer_data[challenge].subparts_completed_count >= 5){
-                             badge_info.icon = chrome.extension.getURL("/images/badges/256x256/"+volunteer_data[challenge].badge_icon+"-1-star.png")
+                             badge_info.icon = chrome.extension.getURL("/images/badges/"+volunteer_data[challenge].badge_icon+"-1-star.png")
                              badge_info.name += " (5+ times)"
                          }
                          badges.push(badge_info)
@@ -332,13 +333,13 @@ function display_data(challenge_settings) {
         if (challenge.complete == true) {
             badges.push({
                 "name": challenge.name,
-                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.badge_icon+".png"),
+                "icon": chrome.extension.getURL("/images/badges/"+challenge.badge_icon+".png"),
                 "link": "#"+challenge.shortname
             })
         } else if (challenge.partial_completion == true) {
             badges.push({
                 "name": challenge.partial_completion_name,
-                "icon": chrome.extension.getURL("/images/badges/256x256/"+challenge.partial_completion_badge_icon+".png"),
+                "icon": chrome.extension.getURL("/images/badges/"+challenge.partial_completion_badge_icon+".png"),
                 "link": "#"+challenge.shortname
             })
         }

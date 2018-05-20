@@ -1,0 +1,225 @@
+---
+
+runner:
+
+  - shortname: tourist
+    name: Tourist
+    description: Run at 20+ different parkrun locations anywhere in the world
+
+  - shortname: cowell-club
+    name: Cowell Club
+    description: Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75.
+
+  - shortname: alphabeteer
+    name: Alphabeteer
+    description: Run at parkrun locations starting with each letter of the English alphabet (except X).
+
+  - shortname: single-ton
+    name: Single-Ton
+    description: Run 100+ parkruns at the same location.
+
+  - shortname: double-ton
+    name: Double-Ton
+    description: Run 200+ parkruns at the same location.
+
+  - shortname: stopwatch-bingo
+    name: Stopwatch Bingo
+    description:  Collect all the seconds from 00 to 59 in your finishing times.
+
+  - shortname: pirates
+    name: Pirates!
+    description: Run seven Cs and an R (say it out loud).
+
+  - shortname: stayin-alive
+    name: Stayin' Alive
+    description: Run three Bees and three Gees.
+
+  - shortname: compass-club
+    name: Compass Club
+    description:  Run at a parkrun named after each of the four compass points.
+
+  - shortname: full-ponty
+    name: The Full Ponty
+    description: Run at all the parkruns named ponty... or ponte...
+
+  - shortname: pilgrimage
+    name: Bushy Pilgrimage
+    description: Run at Bushy parkrun, where it all began.
+
+  - shortname: nyd-double
+    name:  NYD Double
+    description: Run two parkruns on one New Year's Day.
+
+  - shortname: groundhog-day
+    name: Groundhog Day
+    description: Finish with the same time at the same parkrun location on two consecutive parkruns.
+
+  - shortname: regionnaire
+    name: Regionnaire
+    description: Run all the parkrun locations in a geographical region.
+
+  - shortname: obsessive-bronze
+    name: Bronze Level Obsessive
+    description:  Run 30+ parkruns in one calendar year.
+
+  - shortname: obsessive-silver
+    name: Silver Level Obsessive
+    description:  Run 40+ parkruns in one calendar year.
+
+  - shortname: obsessive-gold
+    name: Gold Level Obsessive
+    description:  Run 50+ parkruns in one calendar year.
+
+volunteer:
+
+  - shortname: equipment-storage
+    name: Equipment Storage and Delivery
+    description: Fill your shed with signs and high-viz!
+
+  - shortname: comms-person
+    name: Communications Person
+    description: The first rule of parkrun, tell everyone about parkrun! (Unless it is the first event, in which case, keep it under your hat for a week for two) Spread the world and ensure everyone stays up to date about your event.
+
+  - shortname: volunteer-coordinator
+    name: Volunteer Co-ordinator
+    description: Ensure the roster is packed full of friendly-folk ready to cheer everyone on and run a great event
+
+  - shortname: setup
+    name: Pre-event Setup
+    description: Be the early bird and get to parkrun early and ensure that everything is ready for everyone else when they stroll up at 8:45
+
+  - shortname: first-timers-briefing
+    name: First Timers Briefing
+    description: Make sure that runners new to parkrun know how it all works (and to not take the tokens home, or duck the funnel!), and give everyone new to your event the lay of the land - and how many laps it is.
+
+  - shortname: warm-up-leader
+    name: Warm Up Leader
+    description: Get those juniors all warmed up and ready to go!
+
+  - shortname: sign-language
+    name: Sign Language Support
+    description: Help parkrun be even more inclusive by signing the briefings
+
+  - shortname: marshal
+    name: Marshal
+    description: Clap, cheer, and encourage everyone round, but most importantly enable parkrun to be a safe event
+
+  - shortname: tail-walker
+    name: Tail Walker
+    description: Ensure no-one is ever last at parkrun and encourage those slower runners and walkers to make it to the finish
+
+  - shortname: run-director
+    name: Run Director
+    description: Take charge and run a tight-ship on Saturday morning!
+
+  - shortname: lead-bike
+    name: Lead Bike
+    description: Ensure no-one goes the wrong way out in front - watch out for those tight turns!
+
+  - shortname: pacer
+    name: Pacer
+    description: Help runners meet their personal goals during paced events, don't go off too quick!
+
+  - shortname: vi-guide
+    name: Guide Runner
+    description: Help parkrun be even more inclusive by guiding visually impaired runners round the course
+
+  - shortname: photographer
+    name: Photographer
+    description: Share the joy on the faces of everyone by taking lovely pictures of the runners and the event
+
+  - shortname: timer
+    name: Timer
+    description: Clock the runners in at the finish line
+
+  - shortname: funnel-manager
+    name: Funnel Manager
+    description: Watch out for funnel-duckers and make sure that the funnel runs smoothly
+
+  - shortname: finish-tokens
+    name: Finish Tokens & Support
+    description: Give out the finish tokens at the end, and get to congratulate every runner as they complete another lovely run
+
+  - shortname: barcode-scanning
+    name: Barcode Scanning
+    description: description those lovely runners get their time, and most importantly, register them as having got out of bed on such a lovely Saturday morning!
+
+  - shortname: manual-entry
+    name: Number Checker
+    description: Check everything is in order, helping the runners get the right times
+
+  - shortname: close-down
+    name: Post-event Close Down
+    description: Fetch all the cones and signs in, and feel great for having done an extra lap!
+
+  - shortname: results-processing
+    name: Results Processor
+    description: Wrangle the laptop into life and get those results online
+
+  - shortname: token-sorting
+    name: Token Sorting
+    description: Relax and achieve zen by sorting the tokens
+
+  - shortname: run-report-writer
+    name: Run Report Writer
+    description: Spread the word about how good your last event was by writing up the run report
+
+  - shortname: other
+    name: Other
+    description: Some parkruns have other roles that don't fit into the regular categories above, this role is a catch all that can be anything from carpark-management to human-clothes-hook!
+
+flags:
+
+  - shortname: au
+    name: Australia
+
+  - shortname: ca
+    name: Canada
+
+  - shortname: de
+    name: Germany
+
+  - shortname: dk
+    name: Denmark
+
+  - shortname: fi
+    name: Finland
+
+  - shortname: fr
+    name: France
+
+  - shortname: ie
+    name: Ireland
+
+  - shortname: it
+    name: Italy
+
+  - shortname: my
+    name: Malaysia
+
+  - shortname: "no"
+    name: Norway
+
+  - shortname: nz
+    name: New Zealand
+
+  - shortname: pl
+    name: Poland
+
+  - shortname: ru
+    name: Russia
+
+  - shortname: za
+    name: South Africa
+
+  - shortname: se
+    name: Sweden
+
+  - shortname: sg
+    name: Singapore
+
+  - shortname: gb
+    name: UK
+
+  - shortname: us
+    name: USA

@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "Version 0.4 Released"
+date:   2018-04-28 16:00:00 +0000
+categories:
+  - chrome-extension
+  - release
+---
+Now including Malaysia!
+
+If you have already installed the extension it should update soon, if not you can get it
+from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
+
+This version now supports Malaysia (at least to the extent that [parkrun.my](https://parkrun.my) works).
+
+We now have a flag for Malaysia, which is what most people would have seen was missing.
+We have not provided the links on the [parkrun.my](https://parkrun.my) site
+though as the 'All Results' page does not work - therefore there is no point
+trying to link to it.
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
