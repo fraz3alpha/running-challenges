@@ -69,7 +69,7 @@ function add_table_break_row(table, title, help) {
 }
 
 function add_challenges_to_table(table, data) {
-
+  console.log(data)
    var ui_challenge_generation_duration = 0
 
    data.forEach(function (challenge) {
@@ -406,5 +406,23 @@ function generate_standard_table_entry(challenge, table) {
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
+
+}
+
+function add_stats_table(div, data) {
+  var table = $('<table/>')
+  // Use the 'results' id so that we pick up the standard styling, yuk
+  table.attr("id", "results")
+  // Optionally add a class with .addClass(this.tableClass)
+  table.append($('<caption/>').text('Athlete Stats'))
+
+  $.each(data, function(stat_shortname, stat_info) {
+    var row = $('<tr/>')
+    row.append($('<td/>').text(stat_info.display_name))
+    row.append($('<td/>').text(stat_info.value))
+    table.append(row)
+  })
+
+  div.append(table)
 
 }
