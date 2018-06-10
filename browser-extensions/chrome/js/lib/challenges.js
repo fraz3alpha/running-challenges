@@ -318,6 +318,31 @@ function generate_stat_events_run(parkrun_results) {
   }
 }
 
+// A percentage showing how many of the events you have run at are new events,
+// i.e someone who never repeats an event is at 100%, and someone who never
+// leaves home is at 0%.
+function generate_stat_tourist_quotient(parkrun_results) {
+  // Find those parkrun events that have been completed
+  var events_run = {}
+  var tourist_quotient = "-"
+
+  parkrun_results.forEach(function (parkrun_event) {
+    if (!(parkrun_event.name in events_run)) {
+      events_run[parkrun_event.name] = true
+    }
+  })
+
+  var event_count = Object.keys(events_run).length
+  if (parkrun_results.length > 0) {
+    tourist_quotient =  (100 * event_count / parkrun_results.length).toFixed(2) + "%"
+  }
+
+  return {
+    "display_name": "Tourist Quotient",
+    "value": tourist_quotient
+  }
+}
+
 function generate_stat_runs_this_year(parkrun_results) {
   // Find those parkrun events that have been completed
   var runs_this_year = 0
@@ -598,6 +623,8 @@ function generate_stats(data) {
     stats['parkrun_birthday'] = generate_stat_parkrun_birthday(data.parkrun_results)
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
+    stats['tourist_quotient'] = generate_stat_tourist_quotient(data.parkrun_results)
+
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
