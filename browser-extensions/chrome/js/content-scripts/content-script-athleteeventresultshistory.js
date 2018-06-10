@@ -177,6 +177,7 @@ function parse_results_table() {
               // Find the name and other interesting bits of data for this parkrun
               parkrun_name = table_cells[0].innerText
               parkrun_date = table_cells[1].innerText
+              parkrun_event_number = table_cells[2].innerText
               parkrun_position = table_cells[3].innerText
               parkrun_time = table_cells[4].innerText
               parkrun_pb = table_cells[6].innerText.trim()
@@ -193,6 +194,7 @@ function parse_results_table() {
                   "name": parkrun_name,
                   "date": parkrun_date,
                   "date_obj": parkrun_date_obj,
+                  "event_number": parkrun_event_number,
                   "position": parkrun_position,
                   "time": parkrun_time,
                   "pb": parkrun_pb.length > 0
@@ -234,7 +236,7 @@ function create_skeleton_elements(id_map) {
 
   // Create stats element
   var running_challenges_stats_div = $('<div/>').attr("id", id_map["stats"])
-  running_challenges_main_table_div.after(running_challenges_stats_div)
+  running_challenges_main_table_div.before(running_challenges_stats_div)
 }
 
 function add_stats(div_id, data) {

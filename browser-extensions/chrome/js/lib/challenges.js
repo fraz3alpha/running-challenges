@@ -246,6 +246,31 @@ function generate_stat_p_index(parkrun_results) {
   }
 }
 
+// The maximum continguous series of parkrun event numbers you have attended
+// (at any event), starting at 1.
+function generate_stat_wilson_index(parkrun_results) {
+  var wilson_index = 0
+  var event_numbers_visited = {}
+
+  parkrun_results.forEach(function (parkrun_event) {
+    event_numbers_visited[parkrun_event.event_number] = true
+  })
+  // Iterate through the maximum set of event numbers they could have, and check
+  // if each is in the object, we stop when we can't find one
+  var index
+  for (index=1; index<Object.keys(event_numbers_visited).length; index++) {
+    if (index in event_numbers_visited) {
+      wilson_index += 1
+    } else {
+      break
+    }
+  }
+  return {
+    "display_name": "wilson-index",
+    "value": wilson_index
+  }
+}
+
 // What date was this athlete's first run
 function generate_stat_parkrun_birthday(parkrun_results) {
   var birthday = "Never run"
@@ -292,6 +317,23 @@ function generate_stat_events_run(parkrun_results) {
     "value": Object.keys(events_run).length
   }
 }
+
+function generate_stat_events_run_this_year(parkrun_results) {
+  // Find those parkrun events that have been completed
+  var events_run = {}
+
+  parkrun_results.forEach(function (parkrun_event) {
+    if (!(parkrun_event.name in events_run)) {
+      events_run[parkrun_event.name] = true
+    }
+  })
+
+  return {
+    "display_name": "Events run this year",
+    "value": "Not Implemented"
+  }
+}
+
 // Total distance between parkruns that you have run - a measure of how much
 // you have travelled to go to parkrun!
 function generate_stat_total_distance_travelled(parkrun_results, geo_data) {
@@ -550,9 +592,12 @@ function generate_stats(data) {
     stats['total_distance_ran'] = generate_stat_total_distance_ran(data.parkrun_results)
     stats['most_runs_in_a_year'] = generate_stat_most_runs_in_a_year(data.parkrun_results)
     stats['p_index'] = generate_stat_p_index(data.parkrun_results)
+    stats['wilson_index'] = generate_stat_wilson_index(data.parkrun_results)
     stats['parkrun_birthday'] = generate_stat_parkrun_birthday(data.parkrun_results)
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
+    stats['events_run_this_year'] = generate_stat_events_run_this_year(data.parkrun_results)
+
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
