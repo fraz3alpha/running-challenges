@@ -208,7 +208,7 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
         best_years.push(year)
       }
     })
-    value = runs_per_year[best_year_sorted[0]] + " in " + best_years.join(",")
+    value = runs_per_year[best_year_sorted[0]] + " in " + best_years.join(", ")
   }
 
   return {
@@ -318,19 +318,20 @@ function generate_stat_events_run(parkrun_results) {
   }
 }
 
-function generate_stat_events_run_this_year(parkrun_results) {
+function generate_stat_runs_this_year(parkrun_results) {
   // Find those parkrun events that have been completed
-  var events_run = {}
+  var runs_this_year = 0
+  var now = new Date()
 
   parkrun_results.forEach(function (parkrun_event) {
-    if (!(parkrun_event.name in events_run)) {
-      events_run[parkrun_event.name] = true
+    if (parkrun_event.date_obj.getFullYear() == now.getFullYear()) {
+      runs_this_year += 1
     }
   })
 
   return {
-    "display_name": "Events run this year",
-    "value": "Not Implemented"
+    "display_name": "Runs so far this year",
+    "value": runs_this_year
   }
 }
 
@@ -591,13 +592,12 @@ function generate_stats(data) {
     stats['longest_pb_streak'] = generate_stat_longest_pb_streak(data.parkrun_results)
     stats['total_distance_ran'] = generate_stat_total_distance_ran(data.parkrun_results)
     stats['most_runs_in_a_year'] = generate_stat_most_runs_in_a_year(data.parkrun_results)
+    stats['runs_this_year'] = generate_stat_runs_this_year(data.parkrun_results)
     stats['p_index'] = generate_stat_p_index(data.parkrun_results)
     stats['wilson_index'] = generate_stat_wilson_index(data.parkrun_results)
     stats['parkrun_birthday'] = generate_stat_parkrun_birthday(data.parkrun_results)
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
-    stats['events_run_this_year'] = generate_stat_events_run_this_year(data.parkrun_results)
-
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
