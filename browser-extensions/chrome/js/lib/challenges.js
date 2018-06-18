@@ -273,10 +273,17 @@ function generate_stat_wilson_index(parkrun_results) {
 
 // What date was this athlete's first run
 function generate_stat_parkrun_birthday(parkrun_results) {
-  var birthday = "Never run"
+  var birthday = "-"
   if (parkrun_results.length > 0) {
     birthday_date = parkrun_results[0].date_obj
-    birthday =  birthday_date
+    // Format the date as a string with the user's locale
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
+    // for more options
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    // In en-GB this gives something like : "Thursday, 20 December 2012"
+    // in en-US it would be "Thursday, December 20, 2012"
+    // in pl-PL it would be "czwartek, 20 grudnia 2012"
+    birthday = birthday_date.toLocaleDateString(undefined, options);
   }
   return {
     "display_name": "parkrun birthday",
@@ -648,6 +655,33 @@ function generate_stats(data) {
   }
 
   return stats
+}
+
+function get_initial_letter(event_name) {
+  return event_name[0].toLowerCase()
+}
+
+// Find the closest parkrun for each letter of the alphabet
+function generate_closest_parkruns_by_initial_letter(geo_data, home_parkrun_info) {
+  // The closest event for each letter
+  var events = {}
+
+  $.each(geo_data.data.events, function (event_name, event_info) {
+    if (event_info.status == 'Live' && event_info.lat && event_info.lon) {
+      event_distance = calculate_great_circle_distance(event_info, home_parkrun_info)
+      event_letter = get_initial_letter(event_info["shortname"])
+      if (events[event_letter] === undefined || event_distance < events[event_letter]["distance"]) {
+        events[event_letter] = {
+          'event': event_info,
+          'distance': event_distance
+        }
+      }
+    }
+  })
+
+  console.log(events)
+  return events
+
 }
 
 function generate_global_tourism_data(parkrun_results, geo_data) {

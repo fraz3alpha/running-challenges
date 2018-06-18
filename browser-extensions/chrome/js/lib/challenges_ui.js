@@ -369,11 +369,11 @@ function iterate_regionnaire_data(table, region, level, region_group) {
         iterate_regionnaire_data(table, child_region, level+1, region_event_class_name)
     })
 
-    // // Sort out the visibility of all sub rows
-    // if (hide_region_sub_rows) {
-    //     console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
-    //     $("."+region_group).hide()
-    // }
+    // Sort out the visibility of all sub rows
+    if (hide_region_sub_rows) {
+        console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
+        $("."+region_group).hide()
+    }
 }
 
 function generate_standard_table_entry(challenge, table) {
@@ -415,6 +415,9 @@ function add_stats_table(div, data) {
   table.attr("id", "results")
   // Optionally add a class with .addClass(this.tableClass)
   table.append($('<caption/>').text('Athlete Stats'))
+  // Add header row
+  var header_row = $('<tr/>').html('<th>Stat</th><th>Value</th>')
+  table.append(header_row)
 
   $.each(data, function(stat_shortname, stat_info) {
     var row = $('<tr/>')
