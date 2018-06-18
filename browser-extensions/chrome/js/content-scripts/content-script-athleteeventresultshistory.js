@@ -499,6 +499,10 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
     'challenge_results': challenge_results
   })
 
+  generate_closest_parkruns_by_initial_letter(loaded_geo_data, loaded_user_data["home_parkrun_info"])
+
+  set_progress_message("")
+
 }).catch(error => {
   console.error(`An error occurred: ${error}`);
 });
