@@ -398,11 +398,11 @@ function add_challenge_results(div_id, data) {
   // Add the results if we have them
   if (data.challenge_results) {
     if (data.challenge_results.running_results) {
-      add_challenges_to_table(results_table, data.challenge_results.running_results)
+      add_challenges_to_table(results_table, data.challenge_results.running_results, data.geo_data)
     }
     if (data.challenge_results.volunteer_results) {
       add_table_break_row(results_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
-      add_challenges_to_table(results_table,  data.challenge_results.volunteer_results)
+      add_challenges_to_table(results_table,  data.challenge_results.volunteer_results, data.geo_data)
     }
   }
   set_progress_message("Added challenge results")
@@ -470,7 +470,8 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   var challenge_results = {
     "running_results": generate_running_challenge_data({
       'parkrun_results': parsed_results_data,
-      'geo_data': loaded_geo_data}),
+      'geo_data': loaded_geo_data,
+      'user_data': loaded_user_data}),
     "volunteer_results": generate_volunteer_challenge_data({
       'volunteer_data': parsed_volunteer_data})
   }
@@ -487,7 +488,8 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   })
 
   add_challenge_results(id_map["main"], {
-    'challenge_results': challenge_results
+    'challenge_results': challenge_results,
+    'geo_data': loaded_geo_data,
   })
 
   add_stats(id_map["stats"], {

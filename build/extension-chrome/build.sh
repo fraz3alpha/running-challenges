@@ -13,6 +13,8 @@ cp -r images/flags/twemoji/png/*.png ${TMP_BUILD_DIR}/images/flags/
 
 cp -r images/logo ${TMP_BUILD_DIR}/images/
 
+cp -r images/maps ${TMP_BUILD_DIR}/images/
+
 # Copy the code
 cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/chrome/html ${TMP_BUILD_DIR}/

@@ -68,7 +68,7 @@ function add_table_break_row(table, title, help) {
     table.append(tbody)
 }
 
-function add_challenges_to_table(table, data) {
+function add_challenges_to_table(table, data, geo_data) {
   console.log(data)
    var ui_challenge_generation_duration = 0
 
@@ -78,7 +78,7 @@ function add_challenges_to_table(table, data) {
        if (challenge.shortname == 'regionnaire') {
            generate_regionnaire_table_entry(challenge, table)
        } else {
-           generate_standard_table_entry(challenge, table)
+           generate_standard_table_entry(challenge, table, geo_data)
        }
        var duration = new Date() - start_time
        ui_challenge_generation_duration += duration
@@ -130,7 +130,7 @@ function get_challenge_icon(challenge, height, width) {
     return badge_img
 }
 
-function get_challenge_header_row(challenge) {
+function get_challenge_header_row(challenge, geo_data) {
 
     var main_row = $('<tr></tr>')
 
@@ -150,9 +150,17 @@ function get_challenge_header_row(challenge) {
     if (challenge.help !== undefined) {
         help = '<span style="font-size: 10px; vertical-align: middle; cursor: default" title="'+challenge.help+'">[?]</span>'
     }
+    var challenge_map_link_id = "challenge_"+challenge['shortname']+"_show_map"
+    var challenge_map_id = "challenge_"+challenge['shortname']+"_map"
+    var challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).text("show map").click(function() {
+      console.log(challenge_map_id)
+      console.log(challenge)
+      console.log(challenge.nearest_qualifying_events)
+      create_challenge_map(challenge_map_id, challenge, geo_data)
+    })
 
     main_row.append($('<th></th>').append(challenge.name + ' ' + help))
-    main_row.append($('<th></th>'))
+    main_row.append($('<th></th>').append(challenge_map_link))
     main_row.append($('<th></th>').text(challenge.completed_on))
     if (challenge.summary_text !== undefined) {
         main_row.append($('<th></th>').text(challenge.summary_text))
@@ -179,83 +187,142 @@ function generate_regionnaire_table_entry(challenge, table) {
 
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
 
-    add_map_element(challenge_tbody_detail)
-
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
 
-    create_map(challenge)
-
 }
 
-function create_map(challenge) {
-  console.log(challenge)
-  // var map = new ol.Map({
-  //   target: 'map',
-  //   layers: [
-  //     new ol.layer.Tile({
-  //       source: new ol.source.OSM()
-  //     })
-  //   ],
-  //   view: new ol.View({
-  //     center: ol.proj.fromLonLat([37.41, 8.82]),
-  //     zoom: 4
-  //   })
-  // });
+var challenge_maps = {}
 
-  var vectorSource = new ol.source.Vector({
-    //create empty vector
+function create_challenge_map(map_id, challenge_data, geo_data) {
+
+  console.log(challenge_data)
+
+  var EventsIcon = L.Icon.extend({
+    options: {
+        shadowUrl: chrome.extension.getURL("/images/maps/markers/leaf-shadow.png"),
+        iconSize:     [38, 95],
+        shadowSize:   [50, 64],
+        iconAnchor:   [22, 94],
+        shadowAnchor: [4, 62],
+        popupAnchor:  [-3, -76]
+    }
   });
 
-  //create a bunch of icons and add to source vector
-  for (var i=0;i<50;i++){
+  // Create empty vector for each layer
+  var events_complete = new L.featureGroup();
+  var events_complete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-green.png")})
+  var events_nearest_incomplete = new L.featureGroup();
+  var events_nearest_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-orange.png")})
+  var events_incomplete = new L.featureGroup();
+  var events_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-red.png")})
 
-      var iconFeature = new ol.Feature({
-        geometry: new
-          ol.geom.Point(ol.proj.transform([Math.random()*360-180, Math.random()*180-90], 'EPSG:4326',   'EPSG:3857')),
-      name: 'Null Island ' + i,
-      population: 4000,
-      rainfall: 500
-      });
-      vectorSource.addFeature(iconFeature);
+  // The ID of the element we are going to populate
+  var map_element_id = "challenge_map_"+challenge_data.shortname
+  // var map_element = document.getElementById(map_element_id)
+  // Empty and hide all of the existing map elements
+  $('div[id^="challenge_map_"]').each(function() {
+    $(this).empty().hide()
+  })
+  // Make this map element visible
+  var map_element = $('div[id="'+map_element_id+'"]').first()
+  map_element.show()
+  map_element.height(400)
+
+  // See if there are any existing maps, and remove them all
+  $.each(challenge_maps, function (id, map_data) {
+    map_data.map.remove()
+  })
+  // Remove all references
+  challenge_maps = {}
+
+
+  var mymap = L.map(map_element_id).setView([51.0632, -1.308], 10);
+
+  // Add the new map to our set of maps for future reference
+  challenge_maps[map_element_id] = {
+    "map": mymap,
+    "div_id": map_element_id
+  }
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(mymap);
+  mymap.addControl(new L.Control.Fullscreen());
+
+  var events_on_the_map = []
+  // console.log(geo_data)
+
+  // Add the completed events
+  console.log(challenge_data.completed_qualifying_events)
+  $.each(challenge_data.completed_qualifying_events, function(index, event) {
+    if (event in geo_data.data.events) {
+      if (!events_on_the_map.includes(event)) {
+        var event_data = geo_data.data.events[event]
+        // Make sure they are numbers
+        var lat_lon = [+event_data.lat, +event_data.lon]
+        var popup = event_data.name + ' parkrun<br>'+event_data.date
+        // events_complete.addFeature(new ol.Feature({
+        //   geometry: new ol.geom.Point(ol.proj.transform(lon_lat, 'EPSG:4326', 'EPSG:3857')),
+        //   name: event.name
+        // }))
+        // var marker = L.marker([51.5, -0.09]).addTo(mymap);
+        var marker = L.marker(lat_lon, {icon: events_complete_icon}).bindPopup(popup);
+        marker.addTo(events_complete)
+
+        events_on_the_map.push(event)
+      }
+    }
+  })
+  // These markers should be on the top
+  events_complete.setZIndex(50)
+  // Add Those markers
+  events_complete.addTo(mymap)
+
+  if (events_complete.getLayers().length > 0) {
+    mymap.fitBounds(events_complete.getBounds().pad(0.1));
   }
 
-  //create the style
-  var iconStyle = new ol.style.Style({
-    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-      anchor: [0.5, 46],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-      opacity: 0.75,
-      scale: 0.1,
-      src: chrome.extension.getURL("/images/maps/markers/green-marker.png")
-    }))
-  });
 
+  console.log(challenge_data.nearest_qualifying_events)
+  $.each(challenge_data.nearest_qualifying_events, function(index, event) {
+    console.log("nearest - " + event)
+    if (event in geo_data.data.events) {
+      if (!events_on_the_map.includes(event)) {
+        var event_data = geo_data.data.events[event]
+        // Make sure they are numbers
+        var lat_lon = [+event_data.lat, +event_data.lon]
+        var popup = event_data.name + ' parkrun<br>'
+        var marker = L.marker(lat_lon, {icon: events_nearest_incomplete_icon}).bindPopup(popup);
+        marker.addTo(events_nearest_incomplete)
 
+        events_on_the_map.push(event)
+      }
+    }
+  })
+  events_nearest_incomplete.setZIndex(25)
+  // Add Those markers
+  events_nearest_incomplete.addTo(mymap)
 
-  //add the feature vector to the layer vector, and apply a style to whole layer
-  var vectorLayer = new ol.layer.Vector({
-    source: vectorSource,
-    style: iconStyle
-  });
+  console.log(challenge_data.all_qualifying_events)
+  $.each(challenge_data.all_qualifying_events, function(index, event) {
+    console.log("all - " + event)
+    if (event in geo_data.data.events) {
+      if (!events_on_the_map.includes(event)) {
+        var event_data = geo_data.data.events[event]
+        // Make sure they are numbers
+        var lat_lon = [+event_data.lat, +event_data.lon]
+        var popup = event_data.name + ' parkrun<br>'
+        var marker = L.marker(lat_lon, {icon: events_incomplete_icon}).bindPopup(popup);
+        marker.addTo(events_incomplete)
 
-  var map = new ol.Map({
-    layers: [new ol.layer.Tile({ source: new ol.source.OSM() }), vectorLayer],
-    target: document.getElementById('map'),
-    view: new ol.View({
-      center: [-1.310849, 51.069286],
-      zoom: 3
-    })
-  });
-}
+        events_on_the_map.push(event)
+      }
+    }
+  })
+  events_incomplete.setZIndex(10)
+  // Add Those markers
+  events_incomplete.addTo(mymap)
 
-function add_map_element(table) {
-  var row = $('<tr></tr>')
-  var map = $('<td colspan="4"><div id="map" style="height:400; width:400"></div></td>')
-
-  row.append(map)
-  table.append(row)
 }
 
 function iterate_regionnaire_data(table, region, level, region_group) {
@@ -376,15 +443,19 @@ function iterate_regionnaire_data(table, region, level, region_group) {
     }
 }
 
-function generate_standard_table_entry(challenge, table) {
+function generate_standard_table_entry(challenge, table, geo_data) {
 
     var challenge_tbody_header = get_tbody_header(challenge)
     var challenge_tbody_detail = get_tbody_content(challenge)
 
     // Create the header row and add it to the tbody that exists to hold
     // the title row
-    var main_row = get_challenge_header_row(challenge)
+    var main_row = get_challenge_header_row(challenge, geo_data)
     challenge_tbody_header.append(main_row)
+
+    // Create a row to hold a map, and hide it
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="challenge_map_'+challenge.shortname+'" style="height:400; width:400"></div></td>'))
+    challenge_tbody_detail.append(map_row)
 
     // Print the subparts
     challenge.subparts_detail.forEach(function (subpart_detail) {

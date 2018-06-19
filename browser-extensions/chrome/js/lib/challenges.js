@@ -5,16 +5,18 @@
  */
 
 function generate_running_challenge_data(data) {
+  console.log(data)
   challenge_data = []
+
   if (data.parkrun_results) {
     challenge_data.push(challenge_tourist(data.parkrun_results, {"shortname": "tourist", "name": "Tourist", "data": 20, "help": "Run at 20+ different parkrun locations anywhere in the world."})),
     challenge_data.push(challenge_tourist(data.parkrun_results, {"shortname": "cowell-club", "name": "Cowell Club", "data": 100, "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75."})),
-    challenge_data.push(challenge_start_letters(data.parkrun_results, {"shortname": "alphabeteer", "name": "Alphabeteer", "data": "abcdefghijklmnopqrstuvwyz", "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."})),
+    challenge_data.push(challenge_start_letters(data, {"shortname": "alphabeteer", "name": "Alphabeteer", "data": "abcdefghijklmnopqrstuvwyz", "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."})),
     challenge_data.push(challenge_single_parkrun_count(data.parkrun_results, {"shortname": "single-ton", "name": "Single-Ton", "data": 100, "help": "Run 100+ parkruns at the same location."})),
     challenge_data.push(challenge_single_parkrun_count(data.parkrun_results, {"shortname": "double-ton", "name": "Double-Ton", "data": 200, "help": "Run 200+ parkruns at the same location."})),
     challenge_data.push(challenge_stopwatch_bingo(data.parkrun_results, {"shortname": "stopwatch-bingo", "name": "Stopwatch Bingo", "help": " Collect all the seconds from 00 to 59 in your finishing times."})),
-    challenge_data.push(challenge_start_letters(data.parkrun_results, {"shortname": "pirates", "name": "Pirates!", "data": "cccccccr", "help": "Run seven Cs and an R (say it out loud)."})),
-    challenge_data.push(challenge_start_letters(data.parkrun_results, {"shortname": "stayin-alive", "name": "Stayin' Alive", "data": "bgbgbg", "help": "Run three Bees and three Gees."})),
+    challenge_data.push(challenge_start_letters(data, {"shortname": "pirates", "name": "Pirates!", "data": "cccccccr", "help": "Run seven Cs and an R (say it out loud)."})),
+    challenge_data.push(challenge_start_letters(data, {"shortname": "stayin-alive", "name": "Stayin' Alive", "data": "bgbgbg", "help": "Run three Bees and three Gees."})),
     challenge_data.push(challenge_words(data.parkrun_results, {"shortname": "compass-club", "name": "Compass Club", "data": ["north","south","east","west"], "help": " Run at a parkrun named after each of the four compass points."})),
     challenge_data.push(challenge_parkruns(data.parkrun_results, {"shortname": "full-ponty", "name": "The Full Ponty", "data": ["Pontefract","Pontypool","Pontypridd"], "help": "Run at all the parkruns named ponty... or ponte..."})),
     challenge_data.push(challenge_parkruns(data.parkrun_results, {"shortname": "pilgrimage", "name": "Bushy Pilgrimage", "data": ["Bushy Park"], "help": "Run at Bushy parkrun, where it all began."})),
@@ -767,7 +769,17 @@ function create_data_object(params, category) {
         "subparts": [],
         "subparts_completed_count": 0,
         "subparts_detail": [],
-        "badge_icon": category+"-"+params.shortname
+        "badge_icon": category+"-"+params.shortname,
+        // Which events have contributed to this challenge?
+        // - a list of names
+        "completed_qualifying_events": [],
+        // Which are the closest events that could contribute to this challenge
+        // in order to complete it
+        // - a list of names
+        "nearest_qualifying_events": [],
+        // All of the qualifying events for this challenge
+        // - a list of names
+        "all_qualifying_events": []
     }
     return o
 }
@@ -796,8 +808,64 @@ function group_results_by_event(parkrun_results) {
     return events
 }
 
+function group_global_events_by_initial_letter(geo_data) {
 
-function challenge_start_letters(parkrun_results, params) {
+  var events = {}
+
+  $.each(geo_data.data.events, function (event_name, event_info) {
+    if (event_info.status == 'Live') {
+      event_letter = get_initial_letter(event_info["shortname"])
+      if (events[event_letter] === undefined) {
+        events[event_letter] = []
+      }
+      events[event_letter].push(event_info)
+    }
+  })
+
+  return events
+
+}
+
+function sort_grouped_events_by_distance(grouped_events, from_location) {
+  var sorted_events = {}
+
+  // If we have a unusable from location, return straight away
+  if (from_location == undefined || from_location.lat == undefined || from_location.lon == undefined) {
+    return undefined
+  }
+
+  $.each(grouped_events, function (group, event_list) {
+
+    // Only process those events with locations - they should all have locations,
+    // but if they don't, there isn't a lot we can do
+    events_with_location_info = []
+    $.each(event_list, function(index, event) {
+      if (event.lat && event.lon) {
+        events_with_location_info.push(event)
+      }
+    })
+
+    // Sort the list of places with locations by their distance from the
+    // from_location provided
+    sorted_events[group] = events_with_location_info.sort(function(event_a, event_b) {
+        return calculate_great_circle_distance(event_a, from_location) - calculate_great_circle_distance(event_b, from_location)
+    })
+  })
+
+  return sorted_events
+
+}
+
+function challenge_start_letters(data, params) {
+
+  // Find the data we are interested in
+  parkrun_results = data.parkrun_results
+  geo_data = data.geo_data
+  user_data = data.user_data
+  home_parkrun = undefined
+  if (user_data) {
+    home_parkrun = user_data.home_parkrun_info
+  }
 
     var letters = params.data
 
@@ -829,6 +897,7 @@ function challenge_start_letters(parkrun_results, params) {
                         p.info = p.date
                         o.subparts_detail[i] = p
                         o.subparts_completed_count += 1
+                        o.completed_qualifying_events.push(parkrun_event.name)
 
                         if (o.subparts.length == o.subparts_completed_count) {
                             o.complete = true
@@ -845,6 +914,16 @@ function challenge_start_letters(parkrun_results, params) {
         }
     })
 
+    // Group and sort the qualifying events
+    grouped_events = undefined
+    sorted_grouped_events = undefined
+    if (geo_data) {
+      grouped_events = group_global_events_by_initial_letter(geo_data)
+      if (home_parkrun) {
+        sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, home_parkrun)
+      }
+    }
+
     // Add in all the missing ones
     for (i=0; i< o.subparts.length; i++) {
         if (o.subparts_detail[i] == null) {
@@ -852,8 +931,36 @@ function challenge_start_letters(parkrun_results, params) {
                 "subpart": o.subparts[i],
                 "info": "-"
             }
+            if (grouped_events !== undefined) {
+              // Add those events for this letter
+              if (o.subparts[i] in grouped_events) {
+                $.each(grouped_events[o.subparts[i]], function (index, event) {
+                  // Don't add them if they are already there
+                  if (!o.all_qualifying_events.includes(event.name)) {
+                    o.all_qualifying_events.push(event.name)
+                  }
+                })
+              }
+            }
+
+            console.log(sorted_grouped_events)
+            if (sorted_grouped_events !== undefined) {
+              if (o.subparts[i] in sorted_grouped_events) {
+                // Add the first on that we haven't already added
+                $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
+                  // Only add it, and break out of the loop, if it is new
+                  if (!o.nearest_qualifying_events.includes(event.name)) {
+                    o.nearest_qualifying_events.push(event.name)
+                    // Break out
+                    return false
+                  }
+                })
+              }
+            }
         }
     }
+
+    console.log(o)
 
     // Return an object representing this challenge
     return update_data_object(o)
