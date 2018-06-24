@@ -270,6 +270,12 @@ function create_challenge_map(map_id, challenge_data, data) {
 
   // Default to centring on Winchester
   var map_centre_lat_lon = [51.0632, -1.308]
+  if (data.info.is_our_page && data.info.has_home_parkrun) {
+    var home_parkrun_info = data.user_data.home_parkrun_info
+    if (event_has_valid_location(home_parkrun_info)) {
+      map_centre_lat_lon = [+home_parkrun_info.lat, +home_parkrun_info.lon]
+    }
+  }
   var mymap = L.map(map_element_id).setView(map_centre_lat_lon, 10);
 
   // Add the new map to our set of maps for future reference
