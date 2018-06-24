@@ -42,6 +42,8 @@
           "js/lib/third-party/ol-4.6.5.js",
           "js/lib/third-party/leaflet/leaflet-1.3.1.js",
           "js/lib/third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js",
+          "js/lib/third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js",
+          "js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js",
           "js/lib/i18n.js",
           "js/lib/challenges.js",
           "js/lib/challenges_ui.js",
@@ -50,7 +52,10 @@
       "css": [
         "css/third-party/ol.css",
         "css/third-party/leaflet/leaflet.css",
-        "css/third-party/leaflet-fullscreen/leaflet-fullscreen.css"
+        "css/third-party/leaflet-fullscreen/leaflet-fullscreen.css",
+        "css/third-party/leaflet-markercluster/MarkerCluster.css",
+        "css/third-party/leaflet-markercluster/MarkerCluster.Default.css",
+        "css/third-party/leaflet-extramarkers/leaflet.extra-markers.min.css"
       ],
       "run_at": "document_end"
   },
