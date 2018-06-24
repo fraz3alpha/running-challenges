@@ -64,6 +64,14 @@ the challenge.
 somewhere on holiday, or further afield on a given weekend, and want to help progress
 a particular challenge towards completion.
 
+The fourth type of marker is purple, and indicates your home parkrun. If you have
+run it, and it counts in the challenge it will be round, and if you need to run it
+it will be pentagonal, as per the list above. If the home parkrun fits none of these
+categories it is still displayed on your page, but will be a star shape.
+
+If you visit someone else's page, the purple marker will be missing entirely, as
+the home parkrun will be unknown.
+
 If you are looking at your own page, then the Orange pentagonal markers are displayed
 automatically in the "Nearest Qualifying Events" layer. If you are on someone else's
 page (or have not set your home parkrun in the options), then we cannot automatically
