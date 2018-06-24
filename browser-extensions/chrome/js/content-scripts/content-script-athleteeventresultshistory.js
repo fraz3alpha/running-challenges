@@ -237,6 +237,12 @@ function create_skeleton_elements(id_map) {
   // Create stats element
   var running_challenges_stats_div = $('<div/>').attr("id", id_map["stats"])
   running_challenges_main_table_div.before(running_challenges_stats_div)
+
+  // Add a spacer between the stats and the main table
+  running_challenges_main_table_div.before($('<br/>'))
+
+  // Add a spacer after the main table
+  running_challenges_main_table_div.after($('<br/>'))
 }
 
 function add_stats(div_id, data) {
