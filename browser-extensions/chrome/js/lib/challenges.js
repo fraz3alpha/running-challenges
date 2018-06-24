@@ -5,7 +5,7 @@
  */
 
 function generate_running_challenge_data(data) {
-  console.log(data)
+  // console.log(data)
   challenge_data = []
 
   if (data.parkrun_results) {
@@ -898,7 +898,7 @@ function sort_events_by_distance(events, from_location) {
       return event_a.distance - event_b.distance
   })
 
-  console.log(sorted_events)
+  // console.log(sorted_events)
   return sorted_events
 
 }
@@ -1058,7 +1058,7 @@ function challenge_start_letters(data, params) {
             // If this is our page (i.e. the athlete id in our profile matches
             // that of this page), then we can try and work out which are closest
             if (data.info.is_our_page) {
-              console.log(sorted_grouped_events)
+              // console.log(sorted_grouped_events)
               // if (sorted_grouped_events !== undefined) {
               if (o.subparts[i] in sorted_grouped_events) {
                 // Add the first on that we haven't already added
@@ -1076,7 +1076,7 @@ function challenge_start_letters(data, params) {
         }
     }
 
-    console.log(o)
+    // console.log(o)
 
     // Return an object representing this challenge
     return update_data_object(o)

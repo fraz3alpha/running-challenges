@@ -309,7 +309,7 @@ function add_badges(div_id, data) {
 // Format the badge information specific to the running challenge data
 function get_running_badge(result) {
   var badge_info = undefined
-  console.log(result)
+  // console.log(result)
   if (result.complete == true) {
     badge_info = {
         "name": result.name,
@@ -324,7 +324,7 @@ function get_running_badge(result) {
 // in particular, we award the stars based on how many times each has been done
 function get_volunteer_badge(result) {
   var badge_info = undefined
-  console.log(result)
+  // console.log(result)
   if (result.complete == true) {
       badge_info = {
           "name": result.name,
@@ -347,11 +347,11 @@ function get_volunteer_badge(result) {
 
 function add_flags(div_id, data) {
   set_progress_message("Adding flags")
-  console.log(data)
+  // console.log(data)
 
   if (data.parkrun_results && data.geo_data) {
     global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
-    console.log(global_tourism_info)
+    // console.log(global_tourism_info)
 
     flags_div = $("div[id="+div_id+"]")
 
@@ -395,7 +395,7 @@ function add_flags(div_id, data) {
 
 function add_challenge_results(div_id, data) {
   set_progress_message("Adding challenge results")
-  console.log(data)
+  // console.log(data)
   results_div = $("div[id="+div_id+"]")
   results_table = generate_challenge_table()
   results_div.append(results_table)

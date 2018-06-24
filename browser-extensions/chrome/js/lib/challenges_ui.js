@@ -69,7 +69,7 @@ function add_table_break_row(table, title, help) {
 }
 
 function add_challenges_to_table(table, challenge_results_type, data) {
-  console.log(data)
+  // console.log(data)
    var ui_challenge_generation_duration = 0
 
    data.challenge_results[challenge_results_type].forEach(function (challenge) {
@@ -562,7 +562,7 @@ function iterate_regionnaire_data(table, region, level, region_group) {
 
     // Sort out the visibility of all sub rows
     if (hide_region_sub_rows) {
-        console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
+        // console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
         $("."+region_group).hide()
     }
 }
