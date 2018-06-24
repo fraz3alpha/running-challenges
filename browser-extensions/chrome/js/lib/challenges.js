@@ -549,6 +549,7 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
 
   return {
     "display_name": "Furthest travelled",
+    "help": "The furthest away parkrun you have been to (calculated from your home parkrun).",
     "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km"
   }
 }
@@ -587,7 +588,8 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   }
 
   return {
-    "display_name": "Nearest event not done yet",
+    "display_name": "Nearest event not done yet (NENDY)",
+    "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
     "value": value
   }
 }
