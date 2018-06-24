@@ -247,10 +247,8 @@ function create_skeleton_elements(id_map) {
 
 function add_stats(div_id, data) {
   set_progress_message("Adding stats")
-  stats_data = generate_stats(data)
-  console.log(stats_data)
   var stats_div = $("div[id="+div_id+"]")
-  add_stats_table(stats_div, stats_data)
+  add_stats_table(stats_div, data)
   set_progress_message("Added stats")
 }
 
@@ -488,17 +486,18 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   data.info.has_geo_data = (data.geo_data !== undefined)
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
 
-  console.log(data)
-
   data.challenge_results = {
     "running_results": generate_running_challenge_data(data),
     "volunteer_results": generate_volunteer_challenge_data(data)
   }
-
   // Update info with booleans for the presence of results
   data.info.has_challenge_results = (data.challenge_results !== undefined)
   data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
   data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
+
+  data.stats = generate_stats(data)
+  // Update info with boolean for the presence of stats
+  data.info.has_stats = (data.stats !== undefined)
 
   console.log(data)
 

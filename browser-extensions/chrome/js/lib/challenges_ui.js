@@ -154,7 +154,7 @@ function get_challenge_header_row(challenge, data) {
     var challenge_map_id = "challenge_"+challenge['shortname']+"_map"
     var challenge_map_link = ''
     if (data.info.has_geo_data && challenge.has_map === true) {
-        challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).text("show map").click(function() {
+        challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).html("<span style=\"cursor: default\">show map</span>").click(function() {
         console.log(challenge_map_id)
         console.log(challenge)
         console.log(challenge.nearest_qualifying_events)
@@ -601,22 +601,42 @@ function generate_standard_table_entry(challenge, table, data) {
 }
 
 function add_stats_table(div, data) {
-  var table = $('<table/>')
-  // Use the 'results' id so that we pick up the standard styling, yuk
-  table.attr("id", "results")
-  // Optionally add a class with .addClass(this.tableClass)
-  table.append($('<caption/>').text('Additional Athlete Stats'))
-  // Add header row
-  var header_row = $('<tr/>').html('<th>Stat</th><th>Value</th>')
-  table.append(header_row)
 
-  $.each(data, function(stat_shortname, stat_info) {
-    var row = $('<tr/>')
-    row.append($('<td/>').text(stat_info.display_name))
-    row.append($('<td/>').text(stat_info.value))
-    table.append(row)
-  })
+  if (data.info.has_stats) {
+    var table = $('<table/>')
+    // Use the 'results' id so that we pick up the standard styling, yuk
+    table.attr("id", "results")
+    // Optionally add a class with .addClass(this.tableClass)
+    table.append($('<caption/>').text('Additional Athlete Stats'))
+    // Add header row
+    var header_row = $('<tr/>').html('<th>Stat</th><th>Value</th>')
+    table.append(header_row)
 
-  div.append(table)
+    $.each(data.stats, function(stat_shortname, stat_info) {
+      var row = $('<tr/>')
+      var display_name = stat_info.display_name
+      var stat_value = stat_info.value
+      if (stat_info.help) {
+        display_name = '<span style="cursor: default" title="'+stat_info.help+'">'+display_name+'</span>'
+        stat_value = '<span style="cursor: default" title="'+stat_info.help+'">'+stat_value+'</span>'
+      }
+      row.append($('<td/>').html(display_name))
+      row.append($('<td/>').html(stat_value))
+      table.append(row)
+    })
+
+    div.append(table)
+  }
+
+  // Append a message noting that some information may be missing
+  // if there is no athlete_id or home parkrun set
+  if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
+    var options_message_container = $('<div/>')
+    options_link = $('<a/>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
+    options_message_container.append(options_link)
+    div.append($('<br/>'))
+    div.append(options_message_container)
+  }
 
 }

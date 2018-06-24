@@ -177,7 +177,8 @@ function generate_stat_total_runs(parkrun_results) {
     total_runs += 1
   })
   return {
-    "display_name": "Total runs",
+    "display_name": "Total number of parkruns",
+    "help": "The total number of parkruns completed.",
     "value": total_runs
   }
 }
@@ -193,6 +194,7 @@ function generate_stat_total_pbs(parkrun_results) {
   })
   return {
     "display_name": "Total PBs",
+    "help": "The total number of PBs achieved across all parkruns.",
     "value": total_pbs
   }
 }
@@ -216,7 +218,8 @@ function generate_stat_longest_pb_streak(parkrun_results) {
   })
   return {
     "display_name": "Longest PB streak",
-    "value": longest_pb_streak + " runs"
+    "help": "The highest number of consecutive PBs achieved across all parkrun events.",
+    "value": longest_pb_streak + " parkruns"
   }
 }
 
@@ -233,7 +236,8 @@ function generate_stat_total_distance_ran(parkrun_results) {
     }
   })
   return {
-    "display_name": "Total distance run",
+    "display_name": "Total parkrun distance",
+    "help": "The total distance achieved from adding up 5k for a parkrun, and 2k for a junior parkrun.",
     "value": total_distance_ran+"km"
   }
 }
@@ -266,7 +270,8 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
   }
 
   return {
-    "display_name": "Most runs in a year",
+    "display_name": "Most parkruns in a year",
+    "help": "The highest number of parkruns attended in a calendar year.",
     "value": value
   }
 }
@@ -296,6 +301,7 @@ function generate_stat_p_index(parkrun_results) {
   })
   return {
     "display_name": "p-index",
+    "help": "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4.",
     "value": p_index
   }
 }
@@ -321,6 +327,7 @@ function generate_stat_wilson_index(parkrun_results) {
   }
   return {
     "display_name": "wilson-index",
+    "help": "The maximum continguous series of parkrun event numbers you have attended (at any event), starting at 1.",
     "value": wilson_index
   }
 }
@@ -341,6 +348,7 @@ function generate_stat_parkrun_birthday(parkrun_results) {
   }
   return {
     "display_name": "parkrun birthday",
+    "help": "The day you joined the parkrun family!",
     "value": birthday
   }
 }
@@ -359,6 +367,7 @@ function generate_stat_years_parkrunning(parkrun_results) {
   }
   return {
     "display_name": "Years parkrunning",
+    "help": "How many full years you have been going to parkrun since your first event.",
     "value": years
   }
 }
@@ -375,13 +384,14 @@ function generate_stat_events_run(parkrun_results) {
 
   return {
     "display_name": "Events run",
+    "help": "The number of different parkrun evernts you have attended.",
     "value": Object.keys(events_run).length
   }
 }
 
 // A percentage showing how many of the events you have run at are new events,
 // i.e someone who never repeats an event is at 100%, and someone who never
-// leaves home is at 0%.
+// leaves home approaches 0%.
 function generate_stat_tourist_quotient(parkrun_results) {
   // Find those parkrun events that have been completed
   var events_run = {}
@@ -400,6 +410,7 @@ function generate_stat_tourist_quotient(parkrun_results) {
 
   return {
     "display_name": "Tourist Quotient",
+    "help": "The percentage of parkrun events attended that you had not been to before. If you never repeat a parkrun event it will be 100%, if you never tourist at all it will head towards 0%.",
     "value": tourist_quotient
   }
 }
@@ -416,7 +427,8 @@ function generate_stat_runs_this_year(parkrun_results) {
   })
 
   return {
-    "display_name": "Runs so far this year",
+    "display_name": "parkruns this year",
+    "help": "How many parkrun events you have got a time at this calendar year.",
     "value": runs_this_year
   }
 }
@@ -455,6 +467,7 @@ function generate_stat_total_distance_travelled(parkrun_results, geo_data) {
 
   return {
     "display_name": "Total distance travelled",
+    "help": "The cumulative distance you have travelled between each parkrun event.",
     "value": total_distance_travelled + "km"
   }
 }
@@ -475,6 +488,7 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
 
   return {
     "display_name": "Countries visited",
+    "help": "The total number of countries that you have parkrunned in.",
     "value": Object.keys(parkrun_countries_visited).length
   }
 }
@@ -503,6 +517,7 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
 
   return {
     "display_name": "Average parkrun lat/lon location",
+    "help": "The average latitude/longitude of all your parkrun attendances.",
     "value": value
   }
 }
