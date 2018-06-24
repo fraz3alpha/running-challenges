@@ -32,7 +32,7 @@ such as:
  - What is the total travel distance between each of the parkrun events I have done?
 
 
-[![Stats are now available]({{ site.baseurl }}/img/posts/stats.png "Stats are now available"){: .center-image}]
+[![Stats are now available]({{ site.baseurl }}/img/posts/stats.png "Stats are now available"){: .center-image}]({{ site.baseurl }}/img/posts/stats.png)
 
 Most of the stats are available on everyone's page, which means that you can
 browse these details for other people just like on your own page, but there are
@@ -52,7 +52,7 @@ such as the Cowell Club that look for number of unique events. To help see where
 you have been, and perhaps help you find where are the closest parkrun events to
 help you complete a challenge, there are now maps to help you.
 
-[![Maps are now available]({{ site.baseurl }}/img/posts/maps.png "Maps are now available"){: .center-image}]
+[![Maps are now available]({{ site.baseurl }}/img/posts/maps.png "Maps are now available"){: .center-image}]({{ site.baseurl }}/img/posts/maps.png)
 
 There are 3 main types of icon on the map:
 
@@ -74,7 +74,7 @@ N.B. The "Other Qualifying Events" layer can slow things in your browser where
 there are a lot of eligible parkruns, e.g for the "Cowell Club", where any event
 is fair game!
 
-[![Map layers]({{ site.baseurl }}/img/posts/map-layers.png "Map layers"){: .center-image}]
+[![Map layers]({{ site.baseurl }}/img/posts/map-layers.png "Map layers"){: .center-image}]({{ site.baseurl }}/img/posts/map-layers.png)
 
 If you have any feedback, good or bad, feel free to email us!
 
