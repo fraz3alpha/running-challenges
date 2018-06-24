@@ -23,4 +23,4 @@ cp -r browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
-zip -r extension.zip js/ html/ images/ manifest.json
+zip -r extension.zip js/ html/ images/ css/ manifest.json
