@@ -20,6 +20,14 @@ function initial_page_setup() {
     $('#athlete_home_parkrun').change(function() {
         update_home_parkrun_country()
     })
+    // Attach handler to catch when the beta checkbox is enabled, which
+    // will allow us to set the extra information text
+    // $('#enable_beta_features').change(function() {
+    //     on_change_enable_beta_features()
+    // })
+    $('#enable_beta_features').hide()
+    $('#enable_beta_features_label').hide()
+    $('#enable_beta_features_extra_comment').hide()
 
     // Hide the debug elements by default, only showing them if you set the
     // athlete number to 'testing'
@@ -43,6 +51,15 @@ function on_change_athlete_number() {
         show_debug_elements(false)
     }
 }
+
+// function on_change_enable_beta_features() {
+//   console.log("on_change_enable_beta_features()")
+//   if ($('#enable_beta_features').prop('checked')) {
+//     $('#enable_beta_features_extra_comment').show()
+//   } else {
+//     $('#enable_beta_features_extra_comment').hide()
+//   }
+// }
 
 function show_debug_elements(visible=false) {
     // A set of element IDs that will be shown/hidden depending on whether
@@ -86,12 +103,14 @@ function save_user_configuration() {
 
     var athlete_number = $('#athlete_number').val();
     var athlete_home_parkrun = $('#athlete_home_parkrun').val();
+    // var enable_beta_features_checked = $('#enable_beta_features').prop('checked');
 
     // Build up our information that we want to save.
     // Fetch the home parkrun info
     var saved_data = {
         athlete_number: athlete_number,
-        home_parkrun_info: get_home_parkrun_info(athlete_home_parkrun)
+        home_parkrun_info: get_home_parkrun_info(athlete_home_parkrun),
+        // enable_beta_features: enable_beta_features_checked
     }
 
     // Store it on the page for future use
@@ -115,7 +134,8 @@ function load_user_configuration() {
     var restored_options = null
     chrome.storage.sync.get({
         athlete_number: '',
-        home_parkrun_info: {}
+        home_parkrun_info: {},
+        // enable_beta_features: false
     }, function(items) {
         // Store it on the page for future use
         saved_options = items
@@ -123,8 +143,20 @@ function load_user_configuration() {
         $('#athlete_number').val(items.athlete_number);
         // Update the home parkrun dropdown with the loaded value, if present
         update_home_parkrun_dropdown()
+        // update_enable_beta_features_checkbox(items.enable_beta_features)
+
     });
 }
+
+// function update_enable_beta_features_checkbox(enabled) {
+//   if (enabled) {
+//     $('#enable_beta_features').prop('checked', true);
+//   } else {
+//     $('#enable_beta_features').prop('checked', false);
+//   }
+//   // Set additional display stuff as appropriate
+//   on_change_enable_beta_features()
+// }
 
 function update_cache(force_update=false) {
     console.log('update_cache()')

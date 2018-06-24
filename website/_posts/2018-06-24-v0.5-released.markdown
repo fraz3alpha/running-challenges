@@ -1,0 +1,96 @@
+---
+layout: post
+title:  "Version 0.5 Released"
+date:   2018-06-24 21:00:00 +1000
+categories:
+  - chrome-extension
+  - release
+---
+Now including maps and stats!
+
+If you have already installed the extension it should update soon, if not you can get it
+from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
+
+It has been a couple of months since our last release, but we haven't been
+twiddling our thumbs in that time...
+
+The two big features in this version are the addition of maps to most challenges
+(with regionnaire being the biggest exception, but more on that later), and the
+inclusion of a brand new section at the top summarising lots of stats to get your
+inner geek salivating!
+
+### Stats
+
+The stats are displayed above the challenges, and just under the athlete stats
+that are provided by default on the parkrun website. Here we summarise some of
+the main pieces of information that parkrun tourists and stats geeks love to have,
+such as:
+
+ - How many different events have I actually attended?
+ - What is the total distance I have run?
+ - What percentage of parkruns attended have been parkrun events I haven't been to before?
+ - What is the total travel distance between each of the parkrun events I have done?
+
+
+[![Stats are now available]({{ site.baseurl }}/img/posts/stats.png "Stats are now available"){: .center-image}]({{ site.baseurl }}/img/posts/stats.png)
+
+Most of the stats are available on everyone's page, which means that you can
+browse these details for other people just like on your own page, but there are
+are a few exceptions. If you have configured your home parkrun and athlete ID in
+the extension's options page, then you will also get two additional stats to
+answer the questions:
+
+- What is the nearest event I haven't done yet?
+- Which is the furthest away parkrun event I have been to?
+
+
+### Maps
+
+Many of the challenges involve visiting specific parkruns - many are based on their
+name (e.g. the initial letter, or containing a word), but there are also those
+such as the Cowell Club that look for number of unique events. To help see where
+you have been, and perhaps help you find where are the closest parkrun events to
+help you complete a challenge, there are now maps to help you.
+
+[![Maps are now available]({{ site.baseurl }}/img/posts/maps.png "Maps are now available"){: .center-image}]({{ site.baseurl }}/img/posts/maps.png)
+
+There are 3 main types of icon on the map:
+
+- Green rounded markers indicate events you have already been to, and qualify for
+the challenge in question.
+- Orange pentagonal markers indicate the closest set of events needed to complete
+the challenge.
+- Blue square markers indicate qualifying events, just incase you happen to be
+somewhere on holiday, or further afield on a given weekend, and want to help progress
+a particular challenge towards completion.
+
+The fourth type of marker is purple, and indicates your home parkrun. If you have
+run it, and it counts in the challenge it will be round, and if you need to run it
+it will be pentagonal, as per the list above. If the home parkrun fits none of these
+categories it is still displayed on your page, but will be a star shape.
+
+If you visit someone else's page, the purple marker will be missing entirely, as
+the home parkrun will be unknown.
+
+If you are looking at your own page, then the Orange pentagonal markers are displayed
+automatically in the "Nearest Qualifying Events" layer. If you are on someone else's
+page (or have not set your home parkrun in the options), then we cannot automatically
+tell what the home parkrun is, so all qualifying events appear in the "Other Qualifying Events"
+layer, which is not selected by default.
+
+N.B. The "Other Qualifying Events" layer can slow things in your browser where
+there are a lot of eligible parkruns, e.g for the "Cowell Club", where any event
+is fair game!
+
+[![Map layers]({{ site.baseurl }}/img/posts/map-layers.png "Map layers"){: .center-image}]({{ site.baseurl }}/img/posts/map-layers.png)
+
+If you have any feedback, good or bad, feel free to email us!
+
+### Regionnaire Challenge
+
+The eagle eyed among you will have noticed that the Regionnaire challenge hasn't
+got a map yet - well, we are still working on that, as it is the hardest one to
+display it in a good way, and we wanted to get the rest of the maps out for feedback
+whilst we worked on that more tricky problem!
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})

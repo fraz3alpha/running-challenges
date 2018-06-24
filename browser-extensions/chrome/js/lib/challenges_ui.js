@@ -68,17 +68,17 @@ function add_table_break_row(table, title, help) {
     table.append(tbody)
 }
 
-function add_challenges_to_table(table, data) {
-
+function add_challenges_to_table(table, challenge_results_type, data) {
+  // console.log(data)
    var ui_challenge_generation_duration = 0
 
-   data.forEach(function (challenge) {
+   data.challenge_results[challenge_results_type].forEach(function (challenge) {
        // console.log("Generating table rows for " + challenge.shortname)
        var start_time = new Date()
        if (challenge.shortname == 'regionnaire') {
-           generate_regionnaire_table_entry(challenge, table)
+           generate_regionnaire_table_entry(challenge, table, data)
        } else {
-           generate_standard_table_entry(challenge, table)
+           generate_standard_table_entry(challenge, table, data)
        }
        var duration = new Date() - start_time
        ui_challenge_generation_duration += duration
@@ -130,7 +130,7 @@ function get_challenge_icon(challenge, height, width) {
     return badge_img
 }
 
-function get_challenge_header_row(challenge) {
+function get_challenge_header_row(challenge, data) {
 
     var main_row = $('<tr></tr>')
 
@@ -150,9 +150,20 @@ function get_challenge_header_row(challenge) {
     if (challenge.help !== undefined) {
         help = '<span style="font-size: 10px; vertical-align: middle; cursor: default" title="'+challenge.help+'">[?]</span>'
     }
+    var challenge_map_link_id = "challenge_"+challenge['shortname']+"_show_map"
+    var challenge_map_id = "challenge_"+challenge['shortname']+"_map"
+    var challenge_map_link = ''
+    if (data.info.has_geo_data && challenge.has_map === true) {
+        challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).html("<span style=\"cursor: default\">show map</span>").click(function() {
+        console.log(challenge_map_id)
+        console.log(challenge)
+        console.log(challenge.nearest_qualifying_events)
+        create_challenge_map(challenge_map_id, challenge, data)
+      })
+    }
 
     main_row.append($('<th></th>').append(challenge.name + ' ' + help))
-    main_row.append($('<th></th>'))
+    main_row.append($('<th></th>').append(challenge_map_link))
     main_row.append($('<th></th>').text(challenge.completed_on))
     if (challenge.summary_text !== undefined) {
         main_row.append($('<th></th>').text(challenge.summary_text))
@@ -166,7 +177,7 @@ function get_challenge_header_row(challenge) {
     return main_row
 }
 
-function generate_regionnaire_table_entry(challenge, table) {
+function generate_regionnaire_table_entry(challenge, table, data) {
     var shortname = challenge['shortname']
 
     var challenge_tbody_header = get_tbody_header(challenge)
@@ -174,7 +185,7 @@ function generate_regionnaire_table_entry(challenge, table) {
 
     // Create the header row and add it to the tbody that exists to hold
     // the title row
-    var main_row = get_challenge_header_row(challenge)
+    var main_row = get_challenge_header_row(challenge, data)
     challenge_tbody_header.append(main_row)
 
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
@@ -182,6 +193,260 @@ function generate_regionnaire_table_entry(challenge, table) {
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
 
+}
+
+var challenge_maps = {}
+
+function create_challenge_map(map_id, challenge_data, data) {
+
+  console.log(challenge_data)
+
+  var home_parkrun_marker_colour = 'purple'
+
+  // Create empty vector for each layer
+  // var home_parkrun = new L.featureGroup()
+  var events_complete = new L.featureGroup();
+  // var events_complete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-green.png")})
+  var events_complete_icon = L.ExtraMarkers.icon({
+    markerColor: 'green-light',
+    shape: 'circle'
+  });
+  var events_complete_icon_home = L.ExtraMarkers.icon({
+    markerColor: home_parkrun_marker_colour,
+    shape: 'circle'
+  });
+  var events_nearest_incomplete = new L.featureGroup();
+  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-orange.png")})
+  var events_nearest_incomplete_icon = L.ExtraMarkers.icon({
+    markerColor: 'yellow',
+    shape: 'penta'
+  });
+  var events_nearest_incomplete_icon_home = L.ExtraMarkers.icon({
+    markerColor: home_parkrun_marker_colour,
+    shape: 'penta'
+  });
+  var events_incomplete = new L.featureGroup();
+  // var events_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-red.png")})
+  var events_incomplete_icon = L.ExtraMarkers.icon({
+    markerColor: 'cyan',
+    shape: 'square'
+  });
+  var events_incomplete_icon_home = L.ExtraMarkers.icon({
+    markerColor: home_parkrun_marker_colour,
+    shape: 'square'
+  });
+
+  var events_ineligible_icon_home = L.ExtraMarkers.icon({
+    markerColor: home_parkrun_marker_colour,
+    shape: 'star'
+  });
+
+  // // Add the home parkrun if it has been defined
+  // if (challenge_data.home_parkrun) {
+  //   var lat_lon = [+challenge_data.home_parkrun.lat, +challenge_data.home_parkrun.lon]
+  //   var popup = 'Home parkrun: ' + challenge_data.home_parkrun.name
+  //   var marker = L.marker(lat_lon).bindPopup(popup);
+  //   marker.addTo(home_parkrun)
+  // }
+
+  // The ID of the element we are going to populate
+  var map_element_id = "challenge_map_"+challenge_data.shortname
+  // var map_element = document.getElementById(map_element_id)
+  // Empty and hide all of the existing map elements
+  $('div[id^="challenge_map_"]').each(function() {
+    $(this).empty().hide()
+  })
+  // Make this map element visible
+  var map_element = $('div[id="'+map_element_id+'"]').first()
+  map_element.show()
+  map_element.height(400)
+
+  // See if there are any existing maps, and remove them all
+  $.each(challenge_maps, function (id, map_data) {
+    map_data.map.remove()
+  })
+  // Remove all references
+  challenge_maps = {}
+
+  // Default to centring on Winchester
+  var map_centre_lat_lon = [51.0632, -1.308]
+  if (data.info.is_our_page && data.info.has_home_parkrun) {
+    var home_parkrun_info = data.user_data.home_parkrun_info
+    if (event_has_valid_location(home_parkrun_info)) {
+      map_centre_lat_lon = [+home_parkrun_info.lat, +home_parkrun_info.lon]
+    }
+  }
+  var mymap = L.map(map_element_id).setView(map_centre_lat_lon, 10);
+
+  // Add the new map to our set of maps for future reference
+  challenge_maps[map_element_id] = {
+    "map": mymap,
+    "div_id": map_element_id
+  }
+  var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  })
+  tilelayer_openstreetmap.addTo(mymap)
+
+  var events_on_the_map = []
+  var added_home_parkrun = false
+
+  // Add the completed events
+  $.each(challenge_data.completed_qualifying_events, function(event_name, event_info) {
+      if (!events_on_the_map.includes(event_name)) {
+        if (event_has_valid_location(event_info)) {
+          // Make sure they are numbers
+          var lat_lon = [+event_info.lat, +event_info.lon]
+          var popup = get_parkrun_popup(event_name, event_info, {distance: true})
+          var marker = L.marker(lat_lon, {icon: events_complete_icon}).bindPopup(popup);
+          if (data.info.is_our_page && data.info.has_home_parkrun && (data.user_data.home_parkrun_info.name == event_name)) {
+              popup = get_parkrun_popup(event_name, event_info, {distance: false})
+              marker = L.marker(lat_lon, {icon: events_complete_icon_home}).bindPopup(popup);
+              added_home_parkrun = true
+          }
+          marker.addTo(events_complete)
+
+          events_on_the_map.push(event_name)
+        }
+      }
+  })
+  // These markers should be on the top
+  events_complete.setZIndex(50)
+  // Add Those markers
+  events_complete.addTo(mymap)
+
+  if (events_complete.getLayers().length > 0) {
+    mymap.fitBounds(events_complete.getBounds().pad(0.1));
+  }
+
+  if (data.info.is_our_page) {
+    $.each(challenge_data.nearest_qualifying_events, function(event_name, event_info) {
+        if (!events_on_the_map.includes(event_name)) {
+          if (event_has_valid_location(event_info)) {
+            // Make sure they are numbers
+            var lat_lon = [+event_info.lat, +event_info.lon]
+            var popup = get_parkrun_popup(event_name, event_info, {distance: true})
+            var marker = L.marker(lat_lon, {icon: events_nearest_incomplete_icon}).bindPopup(popup);
+            if (data.info.is_our_page && data.info.has_home_parkrun && (data.user_data.home_parkrun_info.name == event_name)) {
+                popup = get_parkrun_popup(event_name, event_info, {distance: false})
+                marker = L.marker(lat_lon, {icon: events_nearest_incomplete_icon_home}).bindPopup(popup);
+                added_home_parkrun = true
+            }
+            marker.addTo(events_nearest_incomplete)
+
+            events_on_the_map.push(event_name)
+          }
+        }
+    })
+    events_nearest_incomplete.setZIndex(25)
+    // Add Those markers
+    events_nearest_incomplete.addTo(mymap)
+  }
+
+  $.each(challenge_data.all_qualifying_events, function(event_name, event_info) {
+    // console.log("all - " + event_name)
+      if (!events_on_the_map.includes(event_name)) {
+        if (event_has_valid_location(event_info)) {
+          // Make sure they are numbers
+          var lat_lon = [+event_info.lat, +event_info.lon]
+          var popup = get_parkrun_popup(event_name, event_info, {distance: true})
+          var marker = L.marker(lat_lon, {icon: events_incomplete_icon}).bindPopup(popup);
+          if (data.info.is_our_page && data.info.has_home_parkrun && (data.user_data.home_parkrun_info.name == event_name)) {
+              popup = get_parkrun_popup(event_name, event_info, {distance: false})
+              marker = L.marker(lat_lon, {icon: events_incomplete_icon_home}).bindPopup(popup);
+              added_home_parkrun = true
+          }
+          marker.addTo(events_incomplete)
+
+          events_on_the_map.push(event_name)
+        }
+      }
+  })
+  events_incomplete.setZIndex(10)
+  // Add Those markers
+  // events_incomplete.addTo(mymap)
+
+  // If we have not added the home parkrun, this means that it is not eligible
+  // for this challenge, but it is still useful to add an icon for it - so lets
+  // add it straight to the map now
+  if (data.info.is_our_page && data.info.has_home_parkrun && (added_home_parkrun == false)) {
+    if (event_has_valid_location(data.user_data.home_parkrun_info)) {
+      var lat_lon = [+data.user_data.home_parkrun_info.lat, +data.user_data.home_parkrun_info.lon]
+      var marker = L.marker(lat_lon, {icon: events_ineligible_icon_home});
+      marker.addTo(mymap)
+    }
+  }
+
+  base_maps = {
+    "openstreetmap": tilelayer_openstreetmap
+  }
+
+  overlay_markers = {}
+
+  // Add the overlays in the order we want them to appear
+
+  overlay_markers["Completed Events"] = events_complete
+
+  if (challenge_data.complete == false) {
+
+    if (data.info.is_our_page && data.info.has_home_parkrun && events_nearest_incomplete.getLayers().length > 0) {
+      overlay_markers['Nearest Qualifying Events'] = events_nearest_incomplete
+    }
+
+    // overlay_markers['Other Qualifying Events'] = events_incomplete
+    // Only add it if there are any events in the list
+    if (events_incomplete.getLayers().length > 0) {
+      // I've override the css that creates the standard markers so they are all
+      // red, although we really need to do it in a more configurable way
+      var clustered_events_incomplete = L.markerClusterGroup({
+        disableClusteringAtZoom: 9,
+      });
+      clustered_events_incomplete.addLayers(events_incomplete.getLayers())
+
+      overlay_markers['Other Qualifying Events'] = clustered_events_incomplete
+    }
+  }
+
+  layer_control_options = {
+    'hideSingleBase': true
+  }
+
+  // Add a control which will provide a way to optionally turn on the layers
+  // that we haven't added
+  L.control.layers(base_maps, overlay_markers, layer_control_options).addTo(mymap);
+
+  mymap.addControl(new L.Control.Fullscreen());
+
+}
+
+function event_has_valid_location(event_info) {
+  var valid_location = false
+  if (event_info.lat && event_info.lon) {
+    if (event_info.lat != '' && event_info.lon != '') {
+      valid_location = true
+    }
+  }
+  return valid_location
+}
+
+function get_parkrun_popup(event_name, event_info, custom_options) {
+
+  var options = {
+    distance: true
+  }
+  if (custom_options.distance !== undefined) {
+    options.distance = custom_options.distance
+  }
+
+  var event_name_link = event_name + ' parkrun'
+  if (event_info.event_url) {
+    event_name_link = '<a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a>'
+  }
+  popup = event_name_link
+  if (event_info.distance !== undefined && options.distance) {
+    popup = popup+"<br/>"+event_info.distance.toFixed(1)+" km away"
+  }
+  return popup
 }
 
 function iterate_regionnaire_data(table, region, level, region_group) {
@@ -295,22 +560,28 @@ function iterate_regionnaire_data(table, region, level, region_group) {
         iterate_regionnaire_data(table, child_region, level+1, region_event_class_name)
     })
 
-    // // Sort out the visibility of all sub rows
-    // if (hide_region_sub_rows) {
-    //     console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
-    //     $("."+region_group).hide()
-    // }
+    // Sort out the visibility of all sub rows
+    if (hide_region_sub_rows) {
+        // console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
+        $("."+region_group).hide()
+    }
 }
 
-function generate_standard_table_entry(challenge, table) {
+function generate_standard_table_entry(challenge, table, data) {
 
     var challenge_tbody_header = get_tbody_header(challenge)
     var challenge_tbody_detail = get_tbody_content(challenge)
 
     // Create the header row and add it to the tbody that exists to hold
     // the title row
-    var main_row = get_challenge_header_row(challenge)
+    var main_row = get_challenge_header_row(challenge, data)
     challenge_tbody_header.append(main_row)
+
+    // Create a row to hold a map, and hide it
+    if (challenge.has_map === true) {
+      var map_row = $("<tr/>").append($('<td colspan="4"><div id="challenge_map_'+challenge.shortname+'" style="height:400; width:400"></div></td>'))
+      challenge_tbody_detail.append(map_row)
+    }
 
     // Print the subparts
     challenge.subparts_detail.forEach(function (subpart_detail) {
@@ -332,5 +603,46 @@ function generate_standard_table_entry(challenge, table) {
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
+
+}
+
+function add_stats_table(div, data) {
+
+  if (data.info.has_stats) {
+    var table = $('<table/>')
+    // Use the 'results' id so that we pick up the standard styling, yuk
+    table.attr("id", "results")
+    // Optionally add a class with .addClass(this.tableClass)
+    table.append($('<caption/>').text('Additional Athlete Stats'))
+    // Add header row
+    var header_row = $('<tr/>').html('<th>Stat</th><th>Value</th>')
+    table.append(header_row)
+
+    $.each(data.stats, function(stat_shortname, stat_info) {
+      var row = $('<tr/>')
+      var display_name = stat_info.display_name
+      var stat_value = stat_info.value
+      if (stat_info.help) {
+        display_name = '<span style="cursor: default" title="'+stat_info.help+'">'+display_name+'</span>'
+        stat_value = '<span style="cursor: default" title="'+stat_info.help+'">'+stat_value+'</span>'
+      }
+      row.append($('<td/>').html(display_name))
+      row.append($('<td/>').html(stat_value))
+      table.append(row)
+    })
+
+    div.append(table)
+  }
+
+  // Append a message noting that some information may be missing
+  // if there is no athlete_id or home parkrun set
+  if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
+    var options_message_container = $('<div/>')
+    options_link = $('<a/>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options.')
+    options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
+    options_message_container.append(options_link)
+    div.append($('<br/>'))
+    div.append(options_message_container)
+  }
 
 }
