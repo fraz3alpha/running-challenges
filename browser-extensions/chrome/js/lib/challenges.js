@@ -13,64 +13,80 @@ function generate_running_challenge_data(data) {
       "shortname": "tourist",
       "name": "Tourist",
       "data": 20,
-      "help": "Run at 20+ different parkrun locations anywhere in the world."})),
+      "help": "Run at 20+ different parkrun locations anywhere in the world."}))
     challenge_data.push(challenge_tourist(data, {
       "shortname": "cowell-club",
       "name": "Cowell Club",
       "data": 100,
-      "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75."})),
+      "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75."}))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "alphabeteer",
       "name": "Alphabeteer",
       "data": "abcdefghijklmnopqrstuvwyz",
-      "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."})),
+      "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."}))
     challenge_data.push(challenge_single_parkrun_count(data, {
       "shortname": "single-ton",
       "name": "Single-Ton",
       "data": 100,
-      "help": "Run 100+ parkruns at the same location."})),
+      "help": "Run 100+ parkruns at the same location."}))
     challenge_data.push(challenge_single_parkrun_count(data, {
       "shortname": "double-ton",
       "name": "Double-Ton",
       "data": 200,
-      "help": "Run 200+ parkruns at the same location."})),
+      "help": "Run 200+ parkruns at the same location."}))
     challenge_data.push(challenge_stopwatch_bingo(data, {
       "shortname": "stopwatch-bingo",
       "name": "Stopwatch Bingo",
-      "help": " Collect all the seconds from 00 to 59 in your finishing times."})),
+      "help": " Collect all the seconds from 00 to 59 in your finishing times."}))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "pirates",
       "name": "Pirates!",
       "data": "cccccccr",
-      "help": "Run seven Cs and an R (say it out loud)."})),
+      "help": "Run seven Cs and an R (say it out loud)."}))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "stayin-alive",
       "name": "Stayin' Alive",
       "data": "bgbgbg",
-      "help": "Run three Bees and three Gees."})),
+      "help": "Run three Bees and three Gees."}))
     challenge_data.push(challenge_words(data, {
       "shortname": "compass-club",
       "name": "Compass Club",
       "data": ["north","south","east","west"],
-      "help": " Run at a parkrun named after each of the four compass points."})),
+      "help": " Run at a parkrun named after each of the four compass points."}))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "full-ponty",
       "name": "The Full Ponty",
       "data": ["Pontefract","Pontypool","Pontypridd"],
-      "help": "Run at all the parkruns named ponty... or ponte..."})),
+      "help": "Run at all the parkruns named ponty... or ponte..."}))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "pilgrimage",
       "name": "Bushy Pilgrimage",
       "data": ["Bushy Park"],
-      "help": "Run at Bushy parkrun, where it all began."})),
+      "help": "Run at Bushy parkrun, where it all began."}))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
       "name":  "NYD Double",
-      "help": "Run two parkruns on one New Year's Day."})),
+      "help": "Run two parkruns on one New Year's Day."}))
     challenge_data.push(challenge_groundhog_day(data, {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
       "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
+    challenge_data.push(challenge_in_a_year(data, {
+      "shortname": "obsessive-bronze",
+      "name": "Bronze Level Obsessive",
+      "data": 30,
+      "help": "Run 30+ parkruns in one calendar year."}))
+    challenge_data.push(challenge_in_a_year(data, {
+      "shortname": "obsessive-silver",
+      "name": "Silver Level Obsessive",
+      "data": 40,
+      "help": "Run 40+ parkruns in one calendar year."}))
+    challenge_data.push(challenge_in_a_year(data, {
+      "shortname": "obsessive-gold",
+      "name": "Gold Level Obsessive",
+      "data": 50,
+      "help": "Run 50+ parkruns in one calendar year."}))
+
   }
 
   if (data.parkrun_results && data.geo_data) {
@@ -1647,8 +1663,9 @@ function challenge_groundhog_day(data, params) {
     return update_data_object(o)
 }
 
-function challenge_in_a_year(parkrun_results, params) {
+function challenge_in_a_year(data, params) {
 
+    var parkrun_results = data.parkrun_results
     var count = params.data
 
     var o = create_data_object(params, "runner")
