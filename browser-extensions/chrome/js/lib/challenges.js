@@ -149,6 +149,11 @@ function generate_volunteer_challenge_data(data) {
 
 // Function adapted from https://www.movable-type.co.uk/scripts/latlong.html
 function calculate_great_circle_distance(point1, point2) {
+
+  if (point1.lat == '' || point1.lon == '' || point2.lat == '' || point2.lon == '') {
+    return 0
+  }
+
   var R = 6371; // km
   var φ1 = point1.lat * Math.PI / 180;
   var φ2 = point2.lat * Math.PI / 180;
@@ -480,8 +485,10 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
     // Work out how many countries have been visited
     if (geo_data.data.events[parkrun_event.name] !== undefined) {
       var event_location_info = geo_data.data.events[parkrun_event.name]
-      if (!(event_location_info.country_name in parkrun_countries_visited)) {
-        parkrun_countries_visited[event_location_info.country_name] = true
+      if (event_location_info.country_name != 'unknown') {
+        if (!(event_location_info.country_name in parkrun_countries_visited)) {
+          parkrun_countries_visited[event_location_info.country_name] = true
+        }
       }
     }
   })
