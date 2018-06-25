@@ -316,6 +316,12 @@ function get_running_badge(result) {
         "icon": chrome.extension.getURL("/images/badges/"+result.badge_icon+".png"),
         "link": "#"+result.shortname
     }
+  } else if (result.partial_completion == true) {
+      badge_info = {
+        "name": result.partial_completion_name,
+        "icon": chrome.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+        "link": "#"+result.shortname
+      }
   }
   return badge_info
 }
