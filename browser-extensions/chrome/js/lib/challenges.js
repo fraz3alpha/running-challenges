@@ -306,7 +306,7 @@ function generate_stat_p_index(parkrun_results) {
   }
 }
 
-// The maximum continguous series of parkrun event numbers you have attended
+// The maximum contiguous series of parkrun event numbers you have attended
 // (at any event), starting at 1.
 function generate_stat_wilson_index(parkrun_results) {
   var wilson_index = 0
@@ -327,7 +327,7 @@ function generate_stat_wilson_index(parkrun_results) {
   }
   return {
     "display_name": "wilson-index",
-    "help": "The maximum continguous series of parkrun event numbers you have attended (at any event), starting at 1.",
+    "help": "The maximum contiguous series of parkrun event numbers you have attended (at any event), starting at 1.",
     "value": wilson_index
   }
 }
