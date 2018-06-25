@@ -207,6 +207,12 @@ function create_regionnaire_map(div_id, data, challenge) {
 
   // Find where to focus the map on to start with
   var default_centre = [25,0]
+  if (data.info.has_home_parkrun && data.info.is_our_page) {
+    var home_parkrun = data.user_data.home_parkrun_info
+    if (event_has_valid_location(home_parkrun)) {
+      default_centre = [+home_parkrun.lat, +home_parkrun.lon]
+    }
+  }
 
   var r_map = L.map(div_id).setView(default_centre, 2);
   // Allow it to be fullscreen
