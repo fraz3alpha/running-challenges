@@ -188,10 +188,188 @@ function generate_regionnaire_table_entry(challenge, table, data) {
     var main_row = get_challenge_header_row(challenge, data)
     challenge_tbody_header.append(main_row)
 
+    // Create a row to hold a map
+    var regionnaire_map_id = 'regionnaire_map'
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
+    challenge_tbody_detail.append(map_row)
+
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
+
+    create_regionnaire_map(regionnaire_map_id, data)
+
+}
+
+function create_regionnaire_map(div_id, data) {
+  // Create the map to start with
+
+  // Find where to focus the map on to start with
+  var default_centre = [25,0]
+
+  var r_map = L.map(div_id).setView(default_centre, 2);
+  // Allow it to be fullscreen
+  r_map.addControl(new L.Control.Fullscreen());
+
+  var map_data = {
+      map: r_map,
+      layers: {}
+  }
+
+  // Mapping countries to flag image files
+  var flag_map = {
+      "New Zealand": "nz",
+      "Australia": "au",
+      "Denmark": "dk",
+      "Finland": "fi",
+      "France": "fr",
+      "Germany": "de",
+      // "Iceland"--
+      "Ireland": "ie",
+      "Italy": "it",
+      "Malaysia": "my",
+      "Canada": "ca",
+      "Norway": "no",
+      "Poland": "pl",
+      "Russia": "ru",
+      "Singapore": "sg",
+      "South Africa": "za",
+      "Sweden": "se",
+      "UK": "gb",
+      "USA": "us"
+      // "Zimbabwe"--
+  }
+
+  // Set the openstreetmap tiles
+  var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  })
+  tilelayer_openstreetmap.addTo(r_map)
+
+  // Icon sets
+  var country_icon = L.ExtraMarkers.icon({
+    markerColor: 'green-light',
+    shape: 'circle'
+  });
+
+  var FlagIcon = L.Icon.extend({
+      options: {
+          shadowUrl: undefined,
+          iconSize:     [40, 40],
+          shadowSize:   [50, 64],
+          iconAnchor:   [20, 20],
+          shadowAnchor: [4, 62],
+          popupAnchor:  [-3, -76]
+      }
+  });
+
+  var sub_region_icon = L.ExtraMarkers.icon({
+    markerColor: 'cyan',
+    shape: 'circle'
+  });
+
+  // Iterate through the top level countries
+  // We are using our pre-scanned list here, so that we can take advantage of
+  // having removed 'world', and perhaps adjusted any sub-countries (Namibia,
+  // Swaziland spring to mind)
+
+  map_data.layers.country_markers = new L.featureGroup();
+
+  $.each(data.geo_data.data.countries, function (country_name, country_info) {
+
+    var region_info = data.geo_data.data.regions[country_name]
+    console.log(region_info)
+
+    if (event_has_valid_location(region_info)) {
+
+      // Get the location of the country mid-point, according to parkrun
+      var lat_lon = [+region_info.lat, +region_info.lon]
+      // Get the current regions id for later use by the on click callback function
+      var region_id = region_info.id
+
+      // Top level countries have a flag
+      var marker = L.marker(lat_lon, {
+        icon: new FlagIcon({
+          iconUrl: chrome.extension.getURL("/images/flags/"+flag_map[country_name]+".png")
+        })
+      })
+      marker.on('click', function() {
+        show_sub_regions(map_data, data, region_id)
+      })
+      marker.addTo(map_data.layers.country_markers);
+
+    }
+
+  })
+
+  map_data.layers.country_markers.addTo(map_data.map)
+
+}
+
+function show_sub_regions(map_data, data, region_id) {
+  console.log('Click for region: '+region_id)
+
+  // Remove any existing subregions
+  if (map_data.layers.subregions) {
+    map_data.map.removeLayer(map_data.layers.subregions)
+  }
+
+  // Make a new object
+  map_data.layers.subregions = new L.featureGroup();
+
+  var sub_region_icon = L.ExtraMarkers.icon({
+    markerColor: 'cyan',
+    shape: 'square'
+  });
+
+  $.each(data.geo_data.data.regions, function (region_name, region_info) {
+    if (region_info.parent_id == region_id) {
+      if (event_has_valid_location(region_info)) {
+        // Get the location of the country mid-point, according to parkrun
+        var lat_lon = [+region_info.lat, +region_info.lon]
+        var sub_region_id = region_info.id
+        var marker = L.marker(lat_lon, {icon: sub_region_icon})
+        marker.on('click', function() {
+          show_sub_region_events(map_data, data, sub_region_id)
+        })
+        marker.addTo(map_data.layers.subregions)
+      }
+    }
+  })
+  map_data.layers.subregions.addTo(map_data.map)
+}
+
+function show_sub_region_events(map_data, data, region_id) {
+  console.log('Click for region: '+region_id)
+
+  var layer_key = 'subregion_events'
+
+  // Remove any existing subregion events
+  if (layer_key in map_data.layers) {
+    map_data.map.removeLayer(map_data.layers[layer_key])
+  }
+
+  // Make a new object
+  map_data.layers[layer_key] = new L.featureGroup();
+
+  var sub_region_event_icon = L.ExtraMarkers.icon({
+    markerColor: 'green-light',
+    shape: 'round'
+  });
+
+
+  $.each(data.geo_data.data.events, function (event_name, event_info) {
+    if (event_info.region_id == region_id) {
+      if (event_has_valid_location(event_info)) {
+        // Get the location of the country mid-point, according to parkrun
+        var lat_lon = [+event_info.lat, +event_info.lon]
+        var marker = L.marker(lat_lon, {icon: sub_region_event_icon})
+        marker.addTo(map_data.layers[layer_key])
+      }
+    }
+  })
+  map_data.layers[layer_key].addTo(map_data.map)
 
 }
 
