@@ -192,6 +192,8 @@ function generate_regionnaire_table_entry(challenge, table, data) {
     var regionnaire_map_id = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events for more info!</td>'))
+    challenge_tbody_detail.append(map_row)
 
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
 
