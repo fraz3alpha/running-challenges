@@ -627,6 +627,7 @@ function generate_stat_total_volunteer_roles(volunteer_data) {
   })
   return {
     "display_name": "Total volunteer roles",
+    "help": "The total number of times your name has appeared next to a role on the volunteer roster - note this includes the fact you can get multiple credits per week, and does not indicate your eligibility for a milestone shirt.",
     "value": total_volunteer_roles
   }
 }
@@ -635,6 +636,7 @@ function generate_stat_total_volunteer_roles(volunteer_data) {
 function generate_stat_total_distinct_volunteer_roles(volunteer_data) {
   return {
     "display_name": "Total distinct volunteer roles",
+    "help": "How many of the different volunteering roles have been completed.",
     "value": Object.keys(volunteer_data).length
   }
 }

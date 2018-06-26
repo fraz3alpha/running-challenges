@@ -491,6 +491,7 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   // Convenience properties for the main sources of data
   data.info.has_geo_data = (data.geo_data !== undefined)
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
+  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.challenge_results = {
     "running_results": generate_running_challenge_data(data),
