@@ -644,5 +644,6 @@ function add_stats_table(div, data) {
     div.append($('<br/>'))
     div.append(options_message_container)
   }
+  div.append('<br/>Hover over the stats for a more detailed description')
 
 }
