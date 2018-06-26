@@ -324,7 +324,12 @@ function create_regionnaire_map(div_id, data, challenge) {
         })
         // Add a tooltip showing the name of the country and a summary of the
         // completion numbers
-        marker.bindTooltip(country_name + ' ' + events_complete_count + '/' + events_total_count)
+        var marker_tooltip_text = country_name + ' ' + events_complete_count + '/' + events_total_count
+        var marker_tooltip_options = {
+          offset: [0, -16],
+          direction: 'top'
+        }
+        marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
         marker.on('click', function() {
           show_sub_regions_and_events(map_data, data, region_id, 0)
         })
@@ -357,6 +362,11 @@ function create_regionnaire_map(div_id, data, challenge) {
             // Budge the pie chart over to the right a bit, so that the flag+chart are
             // mostly centred on the original point, and not wildly off to one side
             iconAnchor: [-4, 16]
+          })
+          // Add the same tooltips and on click actions as for the flag
+          pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+          pie_marker.on('click', function() {
+            show_sub_regions_and_events(map_data, data, region_id, 0)
           })
           pie_marker.addTo(map_data.layers.country_markers);
         }
@@ -448,8 +458,13 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
             ],
           })
           // var marker = L.marker(lat_lon, {icon: sub_region_icon})
-          // Add a tooltip showing the name of the region
-          marker.bindTooltip(region_name + ' ' + events_complete_count + '/' + events_total_count)
+          // Add a tooltip showing the name of the region, and put it above
+          var marker_tooltip_text = region_name + ' ' + events_complete_count + '/' + events_total_count
+          var marker_tooltip_options = {
+            offset: [0, -16],
+            direction: 'top'
+          }
+          marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
           marker.on('click', function() {
             show_sub_regions_and_events(map_data, data, sub_region_id, depth+1)
           })
