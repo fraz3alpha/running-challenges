@@ -389,13 +389,22 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
   var events_layer_key = 'events'
   if (events_layer_key in map_data.layers) {
     while (map_data.layers[events_layer_key].length > depth) {
-      var layer = map_data.layers[events_layer_key].pop()
-      console.log('Removed '+layer)
-      map_data.map.removeLayer(layer)
+      var layers = map_data.layers[events_layer_key].pop()
+      if ('done' in layers) {
+
+        map_data.map.removeLayer(layers.done)
+      }
+      if ('notdone' in layers) {
+        map_data.map.removeLayer(layers.notdone)
+      }
+      console.log('Removed '+layers)
     }
   }
   // ... and pop a fresh layer onto the stack
-  map_data.layers[events_layer_key].push(new L.featureGroup());
+  map_data.layers[events_layer_key].push({
+    'done': new L.featureGroup(),
+    'notdone': new L.featureGroup()
+  });
 
   $.each(data.geo_data.data.regions, function (region_name, region_info) {
     if (region_info.parent_id == region_id) {
@@ -475,11 +484,19 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
         }
         // Add a tooltip showing the name of the event
         marker.bindTooltip(event_name)
-        marker.addTo(map_data.layers[events_layer_key][depth])
+
+        // Add it to the appropriate layer group
+        if (event_name in map_data.events_completed_map) {
+          marker.addTo(map_data.layers[events_layer_key][depth].done)
+        } else {
+          marker.addTo(map_data.layers[events_layer_key][depth].notdone)
+        }
       }
     }
   })
-  map_data.layers[events_layer_key][depth].addTo(map_data.map)
+  // Add the not-done icons first
+  map_data.layers[events_layer_key][depth].notdone.addTo(map_data.map)
+  map_data.layers[events_layer_key][depth].done.addTo(map_data.map)
 
 }
 
