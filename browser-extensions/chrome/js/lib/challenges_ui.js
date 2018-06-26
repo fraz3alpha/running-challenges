@@ -498,8 +498,14 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
           marker = L.marker(lat_lon, {icon: event_run_icon})
         }
         // Add a tooltip showing the name of the event
-        marker.bindTooltip(event_name)
-
+        var marker_tooltip_text = event_name
+        var marker_tooltip_options = {
+          offset: [0, -30],
+          direction: 'top'
+        }
+        marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+        // Create a popup which includes a link to the event
+        marker.bindPopup(get_parkrun_popup(event_name, event_info, {distance: false}))
         // Add it to the appropriate layer group
         if (event_name in map_data.events_completed_map) {
           marker.addTo(map_data.layers[events_layer_key][depth].done)
@@ -761,6 +767,8 @@ function get_parkrun_popup(event_name, event_info, custom_options) {
   var event_name_link = event_name + ' parkrun'
   if (event_info.event_url) {
     event_name_link = '<a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a>'
+  } else if (event_info.local_url) {
+    event_name_link = '<a href="'+event_info.local_url+'/'+event_info.shortname+'" target="_blank">'+event_name+' parkrun</a>'
   }
   popup = event_name_link
   if (event_info.distance !== undefined && options.distance) {
