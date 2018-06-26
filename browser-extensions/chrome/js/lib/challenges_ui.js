@@ -507,7 +507,7 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
         }
         marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
         // Create a popup which includes a link to the event
-        marker.bindPopup(get_parkrun_popup(event_name, event_info, {distance: false}))
+        marker.bindPopup(get_parkrun_popup(event_name, event_info, {distance: false, completed_info: map_data.events_completed_map}))
         // Add it to the appropriate layer group
         if (event_name in map_data.events_completed_map) {
           marker.addTo(map_data.layers[events_layer_key][depth].done)
@@ -768,13 +768,17 @@ function get_parkrun_popup(event_name, event_info, custom_options) {
 
   var event_name_link = event_name + ' parkrun'
   if (event_info.event_url) {
-    event_name_link = '<a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a>'
+    event_name_link = '<div style="text-align:center"><a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a></div>'
   } else if (event_info.local_url) {
-    event_name_link = '<a href="'+event_info.local_url+'/'+event_info.shortname+'" target="_blank">'+event_name+' parkrun</a>'
+    event_name_link = '<div style="text-align:center"><a href="'+event_info.local_url+'/'+event_info.shortname+'" target="_blank">'+event_name+' parkrun</a></div>'
   }
   popup = event_name_link
   if (event_info.distance !== undefined && options.distance) {
-    popup = popup+"<br/>"+event_info.distance.toFixed(1)+" km away"
+    popup = popup+'<br/><div style="text-align:center">'+event_info.distance.toFixed(1)+" km away</div>"
+  }
+
+  if (custom_options.completed_info && event_name in custom_options.completed_info) {
+    popup = popup+'<br/><div style="text-align:center">First attended: '+custom_options.completed_info[event_name][0].date+"</div>"
   }
   return popup
 }
