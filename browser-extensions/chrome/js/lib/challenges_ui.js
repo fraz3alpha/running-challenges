@@ -188,10 +188,338 @@ function generate_regionnaire_table_entry(challenge, table, data) {
     var main_row = get_challenge_header_row(challenge, data)
     challenge_tbody_header.append(main_row)
 
+    // Create a row to hold a map
+    var regionnaire_map_id = 'regionnaire_map'
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
+    challenge_tbody_detail.append(map_row)
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events for more info!</td>'))
+    challenge_tbody_detail.append(map_row)
+
     iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
+
+    create_regionnaire_map(regionnaire_map_id, data, challenge)
+
+}
+
+function create_regionnaire_map(div_id, data, challenge) {
+  // Create the map to start with
+
+  // Find where to focus the map on to start with
+  var default_centre = [25,0]
+  if (data.info.has_home_parkrun && data.info.is_our_page) {
+    var home_parkrun = data.user_data.home_parkrun_info
+    if (event_has_valid_location(home_parkrun)) {
+      default_centre = [+home_parkrun.lat, +home_parkrun.lon]
+    }
+  }
+
+  var r_map = L.map(div_id).setView(default_centre, 2);
+  // Allow it to be fullscreen
+  r_map.addControl(new L.Control.Fullscreen());
+
+  var map_data = {
+      map: r_map,
+      events_completed_map: challenge.events_completed_map,
+      layers: {
+        subregions: [],
+        events: []
+      }
+  }
+
+  // Mapping countries to flag image files
+  var flag_map = {
+      "New Zealand": "nz",
+      "Australia": "au",
+      "Denmark": "dk",
+      "Finland": "fi",
+      "France": "fr",
+      "Germany": "de",
+      // "Iceland"--
+      "Ireland": "ie",
+      "Italy": "it",
+      "Malaysia": "my",
+      "Canada": "ca",
+      "Norway": "no",
+      "Poland": "pl",
+      "Russia": "ru",
+      "Singapore": "sg",
+      "South Africa": "za",
+      "Sweden": "se",
+      "UK": "gb",
+      "USA": "us"
+      // "Zimbabwe"--
+  }
+
+  // Set the openstreetmap tiles
+  var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  })
+  tilelayer_openstreetmap.addTo(r_map)
+
+  // Icon sets
+  var country_icon = L.ExtraMarkers.icon({
+    markerColor: 'green-light',
+    shape: 'circle'
+  });
+
+  var FlagIcon = L.Icon.extend({
+      options: {
+          shadowUrl: undefined,
+          iconSize:     [40, 40],
+          // Centre the icon by default
+          iconAnchor:   [20, 20]
+      }
+  });
+
+  var sub_region_icon = L.ExtraMarkers.icon({
+    markerColor: 'cyan',
+    shape: 'circle'
+  });
+
+  // Iterate through the top level countries
+  // We are using our pre-scanned list here, so that we can take advantage of
+  // having removed 'world', and perhaps adjusted any sub-countries (Namibia,
+  // Swaziland spring to mind)
+
+  map_data.layers.country_markers = new L.featureGroup();
+
+  var flag_icon_anchor_centred = [20,20]
+  var flag_icon_anchor_with_pie = [40,20]
+
+  $.each(data.geo_data.data.countries, function (country_name, country_info) {
+
+    var region_info = data.geo_data.data.regions[country_name]
+    var events_complete_count = 0
+    $.each(data.geo_data.data.regions[country_name].child_event_recursive_names, function(index, event_name) {
+      if (event_name in map_data.events_completed_map) {
+        events_complete_count += 1
+      }
+    })
+    var events_total_count = data.geo_data.data.regions[country_name].child_event_recursive_names.length
+
+    console.log(region_info)
+    // Only bother displaying this country if it has any events
+    if (events_total_count > 0) {
+      if (event_has_valid_location(region_info)) {
+
+        // Get the location of the country mid-point, according to parkrun
+        var lat_lon = [+region_info.lat, +region_info.lon]
+        // Get the current regions id for later use by the on click callback function
+        var region_id = region_info.id
+
+        // If we haven't run any events, we omit the pie chart, so centre the
+        // flag, else we shuffle it off to the left a bit so the combo is centred
+        var flag_anchor = flag_icon_anchor_centred
+        if (events_complete_count > 0) {
+          flag_anchor = flag_icon_anchor_with_pie
+        }
+
+        // Top level countries have a flag
+        var marker = L.marker(lat_lon, {
+          icon: new FlagIcon({
+            iconUrl: chrome.extension.getURL("/images/flags/"+flag_map[country_name]+".png"),
+            iconAnchor: flag_anchor
+          })
+        })
+        // Add a tooltip showing the name of the country and a summary of the
+        // completion numbers
+        var marker_tooltip_text = country_name + ' ' + events_complete_count + '/' + events_total_count
+        var marker_tooltip_options = {
+          offset: [0, -16],
+          direction: 'top'
+        }
+        marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+        marker.on('click', function() {
+          show_sub_regions_and_events(map_data, data, region_id, 0)
+        })
+        marker.addTo(map_data.layers.country_markers);
+
+        // Only add the pie chart if we have completed any events at all
+        if (events_complete_count > 0) {
+          var pie_marker = L.piechartMarker(lat_lon, {
+            radius: 16,
+            data: [
+              {
+                name: 'Run',
+                value: events_complete_count,
+                style: {
+                  fillStyle: 'rgba(0,140,57,.95)',
+                  strokeStyle: 'rgba(0,0,0,.75)',
+                  lineWidth: 1
+                }
+              },
+              {
+                name: 'Not Run',
+                value: (events_total_count - events_complete_count),
+                style: {
+                  fillStyle: 'rgba(0,0,0,.15)',
+                  strokeStyle: 'rgba(0,0,0,.75)',
+                  lineWidth: 1
+                }
+              }
+            ],
+            // Budge the pie chart over to the right a bit, so that the flag+chart are
+            // mostly centred on the original point, and not wildly off to one side
+            iconAnchor: [-4, 16]
+          })
+          // Add the same tooltips and on click actions as for the flag
+          pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+          pie_marker.on('click', function() {
+            show_sub_regions_and_events(map_data, data, region_id, 0)
+          })
+          pie_marker.addTo(map_data.layers.country_markers);
+        }
+
+      }
+    }
+
+  })
+
+  map_data.layers.country_markers.addTo(map_data.map)
+
+}
+
+function show_sub_regions_and_events(map_data, data, region_id, depth) {
+  console.log('Click for region: '+region_id+' depth='+depth)
+
+  // Remove any existing subregions at or below our depth
+  var regions_layer_key = 'subregions'
+  if (regions_layer_key in map_data.layers) {
+    while (map_data.layers[regions_layer_key].length > depth) {
+      var layer = map_data.layers[regions_layer_key].pop()
+      console.log('Removed '+layer)
+      map_data.map.removeLayer(layer)
+    }
+  }
+  // ... and pop a fresh layer onto the stack
+  map_data.layers[regions_layer_key].push(new L.featureGroup());
+
+  // Remove any existing subregion events ...
+  var events_layer_key = 'events'
+  if (events_layer_key in map_data.layers) {
+    while (map_data.layers[events_layer_key].length > depth) {
+      var layers = map_data.layers[events_layer_key].pop()
+      if ('done' in layers) {
+
+        map_data.map.removeLayer(layers.done)
+      }
+      if ('notdone' in layers) {
+        map_data.map.removeLayer(layers.notdone)
+      }
+      console.log('Removed '+layers)
+    }
+  }
+  // ... and pop a fresh layer onto the stack
+  map_data.layers[events_layer_key].push({
+    'done': new L.featureGroup(),
+    'notdone': new L.featureGroup()
+  });
+
+  $.each(data.geo_data.data.regions, function (region_name, region_info) {
+    if (region_info.parent_id == region_id) {
+
+      // Compute how many events under this region there are, and how many we have run
+      var events_complete_count = 0
+      $.each(data.geo_data.data.regions[region_name].child_event_recursive_names, function(index, event_name) {
+        if (event_name in map_data.events_completed_map) {
+          events_complete_count += 1
+        }
+      })
+      var events_total_count = data.geo_data.data.regions[region_name].child_event_recursive_names.length
+
+      // Only display this sub-region if there are some events in it
+      if (events_total_count > 0) {
+        if (event_has_valid_location(region_info)) {
+          // Get the location of the country mid-point, according to parkrun
+          var lat_lon = [+region_info.lat, +region_info.lon]
+          var sub_region_id = region_info.id
+          var marker = L.piechartMarker(lat_lon, {
+            radius: 16,
+            data: [
+              {
+                name: 'Run',
+                value: events_complete_count,
+                style: {
+                  fillStyle: 'rgba(0,140,57,.95)',
+                  strokeStyle: 'rgba(0,0,0,.75)',
+                  lineWidth: 1
+                }
+              },
+              {
+                name: 'Not Run',
+                value: (events_total_count - events_complete_count),
+                style: {
+                  fillStyle: 'rgba(0,0,0,.15)',
+                  strokeStyle: 'rgba(0,0,0,.75)',
+                  lineWidth: 1
+                }
+              }
+            ],
+          })
+          // var marker = L.marker(lat_lon, {icon: sub_region_icon})
+          // Add a tooltip showing the name of the region, and put it above
+          var marker_tooltip_text = region_name + ' ' + events_complete_count + '/' + events_total_count
+          var marker_tooltip_options = {
+            offset: [0, -16],
+            direction: 'top'
+          }
+          marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+          marker.on('click', function() {
+            show_sub_regions_and_events(map_data, data, sub_region_id, depth+1)
+          })
+          marker.addTo(map_data.layers[regions_layer_key][depth])
+        }
+      }
+    }
+  })
+  map_data.layers[regions_layer_key][depth].addTo(map_data.map)
+
+  // Icon for an event we have run
+  var event_run_icon = L.ExtraMarkers.icon({
+    markerColor: 'green-light',
+    shape: 'circle'
+  });
+
+  // Icon for an event we have not run
+  var event_not_run_icon = L.ExtraMarkers.icon({
+    markerColor: 'cyan',
+    shape: 'square'
+  });
+
+  $.each(data.geo_data.data.events, function (event_name, event_info) {
+    if (event_info.region_id == region_id) {
+      if (event_has_valid_location(event_info)) {
+        // Get the location of the country mid-point, according to parkrun
+        var lat_lon = [+event_info.lat, +event_info.lon]
+        // Default marker shows we have not run it
+        var marker = L.marker(lat_lon, {icon: event_not_run_icon})
+        if (event_name in map_data.events_completed_map) {
+          marker = L.marker(lat_lon, {icon: event_run_icon})
+        }
+        // Add a tooltip showing the name of the event
+        var marker_tooltip_text = event_name
+        var marker_tooltip_options = {
+          offset: [0, -30],
+          direction: 'top'
+        }
+        marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+        // Create a popup which includes a link to the event
+        marker.bindPopup(get_parkrun_popup(event_name, event_info, {distance: false, completed_info: map_data.events_completed_map}))
+        // Add it to the appropriate layer group
+        if (event_name in map_data.events_completed_map) {
+          marker.addTo(map_data.layers[events_layer_key][depth].done)
+        } else {
+          marker.addTo(map_data.layers[events_layer_key][depth].notdone)
+        }
+      }
+    }
+  })
+  // Add the not-done icons first
+  map_data.layers[events_layer_key][depth].notdone.addTo(map_data.map)
+  map_data.layers[events_layer_key][depth].done.addTo(map_data.map)
 
 }
 
@@ -440,11 +768,17 @@ function get_parkrun_popup(event_name, event_info, custom_options) {
 
   var event_name_link = event_name + ' parkrun'
   if (event_info.event_url) {
-    event_name_link = '<a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a>'
+    event_name_link = '<div style="text-align:center"><a href="'+event_info.event_url+'" target="_blank">'+event_name+' parkrun</a></div>'
+  } else if (event_info.local_url) {
+    event_name_link = '<div style="text-align:center"><a href="'+event_info.local_url+'/'+event_info.shortname+'" target="_blank">'+event_name+' parkrun</a></div>'
   }
   popup = event_name_link
   if (event_info.distance !== undefined && options.distance) {
-    popup = popup+"<br/>"+event_info.distance.toFixed(1)+" km away"
+    popup = popup+'<br/><div style="text-align:center">'+event_info.distance.toFixed(1)+" km away</div>"
+  }
+
+  if (custom_options.completed_info && event_name in custom_options.completed_info) {
+    popup = popup+'<br/><div style="text-align:center">First attended: '+custom_options.completed_info[event_name][0].date+"</div>"
   }
   return popup
 }
