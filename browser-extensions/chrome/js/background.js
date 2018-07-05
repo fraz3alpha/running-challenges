@@ -456,4 +456,18 @@ function notify_geo_data(f) {
         // https://developer.chrome.com/extensions/runtime#event-onMessage
         return true
       }
-    });
+
+      if (request.data == "history") {
+
+        chrome.tabs.create({ url: chrome.extension.getURL('/html/history.html') }, function(tab) {
+          // This executes only after jQuery has been injected and executed
+          chrome.tabs.executeScript(tab.id, {file: "/js/history.js"}, function() {
+            // This executes only after your content script executes
+            chrome.tabs.sendMessage(tab.id, {data: "some-user-data"});
+          });
+        });
+
+      }
+
+    }
+  );

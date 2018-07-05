@@ -203,6 +203,8 @@ function create_skeleton_elements(id_map) {
 
   top_of_the_page_anchor = $("div[id=content]").find("p:first")
 
+  top_of_the_page_anchor.after($('<div/>').attr("id", "voronoi"))
+
   // The top sections are badges, flags, and messages.
   // Initially the badges and flags are empty until the data is parsed and loaded,
   // and the messsages displayed will indicate progress.
@@ -243,6 +245,16 @@ function create_skeleton_elements(id_map) {
 
   // Add a spacer after the main table
   running_challenges_main_table_div.after($('<br/>'))
+
+  running_challenges_main_table_div.before(
+    $('<div/>').attr("id", "history").text("history").click(function() {
+      browser.runtime.sendMessage({data: "history"});
+    })
+  )
+}
+
+function add_voronoi_map(div_id, data) {
+  create_voronoi_map(div_id, data)
 }
 
 function add_stats(div_id, data) {
@@ -491,7 +503,6 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   // Convenience properties for the main sources of data
   data.info.has_geo_data = (data.geo_data !== undefined)
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
-  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.challenge_results = {
     "running_results": generate_running_challenge_data(data),
@@ -513,6 +524,7 @@ browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) =
   add_flags(id_map["flags"], data)
   add_challenge_results(id_map["main"], data)
   add_stats(id_map["stats"], data)
+  add_voronoi_map("voronoi", data)
 
   // Add our final status message
   set_complete_progress_message()
