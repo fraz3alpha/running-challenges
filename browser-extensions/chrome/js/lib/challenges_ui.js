@@ -596,7 +596,8 @@ function create_voronoi_map(map_id, data) {
 
         var vmap = this._map
         var bounds = vmap.getBounds()
-        var padded_bounds = bounds.pad(0.4)
+        // var padded_bounds = bounds.pad(0.4)
+        var padded_bounds = bounds.pad(2)
         var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
 
     		var size = vmap.getSize()
@@ -653,7 +654,15 @@ function create_voronoi_map(map_id, data) {
         // L.DomUtil.setPosition(cell_group, [-top_left.x, -top_left.y]);
         console.log(cell_group)
 
-        $.each(voronoi_data.polygons(), function(index, cell) {
+        var voronoi_polygons = voronoi_data.polygons()
+
+        $.each(voronoi_polygons, function(index, cell) {
+
+          // If there is no cell data, then keep looping
+          if (cell === undefined) {
+            console.log("Undefined cell data at index "+index)
+            return true
+          }
 
           // var item_circle = $("<circle/>")
           //   .attr("cx", cell.data.x)
@@ -664,6 +673,7 @@ function create_voronoi_map(map_id, data) {
           //   .attr("fill", "red")
 
           var item_circle = document.createElement("circle")
+          // console.log("Drawing circle for " + JSON.stringify(cell))
           item_circle.setAttribute("cx", cell.data.x)
           item_circle.setAttribute("cy", cell.data.y)
           item_circle.setAttribute("r", 5)
