@@ -1,0 +1,69 @@
+---
+layout: post
+title:  "Version 0.6 Released"
+date:   2018-07-09 20:00:00 +0100
+categories:
+  - chrome-extension
+  - release
+---
+Now with a Regionnaire map!
+
+If you have already installed the extension it should update soon, if not you can get it
+from the [Chrome WebStore]({{ site.data.webstore.webstore-running-challenges-link }}) today!
+
+It has been a couple of weeks since the first maps burst on to the scene (along
+with the stats, in release 0.5), and the one glaring omission was the **Regionnaire**
+challenge had no map - and you could argue that this is the one in most need of
+one! Well, wait no-longer, it now has its own shiny map, with lots of extra
+features over and above the other maps - read on to find out more...
+
+### What does the map do?
+
+By default the map is available as the first thing under the Regionnaire
+challenge details, and is centred on your home parkrun (assuming it is set):
+
+[![Default Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-01-default.png "Default Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-01-default.png)
+
+The map, like the others, can be made fullscreen, and that is definitely the
+best way to view it - there is a lot of information available, and it does need
+space to view it all.
+
+If you zoom in towards a country of interest you can see that some countries
+have a small pie-chart to the right of the flag - these indicate that you have
+run at at least one of the parkruns in this country, and gives a quick visual
+indication as to how may you may have run at. You can hover over the flag or
+the pie-chart to get the exact numbers of events you've been to out of the total
+active events in that country:
+
+[![Country-centric Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-02-country.png "Country-centric Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-02-country.png)
+
+If the country is split into sub-regions, clicking on the flag will expand out
+the pie-charts to show one for each region:
+
+[![Regions Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-03-region.png "Regions Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-03-region.png)
+
+If you click on a sub-region, you will be presented with the events that make up
+that region - coloured/shaped in the same was as the other maps, with green-rounded
+markers for events you have been to, and blue-squared markers for events you haven't
+been to yet.
+
+[![Expanded regions Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region.png "Expanded regions Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-03-expanded-region.png)
+
+N.b. If the country has no separate sub-regions, you will get this type of view
+directly after clicking the country's flag.
+
+Hovering over a marker will give the name of the event, and you can click on a
+marker to give you a link directly to that course on the appropriate country's
+website:
+
+[![Expanded regions Regionnaire map - close up]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region-close-up.png "Expanded regions Regionnaire map" - close up){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-03-expanded-region-close-up.png)
+
+
+The Regionnaire map was quite tricky to do, so if there are bugs or errors in
+it please send us an email with as much information as you can so that we can
+try and reproduce the problem - usually your athlete number (or the athlete number
+of the page you were looking at), your configured home parkrun if it is your
+page, and some details of what you were doing and what went wrong is a good set of
+information to get going with.
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store"){: .center-image}]({{ site.data.webstore.webstore-running-challenges-link }})
