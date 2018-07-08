@@ -47,7 +47,7 @@ that region - coloured/shaped in the same was as the other maps, with green-roun
 markers for events you have been to, and blue-squared markers for events you haven't
 been to yet.
 
-[![Expanded regions Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region.png "Expanded regions Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-03-expanded-region.png)
+[![Expanded regions Regionnaire map]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region.png "Expanded regions Regionnaire map"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region.png)
 
 N.b. If the country has no separate sub-regions, you will get this type of view
 directly after clicking the country's flag.
@@ -56,7 +56,7 @@ Hovering over a marker will give the name of the event, and you can click on a
 marker to give you a link directly to that course on the appropriate country's
 website:
 
-[![Expanded regions Regionnaire map - close up]({{ site.baseurl }}/img/posts/regionnaire-map-04-expanded-region-close-up.png "Expanded regions Regionnaire map" - close up){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-03-expanded-region-close-up.png)
+[![Expanded regions Regionnaire map - close up]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png "Expanded regions Regionnaire map" - close up){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png)
 
 
 The Regionnaire map was quite tricky to do, so if there are bugs or errors in
