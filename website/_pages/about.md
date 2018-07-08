@@ -27,7 +27,11 @@ rewarded.
 
 Let us know what you think:
 
-* [Leave a review](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews)
-* [Send us feedback](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/support)
+* [Leave a review on the Chrome Webstore](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews)
+
+If you have any detailed feedback an email to <a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a>
+is the best way to let us know, similarly if you need help configuring the plugin,
+or debugging something that you think might be going wrong, an email is the best
+way to have a conversation.
 
 The Running Challenges extension is not official and is not affiliated with parkrun.
