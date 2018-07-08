@@ -56,7 +56,7 @@ Hovering over a marker will give the name of the event, and you can click on a
 marker to give you a link directly to that course on the appropriate country's
 website:
 
-[![Expanded regions Regionnaire map - close up]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png "Expanded regions Regionnaire map" - close up){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png)
+[![Expanded regions Regionnaire map - close up]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png "Expanded regions Regionnaire map - close up"){: .center-image}]({{ site.baseurl }}/img/posts/regionnaire-map-05-expanded-region-close-up.png)
 
 
 The Regionnaire map was quite tricky to do, so if there are bugs or errors in
