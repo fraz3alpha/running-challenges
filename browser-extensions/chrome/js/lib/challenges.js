@@ -369,7 +369,7 @@ function generate_stat_parkrun_birthday(parkrun_results) {
   }
   return {
     "display_name": "parkrun birthday",
-    "help": "The day you joined the parkrun family!",
+    "help": "The date of your first parkrun!",
     "value": birthday
   }
 }
