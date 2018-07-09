@@ -405,7 +405,7 @@ function generate_stat_events_run(parkrun_results) {
 
   return {
     "display_name": "Events run",
-    "help": "The number of different parkrun evernts you have attended.",
+    "help": "The number of different parkrun events you have attended.",
     "value": Object.keys(events_run).length
   }
 }
