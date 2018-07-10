@@ -2,7 +2,7 @@
 chrome.browserAction.onClicked.addListener(function(tab) {
     // We want to check if an Athlete Number has been provided,
     // if so lets display their results page
-    chrome.storage.sync.get({
+    browser.storage.local.get({
       athlete_number: '',
       home_parkrun_info: {}
     }, function(items) {

@@ -102,7 +102,7 @@ function get_badge_location() {
 
 // Try the promises stuff, vaguely following examples on https://github.com/mozilla/webextension-polyfill
 
-// chrome.storage.sync.get({
+// browser.storage.local.get({
 //   athlete_number: '',
 //   home_parkrun_info: {}
 // }
@@ -439,7 +439,7 @@ parsed_results_data = parse_results_table()
 set_progress_message("Parsed Results")
 
 set_progress_message("Loading saved data")
-browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) => {
+browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) => {
   set_progress_message("Loaded saved data")
   loaded_user_data = items
   // console.log("Here is the stored items, fetched with a promise:")
