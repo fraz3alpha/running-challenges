@@ -26,8 +26,9 @@ find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec sed -i "" "s/chrome-extension
 
 
 # Copy the metadata
-cp -r browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
+cp -r browser-extensions/chrome/manifest.json.mozilla ${TMP_BUILD_DIR}/manifest.json
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
-zip -r extension.zip js/ html/ images/ css/ manifest.json
+web-ext lint
+web-ext build
