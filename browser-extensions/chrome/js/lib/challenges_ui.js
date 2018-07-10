@@ -37,8 +37,8 @@ function generate_challenge_table() {
     table.append($('<caption></caption>').text('Challenges'))
 
     // Add a set of links on the top row
-    help_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
-    options_link = $('<a></a>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    help_link = $('<a></a>').attr("href", browser.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
+    options_link = $('<a></a>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
     website_link = $('<a></a>').attr("href", "https://running-challenges.co.uk").attr("target", '_blank').text('website')
     help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
     help_td.append(website_link)
@@ -109,7 +109,7 @@ function get_tbody_content_id(challenge) {
 
 function get_flag_icon(country, height, width) {
     var flag_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    flag_img.attr('src', chrome.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
+    flag_img.attr('src', browser.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
     // badge_img.attr('alt', challenge.name)
     // badge_img.attr('title', challenge.name)
     flag_img.attr('height', height)
@@ -121,7 +121,7 @@ function get_flag_icon(country, height, width) {
 
 function get_challenge_icon(challenge, height, width) {
     var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    badge_img.attr('src', chrome.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
+    badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
     badge_img.attr('alt', challenge.name)
     badge_img.attr('title', challenge.name)
     badge_img.attr('height', height)
@@ -171,7 +171,7 @@ function get_challenge_header_row(challenge, data) {
         main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
     }
     if (challenge.complete) {
-        main_row.append($('<img/>').attr('src', chrome.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
+        main_row.append($('<img/>').attr('src', browser.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
     }
 
     return main_row
@@ -320,7 +320,7 @@ function create_regionnaire_map(div_id, data, challenge) {
         // Top level countries have a flag
         var marker = L.marker(lat_lon, {
           icon: new FlagIcon({
-            iconUrl: chrome.extension.getURL("/images/flags/"+flag_map[country_name]+".png"),
+            iconUrl: browser.extension.getURL("/images/flags/"+flag_map[country_name]+".png"),
             iconAnchor: flag_anchor
           })
         })
@@ -534,7 +534,7 @@ function create_challenge_map(map_id, challenge_data, data) {
   // Create empty vector for each layer
   // var home_parkrun = new L.featureGroup()
   var events_complete = new L.featureGroup();
-  // var events_complete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-green.png")})
+  // var events_complete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-green.png")})
   var events_complete_icon = L.ExtraMarkers.icon({
     markerColor: 'green-light',
     shape: 'circle'
@@ -544,7 +544,7 @@ function create_challenge_map(map_id, challenge_data, data) {
     shape: 'circle'
   });
   var events_nearest_incomplete = new L.featureGroup();
-  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-orange.png")})
+  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-orange.png")})
   var events_nearest_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'yellow',
     shape: 'penta'
@@ -554,7 +554,7 @@ function create_challenge_map(map_id, challenge_data, data) {
     shape: 'penta'
   });
   var events_incomplete = new L.featureGroup();
-  // var events_incomplete_icon = new EventsIcon({iconUrl: chrome.extension.getURL("/images/maps/markers/leaf-red.png")})
+  // var events_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-red.png")})
   var events_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'cyan',
     shape: 'square'
@@ -972,7 +972,7 @@ function add_stats_table(div, data) {
   // if there is no athlete_id or home parkrun set
   if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
     var options_message_container = $('<div/>')
-    options_link = $('<a/>').attr("href", chrome.extension.getURL("/html/options.html")).attr("target", '_blank').text('options.')
+    options_link = $('<a/>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').text('options.')
     options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
     options_message_container.append(options_link)
     div.append($('<br/>'))
