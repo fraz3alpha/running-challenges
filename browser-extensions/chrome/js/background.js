@@ -1,5 +1,5 @@
 // This captures the click on the icon in the toolbar
-chrome.browserAction.onClicked.addListener(function(tab) {
+browser.browserAction.onClicked.addListener(function(tab) {
     // We want to check if an Athlete Number has been provided,
     // if so lets display their results page
     browser.storage.local.get({
@@ -9,7 +9,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         // console.log('Icon clicked, loading based on '+JSON.stringify(items))
         // If no athlete number has been set, load the options page
         if (items.athlete_number == '') {
-            chrome.runtime.openOptionsPage();
+            browser.runtime.openOptionsPage();
         } else {
             var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
             // Don't redirect Malaysian users as their website doesn't work
@@ -17,7 +17,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
               var local_url = items.home_parkrun_info.local_url
               results_url = local_url+"/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             }
-            chrome.tabs.create({ url: results_url });
+            browser.tabs.create({ url: results_url });
         }
 
     });
@@ -431,7 +431,7 @@ function notify_geo_data(f) {
     }
 }
 
-  chrome.runtime.onMessage.addListener(
+  browser.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       // console.log(sender.tab ?
       //             "from a content script:" + sender.tab.url :
