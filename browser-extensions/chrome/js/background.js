@@ -5,7 +5,7 @@ browser.browserAction.onClicked.addListener(function(tab) {
     browser.storage.local.get({
       athlete_number: '',
       home_parkrun_info: {}
-    }, function(items) {
+    }).then((items) => {
         // console.log('Icon clicked, loading based on '+JSON.stringify(items))
         // If no athlete number has been set, load the options page
         if (items.athlete_number == '') {
