@@ -6,4 +6,83 @@
  * @author coryasilva <https://github.com/coryasilva>
  * @version 1.0.5
  */
-!function(a,b){"use strict";L.ExtraMarkers={},L.ExtraMarkers.version="1.0.1",L.ExtraMarkers.Icon=L.Icon.extend({options:{iconSize:[35,45],iconAnchor:[17,42],popupAnchor:[1,-32],shadowAnchor:[10,12],shadowSize:[36,16],className:"extra-marker",prefix:"",extraClasses:"",shape:"circle",icon:"",innerHTML:"",markerColor:"red",iconColor:"#fff",number:""},initialize:function(a){a=L.Util.setOptions(this,a)},createIcon:function(){var a=b.createElement("div"),c=this.options;return c.icon&&(a.innerHTML=this._createInner()),c.innerHTML&&(a.innerHTML=c.innerHTML),c.bgPos&&(a.style.backgroundPosition=-c.bgPos.x+"px "+-c.bgPos.y+"px"),this._setIconStyles(a,c.shape+"-"+c.markerColor),a},_createInner:function(){var a="",b="",c=this.options;return c.iconColor&&(a="style='color: "+c.iconColor+"' "),c.number&&(b="number='"+c.number+"' "),"<i "+b+a+"class='"+c.extraClasses+" "+c.prefix+" "+c.icon+"'></i>"},_setIconStyles:function(a,b){var c,d,e=this.options,f=L.point(e["shadow"===b?"shadowSize":"iconSize"]);"shadow"===b?(c=L.point(e.shadowAnchor||e.iconAnchor),d="shadow"):(c=L.point(e.iconAnchor),d="icon"),!c&&f&&(c=f.divideBy(2,!0)),a.className="leaflet-marker-"+d+" extra-marker-"+b+" "+e.className,c&&(a.style.marginLeft=-c.x+"px",a.style.marginTop=-c.y+"px"),f&&(a.style.width=f.x+"px",a.style.height=f.y+"px")},createShadow:function(){var a=b.createElement("div");return this._setIconStyles(a,"shadow"),a}}),L.ExtraMarkers.icon=function(a){return new L.ExtraMarkers.Icon(a)}}(window,document);
+(function(window, document, undefined) {
+    "use strict";
+    L.ExtraMarkers = {};
+    L.ExtraMarkers.version = "1.0.1";
+    L.ExtraMarkers.Icon = L.Icon.extend({
+        options: {
+            iconSize: [ 35, 45 ],
+            iconAnchor: [ 17, 42 ],
+            popupAnchor: [ 1, -32 ],
+            shadowAnchor: [ 10, 12 ],
+            shadowSize: [ 36, 16 ],
+            className: "extra-marker",
+            prefix: "",
+            extraClasses: "",
+            shape: "circle",
+            icon: "",
+            innerHTML: "",
+            markerColor: "red",
+            iconColor: "#fff",
+            number: ""
+        },
+        initialize: function(options) {
+            options = L.Util.setOptions(this, options);
+        },
+        createIcon: function() {
+            var div = document.createElement("div"), options = this.options;
+            if (options.icon) {
+                div.innerHTML = this._createInner();
+            }
+            if (options.innerHTML) {
+                div.innerHTML = options.innerHTML;
+            }
+            if (options.bgPos) {
+                div.style.backgroundPosition = -options.bgPos.x + "px " + -options.bgPos.y + "px";
+            }
+            this._setIconStyles(div, options.shape + "-" + options.markerColor);
+            return div;
+        },
+        _createInner: function() {
+            var iconColorStyle = "", iconNumber = "", options = this.options;
+            if (options.iconColor) {
+                iconColorStyle = "style='color: " + options.iconColor + "' ";
+            }
+            if (options.number) {
+                iconNumber = "number='" + options.number + "' ";
+            }
+            return "<i " + iconNumber + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + options.icon + "'></i>";
+        },
+        _setIconStyles: function(img, name) {
+            var options = this.options, size = L.point(options[name === "shadow" ? "shadowSize" : "iconSize"]), anchor, leafletName;
+            if (name === "shadow") {
+                anchor = L.point(options.shadowAnchor || options.iconAnchor);
+                leafletName = "shadow";
+            } else {
+                anchor = L.point(options.iconAnchor);
+                leafletName = "icon";
+            }
+            if (!anchor && size) {
+                anchor = size.divideBy(2, true);
+            }
+            img.className = "leaflet-marker-" + leafletName + " extra-marker-" + name + " " + options.className;
+            if (anchor) {
+                img.style.marginLeft = -anchor.x + "px";
+                img.style.marginTop = -anchor.y + "px";
+            }
+            if (size) {
+                img.style.width = size.x + "px";
+                img.style.height = size.y + "px";
+            }
+        },
+        createShadow: function() {
+            var div = document.createElement("div");
+            this._setIconStyles(div, "shadow");
+            return div;
+        }
+    });
+    L.ExtraMarkers.icon = function(options) {
+        return new L.ExtraMarkers.Icon(options);
+    };
+})(window, document);
