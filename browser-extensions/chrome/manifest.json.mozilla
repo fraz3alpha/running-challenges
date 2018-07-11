@@ -60,7 +60,7 @@
         "css/third-party/leaflet-fullscreen/leaflet-fullscreen.css",
         "css/third-party/leaflet-markercluster/MarkerCluster.css",
         "css/third-party/leaflet-markercluster/MarkerCluster.Default.css",
-        "css/third-party/leaflet-extramarkers/leaflet.extra-markers.min.css"
+        "css/third-party/leaflet-extramarkers/leaflet.extra-markers.css"
       ],
       "run_at": "document_end"
   },
