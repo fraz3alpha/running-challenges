@@ -25,7 +25,7 @@ but just like the Chrome extension, it will work on a Mac laptop/desktop browser
 ### Where do I get it?
 
 Running Challenges has been submitted to the Firefox Add-ons website, which you
-can find here: ̨https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/
+can find here: [https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/](https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/).
 
 The *experimental* tag that we have associated with the add-on means that it is
 not publicised within the Firefox add-ons store, so you will probably only find it
