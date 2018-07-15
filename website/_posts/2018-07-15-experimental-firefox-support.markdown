@@ -29,7 +29,7 @@ can find here: ̨https://addons.mozilla.org/en-GB/firefox/addon/running-challeng
 
 The *experimental* tag that we have associated with the add-on means that it is
 not publicised within the Firefox add-ons store, so you will probably only find it
-using the (direct link)[https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/].
+using the [direct link](https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/).
 
 ### What if it doesn't work?
 
@@ -39,4 +39,4 @@ environment you were in, e.g. what version you installed, what browser version
 you are using, and what configuration you had set, what URL you tried to load
 etc...
 
-[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store"){: .center-image}]({{ site.data.webstore.firefox-webstore-running-challenges-link }})
+[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store"){: .center-image}]({{ site.data.webstore.firefox-running-challenges-link }})
