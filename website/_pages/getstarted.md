@@ -112,6 +112,19 @@ Extra tips:
 
 ### Firefox for PC/Mac
 
+Firefox handles extensions in a very similar way to Chrome, although it calls
+them 'Add-ons' instead. Like Chrome, Firefox has a webstore where you can get additional
+add-ons and install them into your browser. Unlike Chrome, you can install
+Firefox Add-ons into a browser on your PC/Mac as well as into Firefox on Android.
+If you want to install it onto your [Android phone or tablet](#firefox-for-android-phone-or-tablet)
+skip down to the [next section](#firefox-for-android-phone-or-tablet).
+
+Here are all the steps, laid out with pictures - you can click any picture thumbnail
+to get a larger version.
+
+If you like you can skip the first 4 steps of these instructions by going straight
+to the [Running Challenges page on the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }}) in Firefox.
+
 <table>
   <tbody>
 
@@ -276,10 +289,14 @@ Extra tips:
 
 Installing the extension in Firefox for Android is very similar to installing it
 on Firefox on a PC/Mac, but there is less room on the screen so some of the links
-and shortcuts are hidden in another menu option, but it is essentially the same.
+and shortcuts are hidden in another menu options, but it is essentially the same.
 
 Here are all the steps, laid out with pictures - you can click any picture thumbnail
 to get a larger version.
+
+If you like you can skip the first 5 steps of these instructions by going straight
+to the [Running Challenges page on the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }}) in your Firefox for Android
+web browser.
 
 <table>
   <tbody>
