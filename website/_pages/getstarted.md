@@ -110,57 +110,13 @@ skip down to the [next section](#firefox-for-android-phone-or-tablet).
 Here are all the steps, laid out with pictures - you can click any picture thumbnail
 to get a larger version.
 
-If you like you can skip the first 4 steps of these instructions by going straight
-to the [Running Challenges page on the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }}) in Firefox.
-
 <table>
   <tbody>
 
     <tr>
-      <td class="getting-started-cell-desktop-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-menu.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-menu.png">
-        </a>
-      </td>
-      <td>
-        Start with Firefox on your PC/Mac, and click the '<b>three bars</b>'
-        at the top right to show the main menu and click "<b>Add-ons</b>".
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-desktop-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-get-add-ons.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-get-add-ons.png">
-        </a>
-      </td>
-      <td>
-        The Add-ons Manager starts in the Extensions tab containing the Add-ons
-        you have already installed. Click on the <b>Get Add-ons</b> tab on the
-        left hand side to start looking for more Add-ons to install.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-desktop-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-see-more-add-ons.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-see-more-add-ons.png">
-        </a>
-      </td>
-      <td>
-        Scroll to the bottom and click the <b>See more Add-ons</b> button.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-desktop-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-search-running-challenges.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-search-running-challenges.png">
-        </a>
-      </td>
-      <td>
-        Search for <b>Running Challenges</b> to find our add-on, and select it
-        from the search results.
+      <td colspan="2">
+        <b>Start by going straight to the <a href="{{ site.data.webstore.firefox-running-challenges-link }}">
+        Running Challenges page on the Firefox Add-ons website</a> in Firefox.</b>
       </td>
     </tr>
 
@@ -282,67 +238,14 @@ and shortcuts are hidden in another menu options, but it is essentially the same
 Here are all the steps, laid out with pictures - you can click any picture thumbnail
 to get a larger version.
 
-If you like you can skip the first 5 steps of these instructions by going straight
-to the [Running Challenges page on the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }}) in your Firefox for Android
-web browser.
-
 <table>
   <tbody>
 
     <tr>
-      <td class="getting-started-cell-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox-android/install-01-firefox.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox-android/thumbs/install-01-firefox.png">
-        </a>
-      </td>
-      <td>
-        Start with Firefox on your Android phone or tablet, and click the 'three dots'
-        at the top right to show the main menu
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox-android/install-02-firefox-menu.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox-android/thumbs/install-02-firefox-menu.png">
-        </a>
-      </td>
-      <td>
-        Select <b>Add-ons</b> from the menu to show your currently installed add-ons
-        and enable you to find more add-ons to install.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox-android/install-03-firefox-addons-menu.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox-android/thumbs/install-03-firefox-addons-menu.png">
-        </a>
-      </td>
-      <td>
-        Select <b>Browse all Firefox Add-ons</b> to go to the add-ons website.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox-android/install-04-firefox-addons-store.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox-android/thumbs/install-04-firefox-addons-store.png">
-        </a>
-      </td>
-      <td>
-        The Add-ons store.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="getting-started-cell-screenshot">
-        <a href="{{ site.baseurl }}/img/getting-started/firefox-android/install-05-firefox-addons-store-search.png">
-          <img src="{{ site.baseurl }}/img/getting-started/firefox-android/thumbs/install-05-firefox-addons-store-search.png">
-        </a>
-      </td>
-      <td>
-        Search for <b>Running Challenges</b> to find our add-on.
+      <td colspan="2">
+        <b>Start by going straight to the <a href="{{ site.data.webstore.firefox-running-challenges-link }}">
+        Running Challenges page on the Firefox Add-ons website</a> in Firefox
+        for Android.</b>
       </td>
     </tr>
 
