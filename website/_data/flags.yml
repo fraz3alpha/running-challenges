@@ -1,0 +1,57 @@
+---
+
+flags:
+
+  - shortname: au
+    name: Australia
+
+  - shortname: ca
+    name: Canada
+
+  - shortname: de
+    name: Germany
+
+  - shortname: dk
+    name: Denmark
+
+  - shortname: fi
+    name: Finland
+
+  - shortname: fr
+    name: France
+
+  - shortname: ie
+    name: Ireland
+
+  - shortname: it
+    name: Italy
+
+  - shortname: my
+    name: Malaysia
+
+  - shortname: "no"
+    name: Norway
+
+  - shortname: nz
+    name: New Zealand
+
+  - shortname: pl
+    name: Poland
+
+  - shortname: ru
+    name: Russia
+
+  - shortname: za
+    name: South Africa
+
+  - shortname: se
+    name: Sweden
+
+  - shortname: sg
+    name: Singapore
+
+  - shortname: gb
+    name: UK
+
+  - shortname: us
+    name: USA

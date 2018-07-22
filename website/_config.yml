@@ -50,6 +50,12 @@ sass:
 # Show a small excerpt in the posts list on the homepage
 show_excerpts: true
 
+header_pages:
+  - _pages/about.md
+  - _pages/badges.md
+  - _pages/faq.md
+  - _pages/getstarted.md
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
