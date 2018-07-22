@@ -15,7 +15,7 @@ or **Firefox for Android** - it is not available to install on Apple iPhones/iPa
 The extension is published in the Chrome and Firefox webstores, see the [getting started](/getstarted/)
 page for more detailed instructions.
 
-![Athlete Profile With Badges]({{ site.baseurl }}/img/screenshots/screenshot-06-badges-inc-flags.png "Athlete Profile With Badges"){: .center-image .image-border}
+![Athlete Profile With Badges]({{ site.baseurl }}/img/screenshots/screenshot-08-badges-including-flags-v2.png "Athlete Profile With Badges"){: .center-image .image-border}
 
 Click the link below to install it, or visit our [Getting Started](/getstarted/) page to see a walkthrough of the steps involved
 
