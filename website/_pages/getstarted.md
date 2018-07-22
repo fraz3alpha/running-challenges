@@ -13,14 +13,14 @@ need a bit more help and lots of screenshots, head down to the [detailed instruc
 1. Install the extension, this differs slightly whether you are installing for
 Chrome or Firefox, but the steps are essentially the same:
 
-  - Chrome:
-  Install [Running Challenges from the Chrome Web Store]({{ site.data.webstore.webstore-running-challenges-link }})
-  on your Mac or PC (Windows, Linux, or other OS of choice).
+    - Chrome:
+    Install [Running Challenges from the Chrome Web Store]({{ site.data.webstore.webstore-running-challenges-link }})
+    on your Mac or PC (Windows, Linux, or other OS of choice).
 
-  - Firefox:
-  Install [Running Challenges from the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }})
-  on your Mac or PC (Windows, Linux, or other OS of choice), OR on Firefox on your
-  Android phone or tablet.
+    - Firefox:
+    Install [Running Challenges from the Firefox Add-ons website]({{ site.data.webstore.firefox-running-challenges-link }})
+    on your Mac or PC (Windows, Linux, or other OS of choice), OR on Firefox on your
+    Android phone or tablet.
 
 1. Once installed, configure the extension with your parkrun number and home parkrun -
 this is usually your closest parkrun, and among other things, is used when
@@ -32,18 +32,6 @@ the extension will take you to your profile when you click the newly-added
 Running Challenges icon/menu item.
 
 Enjoy!
-
-
-
-1. In Chrome, just install [Running Challenges from the Chrome Web Store](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif).
-2. Click Running Challenges button, enter your parkrun athlete number and **Save**:
-
-    ![Running Challenges button]({{ site.baseurl }}/img/green_runner_icon.png "Running Challenges button"){: .center-image .image-border}
-
-3. Click the Running Challenges button again to take you to your parkrun results page with all your lovely challenges and, hopefully, a few badges too.
-
-Enjoy!
-
 
 ## Detailed instructions
 

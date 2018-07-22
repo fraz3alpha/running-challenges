@@ -9,7 +9,7 @@ Now with Firefox support!
 
 Quite a few of you have been waiting for this, so we are pleased to announce
 that there is now a version of the Chrome extension available for Firefox! Firefox
-addo-ns are very similar to Chrome extensions and we were able to convert the bits
+add-ons are very similar to Chrome extensions and we were able to convert the bits
 of code that weren't compatible into something that works in both browsers.
 
 Publishing a Firefox add-on also has the added bonus of being available for
