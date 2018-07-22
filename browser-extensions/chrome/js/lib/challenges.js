@@ -369,7 +369,7 @@ function generate_stat_parkrun_birthday(parkrun_results) {
   }
   return {
     "display_name": "parkrun birthday",
-    "help": "The day you joined the parkrun family!",
+    "help": "The date of your first parkrun!",
     "value": birthday
   }
 }
@@ -405,7 +405,7 @@ function generate_stat_events_run(parkrun_results) {
 
   return {
     "display_name": "Events run",
-    "help": "The number of different parkrun evernts you have attended.",
+    "help": "The number of different parkrun events you have attended.",
     "value": Object.keys(events_run).length
   }
 }
