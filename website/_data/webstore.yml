@@ -2,3 +2,8 @@
 
 webstore-img-link: "{{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png"
 webstore-running-challenges-link: "https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"
+webstore-running-challenges-reviews-link: "https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews"
+
+firefox-: "{{ site.baseurl }}/img/firefox_web_store-172x60.png"
+firefox-running-challenges-link: "https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"
+firefox-running-challenges-reviews-link: "https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"

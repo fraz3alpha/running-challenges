@@ -119,7 +119,7 @@ function save_user_configuration() {
 
     console.log('Saving: '+JSON.stringify(saved_data))
 
-    chrome.storage.sync.set(saved_data, function() {
+    browser.storage.local.set(saved_data).then(function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
         status.textContent = 'Options saved.';
@@ -132,11 +132,11 @@ function save_user_configuration() {
 function load_user_configuration() {
     console.log('load_user_configuration()')
     var restored_options = null
-    chrome.storage.sync.get({
+    browser.storage.local.get({
         athlete_number: '',
         home_parkrun_info: {},
         // enable_beta_features: false
-    }, function(items) {
+    }).then(function(items) {
         // Store it on the page for future use
         saved_options = items
         console.log('Loaded: '+JSON.stringify(items))
@@ -161,7 +161,7 @@ function load_user_configuration() {
 function update_cache(force_update=false) {
     console.log('update_cache()')
     // Send a message to the background page to request the geo data
-    chrome.runtime.sendMessage({data: "geo", freshen: force_update}, function(response) {
+    browser.runtime.sendMessage({data: "geo", freshen: force_update}).then(function (response) {
         if (response !== null && 'geo' in response) {
             // Save the data on the page for future use
             geo_data = response.geo

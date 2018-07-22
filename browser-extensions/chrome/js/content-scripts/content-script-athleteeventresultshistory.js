@@ -102,7 +102,7 @@ function get_badge_location() {
 
 // Try the promises stuff, vaguely following examples on https://github.com/mozilla/webextension-polyfill
 
-// chrome.storage.sync.get({
+// browser.storage.local.get({
 //   athlete_number: '',
 //   home_parkrun_info: {}
 // }
@@ -313,13 +313,13 @@ function get_running_badge(result) {
   if (result.complete == true) {
     badge_info = {
         "name": result.name,
-        "icon": chrome.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+        "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
         "link": "#"+result.shortname
     }
   } else if (result.partial_completion == true) {
       badge_info = {
         "name": result.partial_completion_name,
-        "icon": chrome.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+        "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
         "link": "#"+result.shortname
       }
   }
@@ -334,17 +334,17 @@ function get_volunteer_badge(result) {
   if (result.complete == true) {
       badge_info = {
           "name": result.name,
-          "icon": chrome.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname
       }
       if (result.subparts_completed_count >= 25){
-          badge_info.icon = chrome.extension.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
+          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
           badge_info.name += " (25+ times)"
       } else if (result.subparts_completed_count >= 10){
-          badge_info.icon = chrome.extension.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
+          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
           badge_info.name += " (10+ times)"
       } else if (result.subparts_completed_count >= 5){
-          badge_info.icon = chrome.extension.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
+          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
           badge_info.name += " (5+ times)"
       }
   }
@@ -439,7 +439,7 @@ parsed_results_data = parse_results_table()
 set_progress_message("Parsed Results")
 
 set_progress_message("Loading saved data")
-browser.storage.sync.get(["home_parkrun_info", "athlete_number"]).then((items) => {
+browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) => {
   set_progress_message("Loaded saved data")
   loaded_user_data = items
   // console.log("Here is the stored items, fetched with a promise:")

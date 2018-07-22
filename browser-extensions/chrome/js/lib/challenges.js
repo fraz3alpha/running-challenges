@@ -756,11 +756,11 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
             "name": top_level_country.name,
             "visited": false,
             "first_visited": top_level_country.first_ran_on,
-            "icon": chrome.extension.getURL("/images/flags/flag-unknown.png")
+            "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
         }
         // Update the icon if it exists
         if (top_level_country.name in flag_map) {
-            country_info.icon = chrome.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
+            country_info.icon = browser.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
         }
 
         var child_events = find_region_child_events(top_level_country)
