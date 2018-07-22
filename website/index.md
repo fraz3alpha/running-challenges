@@ -6,7 +6,7 @@ layout: home
 ---
 
 Welcome to Running Challenges! This [Chrome extension]({{ site.data.webstore.webstore-running-challenges-link }}) /
-[Firefox Add-on]({{ site.data.webstore.firefox-webstore-running-challenges-link }}) allows you to play games with
+[Firefox Add-on]({{ site.data.webstore.firefox-running-challenges-link }}) allows you to play games with
 your [parkrun](https://www.parkrun.com) results, including tourist challenges and tracking your volunteering at parkrun.
 Each completed challenge gives you a badge on your profile to show off to all your friends!
 
