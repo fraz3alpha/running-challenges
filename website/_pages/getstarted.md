@@ -112,6 +112,165 @@ Extra tips:
 
 ### Firefox for PC/Mac
 
+<table>
+  <tbody>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-menu.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-menu.png">
+        </a>
+      </td>
+      <td>
+        Start with Firefox on your PC/Mac, and click the '<b>three bars</b>'
+        at the top right to show the main menu and click "<b>Add-ons</b>".
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-get-add-ons.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-get-add-ons.png">
+        </a>
+      </td>
+      <td>
+        The Add-ons Manager starts in the Extensions tab containing the Add-ons
+        you have already installed. Click on the <b>Get Add-ons</b> tab on the
+        left hand side to start looking for more Add-ons to install.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-see-more-add-ons.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-see-more-add-ons.png">
+        </a>
+      </td>
+      <td>
+        Scroll to the bottom and click the <b>See more Add-ons</b> button.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-search-running-challenges.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-search-running-challenges.png">
+        </a>
+      </td>
+      <td>
+        Search for <b>Running Challenges</b> to find our add-on, and select it
+        from the search results.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-add-running-challenges-to-firefox.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-add-running-challenges-to-firefox.png">
+        </a>
+      </td>
+      <td>
+        Click "<b>+ Add to Firefox</b>" to install the Add-on.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-permission-to-install-running-challenges.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-permission-to-install-running-challenges.png">
+        </a>
+      </td>
+      <td>
+        Firefox will ask you for permission to install the extension, click the
+        <b>install</b> button to confirm.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-running-challenges-successfully-installed.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-running-challenges-successfully-installed.png">
+        </a>
+      </td>
+      <td>
+        When the Add-on is installed, it will give a notification on the screen
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-running-challenges-icon.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-running-challenges-icon.png">
+        </a>
+      </td>
+      <td>
+        With the Add-on installed, a <b>Running Challenges icon</b> is added to
+        the toolbar, click this icon to take you to your profile page to view you
+        badges, stats, and challenges.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-running-challenges-options.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-running-challenges-options.png">
+        </a>
+      </td>
+      <td>
+        <p>As this is the first time you have used the Add-on, Running Challenges
+        doesn't know your athlete ID or your home parkrun, so doesn't know which
+        parkrun page to link you to. Add you <b>athlete ID</b> and choose your <b>home parkrun</b>
+        from the selection presented to you.</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-running-challenges-save-options.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-running-challenges-save-options.png">
+        </a>
+      </td>
+      <td>
+        <p>Your home parkrun is used to determine which parkrun website to link you
+        to (e.g. .org.uk for the UK, .com.au for Australia etc..), but also to
+        determine some of the stats and which events you might consider visiting
+        to complete the challenges. Choose the event that is nearest to you.
+        Note - this has no relation to the home parkrun you have configured on
+        the parkrun website, it is only used within the Add-on code and can be
+        different if you like.</p><br>
+        <p>Press <b>Save</b> when you have added your information</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-go-to-athlete-page.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-go-to-athlete-page.png">
+        </a>
+      </td>
+      <td>
+        With your athlete ID and home parkrun safely stored, if you click the
+        <b>Running Challenges icon</b> from the toolbar it will take you directly
+        to your athlete page.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="getting-started-cell-desktop-screenshot">
+        <a href="{{ site.baseurl }}/img/getting-started/firefox/install-xx-firefox-running-challenges-badges.png">
+          <img src="{{ site.baseurl }}/img/getting-started/firefox/thumbs/install-xx-firefox-running-challenges-badges.png">
+        </a>
+      </td>
+      <td>
+        Enjoy your badges, stats, and maps!
+      </td>
+    </tr>
+
+
+
+  </tbody>
+</table>
+
 
 ### Firefox for Android (phone or tablet)
 
