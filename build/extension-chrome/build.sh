@@ -1,3 +1,8 @@
+#!/bin/bash -xe
+
+# Set up version variables
+source build/version.sh
+
 # Create empty build directory
 export TMP_BUILD_DIR=browser-extensions/chrome/build
 rm -rf ${TMP_BUILD_DIR} && mkdir -p ${TMP_BUILD_DIR}
@@ -23,6 +28,10 @@ cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
 
 # Copy the metadata
 cp -r browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
+
+# Replace placeholders in the manifest file
+sed -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
+sed -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}

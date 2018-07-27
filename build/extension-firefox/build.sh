@@ -1,5 +1,8 @@
 #!/bin/bash -xe
 
+# Set up version variables
+source build/version.sh
+
 # Create empty build directory
 export TMP_BUILD_DIR=browser-extensions/firefox/build
 rm -rf ${TMP_BUILD_DIR} && mkdir -p ${TMP_BUILD_DIR}
@@ -25,7 +28,11 @@ cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 
 # Replace all instances of "chrome-extension://" with "moz-extension://" for
 # Firefox compatibility in css files
-find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec sed -i "" "s/chrome-extension/moz-extension/g" {} \;
+find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec sed -i "s/chrome-extension/moz-extension/g" {} \;
+
+# Replace placeholders in the manifest file
+sed -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
+sed -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
 
 # Copy the metadata
 cp -r browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
