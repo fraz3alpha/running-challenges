@@ -30,12 +30,12 @@ cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 # Firefox compatibility in css files
 find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec sed -i "s/chrome-extension/moz-extension/g" {} \;
 
+# Copy the metadata
+cp browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
+
 # Replace placeholders in the manifest file
 sed -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
 sed -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
-
-# Copy the metadata
-cp -r browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
