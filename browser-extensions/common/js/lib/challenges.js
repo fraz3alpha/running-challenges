@@ -380,7 +380,10 @@ function generate_stat_years_parkrunning(parkrun_results) {
   if (parkrun_results.length > 0) {
     var birthday_date = parkrun_results[0].date_obj
     var now = new Date()
-    if (now.getMonth() > birthday_date.getMonth() || (now.getMonth() == birthday_date.getMonth() && now.getDay() >= birthday_date.getDay())) {
+    // .getDay() returns the day of the week (0-6)
+    // .getDate() returns the day of the month (1-31)
+    // So be careful when comparing!
+    if (now.getMonth() > birthday_date.getMonth() || (now.getMonth() == birthday_date.getMonth() && now.getDate() >= birthday_date.getDate())) {
       years = now.getFullYear() - birthday_date.getFullYear()
     } else {
       years = now.getFullYear() - birthday_date.getFullYear() - 1
