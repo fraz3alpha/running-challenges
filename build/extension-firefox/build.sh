@@ -1,5 +1,10 @@
 #!/bin/bash -xe
 
+# Set up version variables
+source build/version.sh
+# Set up tools variables
+source build/tools.sh
+
 # Create empty build directory
 export TMP_BUILD_DIR=browser-extensions/firefox/build
 rm -rf ${TMP_BUILD_DIR} && mkdir -p ${TMP_BUILD_DIR}
@@ -15,18 +20,24 @@ cp -r images/flags/twemoji/png/*.png ${TMP_BUILD_DIR}/images/flags/
 
 cp -r images/logo ${TMP_BUILD_DIR}/images/
 
-# Copy the code
-cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
-cp -r browser-extensions/chrome/html ${TMP_BUILD_DIR}/
-cp -r browser-extensions/chrome/css ${TMP_BUILD_DIR}/
+# Copy the common code
+cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
+cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
+cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
+
+# Copy the extras libraries and code for Firefox
+# None at the moment
 
 # Replace all instances of "chrome-extension://" with "moz-extension://" for
 # Firefox compatibility in css files
-find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec sed -i "" "s/chrome-extension/moz-extension/g" {} \;
-
+find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec ${SED} -i "s/chrome-extension/moz-extension/g" {} \;
 
 # Copy the metadata
-cp -r browser-extensions/chrome/manifest.json.mozilla ${TMP_BUILD_DIR}/manifest.json
+cp browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
+
+# Replace placeholders in the manifest file
+${SED} -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
+${SED} -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
