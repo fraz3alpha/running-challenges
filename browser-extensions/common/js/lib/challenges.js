@@ -1783,8 +1783,8 @@ function challenge_by_region(data, params) {
     regions = geo_data.data.regions
     // Sort all of the completed parkruns by event so that we can pick out which
     // has been run, and when that was
-    events_completed_map = group_results_by_event(parkrun_results)
-    sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
+    o.events_completed_map = group_results_by_event(parkrun_results)
+    sorted_region_heirachy = calculate_child_regions(regions, o.events_completed_map, "World")
     // console.log(sorted_region_heirachy)
 
     o.regions = sorted_region_heirachy
