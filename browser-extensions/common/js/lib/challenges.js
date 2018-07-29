@@ -591,7 +591,7 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
 
   $.each(geo_data.data.events, function (event_name, event_info) {
     if (!(event_name in events_run)) {
-      if (event_info.status == 'Live' && event_info.lat && event_info.lon) {
+      if ((event_info.status == 'Live' || event_info.status == 'unknown') && event_info.lat && event_info.lon) {
         event_distances[event_name] = calculate_great_circle_distance(event_info, home_parkrun_info)
       }
     }
@@ -690,28 +690,6 @@ function get_initial_letter(event_name) {
   return event_name[0].toLowerCase()
 }
 
-// Find the closest parkrun for each letter of the alphabet
-function generate_closest_parkruns_by_initial_letter(geo_data, home_parkrun_info) {
-  // The closest event for each letter
-  var events = {}
-
-  $.each(geo_data.data.events, function (event_name, event_info) {
-    if (event_info.status == 'Live' && event_info.lat && event_info.lon) {
-      event_distance = calculate_great_circle_distance(event_info, home_parkrun_info)
-      event_letter = get_initial_letter(event_info["shortname"])
-      if (events[event_letter] === undefined || event_distance < events[event_letter]["distance"]) {
-        events[event_letter] = {
-          'event': event_info,
-          'distance': event_distance
-        }
-      }
-    }
-  })
-
-  console.log(events)
-  return events
-
-}
 
 function generate_global_tourism_data(parkrun_results, geo_data) {
     // Generate essentially the same results as the regionnaire challenge all over again
@@ -854,7 +832,7 @@ function group_global_events_by_containing_word(geo_data, words) {
   })
 
   $.each(geo_data.data.events, function (event_name, event_info) {
-    if (event_info.status == 'Live') {
+    if (event_info.status == 'Live' || event_info.status == 'unknown') {
       $.each(words, function(index, word) {
         if (event_contains_word(event_name, word)) {
           events[word].push(event_info)
@@ -872,7 +850,7 @@ function group_global_events_by_initial_letter(geo_data) {
   var events = {}
 
   $.each(geo_data.data.events, function (event_name, event_info) {
-    if (event_info.status == 'Live') {
+    if (event_info.status == 'Live' || event_info.status == 'unknown') {
       event_letter = get_initial_letter(event_info["shortname"])
       if (events[event_letter] === undefined) {
         events[event_letter] = []
@@ -885,15 +863,6 @@ function group_global_events_by_initial_letter(geo_data) {
 
 }
 
-function filter_events_by_status(events, allowed_statuses) {
-  filtered_events = {}
-  $.each(events, function (event_name, event_info) {
-    if (allowed_statuses.includes(event_info.status)) {
-      filtered_events[event_name] = event_info
-    }
-  })
-  return filtered_events
-}
 
 function sort_events_by_distance(events, from_location) {
 
@@ -1815,7 +1784,6 @@ function challenge_by_region(data, params) {
     // Sort all of the completed parkruns by event so that we can pick out which
     // has been run, and when that was
     events_completed_map = group_results_by_event(parkrun_results)
-    o.events_completed_map = events_completed_map
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
     // console.log(sorted_region_heirachy)
 

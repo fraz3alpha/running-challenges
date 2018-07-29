@@ -48,19 +48,9 @@ var cache = {
         'datatype': 'html',
         'timeout': 5000
     },
-    'data': null,
-    'updated_at': null
+    'data': undefined,
+    'updated_at': undefined
 }
-
-var cached_geo = {
-    'data': null,
-    'updated': null,
-    'updating': false
-}
-// 3 Days
-// A good balance between not every day, but not as long as a week - when new
-// events may have been added
-var cached_geo_expiry_ms = 3 * 24 * 60 * 60 * 1000
 
 function traverse_geo_data(geo_data, region_name, depth=0) {
 
@@ -218,7 +208,7 @@ function compute_geo_data_heirachy(geo_data) {
         if (event_info.region_id in region_id_to_name_map) {
             // Add the event under the region to which it belongs...
             // ... but only if it is a live event
-            if (event_info.status === undefined || event_info.status == 'Live') {
+            if (event_info.status === 'unknown' || event_info.status == 'Live') {
                 var event_region_name = region_id_to_name_map[event_info.region_id]
                 event_info.region_name = event_region_name
                 geo_data.regions[event_region_name].child_event_ids.push(event_info.id)
@@ -250,9 +240,10 @@ function compute_geo_data_heirachy(geo_data) {
 function parse_tee_data_event_status(data, result) {
 
     // console.log('parse_tee_data_event_status()')
-    // Reset the event status data to a blank map
-    data.event_status = {}
-     $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+    if (result !== undefined) {
+      // Reset the event status data to a blank map
+      data.event_status = {}
+      $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
          var content_table = $(this)
 
          content_table.find('tbody>tr').each(function(row_index) {
@@ -270,28 +261,27 @@ function parse_tee_data_event_status(data, result) {
                  // console.log(parkrun_info)
              }
          })
-     })
+      })
+    }
 
      return data
 
 }
 
 function compute_event_status(data) {
-    // console.log('compute_event_status()')
-    if (data.event_status !== undefined) {
-         // Loop through the existing geo_data, and supplement it with the
-         // extra event data we have found if there is a match
-         $.each(data.events, function(event_name, event_info) {
-             if (event_info.id in data.event_status) {
-                 // console.log('Found state '+live_parkrun_event_data[event_info.id].parkrun_status+" for "+event_name)
-                 data.events[event_name].status = data.event_status[event_info.id].parkrun_status
-             } else {
-                 data.events[event_name].status = 'unknown'
-             }
-         })
 
-    }
-    return data
+  // Loop through the existing geo_data, and supplement it with the
+  // extra event data we have found if there is a match
+  $.each(data.events, function(event_name, event_info) {
+     if (data.event_status !== undefined && event_info.id in data.event_status) {
+         // console.log('Found state '+live_parkrun_event_data[event_info.id].parkrun_status+" for "+event_name)
+         data.events[event_name].status = data.event_status[event_info.id].parkrun_status
+     } else {
+         data.events[event_name].status = 'unknown'
+     }
+  })
+
+  return data
 
 }
 
@@ -332,7 +322,7 @@ function get_geo_data(notify_func, freshen=false) {
                      },
                      error: function (xhr, status, error) {
                          // console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
-                         defer.resolve(null)
+                         defer.resolve(undefined)
                      }
                  })
             }))
@@ -353,22 +343,32 @@ function get_geo_data(notify_func, freshen=false) {
             function ( data_geo, data_tee ) {
                 // console.log('Processing returned data')
 
+                // For testing, we can wipe these
+                // data_geo = undefined
+                // cache.geo.raw_data = undefined
+                // data_tee = undefined
+                // cache.technical_event_information.raw_data = undefined
+
                 // We absolutely need the geo data, without which we can't do
                 // anything.
-                if (data_geo === null) {
+                if (data_geo === undefined) {
                     // See if we have a previous one to fall back on
-                    if (cache.geo.raw_data === null) {
+                    if (cache.geo.raw_data === undefined) {
                         // If not, send something back
+                        console.log('No data to go on!')
                         notify_geo_data(notify_func)
                         return
                     } else {
                         // Else make the best use of what we had previously
+                        console.log('Using previously obtained raw data')
                         data_geo = cache['geo'].raw_data
                     }
+                } else {
+                  console.log('Fresh data available')
                 }
 
                 // Check if we have technical event information and fall back if not
-                if (data_tee === null) {
+                if (data_tee === undefined) {
                     data_tee = cache.technical_event_information.raw_data
                 }
 
@@ -389,9 +389,9 @@ function get_geo_data(notify_func, freshen=false) {
 
                 // If the technical event information has been obtained, then
                 // lets parse that.
-                if (data_tee !== null) {
-                    parse_tee_data_event_status(data, data_tee)
-                }
+                // if (data_tee !== null) {
+                parse_tee_data_event_status(data, data_tee)
+                // }
 
                 // This could potentially do nothing if no event info is available
                 compute_event_status(data)
@@ -409,6 +409,7 @@ function get_geo_data(notify_func, freshen=false) {
         )
     } else {
         // Just return the cached data
+        console.log('Returning cached data for TEE & Geo Data')
         notify_geo_data(notify_func)
     }
 
@@ -416,7 +417,7 @@ function get_geo_data(notify_func, freshen=false) {
 
 function notify_geo_data(f) {
     if (f !== undefined) {
-        if (cache.data !== null) {
+        if (cache.data !== undefined) {
             // console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
             f({
                 'data': cache.data,

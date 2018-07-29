@@ -100,13 +100,6 @@ function get_badge_location() {
     return $("div[id=content]").find("p:first")
 }
 
-// Try the promises stuff, vaguely following examples on https://github.com/mozilla/webextension-polyfill
-
-// browser.storage.local.get({
-//   athlete_number: '',
-//   home_parkrun_info: {}
-// }
-
 function parse_volunteer_table(result) {
 
   // Find all the results tables in this page
@@ -138,8 +131,15 @@ function parse_volunteer_table(result) {
   return completed_volunteer_roles
 }
 
-function set_complete_progress_message() {
-   set_progress_message('Additional badges provided by <a href="https://running-challenges.co.uk" target="_blank">Running Challenges</a>')
+function set_complete_progress_message(errors) {
+  var messages = ['Additional badges provided by <a href="https://running-challenges.co.uk" target="_blank">Running Challenges</a>']
+  $.each(errors, function(index, error_message) {
+    messages.push(error_message)
+  })
+  if (errors.length > 0) {
+    messages.push('Refresh the page to try again')
+  }
+  set_progress_message(messages.join('<br/><br/>'))
 }
 
 function set_progress_message(progress_message) {
@@ -450,9 +450,15 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   return browser.runtime.sendMessage({data: "geo"});
 }).then((results) => {
   set_progress_message("Loaded geo data")
-  loaded_geo_data = results.geo
-  // console.log("Here is the geo data, fetched with a promise:")
-  // console.log(results)
+  console.log('Loaded geo data was:')
+  console.log(results.geo)
+  // The return packet will normally be valid even if the geo data is not contained
+  // within, so we do some sanity check here
+  if (results.geo && results.geo.data) {
+    loaded_geo_data = results.geo
+  } else {
+    console.log('Geo data rejected')
+  }
 
   set_progress_message("Loading volunteer data")
   // Now lets fetch the volunteer information
@@ -490,8 +496,8 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   data.info.is_our_page = (data.info.has_athlete_id && get_athlete_id() == loaded_user_data.athlete_number)
   // Convenience properties for the main sources of data
   data.info.has_geo_data = (data.geo_data !== undefined)
+  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
-  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.challenge_results = {
     "running_results": generate_running_challenge_data(data),
@@ -514,8 +520,17 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   add_challenge_results(id_map["main"], data)
   add_stats(id_map["stats"], data)
 
+  var errors = []
+  if (data.info.has_geo_data == false) {
+    errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
+  }
+  if (data.info.has_geo_technical_event_data == false) {
+    errors.push('! Unable to fetch parkrun event status data: Stats and Challenges, e.g. Regionnaire, may include events that haven\'t started yet !')
+  }
+
+
   // Add our final status message
-  set_complete_progress_message()
+  set_complete_progress_message(errors)
 
 }).catch(error => {
   console.log(error)
