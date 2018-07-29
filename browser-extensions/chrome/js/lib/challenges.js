@@ -86,7 +86,10 @@ function generate_running_challenge_data(data) {
       "name": "Gold Level Obsessive",
       "data": 50,
       "help": "Run 50+ parkruns in one calendar year."}))
-
+    challenge_data.push(challenge_pbs_by_month(data, {
+      "shortname": "pbs-by-month",
+      "name": "Personal Bests By Month",
+      "help": "Get a personal best time in each month of the year"}))
   }
 
   if (data.parkrun_results && data.geo_data) {
@@ -1106,6 +1109,81 @@ function challenge_start_letters(data, params) {
     // Return an object representing this challenge
     return update_data_object(o)
 }
+
+function challenge_pbs_by_month(data, params) {
+
+  var parkrun_results = data.parkrun_results
+  var o = create_data_object(params, "runner")
+  o.subparts = ["1"]
+  o.summary_text = "0"
+
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  o.has_map = true
+  if (has_home_parkrun(data) && is_our_page(data)) {
+    o.home_parkrun = get_home_parkrun(data)
+  }
+
+  var lastpb = null
+
+  parkrun_results.forEach(function (parkrun_event) {
+
+    // Is this event a pb?
+    if (parkrun_event.pb) {
+
+      // Extract date information
+      day = parseInt(parkrun_event.date.substr(0,2))
+      month = parseInt(parkrun_event.date.substr(3, 2))
+      year = parseInt(parkrun_event.date.substr(6,4))
+
+      // Build an actual JS date, remember that month is zero based
+      actualdate = new Date(year, month-1, day)
+
+      // Have we already got a PB for this month?
+      if( o.subparts_detail[month] == null) {
+        o.subparts_detail[month] = {
+          "name": parkrun_event.name,
+          "date": parkrun_event.date,
+          "info": parkrun_event.date,
+          "subpart": monthNames[parseInt(month)-1],
+          "month": parseInt(month)
+        }
+
+        // One more PB-month completed
+        o.subparts_completed_count += 1
+
+        // Store the most recent PB month (used if you've got PBs is all twelve months)
+        if(lastpb == null || lastpb < actualdate) {
+          lastpb = actualdate
+        }
+      }
+    }
+  })
+
+  // Fill in missing months
+  for (m = 1; m <= 12; m++) {
+    if(o.subparts_detail[m] == null) {
+      o.subparts_detail[m] = {
+        "subpart": monthNames[m-1]
+      }
+    }
+  }
+
+  // Change the summary to indicate number of times completed
+  o.summary_text = o.subparts_completed_count + "/12"
+
+  // Mark it complete the first time it occurs
+  if (o.subparts_completed_count == 12) {
+    o.complete = true
+    o.completed_on = lastpb
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
+}
+
 
 function challenge_words(data, params) {
 
