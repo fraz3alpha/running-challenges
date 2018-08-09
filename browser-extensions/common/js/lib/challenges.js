@@ -718,59 +718,98 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
     // console.log("generate_global_tourism_data()")
     var global_tourism = []
 
-    // Mapping countries to flag image files
-    var flag_map = {
-        "New Zealand": "nz",
-        "Australia": "au",
-        "Denmark": "dk",
-        "Finland": "fi",
-        "France": "fr",
-        "Germany": "de",
-        // "Iceland"--
-        "Ireland": "ie",
-        "Italy": "it",
-        "Malaysia": "my",
-        "Canada": "ca",
-        "Norway": "no",
-        "Poland": "pl",
-        "Russia": "ru",
-        "Singapore": "sg",
-        "South Africa": "za",
-        "Sweden": "se",
-        "UK": "gb",
-        "USA": "us"
-        // "Zimbabwe"--
-    }
+    // // Mapping countries to flag image files
+    // var flag_map = {
+    //     "New Zealand": "nz",
+    //     "Australia": "au",
+    //     "Denmark": "dk",
+    //     "Finland": "fi",
+    //     "France": "fr",
+    //     "Germany": "de",
+    //     // "Iceland"--
+    //     "Ireland": "ie",
+    //     "Italy": "it",
+    //     "Malaysia": "my",
+    //     "Canada": "ca",
+    //     "Norway": "no",
+    //     "Poland": "pl",
+    //     "Russia": "ru",
+    //     "Singapore": "sg",
+    //     "South Africa": "za",
+    //     "Sweden": "se",
+    //     "UK": "gb",
+    //     "USA": "us"
+    //     // "Zimbabwe"--
+    // }
 
-    regions = geo_data.data.regions
-    events_completed_map = group_results_by_event(parkrun_results)
-    sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
+    // regions = geo_data.data.regions
+    // events_completed_map = group_results_by_event(parkrun_results)
+    // sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
 
-    sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
-        // Skip the world
-        if (top_level_country.name == "World") {
-            return
-        }
+    // Iterate over the countries
+    $.each(Object.keys(geo_data.data.countries).sort(), function(index, country) {
 
-        var country_info = {
-            "name": top_level_country.name,
-            "visited": false,
-            "first_visited": top_level_country.first_ran_on,
-            "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
-        }
-        // Update the icon if it exists
-        if (top_level_country.name in flag_map) {
-            country_info.icon = browser.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
-        }
+      var country_info = {
+          "name": country,
+          "id": geo_data.data.countries[country].region_id,
+          "website": geo_data.data.countries[country].url,
+          "visited": false,
+          "first_visited": undefined,
+          "website": undefined,
+          "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
+      }
+      if (country in countries) {
+        country_info.icon = browser.extension.getURL("/images/flags/"+countries[country].flag_code+".png")
+      }
 
-        var child_events = find_region_child_events(top_level_country)
+      if (country_info.website === undefined && country in countries && countries[country].website !== undefined) {
+        country_info.website = countries[country].website
+      }
 
-        if (top_level_country.child_events_completed_count > 0) {
-            country_info["visited"] = true
-        }
-        global_tourism.push(country_info)
+      console.log(country_info)
     })
-    return global_tourism
+
+    // Iterate over the events that have been completed, and try to box them into
+    // one of the countries
+    $.each(parkrun_results, function(index, result) {
+      // See if the event is a current one
+      if (result.name in geo_data.data.events) {
+        var geo_data_event = geo_data.data.events[result.name]
+        console.log(geo_data_event)
+      } else {
+        // This is a defunct event, try and see if we can find which country
+        // it is supposed to be for
+        console.log("defunct parkrun")
+        console.log(result)
+      }
+    })
+
+
+    // sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
+    //     // Skip the world
+    //     if (top_level_country.name == "World") {
+    //         return
+    //     }
+    //
+    //     var country_info = {
+    //         "name": top_level_country.name,
+    //         "visited": false,
+    //         "first_visited": top_level_country.first_ran_on,
+    //         "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
+    //     }
+    //     // Update the icon if it exists
+    //     if (top_level_country.name in flag_map) {
+    //         country_info.icon = browser.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
+    //     }
+    //
+    //     var child_events = find_region_child_events(top_level_country)
+    //
+    //     if (top_level_country.child_events_completed_count > 0) {
+    //         country_info["visited"] = true
+    //     }
+    //     global_tourism.push(country_info)
+    // })
+    // return global_tourism
 }
 
 function find_region_child_events(region, events=[]) {

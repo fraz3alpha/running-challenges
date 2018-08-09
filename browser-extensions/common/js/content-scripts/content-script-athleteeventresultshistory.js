@@ -25,45 +25,45 @@ function get_table(id, caption) {
     })
 }
 
-function add_global_tourism_flags(div, data) {
-
-    flags_p = $("p", div)
-    flags_p.empty()
-
-    var index_counter = 1
-    data.sort(function (o1,o2) {
-        // Equal
-        if (o1.first_visited === o2.first_visited) {
-            return 0
-        }
-        // If either are null they should go to the back
-        if (o1.first_visited === null) {
-            return 1
-        }
-        if (o2.first_visited === null) {
-            return -1
-        }
-        return o1.first_visited - o2.first_visited
-    }).forEach(function (country) {
-        if (country.visited) {
-            // Find out when it was first run and make a nice string
-            var first_run = country.first_visited.toISOString().split("T")[0]
-            var img = $('<img>');
-            img.attr('src', country.icon);
-            img.attr('alt',country.name)
-            img.attr('title',country.name+": "+first_run)
-            img.attr('width',48)
-            img.attr('height',48)
-            img.attr('style', 'padding-left:6px; padding-right:6px')
-            flags_p.append(img)
-
-            if (index_counter > 0 && index_counter % 8 == 0) {
-                flags_p.append($('<br/>'))
-            }
-            index_counter += 1
-        }
-    })
-}
+// function add_global_tourism_flags(div, data) {
+//
+//     flags_p = $("p", div)
+//     flags_p.empty()
+//
+//     var index_counter = 1
+//     data.sort(function (o1,o2) {
+//         // Equal
+//         if (o1.first_visited === o2.first_visited) {
+//             return 0
+//         }
+//         // If either are null they should go to the back
+//         if (o1.first_visited === null) {
+//             return 1
+//         }
+//         if (o2.first_visited === null) {
+//             return -1
+//         }
+//         return o1.first_visited - o2.first_visited
+//     }).forEach(function (country) {
+//         if (country.visited) {
+//             // Find out when it was first run and make a nice string
+//             var first_run = country.first_visited.toISOString().split("T")[0]
+//             var img = $('<img>');
+//             img.attr('src', country.icon);
+//             img.attr('alt',country.name)
+//             img.attr('title',country.name+": "+first_run)
+//             img.attr('width',48)
+//             img.attr('height',48)
+//             img.attr('style', 'padding-left:6px; padding-right:6px')
+//             flags_p.append(img)
+//
+//             if (index_counter > 0 && index_counter % 8 == 0) {
+//                 flags_p.append($('<br/>'))
+//             }
+//             index_counter += 1
+//         }
+//     })
+// }
 
 function add_challenge_badges(div, data) {
 
@@ -169,6 +169,13 @@ function parse_results_table() {
               parkrun_time = table_cells[4].innerText
               parkrun_pb = table_cells[6].innerText.trim()
 
+              // Try and find the link to this parkrun
+              parkrun_event_link_obj = $("a:first", table_cells[0])
+              parkrun_website = undefined
+              if (parkrun_event_link_obj) {
+                parkrun_website = parkrun_event_link_obj.prop('hostname')
+              }
+
               // Create a date object, useful for comparing
               parkrun_date_obj = new Date()
               date_parts = parkrun_date.split("/")
@@ -184,6 +191,7 @@ function parse_results_table() {
                   "event_number": parkrun_event_number,
                   "position": parkrun_position,
                   "time": parkrun_time,
+                  "country_website": parkrun_website,
                   "pb": parkrun_pb.length > 0
               }
               parkruns_completed.push(parkrun_stats)
@@ -354,7 +362,9 @@ function get_volunteer_badge(result) {
 function add_flags(div_id, data) {
   set_progress_message("Adding flags")
   // console.log(data)
-
+  // Example of someone who has done a parkrun in Iceland: http://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber=70286
+  // Someone who has run in Zimbabwe: http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=8078&eventNumber=0
+  
   if (data.parkrun_results && data.geo_data) {
     global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
     // console.log(global_tourism_info)
