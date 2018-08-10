@@ -33,3 +33,21 @@ the top of the page.
 All your data is kept on the parkrun website and in your web browser (much the
 same way as it is when you visit the webpage without the extension - it's just
 more fun this way!), no data is transmitted or stored anywhere else.
+
+## Limitations
+
+#### Why can't I have a grace period for the 'Regionnaire' challenge?
+
+Many people have pointed out that it is a common convention in the various online
+groups that someone who has attained 'Regionnaire' status is entitled to retain
+that status for a period of time, e.g. 8 weeks, even if new parkruns start up
+that region. So why can't the *Running Challenges* extension do the same? The
+extension retrieves the details of each parkrun from the data used to generate
+the map of events on the parkrun website. The only details contained within this
+data-source are the name, location, and region for the event - there is no
+additional data relating to when the event started, or how many events there have
+been at that parkrun, therefore it is not possible to work out which are new
+additions. Unfortunately this means that we are limited with the calculations we
+can do, and the badge is only displayed for those runners who have completed all
+of the currently known parkruns - we recommend you take a screenshot of your
+badge when you first achieve it if you want to keep a record of it.
