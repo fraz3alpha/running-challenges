@@ -63,7 +63,15 @@ function get_cache_summary() {
     'regions': '<missing>',
     'events': '<missing>',
     'countries': '<missing>',
-    'event_status': '<missing>'
+    'event_status': '<missing>',
+    'data': {
+      'geo': {
+        'updated_at': cache.geo.updated_at
+      },
+      'technical_event_information': {
+        'updated_at': cache.technical_event_information.updated_at
+      }
+    }
   }
 
   if ('regions' in cache.data) {
