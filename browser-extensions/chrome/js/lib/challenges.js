@@ -86,10 +86,10 @@ function generate_running_challenge_data(data) {
       "name": "Gold Level Obsessive",
       "data": 50,
       "help": "Run 50+ parkruns in one calendar year."}))
-    challenge_data.push(challenge_pbs_by_month(data, {
-      "shortname": "pbs-by-month",
-      "name": "Personal Bests By Month",
-      "help": "Get a personal best time in each month of the year"}))
+    challenge_data.push(challenge_parkrun_by_month(data, {
+      "shortname": "parkrun-by-month",
+      "name": "Parkrun Each Month",
+      "help": "Run a parkrun in each month of the year"}))
   }
 
   if (data.parkrun_results && data.geo_data) {
@@ -1110,7 +1110,7 @@ function challenge_start_letters(data, params) {
     return update_data_object(o)
 }
 
-function challenge_pbs_by_month(data, params) {
+function challenge_parkrun_by_month(data, params) {
 
   var parkrun_results = data.parkrun_results
   var o = create_data_object(params, "runner")
@@ -1121,45 +1121,39 @@ function challenge_pbs_by_month(data, params) {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  o.has_map = true
-  if (has_home_parkrun(data) && is_our_page(data)) {
-    o.home_parkrun = get_home_parkrun(data)
-  }
-
+  o.has_map = false
+  
   var lastpb = null
 
   parkrun_results.forEach(function (parkrun_event) {
 
-    // Is this event a pb?
-    if (parkrun_event.pb) {
+    // Extract date information
+    day = parseInt(parkrun_event.date.substr(0,2))
+    month = parseInt(parkrun_event.date.substr(3, 2))
+    year = parseInt(parkrun_event.date.substr(6,4))
 
-      // Extract date information
-      day = parseInt(parkrun_event.date.substr(0,2))
-      month = parseInt(parkrun_event.date.substr(3, 2))
-      year = parseInt(parkrun_event.date.substr(6,4))
+    // Build an actual JS date, remember that month is zero based
+    actualdate = new Date(year, month-1, day)
 
-      // Build an actual JS date, remember that month is zero based
-      actualdate = new Date(year, month-1, day)
+    // Have we already got a parkrun for this month?
+    if( o.subparts_detail[month] == null) {
+      o.subparts_detail[month] = {
+        "name": parkrun_event.name,
+        "date": parkrun_event.date,
+        "info": parkrun_event.date,
+        "subpart": monthNames[parseInt(month)-1],
+        "month": parseInt(month)
+      }
 
-      // Have we already got a PB for this month?
-      if( o.subparts_detail[month] == null) {
-        o.subparts_detail[month] = {
-          "name": parkrun_event.name,
-          "date": parkrun_event.date,
-          "info": parkrun_event.date,
-          "subpart": monthNames[parseInt(month)-1],
-          "month": parseInt(month)
-        }
+      // One more parkrun-month completed
+      o.subparts_completed_count += 1
 
-        // One more PB-month completed
-        o.subparts_completed_count += 1
-
-        // Store the most recent PB month (used if you've got PBs is all twelve months)
-        if(lastpb == null || lastpb < actualdate) {
-          lastpb = actualdate
-        }
+      // Store the most recent parkrun month (used if you've parkrun in all months)
+      if(lastpb == null || lastpb < actualdate) {
+        lastpb = actualdate
       }
     }
+
   })
 
   // Fill in missing months
@@ -1177,7 +1171,10 @@ function challenge_pbs_by_month(data, params) {
   // Mark it complete the first time it occurs
   if (o.subparts_completed_count == 12) {
     o.complete = true
-    o.completed_on = lastpb
+
+    // Format the date into a localised format
+    var options = { day: 'numeric', month: 'numeric', year: 'numeric'};
+    o.completed_on = lastpb.toLocaleDateString(undefined, options);
   }
 
   // Return an object representing this challenge
