@@ -1696,6 +1696,7 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
 
     var region_info = {
         'name': parent_region,
+        "id": regions[parent_region]["id"],
         "complete": false,
         "completed_on": null,
         "child_regions": [],
