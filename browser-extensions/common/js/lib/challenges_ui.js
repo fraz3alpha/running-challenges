@@ -791,7 +791,8 @@ function iterate_regionnaire_data(table, region, level, region_group) {
 
     // console.log(region["name"])
 
-    var region_name_sanitised = region["name"].toLowerCase().replace(/\s/g, "_")
+    // Replace anything not an alphanumeric character with an underscore
+    var region_name_sanitised = region["name"].toLowerCase().replace(/\W/g, "_")
 
     var region_class_name = "regionnaire-class-"+region_name_sanitised
     var region_event_class_name = region_class_name+"-event"
