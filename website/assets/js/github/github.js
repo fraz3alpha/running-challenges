@@ -8,10 +8,9 @@ function create_issue_table(div_id, issues) {
   // Iterate over each issue returned, and create a row for it
   $.each(issues, function (index, github_issue) {
     console.log(github_issue)
+    console.log(github_issue.reactions)
     issue_row = $('<tr/>')
-    issue_row.append($('<td/>').html(github_issue.number))
-    issue_row.append($('<td/>').html(github_issue.created_at))
-    issue_row.append($('<td/>').html(github_issue.title))
+    issue_row.append($('<td/>').append($('<a/>').attr('href', github_issue.html_url).html(github_issue.title)))
     issues_table.append(issue_row)
   })
 
@@ -22,16 +21,16 @@ function create_issue_table(div_id, issues) {
 
 
 $.ajax({
-  // Fetch the open issues
-  url: "https://api.github.com/repos/fraz3alpha/running-challenges/issues?labels=new-challenge&state=open"
+  // Fetch the open, unimplemented challenge ideas
+  url: "https://api.github.com/repos/fraz3alpha/running-challenges/issues?labels=new-challenge&state=open",
 }).then((result) => {
   // Populate a table with these issues
-  create_issue_table("github-open-issues-table", result)
-  // Fetch the closed issues
+  create_issue_table("github-open-challenge-ideas-table", result)
+  // Fetch the implemented challenges
   return $.ajax({
-    url: "https://api.github.com/repos/fraz3alpha/running-challenges/issues?labels=new-challenge&state=closed"
+    url: "https://api.github.com/repos/fraz3alpha/running-challenges/issues?labels=new-challenge,added&state=closed"
   })
 }).then((result) => {
   // Populate a table with these issues
-  create_issue_table("github-closed-issues-table", result)
+  create_issue_table("github-implemented-challenge-ideas-table", result)
 })
