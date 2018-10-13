@@ -694,34 +694,47 @@ function get_initial_letter(event_name) {
 }
 
 
+function get_flag_image_src(country) {
+  // Mapping countries to flag image files
+  var flag_map = {
+      "New Zealand": "nz",
+      "Australia": "au",
+      "Denmark": "dk",
+      "Finland": "fi",
+      "France": "fr",
+      "Germany": "de",
+      // "Iceland"--
+      "Ireland": "ie",
+      "Italy": "it",
+      "Malaysia": "my",
+      "Canada": "ca",
+      "Norway": "no",
+      "Poland": "pl",
+      "Russia": "ru",
+      "Singapore": "sg",
+      "South Africa": "za",
+      "Sweden": "se",
+      "UK": "gb",
+      "USA": "us"
+      // "Zimbabwe"--
+  }
+
+  var flag_src = browser.extension.getURL("/images/flags/flag-unknown.png")
+
+  if (country in flag_map) {
+    flag_src = browser.extension.getURL("/images/flags/"+flag_map[country]+".png")
+  }
+
+  return flag_src
+
+}
+
 function generate_global_tourism_data(parkrun_results, geo_data) {
     // Generate essentially the same results as the regionnaire challenge all over again
     // console.log("generate_global_tourism_data()")
     var global_tourism = []
 
-    // Mapping countries to flag image files
-    var flag_map = {
-        "New Zealand": "nz",
-        "Australia": "au",
-        "Denmark": "dk",
-        "Finland": "fi",
-        "France": "fr",
-        "Germany": "de",
-        // "Iceland"--
-        "Ireland": "ie",
-        "Italy": "it",
-        "Malaysia": "my",
-        "Canada": "ca",
-        "Norway": "no",
-        "Poland": "pl",
-        "Russia": "ru",
-        "Singapore": "sg",
-        "South Africa": "za",
-        "Sweden": "se",
-        "UK": "gb",
-        "USA": "us"
-        // "Zimbabwe"--
-    }
+
 
     regions = geo_data.data.regions
     events_completed_map = group_results_by_event(parkrun_results)
@@ -737,11 +750,7 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
             "name": top_level_country.name,
             "visited": false,
             "first_visited": top_level_country.first_ran_on,
-            "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
-        }
-        // Update the icon if it exists
-        if (top_level_country.name in flag_map) {
-            country_info.icon = browser.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
+            "icon": get_flag_image_src(top_level_country.name)
         }
 
         var child_events = find_region_child_events(top_level_country)

@@ -195,7 +195,7 @@ function generate_regionnaire_table_entry(challenge, table, data) {
     var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events for more info!</td>'))
     challenge_tbody_detail.append(map_row)
 
-    iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'])
+    iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'], false)
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
@@ -783,7 +783,51 @@ function get_parkrun_popup(event_name, event_info, custom_options) {
   return popup
 }
 
-function iterate_regionnaire_data(table, region, level, region_group) {
+function get_regionnaire_flag(country, visited) {
+
+  var flag_icon = get_flag_image_src(country)
+
+  var img = $('<img>');
+  img.attr('src', flag_icon);
+  img.attr('alt', country)
+  img.attr('title', country)
+  img.attr('width',16)
+  img.attr('height',16)
+  if (visited) {
+    img.attr('style', 'padding-left:2px; padding-right:2px; opacity:1.0')
+  } else {
+    img.attr('style', 'padding-left:2px; padding-right:2px; opacity:0.5')
+  }
+
+  return img
+
+}
+
+var regionnaire_model = {
+  data: null,
+  regions_visibility: {}
+}
+
+function clicky() {
+  console.log(clicky_data)
+}
+
+function generate_regionnaire_model(data) {
+  regionnaire_model.data = data
+
+}
+
+function draw_regionnaire_table(element, region, level) {
+  if (region["child_events_total"] == 0) {
+      return
+  }
+}
+
+function process_regionnaire_region() {
+
+}
+
+function iterate_regionnaire_data(table, region, level, region_group, hidden) {
 
     if (level === undefined) {
         level = 0
@@ -802,28 +846,82 @@ function iterate_regionnaire_data(table, region, level, region_group) {
         return
     }
 
-    var row = $('<tr></tr>')
-    var twisty = $('<td></td>')
-    var hide_region_sub_rows = false
+    var row = $('<tr/>')
+    var twisty = $('<td/>').attr("id", region_class_name+"-twisty")
+    row.append(twisty)
+    var hide_region_sub_rows = false || hidden
     if (level == 1) {
-        if (region["child_events_completed_count"] == 0) {
-            twisty.append($('<b></b>').text("+"))
-            hide_region_sub_rows = true
-        } else {
-            twisty.append($('<b></b>').text("+"))
-        }
+      // if (region["child_regions"].length > 0) {
+      if (region["child_events_completed_count"] == 0) {
+        twisty.append(get_regionnaire_flag(region["name"], false))
+        hide_region_sub_rows = true
+      } else {
+          twisty.append(get_regionnaire_flag(region["name"], true))
+          row.addClass("region_visible")
+      }
+      // }
         // Set the geo region to the top level one (not world)
         // e.g. UK, Australia, Denmark
         region_group = region_class_name
     }
-    row.append(twisty)
+
+    var region_start_visible = region_group+"-level-"+level+"-visible"
+    var region_start_hidden = region_group+"-level-"+level+"-hidden"
+
+    console.log(region_start_visible + "/" + region_start_hidden)
+
+    console.log("Hide subregions for "+region["name"]+"? - "+hide_region_sub_rows)
+
     var prefix = Array(level).join("> ")
-    row.append($('<td></td>').append($('<b></b>').text(prefix + " " + region["name"])))
+    //row.append($('<td></td>').append($('<b></b>').text(prefix + " " + region["name"])))
+
+    var clickable_country = $('<span/>')
+    clickable_country.append($('<b></b>').text(prefix + " " + region["name"]))
+    if (region["child_regions"].length > 0) {
+      clickable_country.click(function(){
+
+      // Find the parent tr element
+      var parent_tr = $(this).closest("tr")
+      if (parent_tr.hasClass("region_visible")) {
+        // Collapse it
+        $("."+region_group+"-level-"+(level+1)+"-visible").hide();
+        $("."+region_group+"-level-"+(level+1)+"-hidden").hide();
+
+        // var twisty = $("#"+region_group+"-twisty")
+        // twisty.empty()
+        // twisty.append($('<b></b>').text("+"))
+        // Remove the class that says it is visible
+        parent_tr.removeClass("region_visible")
+      } else {
+        var class_name_to_make_visible = region_group+"-level-"+(level+1)+"-visible"
+        console.log("Making things visible with level="+(level+1)+" for "+class_name_to_make_visible)
+        // Then show the things the next level down that we intend to show
+        $("."+class_name_to_make_visible).show();
+
+        // var twisty = $("#"+region_group+"-twisty")
+        // twisty.empty()
+        // twisty.append($('<b></b>').text("-"))
+
+        parent_tr.addClass("region_visible")
+      }
+
+      })
+      clickable_country.click(function() {
+        clicky();
+      })
+      clickable_country.css('cursor', 'pointer')
+    }
+    row.append($('<td/>').append(clickable_country))
+
     row.append($('<td></td>'))
     var completion_string = region["child_events_completed_count"]+"/"+region["child_events_total"]
     row.append($('<td></td>').text(completion_string))
     row.addClass(region_event_class_name)
     row.addClass(region_group)
+    row.addClass(region_start_visible)
+    if (hidden) {
+      row.hide()
+    }
     table.append(row)
 
     // Print out those events that have been completed
@@ -836,6 +934,10 @@ function iterate_regionnaire_data(table, region, level, region_group) {
             row.append($('<td></td>').text(child_event))
             row.append($('<td></td>').text(region["child_events_completed"][child_event]["date"]))
             row.addClass(region_group)
+            row.addClass(region_start_visible)
+            if (hidden) {
+              row.hide()
+            }
             table.append(row)
         }
     })
@@ -855,6 +957,10 @@ function iterate_regionnaire_data(table, region, level, region_group) {
                 }).text('show '+hide_show_message+" ...")).attr('colspan', 3))
             show_more_row.addClass(region_incomplete_event_class_name+"-show")
             show_more_row.addClass(region_group)
+            show_more_row.addClass(region_start_visible)
+            if (hidden) {
+              show_more_row.hide()
+            }
             table.append(show_more_row)
         }
 
@@ -867,6 +973,7 @@ function iterate_regionnaire_data(table, region, level, region_group) {
                 row.append($('<td></td>'))
                 row.append($('<td></td>').text(child_event))
                 row.addClass(region_group)
+                row.addClass(region_start_hidden)
                 // Hide the row by default
                 row.hide()
                 table.append(row)
@@ -883,20 +990,16 @@ function iterate_regionnaire_data(table, region, level, region_group) {
             }).text('hide '+hide_show_message)).attr('colspan', 3))
         hide_more_row.addClass(region_incomplete_event_class_name+"-hide")
         hide_more_row.addClass(region_group)
+        hide_more_row.addClass(region_start_hidden)
         // Hide by default
         hide_more_row.hide()
         table.append(hide_more_row)
     }
 
     region["child_regions"].forEach(function (child_region) {
-        iterate_regionnaire_data(table, child_region, level+1, region_event_class_name)
+        iterate_regionnaire_data(table, child_region, level+1, region_group, hide_region_sub_rows)
     })
 
-    // Sort out the visibility of all sub rows
-    if (hide_region_sub_rows) {
-        // console.log('Hiding sub rows of '+region["name"]+" with class "+region_group)
-        $("."+region_group).hide()
-    }
 }
 
 function generate_standard_table_entry(challenge, table, data) {
