@@ -789,11 +789,9 @@ function iterate_regionnaire_data(table, region, level, region_group) {
         level = 0
     }
 
-    // console.log(region["name"])
-
-    var region_name_sanitised = region["name"].toLowerCase().replace(/\s/g, "_")
-
-    var region_class_name = "regionnaire-class-"+region_name_sanitised
+    // Use the region ID in the class name, because the human readable names
+    // are full of spaces, non-latin characters, and all sorts.
+    var region_class_name = "regionnaire-class-"+region["id"]
     var region_event_class_name = region_class_name+"-event"
     var region_incomplete_event_class_name = region_class_name+"-event-incomplete"
     var region_complete_event_class_name = region_class_name+"-event-complete"
