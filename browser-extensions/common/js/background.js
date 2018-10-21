@@ -316,7 +316,13 @@ function parse_tee_data_event_status(data, result) {
 
   // Reset the event status data to a blank map
   data.event_status = {}
-  $(result).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+
+  var ownerDocument = document.implementation.createHTMLDocument('virtual');
+  // Load the results into a virtual document, so that it doesn't attempt to load
+  // inline scripts etc...
+  // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
+  // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
+  $(result, ownerDocument).find('div[id=mw-content-text]>table:first').each(function(table_index) {
      var content_table = $(this)
 
      content_table.find('tbody>tr').each(function(row_index) {
