@@ -80,6 +80,7 @@
         "*://www.parkrun.ru/results/athleteresultshistory/*"
     ],
     "js": [
+        "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
         "js/lib/third-party/jquery/jquery-3.3.1.js",
         "js/lib/i18n.js",
         "js/content-scripts/content-script-athleteresultshistory.js"
@@ -107,6 +108,7 @@
         "*://www.parkrun.ru/*/athletehistory/*"
     ],
     "js": [
+        "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
         "js/lib/third-party/jquery/jquery-3.3.1.js",
         "js/lib/i18n.js",
         "js/content-scripts/content-script-athleteeventhistory.js"
