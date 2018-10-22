@@ -507,6 +507,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   data.info.has_challenge_results = (data.challenge_results !== undefined)
   data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
   data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
+  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.stats = generate_stats(data)
   // Update info with boolean for the presence of stats
