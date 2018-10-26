@@ -455,7 +455,7 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
 
   })
   return {
-    "display_name": "Longest Tourism streak",
+    "display_name": "Longest tourism streak",
     "help": "The highest number of consecutive different events attended.",
     "value": longest_tourism_streak + " parkruns"
   }
