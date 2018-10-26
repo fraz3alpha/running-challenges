@@ -33,6 +33,9 @@
 // "Run Report Writer"
 // "Other"
 // Warm Up (Juniors)
+//
+// New for 2018
+// Car Park Marshal
 var domains = {
     // Default english language options, good for most of the domains
     "default": {
@@ -71,7 +74,8 @@ var domains = {
             "Token Sorting": "Token Sorting",
             "Run Report Writer": "Run Report Writer",
             "Other": "Other",
-            "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
+            "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
+            "Car Park Marshal": "Car Park Marshal"
         }
     },
     "www.parkrun.pl": {

@@ -110,6 +110,7 @@ function generate_volunteer_challenge_data(data) {
         {"shortname": "comms-person", "name": "Communications Person"},
         {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
         {"shortname": "setup", "name": "Pre-event Setup"},
+        {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
         {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
         {"shortname": "sign-language", "name": "Sign Language Support"},
         {"shortname": "marshal", "name": "Marshal"},

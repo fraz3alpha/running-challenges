@@ -83,3 +83,17 @@ webstores.
 
 Each PR created, and when additional commits are pushed to existing PR branches,
 an additional build it run to build a copy of the website on staging.running-challenges.co.uk .
+
+# Adding a new volunteer role
+
+Occasionally parkrun create a new volunteer role, for example the "Car Park Marshall",
+which needs to be added in. By default the extension won't pick up these unknown
+roles, and they will need adding in in a few places:
+
+- Add the name of the role, and any known translations to `browser-extensions/common/js/lib/i18n.js`,
+  putting an entry in at least the `default` section.
+- Add the `name` and a suitable `shortname` to the `generate_volunteer_challenge_data()`
+  function in `browser-extensions/common/js/lib/challenges.js`
+- Create the new badge as a layer in `images/badges/256x256/badges.xcf`, and export
+  it as a `.png` file.
+- Follow the instructions in `images/badges/README.md` to generate the star badges.
