@@ -97,3 +97,4 @@ roles, and they will need adding in in a few places:
 - Create the new badge as a layer in `images/badges/256x256/badges.xcf`, and export
   it as a `.png` file.
 - Follow the instructions in `images/badges/README.md` to generate the star badges.
+- Update `website/_data/badges.yml` with a section for the additional role
