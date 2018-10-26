@@ -796,7 +796,7 @@ function get_regionnaire_flag(country, visited) {
   if (visited) {
     img.attr('style', 'padding-left:2px; padding-right:2px; opacity:1.0')
   } else {
-    img.attr('style', 'padding-left:2px; padding-right:2px; opacity:0.5')
+    img.attr('style', 'padding-left:2px; padding-right:2px; opacity:0.25')
   }
 
   return img
