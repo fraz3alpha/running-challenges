@@ -195,7 +195,7 @@ function generate_regionnaire_table_entry(challenge, table, data) {
     var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events for more info!</td>'))
     challenge_tbody_detail.append(map_row)
 
-    iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'], false)
+    iterate_regionnaire_data(challenge_tbody_detail, challenge['regions'], 0)
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
@@ -872,11 +872,19 @@ function iterate_regionnaire_data(table, region, level, region_group, hidden) {
 
     console.log("Hide subregions for "+region["name"]+"? - "+hide_region_sub_rows)
 
-    var prefix = Array(level).join("> ")
-    //row.append($('<td></td>').append($('<b></b>').text(prefix + " " + region["name"])))
-
     var clickable_country = $('<span/>')
-    clickable_country.append($('<b></b>').text(prefix + " " + region["name"]))
+    country_text = region["name"]
+    // If the level is 0, 'World', then that is as special case and there are no
+    // subparts that need indenting.
+    // If the level is 1, i.e. a country, then there is nothing to join, and it is
+    // just like 'World'
+    // If the level is 2+, like 'UK > South East', then we need one '> ', which
+    // we get by doing our join below.
+    if (level > 1) {
+      var prefix = Array(level).join("> ")
+      country_text = prefix + region["name"]
+    }
+    clickable_country.append($('<b></b>').text(country_text))
     if (region["child_regions"].length > 0) {
       clickable_country.click(function(){
 
