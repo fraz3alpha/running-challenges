@@ -1062,7 +1062,11 @@ function add_stats_table(div, data) {
         stat_value = '<span style="cursor: default" title="'+stat_info.help+'">'+stat_value+'</span>'
       }
       row.append($('<td/>').html(display_name))
-      row.append($('<td/>').html(stat_value))
+      if (stat_info.url !== undefined) {
+        row.append($('<td/>').append($('<a/>', {href: stat_info.url, text: stat_info.value, target: "_blank", title: stat_info.help })))
+      } else {
+        row.append($('<td/>').html(stat_value))
+      }
       table.append(row)
     })
 

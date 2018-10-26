@@ -74,6 +74,12 @@ stats:
       If you never repeat a parkrun event it will be 100%, if you never tourist
       at all it will tend towards 0%.
 
+  - shortname: tourism_streak
+    name: Tourism streak
+    description: >-
+      The longest unbroken run of different events visited. If this happens to
+      include your 'home' parkrun, this still counts in the calculation.
+
   - shortname: parkruns_this_year
     name: parkruns this year
     description: >-

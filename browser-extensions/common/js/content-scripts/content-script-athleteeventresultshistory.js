@@ -162,11 +162,11 @@ function parse_results_table() {
           table_cells = $("td", this)
           if (table_cells.length > 0) {
               // Find the name and other interesting bits of data for this parkrun
-              parkrun_name = table_cells[0].innerText
-              parkrun_date = table_cells[1].innerText
-              parkrun_event_number = table_cells[2].innerText
-              parkrun_position = table_cells[3].innerText
-              parkrun_time = table_cells[4].innerText
+              parkrun_name = table_cells[0].innerText.trim()
+              parkrun_date = table_cells[1].innerText.trim()
+              parkrun_event_number = table_cells[2].innerText.trim()
+              parkrun_position = table_cells[3].innerText.trim()
+              parkrun_time = table_cells[4].innerText.trim()
               parkrun_pb = table_cells[6].innerText.trim()
 
               // Create a date object, useful for comparing
@@ -507,6 +507,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   data.info.has_challenge_results = (data.challenge_results !== undefined)
   data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
   data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
+  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.stats = generate_stats(data)
   // Update info with boolean for the presence of stats

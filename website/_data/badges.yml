@@ -88,6 +88,10 @@ volunteer:
     name: Pre-event Setup
     description: Be the early bird and get to parkrun early and ensure that everything is ready for everyone else when they stroll up at 8:45
 
+  - shortname: car-park-marshal
+    name: Car Park Marshal
+    description: Keep everyone safe and organised in the car park
+
   - shortname: first-timers-briefing
     name: First Timers Briefing
     description: Make sure that runners new to parkrun know how it all works (and to not take the tokens home, or duck the funnel!), and give everyone new to your event the lay of the land - and how many laps it is.
