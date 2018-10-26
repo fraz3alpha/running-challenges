@@ -537,14 +537,20 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   })
 
   var value = "None"
+  var url_link = undefined
   if (count > 0) {
-    value = (lat_sum/count).toFixed(5) + "," + (lon_sum/count).toFixed(5)
+    var lat_av = (lat_sum/count).toFixed(5)
+    var lon_av = (lon_sum/count).toFixed(5)
+    value =  lat_av + "," + lon_av
+    // Provide a link to an openstreetmap with a marker in the location
+    url_link = "https://www.openstreetmap.org/?mlat="+lat_av+"&mlon="+lon_av+"#map=9/"+lat_av+"/"+lon_av
   }
 
   return {
     "display_name": "Average parkrun lat/lon location",
     "help": "The average latitude/longitude of all your parkrun attendances.",
-    "value": value
+    "value": value,
+    "url": url_link
   }
 }
 
