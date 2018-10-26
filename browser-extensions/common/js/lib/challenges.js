@@ -440,6 +440,27 @@ function generate_stat_tourist_quotient(parkrun_results) {
   }
 }
 
+// Maximum number of consecutive different parkrun events
+function generate_stat_longest_tourism_streak(parkrun_results) {
+  var longest_tourism_streak = 0
+  var this_streak = []
+  parkrun_results.forEach(function (parkrun_event) {
+    // Count the number of consecutive PBs
+    if (!this_streak.includes(parkrun_event.name)) {
+      this_streak.push(parkrun_event.name)
+      longest_tourism_streak = Math.max(longest_tourism_streak, this_streak.length)
+    } else {
+      this_streak = [parkrun_event.name]
+    }
+
+  })
+  return {
+    "display_name": "Longest tourism streak",
+    "help": "The highest number of consecutive different events attended.",
+    "value": longest_tourism_streak + " parkruns"
+  }
+}
+
 function generate_stat_runs_this_year(parkrun_results) {
   // Find those parkrun events that have been completed
   var runs_this_year = 0
@@ -670,7 +691,7 @@ function generate_stats(data) {
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
     stats['tourist_quotient'] = generate_stat_tourist_quotient(data.parkrun_results)
-
+    stats['tourism_streak'] = generate_stat_longest_tourism_streak(data.parkrun_results)
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
