@@ -442,22 +442,40 @@ function generate_stat_tourist_quotient(parkrun_results) {
 
 // Maximum number of consecutive different parkrun events
 function generate_stat_longest_tourism_streak(parkrun_results) {
-  var longest_tourism_streak = 0
-  var this_streak = []
-  parkrun_results.forEach(function (parkrun_event) {
-    // Count the number of consecutive PBs
-    if (!this_streak.includes(parkrun_event.name)) {
-      this_streak.push(parkrun_event.name)
-      longest_tourism_streak = Math.max(longest_tourism_streak, this_streak.length)
-    } else {
-      this_streak = [parkrun_event.name]
+  var t_streak = 0
+  let event_streak = []
+
+  parkrun_results.forEach(function (parkrun_event, index) {
+
+    // If we get a duplicate parkrun, chop off the start of the streak
+    // up until the streak becomes unique again.
+    //
+    // e.g.
+    // [1,2,3,4] - going to add [1]
+    // will chop off the first element with splice(0,1)
+    // [1,2,3,4,5,6] - going to add [3]
+    // will chop off the first 3 elements
+    if (event_streak.includes(parkrun_event.name)) {
+
+      var f = 0
+      var filteredElements = event_streak.some(function(item, index) {
+         f = index; return item == parkrun_event.name
+      })
+
+      event_streak.splice(0,f+1)
+
     }
+
+    // Add the new parkrun in - it will be unique in the list as we removed the
+    // existing entries in the list above.
+    event_streak.push(parkrun_event.name)
+    t_streak = Math.max(t_streak, event_streak.length)
 
   })
   return {
     "display_name": "Longest tourism streak",
     "help": "The highest number of consecutive different events attended.",
-    "value": longest_tourism_streak + " parkruns"
+    "value": t_streak + " parkruns"
   }
 }
 
