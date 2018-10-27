@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "Version 0.7.3 Released"
+date:   2018-10-27 20:00:00 +0100
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+This is the latest of a number of small updates, including:
+
+- Addition of the "Tourism Streak" stat
+- Addition of a map link to the average parkrun location stat
+- Reorganisation of the Regionnaire section to make it more compact
+- Updating (possibly completing!) the volunteer role translations
+- Addition of the Car Park Marshal volunteer role badge
+
+If you have already installed the extension it should update soon, if not you can get it
+from one of the links below:
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
