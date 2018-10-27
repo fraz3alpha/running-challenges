@@ -749,20 +749,23 @@ function get_flag_image_src(country) {
       "Finland": "fi",
       "France": "fr",
       "Germany": "de",
-      // "Iceland"--
+      "Iceland": "is",
       "Ireland": "ie",
       "Italy": "it",
       "Malaysia": "my",
       "Canada": "ca",
+      "Namibia": "na",
       "Norway": "no",
       "Poland": "pl",
       "Russia": "ru",
       "Singapore": "sg",
       "South Africa": "za",
+      "Swaziland": "sz",
       "Sweden": "se",
       "UK": "gb",
-      "USA": "us"
-      // "Zimbabwe"--
+      "USA": "us",
+      "Zimbabwe": "zw",
+      "World": "world"
   }
 
   var flag_src = browser.extension.getURL("/images/flags/flag-unknown.png")
@@ -1747,6 +1750,34 @@ function challenge_in_a_year(data, params) {
     return update_data_object(o)
 }
 
+function unroll_regions(sorted_region_heirachy) {
+
+  summary = {}
+  iterate_unroll_regions(summary, sorted_region_heirachy, 0)
+  return summary
+
+}
+
+function iterate_unroll_regions(summary, region, parent_id) {
+
+  summary[region.id] = {
+    name: region.name,
+    parent_id: parent_id,
+    complete: region.complete,
+    completed_on: region.completed_on,
+    child_regions: region.child_regions.map(r => r.id),
+    child_events: region.child_events,
+    child_events_completed: region.child_events_completed,
+    // Recursive data, for all child regions and their children, downloads
+    recursive_child_events_completed: region.child_events_completed_count,
+    recursive_child_events_count: region.child_events_total,
+  }
+  region.child_regions.forEach(function(sub_region) {
+    iterate_unroll_regions(summary, sub_region, region.id)
+  })
+
+}
+
 function calculate_child_regions(regions, events_completed_map, parent_region) {
 
     var region_info = {
@@ -1847,6 +1878,9 @@ function challenge_by_region(data, params) {
     // console.log(sorted_region_heirachy)
 
     o.regions = sorted_region_heirachy
+
+    o.unrolled_regions = unroll_regions(sorted_region_heirachy)
+
     o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
 
     // Work out of any regions have been completed
