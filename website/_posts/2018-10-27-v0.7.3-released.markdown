@@ -8,6 +8,8 @@ categories:
   - release
 ---
 
+Now with the Car Park Marshal badge!
+
 This is the latest of a number of small updates, including:
 
 - Addition of the "Tourism Streak" stat
