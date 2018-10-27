@@ -25,46 +25,6 @@ function get_table(id, caption) {
     })
 }
 
-function add_global_tourism_flags(div, data) {
-
-    flags_p = $("p", div)
-    flags_p.empty()
-
-    var index_counter = 1
-    data.sort(function (o1,o2) {
-        // Equal
-        if (o1.first_visited === o2.first_visited) {
-            return 0
-        }
-        // If either are null they should go to the back
-        if (o1.first_visited === null) {
-            return 1
-        }
-        if (o2.first_visited === null) {
-            return -1
-        }
-        return o1.first_visited - o2.first_visited
-    }).forEach(function (country) {
-        if (country.visited) {
-            // Find out when it was first run and make a nice string
-            var first_run = country.first_visited.toISOString().split("T")[0]
-            var img = $('<img>');
-            img.attr('src', country.icon);
-            img.attr('alt',country.name)
-            img.attr('title',country.name+": "+first_run)
-            img.attr('width',48)
-            img.attr('height',48)
-            img.attr('style', 'padding-left:6px; padding-right:6px')
-            flags_p.append(img)
-
-            if (index_counter > 0 && index_counter % 8 == 0) {
-                flags_p.append($('<br/>'))
-            }
-            index_counter += 1
-        }
-    })
-}
-
 function add_challenge_badges(div, data) {
 
   console.log('Adding '+JSON.stringify(data)+' to '+ div)
@@ -379,6 +339,9 @@ function add_flags(div_id, data) {
         if (country.visited) {
             // Find out when it was first run and make a nice string
             var first_run = country.first_visited.toISOString().split("T")[0]
+
+            var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
+
             var img = $('<img>');
             img.attr('src', country.icon);
             img.attr('alt',country.name)
@@ -386,7 +349,9 @@ function add_flags(div_id, data) {
             img.attr('width',48)
             img.attr('height',48)
             img.attr('style', 'padding-left:6px; padding-right:6px')
-            flags_div.append(img)
+
+            regionnaire_link.append(img)
+            flags_div.append(regionnaire_link)
 
             if (index_counter > 0 && index_counter % 8 == 0) {
                 flags_div.append($('<br/>'))
