@@ -8,15 +8,16 @@
 
 <h3>Translations</h3>
 
-<p>Most of the parkrun websites display your results and volunteer records in English. Some parkrun websites don't display in English. The French parkrun website, for example, displays your results and volunteer records in French.</p>
+<p>
+  We think we have a full set of translations for all of the volunteer roles,
+  and you can view them all in our <a href="https://github.com/fraz3alpha/running-challenges/blob/master/browser-extensions/common/js/lib/i18n.js">GitHub repository</a>.
+</p>
 
-<p>Running Challenges works by reading the information on your parkrun results page and then adding your badges to the top of the page. It checks what badges you have achieved by looking for certain terms on the parkrun pages, like "Barocde Scanning" which indicates that you have volunteered as a Barcode Scanner at parkrun.</p>
-
-<p>If a parkrunner registered in, say, France, all their roles seem to be displayed in French. This means that Running Challenges can't find the word "Barocde Scanning" on the page. So we have to provide a list of all the French volunteer terms (e.g. "Scan des codes-barres") so that French parkrunners get the right badges displayed on their pages. And the same for each other language.</p>
-
-<p>The following table indicates the current list of volunteer roles that we have discovered for each language on the parkrun websites. As you can see, there are several gaps in the table because we couldn't find examples of all the volunteer roles on all of the non-English parkrun websites.</p>
-
-<p>If you know what the missing volunteer roles are (the exact term used by parkrun in that language), please email us at TeamTCMakers@gmail.com. If you can, please include a link to an athlete who has volunteered for that role and has it displayed in that language on their athlete page. This means that we can test that they get the right badges when we've updated the table.</p>
+<p>
+  If you aren't being credited for a role, or have spotted one that is incorrect,
+  feel free to send us an email with your athlete id and we will try and work out
+  what needs changing.
+</p>
 
 <h4>Volunteer Roles</h4>
 <div id="volunteer_roles"></div>
@@ -25,8 +26,5 @@
     <a href="/html/help.html">help</a> | <a href="/html/options.html">options</a>
 </p>
 
-<script src="/js/lib/third-party/jquery/jquery-3.3.1.js"></script>
-<script src="/js/lib/i18n.js"></script>
-<script src="/js/translations.js"></script>
 </body>
 </html>
