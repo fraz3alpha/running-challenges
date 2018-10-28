@@ -1,21 +1,54 @@
 
 # based on https://jekyllrb.com/docs/continuous-integration/travis-ci/
 language: ruby
-rvm:
-- 2.3.3
+rvm: 2.3.3
+
+env:
+  - EXTENSION_BUILD_ID=$TRAVIS_BUILD_NUMBER EXTENSION_BUILD_VERSION=$TRAVIS_TAG
 
 before_script:
  - chmod +x ./build/website/build.sh
  - chmod +x ./build/website/build-staging.sh
+ - chmod +x ./build/extension-chrome/build.sh
+ - chmod +x ./build/extension-firefox/build.sh
+ - npm install -g web-ext
 
 script:
-   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./build/website/build-staging.sh; fi'
+   # Only build the staging website if the github token is available, which means
+   # that it will only happen for PRs from our own repo, not forks.
+   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then if [ "$RUNNING_CHALLENGES_GITHUB_TOKEN" != "" ]; then bash ./build/website/build-staging.sh; fi; fi'
    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./build/website/build.sh; fi'
+   - './build/extension-chrome/build.sh'
+   - './build/extension-firefox/build.sh'
 
-# branch whitelist, only for GitHub Pages - we push raw code to master,
-# the build code goes to gh-pages
+# branch whitelist.
+# For GitHub Pages - if we push code to master the built code goes to gh-pages
+# Tags are the same as branches when it comes to Travis, so we need to include
+# our release tag names here too so that tagged releases get built and pushed to
+# GitHub releases
 branches:
   only:
   - master
+  - /^v[0-9]/
+
+before_deploy:
+  # Rename the output files to be suitable for uploading to the GitHub release
+  - sh -c 'cd ./browser-extensions/chrome/build/web-ext-artifacts && rename 's/^/chrome-/' *.zip'
+  - sh -c 'cd ./browser-extensions/firefox/build/web-ext-artifacts && rename 's/^/firefox-/' *.zip'
+
+deploy:
+  provider: releases
+  name: Running Challenges $TRAVIS_TAG
+  api_key:
+    secure: HSsDMbTOomaysTK7ZdLKGh73v475aBbXU5o08IXTg6Uk29pvypgIsbsyMm/cI5azFKVzlfb9L47bSlSUbX1ho/ad5XxAphDt3EQAVGv0H7NnYxjDo4U8/VxwxRHqmGrmb6FEqOzZKgpYxzQDE7kYFs0CT4u2yNH4+gsF4ZvnIHNbKRV4s3jwWJPhvHai+AneNX8SQehAnYcjQ4kLuDNNNaPp18ewfLBm0IwbEdwvDOOYzdV4Mjsn+iJaINFTipwikQKAilk4bjU+rn5jvu/sC4oshhfsdBcuDmxK0XlsfpTkKtgGGcLwOSzoHZY25RC+Q1ZFYmGPBPZDk643W59HqOjA86NoDutNhGpL9b1YJThAUhG0zLP9bxnTOOzksPBTd/2hZr2XMIFY+cxsLLvIpJdJ1pAYfGdXOsCRm/tQ79pV2BCnSXY45JERKcdbPUm4kXv8b9oGQb8pOEDn4ERiCgbXyvpSJNUK9CovDgkGf3Xi9wMIgapQ/DFPYlsT7dNgssPSHXp4Ppf/CeHA3gtPIlj9+dE29rpvGS0dsWIXYSIGhFWeRnKV/WHAF/IH1jmCs6DmhQil7BPr66o0wntSWDyk5+bwJm0oehIMMpALbwOCl16Vx1+f9Nlyjv0tJF1fZ1z8UY+RoNC/Egd+kfnPDL9OFPSWkIBKbG8K/kV6CZw=
+  file_glob: true
+  file:
+    - browser-extensions/chrome/build/web-ext-artifacts/chrome-running_challenges*.zip
+    - browser-extensions/firefox/build/web-ext-artifacts/firefox-running_challenges*.zip
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_TAG =~ ^v
+    repo: fraz3alpha/running-challenges
 
 sudo: false # route your build to the container-based infrastructure for a faster build

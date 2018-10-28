@@ -12,9 +12,19 @@ Collect badges and stars when you volunteer in different roles - are you a three
 
 ![Laura's runner page on the parkrun website]({{ site.baseurl }}/img/runner_page.png "Laura's runner page on the parkrun website"){: .center-image .image-border}
 
-Running Challenges is an extension for the Google Chrome web browser. It is created and maintained with love by keen parkrunners, [Andy](https://twitter.com/fraz3alpha) and [Laura](https://twitter.com/lauracowen). We just wanted to share the fun with other parkrunners around the world, regardless of whether you volunteer, run, walk, or jog, at your home parkrun or elsewhere.
+Running Challenges is an extension for the Google Chrome or Firefox web browsers -
+if you have an Android device you can even install the Firefox version on that!
+It is created and maintained with love by keen parkrunners, [Andy](https://twitter.com/fraz3alpha) and [Laura](https://twitter.com/lauracowen). We just wanted to share the fun with other parkrunners around the world, regardless of whether you volunteer, run, walk, or jog, at your home parkrun or elsewhere.
 
-# Ethos
+## Installing
+
+The extension is installed on your local web browser, either in Chrome or Firefox
+on your PC/Mac. If you are an Android user you can also install it in Firefox
+for Android. It is as easy as clicking 'install' in either the Chrome or Firefox
+webstore, but if you need more detailed instructions see the [getting started page](/getstarted)
+for more help.
+
+## Ethos
 
 We want everyone to have a bit of fun with this, and hopefully it encourages a few
 more people to get out on a Saturday (or Sunday for Juniors) to progress towards
@@ -25,9 +35,14 @@ soon as possible. We will continue to try and do a few little extra things to en
 focus is not about running every week, and that those who give back to parkrun are appropriately
 rewarded.
 
-Let us know what you think:
+If you like this extension please leave us a review:
 
-* [Leave a review](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews)
-* [Send us feedback](https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/support)
+* [Leave a review on the Chrome Webstore]({{ site.data.webstore.webstore-running-challenges-reviews-link }})
+* [Leave a review on the Firefox Webstore]({{ site.data.webstore.firefox-running-challenges-reviews-link }})
+
+If you have any detailed feedback an email to <a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a>
+is the best way to let us know, similarly if you need help configuring the plugin,
+or debugging something that you think might be going wrong, an email is the best
+way to have a conversation.
 
 The Running Challenges extension is not official and is not affiliated with parkrun.

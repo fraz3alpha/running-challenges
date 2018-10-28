@@ -1,0 +1,139 @@
+---
+
+stats:
+
+  - shortname: total_runs
+    name: Total Runs
+    description: >-
+      The total number of parkruns completed.
+
+  - shortname: total_pbs
+    name: Total PBs
+    description: >-
+      The total number of PBs achieved across all parkruns. N.B. parkrun counts
+      PBs on a per-event basis, not across all events. You are marked as a
+      'First Timer' the first time you visit a parkrun event, and the next time
+      you visit that even you have the chance to get your first PB there.
+
+  - shortname: longest_pb_streak
+    name: Longest PB streak
+    description: >-
+      The highest number of consecutive PBs achieved across all parkrun events.
+
+  - shortname: total_distance_ran
+    name: Total parkrun distance
+    description: >-
+      The total distance achieved from adding up 5k for a parkrun, and 2k for a
+      junior parkrun.
+
+  - shortname: most_runs_in_a_year
+    name: Most parkruns in a year
+    description: >-
+      The highest number of parkruns attended in a calendar year.
+
+  - shortname: p_index
+    name: p-index
+    description: >-
+      The number of parkruns that satisfy the equation 'p parkruns run at least
+      p times', e.g. If you have run 4 different parkruns at least 4 times each,
+      your p-index is 4. If you have never run at an event twice, then your p-index
+      will only be 1!
+
+  - shortname: wilson_index
+    name: wilson-index
+    description: >-
+      The maximum contiguous series of parkrun event numbers you have attended
+      (at any event), starting at 1. To start off your streak, this requires that
+      you have run at an inaugural event (controversial!), and then to increase
+      the value to 2 you need to run at event #2 somewhere (not necessarily the
+      same event as you ran at the inaugural event). They do not have to be in
+      order, so you can go back and fill in numbers later.
+
+  - shortname: parkrun_birthday
+    name: parkrun birthday
+    description: >-
+      The day you joined the parkrun family! This is the day you completed your
+      first parkrun. Unfortunately we can't find the date you first volunteered
+      as this only takes into account your parkrun results table.
+
+  - shortname: years_parkrunning
+    name: Years parkrunning
+    description: >-
+      The number of full years you have been going to parkrun since you completed
+      your first event.
+
+  - shortname: events_run
+    name: Events run
+    description: >-
+      The number of different parkrun events you have completed.
+
+  - shortname: tourist_quotient
+    name: Tourist quotient
+    description: >-
+      The percentage of parkrun events attended that you had not been to before.
+      If you never repeat a parkrun event it will be 100%, if you never tourist
+      at all it will tend towards 0%.
+
+  - shortname: tourism_streak
+    name: Tourism streak
+    description: >-
+      The longest unbroken run of different events visited. If this happens to
+      include your 'home' parkrun, this still counts in the calculation.
+
+  - shortname: parkruns_this_year
+    name: parkruns this year
+    description: >-
+      How many parkrun events you have completed during this calendar year.
+
+
+  - shortname: total_distance_travelled
+    name: Total distance travelled
+    description: >-
+      The cumulative distance you have travelled between each parkrun event.
+      This is calculated by adding together the straight-line distance between
+      each parkrun event in your results table. This is naturally going to be
+      woefully inaccurate and is intended only to give a general guide for how
+      much travel was required to go to the events in your results table.
+
+  - shortname: total_countries_visited
+    name: Total countries visited
+    description: >-
+      The total number of countries that you have parkrunned in.
+      If everything is working this should match the number of flags under your
+      badges!
+
+
+  - shortname: average_parkrun_location
+    name: Average parkrun location
+    description: >-
+      The average latitude/longitude of all your parkrun attendances.
+      This is the basic average of the lat/lon position of each parkrun result in
+      your results table. If you commonly run only at your home parkrun and only
+      occasionally visit other parkruns then the location will be heavily weighted
+      towards your home parkrun. If, however, you visit all over the world, who knows
+      where you will be on average - probably in the sea!
+
+
+  - shortname: furthest_travelled
+    name: Furthest travelled
+    description: >-
+      The furthest away parkrun you have been to (calculated from the home parkrun
+      configured in the extension's options).
+      Note - this statistic is only available for the athlete configured in
+      the extension options, as it needs to know which home parkrun to base
+      the calculation from.
+
+  - shortname: nearest_event_not_done_yet
+    name: Nearest event not done yet (NENDY)
+    description: >-
+      The nearest parkrun event to your home parkrun that you have not done yet.
+      Note - this statistic is only available for the athlete configured in
+      the extension options, as it needs to know which home parkrun to base
+      the calculation from.
+
+  - shortname: total_volunteer_roles
+    name: Total volunteer roles
+    description: >-
+      How many of the different volunteering roles have been completed.
+      Note - this can include multiple roles per week e.g. if you were a marshal,
+      did course setup, and close-down, that adds 3 to this stat.

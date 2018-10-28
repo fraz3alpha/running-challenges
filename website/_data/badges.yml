@@ -88,6 +88,10 @@ volunteer:
     name: Pre-event Setup
     description: Be the early bird and get to parkrun early and ensure that everything is ready for everyone else when they stroll up at 8:45
 
+  - shortname: car-park-marshal
+    name: Car Park Marshal
+    description: Keep everyone safe and organised in the car park
+
   - shortname: first-timers-briefing
     name: First Timers Briefing
     description: Make sure that runners new to parkrun know how it all works (and to not take the tokens home, or duck the funnel!), and give everyone new to your event the lay of the land - and how many laps it is.
@@ -167,59 +171,3 @@ volunteer:
   - shortname: other
     name: Other
     description: Some parkruns have other roles that don't fit into the regular categories above, this role is a catch all that can be anything from carpark-management to human-clothes-hook!
-
-flags:
-
-  - shortname: au
-    name: Australia
-
-  - shortname: ca
-    name: Canada
-
-  - shortname: de
-    name: Germany
-
-  - shortname: dk
-    name: Denmark
-
-  - shortname: fi
-    name: Finland
-
-  - shortname: fr
-    name: France
-
-  - shortname: ie
-    name: Ireland
-
-  - shortname: it
-    name: Italy
-
-  - shortname: my
-    name: Malaysia
-
-  - shortname: "no"
-    name: Norway
-
-  - shortname: nz
-    name: New Zealand
-
-  - shortname: pl
-    name: Poland
-
-  - shortname: ru
-    name: Russia
-
-  - shortname: za
-    name: South Africa
-
-  - shortname: se
-    name: Sweden
-
-  - shortname: sg
-    name: Singapore
-
-  - shortname: gb
-    name: UK
-
-  - shortname: us
-    name: USA
