@@ -597,7 +597,7 @@ function create_voronoi_map(map_id, data) {
         var vmap = this._map
         var bounds = vmap.getBounds()
         // var padded_bounds = bounds.pad(0.4)
-        var padded_bounds = bounds.pad(2)
+        // var padded_bounds = bounds.pad(100)
         var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
 
     		var size = vmap.getSize()
@@ -619,22 +619,22 @@ function create_voronoi_map(map_id, data) {
         $.each(layer_data.parkrun_results, function(index, parkrun_event) {
           completed_events[parkrun_event.name] = true
         })
-        console.log(layer_data)
+        // console.log(layer_data)
         $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
           if (event_has_valid_location(event_info)) {
             lat_lon = [+event_info.lat, +event_info.lon]
-            if (padded_bounds.contains(lat_lon)) {
-              // console.log(event_name + " " + lat_lon)
-              // Add the point to the array
-              var point = vmap.latLngToLayerPoint(lat_lon);
-              event_info.x = point.x
-              event_info.y = point.y
-              event_info.fill = "none"
-              if (completed_events[event_info.name] == true) {
-                event_info.fill = "green"
-              }
-              filtered_points.push(event_info)
+            // if (padded_bounds.contains(lat_lon)) {
+            // console.log(event_name + " " + lat_lon)
+            // Add the point to the array
+            var point = vmap.latLngToLayerPoint(lat_lon);
+            event_info.x = point.x
+            event_info.y = point.y
+            event_info.fill = "none"
+            if (completed_events[event_info.name] == true) {
+              event_info.fill = "green"
             }
+            filtered_points.push(event_info)
+            // }
           }
 
         })
@@ -642,6 +642,26 @@ function create_voronoi_map(map_id, data) {
         var voronoi = d3.voronoi()
           .x(function(d) { return d.x; })
           .y(function(d) { return d.y; });
+
+        // As we are using the .polygons() we need to set an extent so that things
+        // don't go wrong at the edges. Ordinarily we should set an extent of
+        // the size of the canvas, but for those cases where the canvas includes
+        // +/-180degrees, we need to crop the diagram there otherwise it goes
+        // weird when the lines expand into the repeated map provided by openstreetmap
+
+        // Find the left and right corners of the world :)
+        map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
+        map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
+
+        // console.log("Edges of the world: "+map_point_left_edge+" , "+map_point_right_edge)
+
+        // Default extents are the edges of the canvas, but if these take it over
+        // the edges of the world according to the calculations above, we box
+        // them in.
+        voronoi_extent_left = [Math.max(top_left.x, map_point_left_edge.x), Math.max(top_left.y, map_point_left_edge.y)]
+        voronoi_extent_right = [Math.min(top_left.x+size.x, map_point_right_edge.x), Math.min(top_left.y+size.y, map_point_right_edge.y)]
+
+        voronoi.extent([voronoi_extent_left, voronoi_extent_right]);
 
         var voronoi_data = voronoi(filtered_points)
 
@@ -652,7 +672,8 @@ function create_voronoi_map(map_id, data) {
         var cell_group = document.createElement("g")
         cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
         // L.DomUtil.setPosition(cell_group, [-top_left.x, -top_left.y]);
-        console.log(cell_group)
+
+        // console.log(cell_group)
 
         var voronoi_polygons = voronoi_data.polygons()
 
@@ -660,7 +681,7 @@ function create_voronoi_map(map_id, data) {
 
           // If there is no cell data, then keep looping
           if (cell === undefined) {
-            console.log("Undefined cell data at index "+index)
+            // console.log("Undefined cell data at index "+index)
             return true
           }
 
@@ -676,10 +697,10 @@ function create_voronoi_map(map_id, data) {
           // console.log("Drawing circle for " + JSON.stringify(cell))
           item_circle.setAttribute("cx", cell.data.x)
           item_circle.setAttribute("cy", cell.data.y)
-          item_circle.setAttribute("r", 5)
-          item_circle.setAttribute("stroke", "red")
+          item_circle.setAttribute("r", 2)
+          item_circle.setAttribute("stroke", "gray")
           item_circle.setAttribute("stroke-width", "1")
-          item_circle.setAttribute("fill", "red")
+          item_circle.setAttribute("fill", "black")
           // console.log(item_circle)
 
           // var item_path = $("<path/>")
@@ -691,8 +712,8 @@ function create_voronoi_map(map_id, data) {
 
           var item_path = document.createElement("path")
           item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
-          item_path.setAttribute("stroke", "red")
-          item_path.setAttribute("stroke-width", "1")
+          item_path.setAttribute("stroke", "gray")
+          item_path.setAttribute("stroke-width", "0.5")
           item_path.setAttribute("fill", filtered_points[index].fill) //Math.random() > 0.5 ? "green" : "none")
           item_path.setAttribute("fill-opacity", "0.5")
 
@@ -703,8 +724,8 @@ function create_voronoi_map(map_id, data) {
 
         })
 
-        console.log("Map to add:")
-        console.log(this_container)
+        // console.log("Map to add:")
+        // console.log(this_container)
 
         // Store the SVG container in the object
         this._container = this_container
@@ -758,18 +779,18 @@ function draw_voronoi_layer(data) {
 
   var bounds = vmap.getBounds()
   var topLeft = vmap.latLngToLayerPoint(bounds.getNorthWest())
-  var padded_bounds = bounds.pad(0.4)
+  // var padded_bounds = bounds.pad(0.4)
 
   var filtered_points = []
   $.each(data.geo_data.data.events, function(event_name, event_info) {
     if (event_has_valid_location(event_info)) {
       lat_lon = [+event_info.lat, +event_info.lon]
-      if (padded_bounds.contains(lat_lon)) {
-        console.log(event_name + " " + lat_lon)
-        // Add the point to the array
-        var point = vmap.latLngToLayerPoint(lat_lon);
-        filtered_points.push(point)
-      }
+      // if (padded_bounds.contains(lat_lon)) {
+      console.log(event_name + " " + lat_lon)
+      // Add the point to the array
+      var point = vmap.latLngToLayerPoint(lat_lon);
+      filtered_points.push(point)
+      // }
     }
 
   })
