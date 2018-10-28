@@ -5123,7 +5123,11 @@ var Layers = Control.extend({
 		on(input, 'click', this._onInputClick, this);
 
 		var name = document.createElement('span');
-		name.innerHTML = ' ' + obj.name;
+		// PATCH
+		// .innerHTML fails the Firefox/Chrome lint checker
+		// name.innerHTML = ' ' + obj.name;
+		console.log(".innerHTML replacement with .textContent() - content="+obj.name)
+		name.textContent = ' ' + obj.name;
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
@@ -5456,7 +5460,11 @@ var Scale = Control.extend({
 
 	_updateScale: function (scale, text, ratio) {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
-		scale.innerHTML = text;
+		// PATCH
+		// .innerHTML fails the Firefox/Chrome lint checker
+		// scale.innerHTML = text;
+		console.log(".innerHTML replacement with .textContent() - content="+text)
+		scale.textContent = text
 	},
 
 	_getRoundNum: function (num) {
@@ -5577,7 +5585,12 @@ var Attribution = Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' | ');
+		// PATCH
+		// .innerHTML fails the Firefox/Chrome lint checker
+		// this._container.innerHTML = prefixAndAttribs.join(' | ');
+		console.log(".innerHTML replacement with .textContent() - content="+prefixAndAttribs.join(' | '))
+		this._container.textContent = prefixAndAttribs.join(' | ');
+
 	}
 });
 
@@ -9380,7 +9393,11 @@ var DivOverlay = Layer.extend({
 		var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
 
 		if (typeof content === 'string') {
-			node.innerHTML = content;
+			// PATCH
+			// .innerHTML fails the Firefox/Chrome lint checker
+			// node.innerHTML = content;
+			console.log(".innerHTML replacement with .textContent() - content="+content)
+			node.textContent = content;
 		} else {
 			while (node.hasChildNodes()) {
 				node.removeChild(node.firstChild);
@@ -9601,7 +9618,11 @@ var Popup = DivOverlay.extend({
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = create$1('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
+			// PATCH
+			// .innerHTML fails the Firefox/Chrome lint checker
+			// closeButton.innerHTML = '&#215;';
+			console.log(".innerHTML replacement with .textContent() - content=&#215;")
+			closeButton.textContent = '&#215;';
 
 			on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
