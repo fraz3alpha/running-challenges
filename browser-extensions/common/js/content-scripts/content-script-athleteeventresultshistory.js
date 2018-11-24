@@ -353,6 +353,17 @@ function add_flags(div_id, data) {
             regionnaire_link.append(img)
             flags_div.append(regionnaire_link)
 
+            country_navigator_text = ""
+            if (country.navigator_data !== undefined) {
+              $.each(country.navigator_data, function(point, event_info) {
+                if (event_info.completed === true) {
+                  country_navigator_text += point
+                }
+              })
+            }
+
+            flags_div.append(country_navigator_text)
+
             if (index_counter > 0 && index_counter % 8 == 0) {
                 flags_div.append($('<br/>'))
             }

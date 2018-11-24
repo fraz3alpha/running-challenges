@@ -783,8 +783,6 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
     // console.log("generate_global_tourism_data()")
     var global_tourism = []
 
-
-
     regions = geo_data.data.regions
     events_completed_map = group_results_by_event(parkrun_results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
@@ -799,7 +797,8 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
             "name": top_level_country.name,
             "visited": false,
             "first_visited": top_level_country.first_ran_on,
-            "icon": get_flag_image_src(top_level_country.name)
+            "icon": get_flag_image_src(top_level_country.name),
+            "navigator_data": undefined
         }
 
         var child_events = find_region_child_events(top_level_country)
@@ -807,6 +806,55 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
         if (top_level_country.child_events_completed_count > 0) {
             country_info["visited"] = true
         }
+
+        // Find the parkrun event information for parkruns in the country
+        var country_child_event_info = {}
+        child_events.forEach(function(event_name) {
+          country_child_event_info[event_name] = geo_data.data.events[event_name]
+        });
+
+        // Find the parkruns at the extremes of the compass points
+        var navigator_data = {
+          "north": undefined,
+          "south": undefined,
+          "east": undefined,
+          "west": undefined
+        }
+        console.log(top_level_country.name + " child events")
+        console.log(child_events)
+        console.log(events_completed_map)
+        $.each(country_child_event_info, function(event_name, event_info) {
+          if (event_info.lat !== undefined) {
+            if (navigator_data.north === undefined || event_info.lat > navigator_data.north.lat) {
+              navigator_data.north = event_info
+            }
+            if (navigator_data.south === undefined || event_info.lat < navigator_data.south.lat) {
+              navigator_data.south = event_info
+            }
+          }
+          if (event_info.lon !== undefined) {
+            if (navigator_data.west === undefined || event_info.lon < navigator_data.west.lon) {
+              navigator_data.west = event_info
+            }
+            if (navigator_data.east === undefined || event_info.lon > navigator_data.east.lon) {
+              navigator_data.east = event_info
+            }
+          }
+        })
+
+        $.each(navigator_data, function(point, event_info) {
+          if (event_info !== undefined) {
+            if (event_info.name in events_completed_map) {
+              event_info.completed = true
+            }
+          }
+        })
+
+        console.log("Navigator data")
+        console.log(navigator_data)
+
+        country_info.navigator_data = navigator_data
+
         global_tourism.push(country_info)
     })
     return global_tourism

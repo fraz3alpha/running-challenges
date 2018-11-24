@@ -164,12 +164,22 @@ function parse_geo_data_regions(geo_data, geo_xml) {
     // Find all the regions
     $(geo_xml).find('r').each(function(region_index) {
         this_region = $(this)
+
+        var lat = undefined
+        var lon = undefined
+        if (this_region.attr('la') !== undefined) {
+          lat = parseFloat(this_region.attr('la'))
+        }
+        if (this_region.attr('lo') !== undefined) {
+          lon = parseFloat(this_region.attr('lo'))
+        }
+
         geo_data.regions[this_region.attr('n')] = {
             // All the standard attributes that come from the parkrun data
             "id": this_region.attr('id'),
             "name": this_region.attr('n'),
-            "lat": this_region.attr('la'),
-            "lon": this_region.attr('lo'),
+            "lat": lat,
+            "lon": lon,
             "zoom": this_region.attr('z'),
             "parent_id": this_region.attr('pid'),
             "url": this_region.attr('u'),
@@ -186,6 +196,7 @@ function parse_geo_data_regions(geo_data, geo_xml) {
             "child_event_recursive_ids": [],
             "child_event_recursive_names": []
         }
+
     })
 
     // We may wish to move some countries to a top level
@@ -214,6 +225,16 @@ function parse_geo_data_events(geo_data, geo_xml) {
     // Find all the events
     $(geo_xml).find('e').each(function(region_index) {
         this_event = $(this)
+
+        var lat = undefined
+        var lon = undefined
+        if (this_event.attr('la') !== undefined) {
+          lat = parseFloat(this_event.attr('la'))
+        }
+        if (this_event.attr('lo') !== undefined) {
+          lon = parseFloat(this_event.attr('lo'))
+        }
+
         geo_data.events[this_event.attr('m')] = {
             // All the standard attributes that come from the parkrun data
             "shortname": this_event.attr('n'),
@@ -221,8 +242,8 @@ function parse_geo_data_events(geo_data, geo_xml) {
             "region_id": this_event.attr('r'),
             "country_id": this_event.attr('c'),
             "id": this_event.attr('id'),
-            "lat": this_event.attr('la'),
-            "lon": this_event.attr('lo'),
+            "lat": lat,
+            "lon": lon,
             // Extra attributes that we are going to fill in
             "region_name": "unknown",
             "country_name": "unknown"
