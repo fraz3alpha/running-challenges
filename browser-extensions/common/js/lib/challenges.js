@@ -71,7 +71,7 @@ function generate_running_challenge_data(data) {
       "data": [
         {"month": 11, "day": 25}
       ],
-      "help": "Run a parkrun on the 25th December."}))
+      "help": "Run a parkrun on the 25th of December."}))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
       "name":  "NYD Double",

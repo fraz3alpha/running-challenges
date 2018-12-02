@@ -46,6 +46,10 @@ runner:
     name: Bushy Pilgrimage
     description: Run at Bushy parkrun, where it all began.
 
+  - shortname: christmas-day
+    name:  Christmas Day
+    description: Run a parkrun on the 25th of December.
+
   - shortname: nyd-double
     name:  NYD Double
     description: Run two parkruns on one New Year's Day.
