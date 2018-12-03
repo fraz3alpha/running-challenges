@@ -80,6 +80,24 @@ function generate_running_challenge_data(data) {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
       "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "all-weather-runner",
+      "name": "All Weather Runner",
+      "data": [
+        {"month": 0},
+        {"month": 1},
+        {"month": 2},
+        {"month": 3},
+        {"month": 4},
+        {"month": 5},
+        {"month": 6},
+        {"month": 7},
+        {"month": 8},
+        {"month": 9},
+        {"month": 10},
+        {"month": 11},
+      ],
+      "help": "Run in each month of the year."}))
     challenge_data.push(challenge_in_a_year(data, {
       "shortname": "obsessive-bronze",
       "name": "Bronze Level Obsessive",
