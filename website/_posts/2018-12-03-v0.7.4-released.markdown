@@ -1,0 +1,37 @@
+---
+layout: post
+title:  "Version 0.7.4 Released"
+date:   2018-12-03 23:00:00 +0000
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+It's Christmas!
+
+Well, it's Christmas soon, and to celebrate, we have released a new running
+badge to adorn those runners who have managed to run on Christmas day.
+
+(We'd really like to give extra special kudos to those volunteers giving up their
+Christmas morning, but until the parkrun website lists the dates of each volunteer
+role, unfortunately we aren't able to do so.)
+
+
+Additionally, we have added the 'All Weather Runner' badge, contributed by
+[Russell Boyatt](https://github.com/rboyatt) - this badge celebrates those parkrunners
+who have kept up their attendence come rain or shime and have run at least once
+in every calendar month (they don't have to be in the same year).
+
+![Run on Christmas Day (25th December)]({{ site.baseurl }}/img/badges/runner-christmas-day.png)![All Weather Runner - Run in each month of the year (not necessarily in the same year)]({{ site.baseurl }}/img/badges/runner-all-weather-runner.png)
+{: style="text-align: center;"}
+
+Happy parkrunning!
+
+If you have already installed the extension it should update soon - typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually. If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
