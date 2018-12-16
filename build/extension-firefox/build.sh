@@ -25,6 +25,16 @@ cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 
+# Copy the required third party libraries from the top level shared project dir
+mkdir -p ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/jquery ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet-canvasicon ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/lib/third-party/
+cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/lib/third-party/
+
 # Copy the extras libraries and code for Firefox
 # None at the moment
 
