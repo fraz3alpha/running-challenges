@@ -20,20 +20,27 @@ cp -r images/flags/twemoji/png/*.png ${TMP_BUILD_DIR}/images/flags/
 
 cp -r images/logo ${TMP_BUILD_DIR}/images/
 
+# Copy the required third party CSS libraries from the top level shared project dir
+mkdir -p ${TMP_BUILD_DIR}/css/third-party/
+cp -r js/lib/third-party/leaflet ${TMP_BUILD_DIR}/css/third-party/
+cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/css/third-party/
+cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/css/third-party/
+cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/css/third-party/
+
+# Copy the required third party Javascript libraries from the top level shared project dir
+mkdir -p ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/jquery ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet-canvasicon ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/js/lib/third-party/
+
 # Copy the common code
 cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
-
-# Copy the required third party libraries from the top level shared project dir
-mkdir -p ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/jquery ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet-canvasicon ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/lib/third-party/
-cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/lib/third-party/
 
 # Copy the extras libraries and code for Chrome
 cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
