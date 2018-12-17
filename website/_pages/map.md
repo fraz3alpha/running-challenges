@@ -34,3 +34,7 @@ able to do.
 <br/>
 If you are on the lookout for filling in a spot on your Wilson Index, head over
 to Mark Pinney's [Challenge Chaser](http://www.challenge-chaser.com/map).
+<br/>
+And of course, for all things tourism related, check out
+[Tim GP](https://twitter.com/timdp)'s absolutely awesome
+[Tourist Tool](https://touristtool.mybluemix.net/)!
