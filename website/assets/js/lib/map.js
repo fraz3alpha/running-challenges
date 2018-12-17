@@ -72,7 +72,7 @@ function special_event_on_change(e) {
   for(var i=0; i<2; i++) {
     var this_option_id = "distance_select_input_"+i
     var o = document.getElementById(this_option_id);
-    if (o.checked) {
+    if (o !== null && o.checked) {
       if (o.value in event_distances) {
         checked_event_distances[o.value] = event_distances[o.value]
       }
