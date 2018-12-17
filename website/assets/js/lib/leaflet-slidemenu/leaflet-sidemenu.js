@@ -38,7 +38,11 @@ L.Control.SideMenu = L.Control.extend({
           selected_event_type_name = e.options[e.selectedIndex].value;
           console.log("Found existing selected option: "+selected_event_type_name)
         } else {
-          selected_event_type_name = Object.keys(data)[0]
+          if ("New Year's Day" in data) {
+            selected_event_type_name = "New Year's Day"
+          } else {
+            selected_event_type_name = Object.keys(data)[0]
+          }
           console.log("No selected event provided, defaulting to the first one - " + selected_event_type_name)
         }
       }
