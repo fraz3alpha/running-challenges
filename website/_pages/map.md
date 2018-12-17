@@ -25,3 +25,9 @@ css_libs:
 ---
 
 <div id="mapid"></div>
+
+<br/>
+If you are interested in doing the double this New Year's Day, head over to the
+[Rikki Prince](https://twitter.com/rikkiprince)'s amazing
+[Double Finder Tool](http://tailrun.uk/nyd/2019/) to see which ones you might be
+able to do!
