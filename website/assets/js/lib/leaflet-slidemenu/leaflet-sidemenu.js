@@ -140,7 +140,7 @@ L.Control.SideMenu = L.Control.extend({
         var container = L.DomUtil.create('div', 'leaflet-control-sidemenu leaflet-bar leaflet-control');
 
         this.link = L.DomUtil.create('a', 'leaflet-control-sidemenu-button leaflet-bar-part', container);
-        this.link.href = '#';
+        this.link.href = '#'
         this.link.title = "Menu"
 
         // Link the event handler to fire when the menu item is clicked
@@ -164,10 +164,10 @@ L.Control.SideMenu = L.Control.extend({
 
         this._setVisibility(true)
 
-        var closeButton =  L.DomUtil.create('div', 'leaflet-control-sidemenu-close leaflet-bar leaflet-control', this._menu);
-        this.closeLink = L.DomUtil.create('a', 'leaflet-control-sidemenu-close-button', closeButton);
+        this.closeLink = L.DomUtil.create('a', '', this._menu);
         this.closeLink.href = '#'
-        this.closeLink.title = "Close"
+        this.closeLink.innerText = "Close Menu"
+        this.closeLink.title = "Close Menu"
         L.DomEvent.on(this.closeLink, 'click', this._closeLinkClick, this);
 
         this.redrawMenuContents()
