@@ -56,8 +56,12 @@ L.Control.SideMenu = L.Control.extend({
       this._contents = L.DomUtil.create('div', 'leaflet-sidemenu-contents', this._menu);
 
 
+      var date_select = L.DomUtil.create('fieldset', '', this._contents)
+      var date_select_legend = L.DomUtil.create('legend', '', date_select)
+      date_select_legend.innerText = "Special Dates:"
+
       // List the special events
-      var event_select = L.DomUtil.create('select', '', this._contents)
+      var event_select = L.DomUtil.create('select', '', date_select)
       event_select.setAttribute("id", "slidemenu_special_event_type_name")
       L.DomEvent.on(event_select, 'change', this.selectEventTypeChanged, this)
       // Sort the items in the menu by the date that they happen
@@ -79,6 +83,10 @@ L.Control.SideMenu = L.Control.extend({
           this_option.setAttribute("selected", true)
         }
       })
+      L.DomUtil.create('br', '', date_select)
+      var date_select_date = L.DomUtil.create('span', '', date_select)
+      date_select_date.innerText = data[selected_event_type_name].date
+
 
       // Draw the available times
       var events_by_time = {}
@@ -126,6 +134,36 @@ L.Control.SideMenu = L.Control.extend({
         this_option_label.setAttribute("for",  this_option_id)
         this_option_label.innerText = special_event_time
         L.DomUtil.create('br', '', time_select)
+        option_counter += 1
+      })
+
+
+      // Give a choice between selecting the 5k or 2k events
+      var distance_select = L.DomUtil.create('fieldset', '', this._contents)
+
+      var distance_legend = L.DomUtil.create('legend', '', distance_select)
+      distance_legend.innerText = "Events:"
+
+      var option_counter = 0
+      var distance_events = ["parkrun", "junior parkrun"]
+      distance_events.forEach(function(special_event_distance) {
+
+        var this_option_id = "distance_select_input_"+option_counter
+
+        var this_option = L.DomUtil.create('input', '', distance_select)
+        this_option.setAttribute("type", "checkbox")
+        this_option.setAttribute("checked", true)
+        this_option.setAttribute("value", special_event_distance)
+        this_option.setAttribute("id", this_option_id)
+        if (this_leaflet_menu.options.callback !== undefined) {
+          L.DomEvent.on(this_option, "change", this_leaflet_menu.options.callback, this)
+        }
+
+        // Add a label for this option
+        var this_option_label = L.DomUtil.create('label', '', distance_select)
+        this_option_label.setAttribute("for",  this_option_id)
+        this_option_label.innerText = special_event_distance
+        L.DomUtil.create('br', '', distance_select)
         option_counter += 1
       })
 
