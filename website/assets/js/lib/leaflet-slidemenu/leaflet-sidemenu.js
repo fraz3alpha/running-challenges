@@ -60,7 +60,18 @@ L.Control.SideMenu = L.Control.extend({
       var event_select = L.DomUtil.create('select', '', this._contents)
       event_select.setAttribute("id", "slidemenu_special_event_type_name")
       L.DomEvent.on(event_select, 'change', this.selectEventTypeChanged, this)
-      Object.keys(data).forEach(function(special_event_type_name){
+      // Sort the items in the menu by the date that they happen
+      var event_names_sorted_by_date = Object.keys(data).sort(function(a,b) {
+        console.log("Comparing "+a+" "+data[a].date+" "+b+" "+data[b].date)
+
+        if (data[a].date > data[b].date) {
+          return 1
+        } else {
+          return -1
+        }
+      })
+      // Add the options to the menu
+      event_names_sorted_by_date.forEach(function(special_event_type_name){
         // console.log(special_event_type_name)
         var this_option = L.DomUtil.create('option', '', event_select)
         this_option.innerText = special_event_type_name
