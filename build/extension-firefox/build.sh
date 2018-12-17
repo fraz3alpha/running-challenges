@@ -24,7 +24,7 @@ cp -r images/logo ${TMP_BUILD_DIR}/images/
 mkdir -p ${TMP_BUILD_DIR}/css/third-party/
 cp -r css/third-party/leaflet ${TMP_BUILD_DIR}/css/third-party/
 cp -r css/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/css/third-party/
-cp -r cssthird-party/leaflet-fullscreen ${TMP_BUILD_DIR}/css/third-party/
+cp -r css/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/css/third-party/
 cp -r css/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/css/third-party/
 
 # Copy the required third party Javascript libraries from the top level shared project dir
