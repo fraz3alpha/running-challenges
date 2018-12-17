@@ -6,13 +6,13 @@
   background-position: 2px 2px;
   }
 
-.leaflet-control-sidemenu-close a {
+/* .leaflet-control-sidemenu-close a {
   background:#fff url('images/close.png') no-repeat 0 0;
   background-size:26px 26px;
   }
 .leaflet-touch .leaflet-control-sidemenu-close a {
   background-position: 2px 2px;
-  }
+  } */
 
 .leaflet-sidemenu {
     position: absolute;
@@ -20,6 +20,10 @@
     overflow: auto;
     cursor: default;
     z-index: 9999;
+    padding: 5px;
+}
+
+.leaflet-sidemenu-contents {
 }
 
 @media
@@ -28,7 +32,7 @@
     .leaflet-control-sidemenu a {
       background-image: url('images/burgers@2x.png');
     }
-    .leaflet-control-sidemenu-close a {
+    /* .leaflet-control-sidemenu-close a {
       background-image: url('images/close@2x.png');
-    }
+    } */
   }

@@ -38,7 +38,11 @@ L.Control.SideMenu = L.Control.extend({
           selected_event_type_name = e.options[e.selectedIndex].value;
           console.log("Found existing selected option: "+selected_event_type_name)
         } else {
-          selected_event_type_name = Object.keys(data)[0]
+          if ("New Year's Day" in data) {
+            selected_event_type_name = "New Year's Day"
+          } else {
+            selected_event_type_name = Object.keys(data)[0]
+          }
           console.log("No selected event provided, defaulting to the first one - " + selected_event_type_name)
         }
       }
@@ -52,11 +56,26 @@ L.Control.SideMenu = L.Control.extend({
       this._contents = L.DomUtil.create('div', 'leaflet-sidemenu-contents', this._menu);
 
 
+      var date_select = L.DomUtil.create('fieldset', '', this._contents)
+      var date_select_legend = L.DomUtil.create('legend', '', date_select)
+      date_select_legend.innerText = "Special Dates:"
+
       // List the special events
-      var event_select = L.DomUtil.create('select', '', this._contents)
+      var event_select = L.DomUtil.create('select', '', date_select)
       event_select.setAttribute("id", "slidemenu_special_event_type_name")
       L.DomEvent.on(event_select, 'change', this.selectEventTypeChanged, this)
-      Object.keys(data).forEach(function(special_event_type_name){
+      // Sort the items in the menu by the date that they happen
+      var event_names_sorted_by_date = Object.keys(data).sort(function(a,b) {
+        console.log("Comparing "+a+" "+data[a].date+" "+b+" "+data[b].date)
+
+        if (data[a].date > data[b].date) {
+          return 1
+        } else {
+          return -1
+        }
+      })
+      // Add the options to the menu
+      event_names_sorted_by_date.forEach(function(special_event_type_name){
         // console.log(special_event_type_name)
         var this_option = L.DomUtil.create('option', '', event_select)
         this_option.innerText = special_event_type_name
@@ -64,6 +83,10 @@ L.Control.SideMenu = L.Control.extend({
           this_option.setAttribute("selected", true)
         }
       })
+      L.DomUtil.create('br', '', date_select)
+      var date_select_date = L.DomUtil.create('span', '', date_select)
+      date_select_date.innerText = data[selected_event_type_name].date
+
 
       // Draw the available times
       var events_by_time = {}
@@ -114,6 +137,36 @@ L.Control.SideMenu = L.Control.extend({
         option_counter += 1
       })
 
+
+      // Give a choice between selecting the 5k or 2k events
+      var distance_select = L.DomUtil.create('fieldset', '', this._contents)
+
+      var distance_legend = L.DomUtil.create('legend', '', distance_select)
+      distance_legend.innerText = "Events:"
+
+      var option_counter = 0
+      var distance_events = ["parkrun", "junior parkrun"]
+      distance_events.forEach(function(special_event_distance) {
+
+        var this_option_id = "distance_select_input_"+option_counter
+
+        var this_option = L.DomUtil.create('input', '', distance_select)
+        this_option.setAttribute("type", "checkbox")
+        this_option.setAttribute("checked", true)
+        this_option.setAttribute("value", special_event_distance)
+        this_option.setAttribute("id", this_option_id)
+        if (this_leaflet_menu.options.callback !== undefined) {
+          L.DomEvent.on(this_option, "change", this_leaflet_menu.options.callback, this)
+        }
+
+        // Add a label for this option
+        var this_option_label = L.DomUtil.create('label', '', distance_select)
+        this_option_label.setAttribute("for",  this_option_id)
+        this_option_label.innerText = special_event_distance
+        L.DomUtil.create('br', '', distance_select)
+        option_counter += 1
+      })
+
       if (this.options.callback !== undefined) {
         this.options.callback()
       }
@@ -125,7 +178,7 @@ L.Control.SideMenu = L.Control.extend({
         var container = L.DomUtil.create('div', 'leaflet-control-sidemenu leaflet-bar leaflet-control');
 
         this.link = L.DomUtil.create('a', 'leaflet-control-sidemenu-button leaflet-bar-part', container);
-        this.link.href = '#';
+        this.link.href = '#'
         this.link.title = "Menu"
 
         // Link the event handler to fire when the menu item is clicked
@@ -149,10 +202,10 @@ L.Control.SideMenu = L.Control.extend({
 
         this._setVisibility(true)
 
-        var closeButton =  L.DomUtil.create('div', 'leaflet-control-sidemenu-close leaflet-bar leaflet-control', this._menu);
-        this.closeLink = L.DomUtil.create('a', 'leaflet-control-sidemenu-close-button', closeButton);
+        this.closeLink = L.DomUtil.create('a', '', this._menu);
         this.closeLink.href = '#'
-        this.closeLink.title = "Close"
+        this.closeLink.innerText = "Close Menu"
+        this.closeLink.title = "Close Menu"
         L.DomEvent.on(this.closeLink, 'click', this._closeLinkClick, this);
 
         this.redrawMenuContents()

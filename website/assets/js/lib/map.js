@@ -5,7 +5,10 @@ var special_event_layers = {}
 
 var available_times = []
 
-var time_markers = []
+var time_markers = {
+  "parkrun": [],
+  "junior parkrun": []
+}
 
 function special_event_on_change(e) {
   console.log("Something changed")
@@ -40,7 +43,7 @@ function special_event_on_change(e) {
   var option_counter = 0
   var checked_time_options = {}
   var applicable_parkrun_events = {}
-  var time_to_marker_map = {}
+  var time_to_marker_index_map = {}
   Object.keys(events_by_time).sort().forEach(function(special_event_time) {
 
     var this_option_id = "time_select_input_"+option_counter
@@ -52,27 +55,55 @@ function special_event_on_change(e) {
         applicable_parkrun_events[applicable_parkrun_event['shortname']] = applicable_parkrun_event
       })
     }
-    time_to_marker_map[special_event_time] = time_markers[option_counter]
+    time_to_marker_index_map[special_event_time] = option_counter
     option_counter += 1
   })
 
   console.log(checked_time_options)
   console.log(applicable_parkrun_events)
 
+  // See whether the user wants 5k or 2k events
+  event_distances = {
+    "parkrun": parkrun_data_geo.events_5k,
+    "junior parkrun": parkrun_data_geo.events_2k
+  }
+  checked_event_distances = {}
+  // Iterate over the two event distances
+  for(var i=0; i<2; i++) {
+    var this_option_id = "distance_select_input_"+i
+    var o = document.getElementById(this_option_id);
+    if (o !== null && o.checked) {
+      if (o.value in event_distances) {
+        checked_event_distances[o.value] = event_distances[o.value]
+      }
+    }
+  }
+
+  // console.log(event_distances)
+  console.log("Checked event distances")
+  console.log(checked_event_distances)
+
   // Look for layers that we have added that we need to remove
   Object.keys(special_event_layers).forEach(function(special_event_type_name) {
-    Object.keys(special_event_layers[special_event_type_name]).forEach(function(start_time) {
-      // Remove all of those for the wrong event type
-      if (special_event_type_name != selected_event_type_name) {
-        console.log("Removing layer for the wrong event: " + special_event_type_name)
-        mymap.removeLayer(special_event_layers[special_event_type_name][start_time])
-        delete special_event_layers[special_event_type_name][start_time]
-      // Remove those for the wrong time slot (they will be the right event here)
-      } else if (!(start_time in checked_time_options)) {
-        console.log("Removing layer for the wrong time: " + start_time)
-        mymap.removeLayer(special_event_layers[special_event_type_name][start_time])
-        delete special_event_layers[special_event_type_name][start_time]
-      }
+    Object.keys(special_event_layers[special_event_type_name]).forEach(function(special_event_distance) {
+      Object.keys(special_event_layers[special_event_type_name][special_event_distance]).forEach(function(start_time) {
+        // Remove all of those for the wrong event type
+        if (special_event_type_name != selected_event_type_name) {
+          console.log("Removing layer for the wrong event: " + special_event_type_name)
+          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
+          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
+        // Remove those for the wrong distance
+        } else if (!(special_event_distance in checked_event_distances)) {
+          console.log("Removing layer for the wrong distance: " + special_event_distance)
+          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
+          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
+        // Remove those for the wrong time slot (they will be the right event here)
+        } else if (!(start_time in checked_time_options)) {
+          console.log("Removing layer for the wrong time: " + start_time)
+          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
+          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
+        }
+      })
     })
   })
 
@@ -81,37 +112,49 @@ function special_event_on_change(e) {
     special_event_layers[selected_event_type_name] = {}
   }
 
-  Object.keys(events_by_time).forEach(function(start_time) {
-    if (start_time in checked_time_options) {
-      // If it is not in the cache it hasn't been added, so we need to add it
-      if (!(start_time in special_event_layers[selected_event_type_name])) {
-        console.log("Adding markers for events at "+start_time)
-        var newLayer = L.layerGroup()
+  Object.keys(checked_event_distances).forEach(function(special_event_distance) {
 
-        console.log(events_by_time[start_time])
-        events_by_time[start_time].forEach(function(applicableEvent) {
-          if (applicableEvent.shortname in parkrun_data_geo.events_5k) {
-            var e = parkrun_data_geo.events_5k[applicableEvent.shortname]
-            // console.log(e)
-            // Add a marker to the layer
-            var lat_lon = [e.latitude, e.longitude]
-
-            var popup = e.local_name+" @ "+start_time
-            // console.log(popup)
-            var marker = L.marker(lat_lon, {icon: time_to_marker_map[start_time]}).bindPopup(popup);
-
-            marker.addTo(newLayer)
-          }
-        })
-
-        newLayer.addTo(mymap)
-        special_event_layers[selected_event_type_name][start_time] = newLayer
-      } else {
-        console.log("Skipping already cached markers for events at "+start_time)
-      }
-    } else {
-      console.log("Skipping markers for events at "+start_time)
+    // If this distance is not in the layer cache, create a placeholder
+    if (!(special_event_distance in special_event_layers[selected_event_type_name])) {
+      special_event_layers[selected_event_type_name][special_event_distance] = {}
     }
+
+    Object.keys(events_by_time).forEach(function(start_time) {
+      if (start_time in checked_time_options) {
+        // If it is not in the cache it hasn't been added, so we need to add it
+        if (!(start_time in special_event_layers[selected_event_type_name][special_event_distance])) {
+          console.log("Adding markers for "+special_event_distance+" events at "+start_time)
+          var newLayer = L.layerGroup()
+
+          // The parkrun geo data for this parkrun/junior parkrun
+          parkrun_distance_event_info = checked_event_distances[special_event_distance]
+
+          events_by_time[start_time].forEach(function(applicableEvent) {
+            if (applicableEvent.shortname in parkrun_distance_event_info) {
+              var e = parkrun_distance_event_info[applicableEvent.shortname]
+              // console.log(e)
+              // Add a marker to the layer
+              var lat_lon = [e.latitude, e.longitude]
+
+              var popup = e.local_name+" @ "+start_time
+              // console.log(popup)
+              var parkrun_distance_marker = time_markers[special_event_distance][time_to_marker_index_map[start_time]]
+              var marker = L.marker(lat_lon, {icon: parkrun_distance_marker}).bindPopup(popup);
+
+              marker.addTo(newLayer)
+            }
+          })
+
+          newLayer.addTo(mymap)
+          special_event_layers[selected_event_type_name][special_event_distance][start_time] = newLayer
+        } else {
+          console.log("Skipping already cached markers for "+special_event_distance+" events at "+start_time)
+        }
+      } else {
+        console.log("Skipping markers for "+special_event_distance+"events at "+start_time)
+      }
+    })
+
   })
 
   // parkrun_data_geo.events_5k.forEach(function(parkrun_event) {
@@ -150,11 +193,21 @@ function draw_map(map_id) {
     'green-dark',
     'green'
   ]
+  // Make round markers for parkrun
   marker_colours.forEach(function(colour) {
-    time_markers.push(
+    time_markers["parkrun"].push(
       L.ExtraMarkers.icon({
         markerColor: colour,
         shape: 'circle'
+      })
+    )
+  })
+  // Make square markers for junior parkrun
+  marker_colours.forEach(function(colour) {
+    time_markers["junior parkrun"].push(
+      L.ExtraMarkers.icon({
+        markerColor: colour,
+        shape: 'square'
       })
     )
   })
