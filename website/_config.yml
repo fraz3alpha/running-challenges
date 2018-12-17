@@ -52,6 +52,7 @@ show_excerpts: true
 
 header_pages:
   - _pages/about.md
+  - _pages/map.md
   - _pages/badges.md
   - _pages/faq.md
   - _pages/getstarted.md
