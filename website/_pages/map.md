@@ -25,16 +25,23 @@ css_libs:
 ---
 
 <div id="mapid"></div>
-
 <br/>
-If you are interested in doing the double this New Year's Day, head over to the
+
+### Usage Notes
+
+- Go fullscreen to get the best view, and hide the menu if you like.
+- 5k parkrun events have circular markers, junior parkrun events have square markers.
+- Not all time & event distance (5k/junior) combinations have markers on the map.
+- This map works on mobile devices for when you are out and about.
+
+### Other fantastic maps and tools
+
+- If you are interested in doing the double this New Year's Day, head over to the
 [Rikki Prince](https://twitter.com/rikkiprince)'s amazing
 [Double Finder Tool](http://tailrun.uk/nyd/2019/) to see which ones you might be
 able to do.
-<br/>
-If you are on the lookout for filling in a spot on your Wilson Index, head over
+- If you are on the lookout for filling in a spot on your Wilson Index, head over
 to Mark Pinney's [Challenge Chaser](http://www.challenge-chaser.com/map).
-<br/>
-And of course, for all things tourism related, check out
+- And of course, for all things tourism related, check out
 [Tim GP](https://twitter.com/timdp)'s absolutely awesome
 [Tourist Tool](https://touristtool.mybluemix.net/)!
