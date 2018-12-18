@@ -76,3 +76,4 @@ permalink: /:year/:month/:day/:title:output_ext
 # docker run --rm --name jekyll -it -p 4000:4000 -v `pwd`:/srv/jekyll -v `pwd`/vendor/bundle:/usr/local/bundle jekyll/jekyll jekyll serve
 
 google_analytics: "UA-115520338-2"
+google_analytics_staging: "UA-115520338-3"

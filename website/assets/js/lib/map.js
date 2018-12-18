@@ -123,7 +123,7 @@ function special_event_on_change(e) {
       if (start_time in checked_time_options) {
         // If it is not in the cache it hasn't been added, so we need to add it
         if (!(start_time in special_event_layers[selected_event_type_name][special_event_distance])) {
-          console.log("Adding markers for "+special_event_distance+" events at "+start_time)
+          // console.log("Adding markers for "+special_event_distance+" events at "+start_time)
           var newLayer = L.layerGroup()
 
           // The parkrun geo data for this parkrun/junior parkrun
@@ -148,10 +148,10 @@ function special_event_on_change(e) {
           newLayer.addTo(mymap)
           special_event_layers[selected_event_type_name][special_event_distance][start_time] = newLayer
         } else {
-          console.log("Skipping already cached markers for "+special_event_distance+" events at "+start_time)
+          // console.log("Skipping already cached markers for "+special_event_distance+" events at "+start_time)
         }
       } else {
-        console.log("Skipping markers for "+special_event_distance+"events at "+start_time)
+        // console.log("Skipping markers for "+special_event_distance+"events at "+start_time)
       }
     })
 
