@@ -7,6 +7,8 @@
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
+  {%- elsif site.google_analytics_staging %}
+    {%- include google-analytics-staging.html -%}
   {%- endif -%}
 
   {% for css in page.css_libs %}
