@@ -4,6 +4,37 @@ L.Control.SideMenu = L.Control.extend({
         special_event_data: undefined
     },
 
+    sendGoogleAnalyticsEvent: function(event) {
+      this_data = this()
+      // console.log("Event destined for Google Analytics received: "+JSON.stringify(this_data))
+      if (window.gtag !== undefined && window.gtag !== null) {
+        // console.log("gtag: "+window.gtag)
+        gtag_action = "map"
+        if ("action" in event) {
+          gtag_action = event.action
+        }
+        // The event passed in should be of the form:
+        // {
+        //   'event_category': <category>,
+        //   'event_label': <label>,
+        //   'value': <value>
+        // }
+        gtag_event = {}
+        // Add the available fields from the passed in event to the object we
+        // are going to send to Google Analytics
+        gtag_event_fields = ["event_category", "event_label", "value"]
+        gtag_event_fields.forEach(function(field) {
+          if (field in this_data) {
+            gtag_event[field] = this_data[field]
+          }
+        })
+        // console.log("Sending GA event: "+gtag_action+": "+JSON.stringify(gtag_event))
+        window.gtag('event', gtag_action, gtag_event);
+      } else {
+        // console.log("No analtics object available")
+      }
+    },
+
     initialize: function(options){
         L.Util.setOptions(this, options)
     },
@@ -64,6 +95,14 @@ L.Control.SideMenu = L.Control.extend({
       var event_select = L.DomUtil.create('select', '', date_select)
       event_select.setAttribute("id", "slidemenu_special_event_type_name")
       L.DomEvent.on(event_select, 'change', this.selectEventTypeChanged, this)
+      // Send a Google Analytics event
+      L.DomEvent.on(event_select, "change", this_leaflet_menu.sendGoogleAnalyticsEvent, function() {
+        return {
+          "event": "map config change",
+          "event_category": "select event type",
+          "event_label": event_select.value
+        }
+      })
       // Sort the items in the menu by the date that they happen
       var event_names_sorted_by_date = Object.keys(data).sort(function(a,b) {
         console.log("Comparing "+a+" "+data[a].date+" "+b+" "+data[b].date)
@@ -79,6 +118,7 @@ L.Control.SideMenu = L.Control.extend({
         // console.log(special_event_type_name)
         var this_option = L.DomUtil.create('option', '', event_select)
         this_option.innerText = special_event_type_name
+        this_option.value = special_event_type_name
         if (special_event_type_name == selected_event_type_name) {
           this_option.setAttribute("selected", true)
         }
@@ -127,7 +167,13 @@ L.Control.SideMenu = L.Control.extend({
         if (this_leaflet_menu.options.callback !== undefined) {
           L.DomEvent.on(this_option, "change", this_leaflet_menu.options.callback, this)
         }
-
+        L.DomEvent.on(this_option, "change", this_leaflet_menu.sendGoogleAnalyticsEvent, function() {
+          return {
+            "event": "map config change",
+            "event_category": this_option.checked ? "select event time" : "deselect event time",
+            "event_label": this_option.value
+          }
+        })
 
         // Add a label for this option
         var this_option_label = L.DomUtil.create('label', '', time_select)
@@ -158,6 +204,13 @@ L.Control.SideMenu = L.Control.extend({
         if (this_leaflet_menu.options.callback !== undefined) {
           L.DomEvent.on(this_option, "change", this_leaflet_menu.options.callback, this)
         }
+        L.DomEvent.on(distance_select, "change", this_leaflet_menu.sendGoogleAnalyticsEvent, function() {
+          return {
+            "event": "map config change",
+            "event_category": this_option.checked ? "select event category" : "deselect event category",
+            "event_label": this_option.value
+          }
+        })
 
         // Add a label for this option
         var this_option_label = L.DomUtil.create('label', '', distance_select)
@@ -183,6 +236,13 @@ L.Control.SideMenu = L.Control.extend({
 
         // Link the event handler to fire when the menu item is clicked
         L.DomEvent.on(this.link, 'click', this._click, this);
+        L.DomEvent.on(this.link, "click", this.sendGoogleAnalyticsEvent, function() {
+          return {
+            "event": "map interaction",
+            "event_category": "side menu",
+            "event_label": "open"
+          }
+        })
 
         this._map = map;
 
@@ -207,62 +267,14 @@ L.Control.SideMenu = L.Control.extend({
         this.closeLink.innerText = "Close Menu"
         this.closeLink.title = "Close Menu"
         L.DomEvent.on(this.closeLink, 'click', this._closeLinkClick, this);
-
+        L.DomEvent.on(this.closeLink, "click", this.sendGoogleAnalyticsEvent, function() {
+          return {
+            "event": "map interaction",
+            "event_category": "side menu",
+            "event_label": "close"
+          }
+        })
         this.redrawMenuContents()
-
-        // L.DomUtil.create('br', '', this._contents);
-        //
-        // if (this.options.event.options.length > 0) {
-        //   var event_select = L.DomUtil.create('select', '', this._contents)
-        //   if (this.options.event.id !== undefined) {
-        //     event_select.setAttribute("id", this.options.event.id)
-        //   }
-        //
-        //   // Add all of the provided options
-        //   this.options.event.options.forEach(function(e) {
-        //     var this_option = L.DomUtil.create('option', '', event_select)
-        //     this_option.innerText = e
-        //   })
-        //
-        //   // Add a function to be called when this option is changed, if set.
-        //   if (this.options.onChangeNotifier !== undefined) {
-        //     event_select.setAttribute("onChange", this.options.onChangeNotifier)
-        //   }
-        // }
-        //
-        // if (this.options.times.options.length > 0) {
-        //   var time_select = L.DomUtil.create('fieldset', '', this._contents)
-        //
-        //   if (this.options.times.label !== undefined) {
-        //     var legend = L.DomUtil.create('legend', '', time_select)
-        //     legend.innerText = this.options.times.label
-        //   }
-        //
-        //   // Add all of the provided options
-        //   var times_id = this.options.times.id
-        //   var option_counter = 0;
-        //   this.options.times.options.forEach(function(e) {
-        //     var this_option = L.DomUtil.create('input', '', time_select)
-        //     this_option.setAttribute("type", "checkbox")
-        //     this_option.setAttribute("checked", true)
-        //     this_option.setAttribute("value", e)
-        //     this_option.setAttribute("id", "time_select_input_"+option_counter)
-        //     if (times_id !== undefined) {
-        //       event_select.setAttribute("name", this.options.times.id)
-        //     }
-        //     // Add a label for this option
-        //     var this_option_label = L.DomUtil.create('label', '', time_select)
-        //     this_option_label.setAttribute("for",  "time_select_input_"+option_counter)
-        //     this_option_label.innerText = e
-        //     L.DomUtil.create('br', '', time_select)
-        //     option_counter += 1
-        //   })
-        //
-        //   // Add a function to be called when this option is changed, if set.
-        //   if (this.options.onChangeNotifier !== undefined) {
-        //     time_select.setAttribute("onChange", this.options.onChangeNotifier)
-        //   }
-        // }
 
         return container;
     },
