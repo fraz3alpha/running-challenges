@@ -122,7 +122,10 @@ function parse_results_table() {
           table_cells = $("td", this)
           if (table_cells.length > 0) {
               // Find the name and other interesting bits of data for this parkrun
+
               parkrun_name = table_cells[0].innerText.trim()
+			  parkrun_link = table_cells[0].innerHTML.trim()
+			  console.log(parkrun_link)
               parkrun_date = table_cells[1].innerText.trim()
               parkrun_event_number = table_cells[2].innerText.trim()
               parkrun_position = table_cells[3].innerText.trim()
@@ -139,6 +142,7 @@ function parse_results_table() {
               // Store this parkrun instance in our big data structure
               parkrun_stats = {
                   "name": parkrun_name,
+				  "link": parkrun_link,
                   "date": parkrun_date,
                   "date_obj": parkrun_date_obj,
                   "event_number": parkrun_event_number,
