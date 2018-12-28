@@ -124,9 +124,9 @@ function parse_results_table() {
               // Find the name and other interesting bits of data for this parkrun
 
               parkrun_name = table_cells[0].innerText.trim()
-			  parkrun_link = table_cells[0].innerHTML.trim()
-			  console.log(parkrun_link)
+			  parkrun_eventlink = table_cells[0].innerHTML.trim()
               parkrun_date = table_cells[1].innerText.trim()
+			  parkrun_datelink = table_cells[1].innerHTML.trim()
               parkrun_event_number = table_cells[2].innerText.trim()
               parkrun_position = table_cells[3].innerText.trim()
               parkrun_time = table_cells[4].innerText.trim()
@@ -142,8 +142,9 @@ function parse_results_table() {
               // Store this parkrun instance in our big data structure
               parkrun_stats = {
                   "name": parkrun_name,
-				  "link": parkrun_link,
+				  "eventlink": parkrun_eventlink,
                   "date": parkrun_date,
+				  "datelink": parkrun_datelink,
                   "date_obj": parkrun_date_obj,
                   "event_number": parkrun_event_number,
                   "position": parkrun_position,

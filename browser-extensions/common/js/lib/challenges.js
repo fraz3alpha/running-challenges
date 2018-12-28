@@ -1080,7 +1080,8 @@ function challenge_start_letters(data, params) {
                         // Add the event
                         p = Object.create(parkrun_event)
                         p.subpart = initial_letter
-                        p.info = p.date
+						p.name = p.eventlink
+                        p.info = p.datelink
                         o.subparts_detail[i] = p
                         o.subparts_completed_count += 1
                         if (!(parkrun_event.name in o.completed_qualifying_events)) {
@@ -1203,7 +1204,8 @@ function challenge_words(data, params) {
                     // Add the event
                     p = Object.create(parkrun_event)
                     p.subpart = o.subparts[i]
-                    p.info = p.date
+					p.name = p.eventlink
+                    p.info = p.datelink
                     o.subparts_detail[i] = p
                     o.subparts_completed_count += 1
 
@@ -1287,7 +1289,8 @@ function challenge_parkruns(data, params) {
 
             p = Object.create(events[parkrun_name][0])
             p.subpart = o.subparts[subparts_index]
-            p.info = p.date
+			p.name = p.eventlink
+            p.info = p.datelink
             o.subparts_detail[subparts_index] = p
             o.subparts_completed_count += 1
             if (!(parkrun_name in o.completed_qualifying_events)) {
@@ -1348,7 +1351,8 @@ function challenge_tourist(data, params) {
                 // Add it in for the next complete subpart
                 p = Object.create(parkrun_event)
                 p.subpart = o.subparts_completed_count
-                p.info = parkrun_event.date
+				p.name = p.eventlink
+                p.info = p.datelink
                 o.subparts_detail.push(p)
 
                 // Add to the events done list, so that we can map them
@@ -1503,6 +1507,7 @@ function challenge_stopwatch_bingo(data, params) {
         if (o.subparts_detail[subparts_detail_index] == null) {
             o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
             o.subparts_detail[subparts_detail_index].subpart = seconds
+			o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
             o.subparts_detail[subparts_detail_index].info = parkrun_event.time
             o.subparts_completed_count += 1
 
@@ -1549,7 +1554,7 @@ function challenge_single_parkrun_count(data, params) {
     parkrun_results.forEach(function (parkrun_event) {
         if (!(parkrun_event.name in parkruns_completed)) {
             parkruns_completed[parkrun_event.name] = {
-                "name": parkrun_event.name,
+                "name": parkrun_event.eventlink,
                 "count": 0,
                 "completed": false,
                 "completed_at": null,
@@ -1709,9 +1714,9 @@ function challenge_on_dates(data, params) {
   if (o.subparts.length == 1) {
     o.subparts[0].forEach(function(parkrun_event) {
       o.subparts_detail.push({
-          "name": parkrun_event.name,
-          "date": parkrun_event.date,
-          "info": parkrun_event.date,
+          "name": parkrun_event.eventlink,
+          "date": parkrun_event.datelink,
+          "info": parkrun_event.datelink,
           "subpart": o.subparts_detail.length + 1
       })
     })
@@ -1721,8 +1726,8 @@ function challenge_on_dates(data, params) {
 
       if (o.subparts[index].length > 0) {
         o.subparts_detail[index].name = "x"+o.subparts[index].length
-        o.subparts_detail[index].date = o.subparts[index][0].date
-        o.subparts_detail[index].info = o.subparts[index][0].date
+        o.subparts_detail[index].date = o.subparts[index][0].datelink
+        o.subparts_detail[index].info = o.subparts[index][0].datelink
       }
     })
   }
@@ -1765,9 +1770,9 @@ function challenge_nyd_double(data, params) {
         if (previous_parkrun != null && day_month == "01/01/" && parkrun_event.date == previous_parkrun.date) {
 
             o.subparts_detail.push({
-                "name": parkrun_event.name+" and "+previous_parkrun.name,
-                "date": parkrun_event.date,
-                "info": parkrun_event.date,
+                "name": parkrun_event.eventlink+" and "+previous_parkrun.eventlink,
+                "date": parkrun_event.datelink,
+                "info": parkrun_event.datelink,
                 "subpart": o.subparts_detail.length + 1
             })
 
@@ -1826,9 +1831,9 @@ function challenge_groundhog_day(data, params) {
         if (previous_parkrun != null && parkrun_event.time == previous_parkrun.time && parkrun_event.name == previous_parkrun.name) {
 
             o.subparts_detail.push({
-                "name": parkrun_event.name,
+                "name": parkrun_event.eventlink,
                 "date": previous_parkrun.date+" and "+parkrun_event.date,
-                "info": parkrun_event.time+" on "+previous_parkrun.date+" and "+parkrun_event.date,
+                "info": parkrun_event.time+" on "+previous_parkrun.datelink+" and "+parkrun_event.datelink,
                 "subpart": o.subparts_detail.length + 1
             })
 
