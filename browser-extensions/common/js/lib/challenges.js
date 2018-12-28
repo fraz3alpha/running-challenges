@@ -80,9 +80,9 @@ function generate_running_challenge_data(data) {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
       "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
-	 challenge_data.push(challenge_double_day_double_time(data, {
-      "shortname": "double-day-double-time",
-      "name": "Double Day Double Time",
+	 challenge_data.push(challenge_timelord(data, {
+      "shortname": "timelord",
+      "name": "Timelord",
       "help": "Finish with the same time at two parkrun locations on the same day (a double day)."}))
     challenge_data.push(challenge_on_dates(data, {
       "shortname": "all-weather-runner",
@@ -1870,7 +1870,7 @@ function challenge_groundhog_day(data, params) {
     return update_data_object(o)
 }
 
-function challenge_double_day_double_time(data, params) {
+function challenge_timelord(data, params) {
 
   var parkrun_results = data.parkrun_results
     var o = create_data_object(params, "runner")
