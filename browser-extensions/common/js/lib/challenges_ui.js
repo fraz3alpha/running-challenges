@@ -73,15 +73,26 @@ function add_challenges_to_table(table, challenge_results_type, data) {
    var ui_challenge_generation_duration = 0
 
    data.challenge_results[challenge_results_type].forEach(function (challenge) {
-       // console.log("Generating table rows for " + challenge.shortname)
-       var start_time = new Date()
-       if (challenge.shortname == 'regionnaire') {
-           generate_regionnaire_table_entry(challenge, table, data)
-       } else {
-           generate_standard_table_entry(challenge, table, data)
-       }
-       var duration = new Date() - start_time
-       ui_challenge_generation_duration += duration
+       //console.log("Generating table rows for " + challenge.shortname)
+	   var visible_variable = "visible_"+challenge.shortname.replace("-","_")
+	   var challenge_visibility = data.user_data[visible_variable]
+	   var start_time = new Date()
+	   if (challenge.shortname == 'regionnaire') {
+		   generate_regionnaire_table_entry(challenge, table, data)
+	   } else {
+		   generate_standard_table_entry(challenge, table, data)
+	   }
+	   var duration = new Date() - start_time
+	   ui_challenge_generation_duration += duration
+	   
+	   	if (challenge_visibility == 'Collapsed') {
+			$("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle()
+		}
+		
+	   if (challenge_visibility == 'Hidden') {
+		   $("tbody[id=challenge_tbody_header_"+challenge['shortname']+"]").toggle()
+		   $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle()
+	   }
        // console.log("Completed generating table rows for " + challenge.shortname + " in " + duration + "ms")
 
    });

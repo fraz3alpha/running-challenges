@@ -103,6 +103,27 @@ function save_user_configuration() {
 
     var athlete_number = $('#athlete_number').val();
     var athlete_home_parkrun = $('#athlete_home_parkrun').val();
+	var visible_tourist = $('#visible_tourist').val();
+	var visible_cowell_club = $('#visible_cowell_club').val();
+	var visible_alphabeteer = $('#visible_alphabeteer').val();
+	var visible_single_ton = $('#visible_single_ton').val();
+	var visible_double_ton = $('#visible_double_ton').val();
+	var visible_stopwatch_bingo = $('#visible_stopwatch_bingo').val();
+	var visible_pirates = $('#visible_pirates').val();
+	var visible_stayin_alive = $('#visible_stayin_alive').val();
+	var visible_compass_club = $('#visible_compass_club').val();
+	var visible_full_ponty = $('#visible_full_ponty').val();
+	var visible_pilgrimage = $('#visible_pilgrimage').val();
+	var visible_christmas_day = $('#visible_christmas_day').val();
+	var visible_nyd_double = $('#visible_nyd_double').val();
+	var visible_groundhog_day = $('#visible_groundhog_day').val();
+	var visible_all_weather_runner = $('#visible_all_weather_runner').val();
+	var visible_obsessive_bronze = $('#visible_obsessive_bronze').val();
+	var visible_obsessive_silver = $('#visible_obsessive_silver').val();
+	var visible_obsessive_gold = $('#visible_obsessive_gold').val();
+	var visible_regionnaire = $('#visible_regionnaire').val();
+
+	
     // var enable_beta_features_checked = $('#enable_beta_features').prop('checked');
 
     // Build up our information that we want to save.
@@ -110,7 +131,26 @@ function save_user_configuration() {
     var saved_data = {
         athlete_number: athlete_number,
         home_parkrun_info: get_home_parkrun_info(athlete_home_parkrun),
-        // enable_beta_features: enable_beta_features_checked
+		visible_tourist: visible_tourist,
+		visible_cowell_club: visible_cowell_club,
+		visible_alphabeteer: visible_alphabeteer,
+		visible_single_ton: visible_single_ton,
+		visible_double_ton: visible_double_ton,
+		visible_stopwatch_bingo: visible_stopwatch_bingo,
+		visible_pirates: visible_pirates,
+		visible_stayin_alive: visible_stayin_alive,
+		visible_compass_club: visible_compass_club,
+		visible_full_ponty: visible_full_ponty,
+		visible_pilgrimage: visible_pilgrimage,
+		visible_christmas_day: visible_christmas_day,
+		visible_nyd_double: visible_nyd_double,
+		visible_groundhog_day: visible_groundhog_day,
+		visible_all_weather_runner: visible_all_weather_runner,
+		visible_obsessive_bronze: visible_obsessive_bronze,
+		visible_obsessive_silver: visible_obsessive_silver,
+		visible_obsessive_gold: visible_obsessive_gold,
+		visible_regionnaire: visible_regionnaire
+				// enable_beta_features: enable_beta_features_checked
     }
 
     // Store it on the page for future use
@@ -135,16 +175,53 @@ function load_user_configuration() {
     browser.storage.local.get({
         athlete_number: '',
         home_parkrun_info: {},
+		visible_tourist: 'Expanded',
+		visible_cowell_club: 'Expanded',
+		visible_alphabeteer: 'Expanded',
+		visible_single_ton: 'Expanded',
+		visible_double_ton: 'Expanded',
+		visible_stopwatch_bingo: 'Expanded',
+		visible_pirates: 'Expanded',
+		visible_stayin_alive: 'Expanded',
+		visible_compass_club: 'Expanded',
+		visible_full_ponty: 'Expanded',
+		visible_pilgrimage: 'Expanded',
+		visible_christmas_day: 'Expanded',
+		visible_nyd_double: 'Expanded',
+		visible_groundhog_day: 'Expanded',
+		visible_all_weather_runner: 'Expanded',
+		visible_obsessive_bronze: 'Expanded',
+		visible_obsessive_silver: 'Expanded',
+		visible_obsessive_gold: 'Expanded',
+		visible_regionnaire: 'Expanded'
         // enable_beta_features: false
     }).then(function(items) {
         // Store it on the page for future use
         saved_options = items
-        console.log('Loaded: '+JSON.stringify(items))
+        console.log('Loaded: '+JSON.stringify(items));
         $('#athlete_number').val(items.athlete_number);
         // Update the home parkrun dropdown with the loaded value, if present
         update_home_parkrun_dropdown()
         // update_enable_beta_features_checkbox(items.enable_beta_features)
-
+		$('#visible_tourist').val(items.visible_tourist);
+		$('#visible_cowell_club').val(items.visible_cowell_club);
+		$('#visible_alphabeteer').val(items.visible_alphabeteer);
+		$('#visible_single_ton').val(items.visible_single_ton);
+		$('#visible_double_ton').val(items.visible_double_ton);
+		$('#visible_stopwatch_bingo').val(items.visible_stopwatch_bingo);
+		$('#visible_pirates').val(items.visible_pirates);
+		$('#visible_stayin_alive').val(items.visible_stayin_alive);
+		$('#visible_compass_club').val(items.visible_compass_club);
+		$('#visible_full_ponty').val(items.visible_full_ponty);
+		$('#visible_pilgrimage').val(items.visible_pilgrimage);
+		$('#visible_christmas_day').val(items.visible_christmas_day);
+		$('#visible_nyd_double').val(items.visible_nyd_double);
+		$('#visible_groundhog_day').val(items.visible_groundhog_day);
+		$('#visible_all_weather_runner').val(items.visible_all_weather_runner);
+		$('#visible_obsessive_bronze').val(items.visible_obsessive_bronze);
+		$('#visible_obsessive_silver').val(items.visible_obsessive_silver);
+		$('#visible_obsessive_gold').val(items.visible_obsessive_gold);
+		$('#visible_regionnaire').val(items.visible_regionnaire);
     });
 }
 
