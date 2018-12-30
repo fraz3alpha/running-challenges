@@ -15,7 +15,7 @@ function generate_running_challenge_data(data) {
       "name": "Tourist",
       "data": 20,
       "help": "Run at 20+ different parkrun locations anywhere in the world."}))
-    challenge_data.push(challenge_tourist(data, {
+	challenge_data.push(challenge_tourist(data, {
       "shortname": "cowell-club",
       "name": "Cowell Club",
       "data": 100,
@@ -1471,6 +1471,19 @@ function has_home_parkrun(data) {
 function get_home_parkrun(data) {
   if (data.user_data !== undefined) {
     return data.user_data.home_parkrun_info
+  }
+  return undefined
+}
+
+// Return true if there are visibility choices for challenges set
+function has_visibility_choices(data) {
+  var vis_choices = get_visibility_choices(data)
+  return vis_choices !== undefined
+}
+
+function get_visibility_choices(data) {
+  if (data.user_data !== undefined) {
+    return data.user_data.visibility_choices
   }
   return undefined
 }

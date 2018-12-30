@@ -71,11 +71,17 @@ function add_table_break_row(table, title, help) {
 function add_challenges_to_table(table, challenge_results_type, data) {
   // console.log(data)
    var ui_challenge_generation_duration = 0
+   var challenge_visibility = ""
 
    data.challenge_results[challenge_results_type].forEach(function (challenge) {
        //console.log("Generating table rows for " + challenge.shortname)
-	   var visible_variable = "visible_"+challenge.shortname.replace("-","_")
-	   var challenge_visibility = data.user_data[visible_variable]
+	   
+	   challenge_visibility = "Expanded"
+	   if (has_visibility_choices(data)) {
+			challenge_visibility = data.user_data.visibility_choices[challenge.shortname]
+			//console.log(challenge.shortname+": "+challenge_visibility)
+		}
+		   
 	   var start_time = new Date()
 	   if (challenge.shortname == 'regionnaire') {
 		   generate_regionnaire_table_entry(challenge, table, data)
