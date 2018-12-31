@@ -41,6 +41,9 @@ function initial_page_setup() {
     $('#athlete_home_parkrun').change(function() {
         update_home_parkrun_country()
     })
+	
+	// Generate the visibility choices table
+	create_visibility_table()
     // Attach handler to catch when the beta checkbox is enabled, which
     // will allow us to set the extra information text
     // $('#enable_beta_features').change(function() {
@@ -310,9 +313,47 @@ function update_visibility_table(items) {
 			$('#visible_'+shortname).val(visible);
 		}
 	}
-
 }
 
+function create_visibility_table() {
+	var table = document.getElementById('challenge_visibility_table').getElementsByTagName('tbody')[0];
+	  
+	console.log("Add to table")
+	
+	var select_visibility = ''
+	var shortname = ''
+	var newRow = ''
+	var newCell = ''
+	for (var i = 0, len = challenge_shortnames.length; i < len; i++) {
+		shortname = challenge_shortnames[i]
+		console.log(shortname)
+		
+		// Insert a row in the table at row index 0
+		newRow   = table.insertRow(table.rows.length);
+
+		// Insert a cell in the row at index 0
+		newCell  = newRow.insertCell(0);
+
+		// Append a text node to the cell
+		newCell.appendChild(document.createTextNode(shortname));
+		
+		// Insert a cell in the row at index 1
+		newCell  = newRow.insertCell(1);
+
+		select_visibility = '<select id="visible_'+shortname+'"> ' +
+						'<option value="Expanded">Expanded</option>' +
+						'<option value="Collapsed">Collapsed</option>' +
+						'<option value="Hidden">Hidden</option> '+
+						'</select>'
+
+		// Append a text node to the cell
+		newCell.innerHTML = select_visibility;
+	}
+	
+	
+
+
+}
 
 function update_home_parkrun_country() {
     console.log('update_home_parkrun_country()')
