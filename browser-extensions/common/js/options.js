@@ -1,26 +1,28 @@
 var geo_data = null
 var saved_options = {}
-var challenge_shortnames = [
-	"tourist",
-	"cowell-club",
-	"alphabeteer",
-	"single-ton",
-	"double-ton",
-	"stopwatch-bingo",
-	"pirates",
-	"stayin-alive",
-	"compass-club",
-	"full-ponty",
-	"pilgrimage",
-	"christmas-day",
-	"nyd-double",
-	"groundhog-day",
-	"all-weather-runner",
-	"obsessive-bronze",
-	"obsessive-silver",
-	"obsessive-gold",
-	"regionnaire"
-]
+var challenges = {
+	"tourist": "Tourist",
+	"cowell-club": "Cowell Club",
+	"alphabeteer": "Alphabeteer",
+	"single-ton": "Single-ton",
+	"double-ton": "Double-ton",
+	"stopwatch-bingo": "Stopwatch Bingo",
+	"pirates": "Pirates!",
+	"stayin-alive": "Stayin' Alive",
+	"compass-club": "Compass Club",
+	"full-ponty": "The Full Ponty",
+	"pilgrimage": "Bushy Pilgrimage",
+	"christmas-day": "Christmas Day",
+	"nyd-double": "NYD Double",
+	"groundhog-day": "Groundhog Day",
+	"all-weather-runner": "All Weather Runner",
+	"obsessive-bronze": "Bronze Level Obsessive",
+	"obsessive-silver": "Silver Level Obsessive",
+	"obsessive-gold": "Gold Level Obsessive",
+	"regionnaire": "Regionnaire"
+}
+
+var challenge_shortnames = []
 
 function initial_page_setup() {
 
@@ -149,7 +151,7 @@ function save_user_configuration() {
     saved_options = saved_data
     update_home_parkrun_country()
 
-    console.log('Saving: '+JSON.stringify(saved_data))
+    //console.log('Saving: '+JSON.stringify(saved_data))
 
     browser.storage.local.set(saved_data).then(function() {
         // Update status to let user know options were saved.
@@ -303,11 +305,9 @@ function update_home_parkrun_dropdown() {
 }
 
 function update_visibility_table(items) {
-    //console.log('update_visibility_table()')
 
 	for (var i = 0, len = challenge_shortnames.length; i < len; i++) {
 		var shortname = challenge_shortnames[i];
-		//console.log("Shortname=" +shortname+":"+items.visibility_choices[shortname]);
 		var visible = items.visibility_choices[shortname]
 		if (visible !== undefined) {
 			$('#visible_'+shortname).val(visible);
@@ -317,42 +317,28 @@ function update_visibility_table(items) {
 
 function create_visibility_table() {
 	var table = document.getElementById('challenge_visibility_table').getElementsByTagName('tbody')[0];
-	  
-	console.log("Add to table")
 	
+	challenge_shortnames = (Object.keys(challenges));
+
 	var select_visibility = ''
 	var shortname = ''
 	var newRow = ''
 	var newCell = ''
 	for (var i = 0, len = challenge_shortnames.length; i < len; i++) {
 		shortname = challenge_shortnames[i]
-		console.log(shortname)
-		
-		// Insert a row in the table at row index 0
 		newRow   = table.insertRow(table.rows.length);
-
-		// Insert a cell in the row at index 0
 		newCell  = newRow.insertCell(0);
-
-		// Append a text node to the cell
-		newCell.appendChild(document.createTextNode(shortname));
+		newCell.appendChild(document.createTextNode(challenges[shortname]));
 		
-		// Insert a cell in the row at index 1
 		newCell  = newRow.insertCell(1);
-
 		select_visibility = '<select id="visible_'+shortname+'"> ' +
 						'<option value="Expanded">Expanded</option>' +
 						'<option value="Collapsed">Collapsed</option>' +
 						'<option value="Hidden">Hidden</option> '+
 						'</select>'
 
-		// Append a text node to the cell
 		newCell.innerHTML = select_visibility;
 	}
-	
-	
-
-
 }
 
 function update_home_parkrun_country() {
