@@ -85,7 +85,7 @@ function generate_running_challenge_data(data) {
 		  {"fulldate": "25/11/2027"}, {"fulldate": "23/11/2028"}, {"fulldate": "22/11/2029"}
 		// More dates to be added in the future
       ],
-      "help": "Run a parkrun on the 25th of December."}))
+      "help": "Run a parkrun on Thanksgiving."}))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
       "name":  "NYD Double",
