@@ -52,6 +52,9 @@ cp browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
 
+# Apply the custom patches
+for i in patches/chrome/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < $i; done
+
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
 # zip -r extension.zip js/ html/ images/ css/ manifest.json
