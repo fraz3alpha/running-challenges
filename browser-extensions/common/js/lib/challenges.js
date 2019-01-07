@@ -1550,27 +1550,25 @@ function challenge_finish_position_bingo(data, params) {
 
     parkrun_results.forEach(function (parkrun_event) {
         // Convert finish position to a number to get the index in our array
-        subparts_detail_index = parseInt(parkrun_event.position)
-		if (subparts_detail_index <= 100) {
-			if (o.subparts_detail[subparts_detail_index] == null) {
-				o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
-				o.subparts_detail[subparts_detail_index].subpart = parkrun_event.position
-				o.subparts_detail[subparts_detail_index].name = 1
-				o.subparts_detail[subparts_detail_index].info = parkrun_event.date
-				o.subparts_completed_count += 1
+        subparts_detail_index = parseInt(parkrun_event.position) % 100
+		if (o.subparts_detail[subparts_detail_index] == null) {
+			o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
+			o.subparts_detail[subparts_detail_index].subpart = subparts_detail_index
+			o.subparts_detail[subparts_detail_index].name = 1
+			o.subparts_detail[subparts_detail_index].info = parkrun_event.date
+			o.subparts_completed_count += 1
 
-				if (!(parkrun_event.name in o.completed_qualifying_events)) {
-				  o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-				}
+			if (!(parkrun_event.name in o.completed_qualifying_events)) {
+			  o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+			}
 
-				if (o.subparts.length == o.subparts_completed_count) {
-					o.complete = true
-					o.completed_on = parkrun_event.date
-				}
+			if (o.subparts.length == o.subparts_completed_count) {
+				o.complete = true
+				o.completed_on = parkrun_event.date
 			}
-			else {
-				o.subparts_detail[subparts_detail_index].name++
-			}
+		}
+		else {
+			o.subparts_detail[subparts_detail_index].name++
 		}
     });
 
