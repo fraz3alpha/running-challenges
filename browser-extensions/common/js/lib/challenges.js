@@ -1551,6 +1551,8 @@ function challenge_finish_position_bingo(data, params) {
     parkrun_results.forEach(function (parkrun_event) {
         // Convert finish position to a number to get the index in our array
         subparts_detail_index = parseInt(parkrun_event.position) % 100
+		if (subparts_detail_index == 0)
+			subparts_detail_index = 100
 		if (o.subparts_detail[subparts_detail_index] == null) {
 			o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
 			o.subparts_detail[subparts_detail_index].subpart = subparts_detail_index
