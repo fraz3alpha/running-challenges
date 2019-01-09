@@ -1,25 +1,25 @@
 var geo_data = null
 var saved_options = {}
 var challenges = {
-	"tourist": "Tourist",
-	"cowell-club": "Cowell Club",
-	"alphabeteer": "Alphabeteer",
-	"single-ton": "Single-ton",
-	"double-ton": "Double-ton",
-	"stopwatch-bingo": "Stopwatch Bingo",
-	"pirates": "Pirates!",
-	"stayin-alive": "Stayin' Alive",
-	"compass-club": "Compass Club",
-	"full-ponty": "The Full Ponty",
-	"pilgrimage": "Bushy Pilgrimage",
-	"christmas-day": "Christmas Day",
-	"nyd-double": "NYD Double",
-	"groundhog-day": "Groundhog Day",
-	"all-weather-runner": "All Weather Runner",
-	"obsessive-bronze": "Bronze Level Obsessive",
-	"obsessive-silver": "Silver Level Obsessive",
-	"obsessive-gold": "Gold Level Obsessive",
-	"regionnaire": "Regionnaire"
+	"tourist": ["Tourist", "World"],
+	"cowell-club": ["Cowell Club", "World"],
+	"alphabeteer": ["Alphabeteer", "World"],
+	"single-ton": ["Single-ton", "World"],
+	"double-ton": ["Double-ton", "World"],
+	"stopwatch-bingo": ["Stopwatch Bingo", "World"],
+	"pirates": ["Pirates!", "World"],
+	"stayin-alive": ["Stayin' Alive", "World"],
+	"compass-club": ["Compass Club", "World"],
+	"full-ponty": ["The Full Ponty", "UK"],
+	"pilgrimage": ["Bushy Pilgrimage", "UK"],
+	"christmas-day": ["Christmas Day", "World"],
+	"nyd-double": ["NYD Double", "World"],
+	"groundhog-day": ["Groundhog Day", "World"],
+	"all-weather-runner": ["All Weather Runner", "World"],
+	"obsessive-bronze": ["Bronze Level Obsessive", "World"],
+	"obsessive-silver": ["Silver Level Obsessive", "World"],
+	"obsessive-gold": ["Gold Level Obsessive", "World"],
+	"regionnaire": ["Regionnaire", "World"]
 }
 
 var challenge_shortnames = []
@@ -326,11 +326,11 @@ function create_visibility_table() {
 	var newCell = ''
 	for (var i = 0, len = challenge_shortnames.length; i < len; i++) {
 		shortname = challenge_shortnames[i]
-		newRow   = table.insertRow(table.rows.length);
-		newCell  = newRow.insertCell(0);
-		newCell.appendChild(document.createTextNode(challenges[shortname]));
+		newRow  = table.insertRow(table.rows.length);
+		newCell = newRow.insertCell(0);
+		newCell.appendChild(document.createTextNode(challenges[shortname][0]));
 		
-		newCell  = newRow.insertCell(1);
+		newCell = newRow.insertCell(1);
 		select_visibility = '<select id="visible_'+shortname+'"> ' +
 						'<option value="Expanded">Expanded</option>' +
 						'<option value="Collapsed">Collapsed</option>' +
@@ -338,7 +338,57 @@ function create_visibility_table() {
 						'</select>'
 
 		newCell.innerHTML = select_visibility;
+		newCell = newRow.insertCell(2);
+		
+		var icon = get_flag_image_src(challenges[shortname][1])
+		var img = document.createElement("img");
+            img.src = icon
+			img.alt = challenges[shortname][1]
+			img.title = img.alt
+			img.width = 24
+			img.height = 24
+			img.style = "padding-left:15px; padding-right:6px"
+			img.align = "center"
+		newCell.appendChild(img);
 	}
+}
+
+function get_flag_image_src(country) {
+  // Mapping countries to flag image files
+  var flag_map = {
+      "New Zealand": "nz",
+      "Australia": "au",
+      "Denmark": "dk",
+      "Finland": "fi",
+      "France": "fr",
+      "Germany": "de",
+      "Iceland": "is",
+      "Ireland": "ie",
+      "Italy": "it",
+      "Malaysia": "my",
+      "Canada": "ca",
+      "Namibia": "na",
+      "Norway": "no",
+      "Poland": "pl",
+      "Russia": "ru",
+      "Singapore": "sg",
+      "South Africa": "za",
+      "Swaziland": "sz",
+      "Sweden": "se",
+      "UK": "gb",
+      "USA": "us",
+      "Zimbabwe": "zw",
+      "World": "world"
+  }
+
+  var flag_src = browser.extension.getURL("/images/flags/flag-unknown.png")
+
+  if (country in flag_map) {
+    flag_src = browser.extension.getURL("/images/flags/"+flag_map[country]+".png")
+  }
+
+  return flag_src
+
 }
 
 function update_home_parkrun_country() {
