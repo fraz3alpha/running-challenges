@@ -1209,6 +1209,29 @@ function generate_standard_table_entry(challenge, table, data) {
 
 }
 
+function update_summary_stats(data) {
+    var durations = []
+    var ageGrades = []
+    var positions = []
+    data.parkrun_results.forEach(function (parkrun_event) {
+        durations.push(parkrun_event.duration)
+        ageGrades.push(parkrun_event.age_grade)
+        positions.push(parkrun_event.position)
+    })
+    var median = Math.floor(durations.length / 2)
+    var medianDuration = durations.sort()[median]
+    var medianTime = Math.floor(medianDuration / 60) + ":" + (medianDuration % 60)
+    var medianAgeGrade = ageGrades.sort()[median]
+    var medianPosition = positions.sort()[median]
+    //console.log('medianTime: ' + medianTime + ', medianAgeGrade: ' + medianAgeGrade + ', medianPosition: ' + medianPosition)
+    $("caption:contains('Summary Stats')").siblings("thead").find("th:contains('Slowest')").before("<th>Middle <br>(median)</th>")
+    var summaryBody = $("caption:contains('Summary Stats')").siblings("tbody")
+    summaryBody.children().eq(0).children().last().before("<td>" + medianTime + "</td>")
+    summaryBody.children().eq(1).children().last().before("<td>" + medianAgeGrade + " %</td>")
+    summaryBody.children().eq(2).children().last().before("<td>" + medianPosition + "</td>")
+    summaryBody.children().eq(3).children().last().before("<td>-</td>")
+}
+
 function add_stats_table(div, data) {
 
   if (data.info.has_stats) {
