@@ -1216,13 +1216,13 @@ function update_summary_stats(data) {
     data.parkrun_results.forEach(function (parkrun_event) {
         durations.push(parkrun_event.duration)
         ageGrades.push(parkrun_event.age_grade)
-        positions.push(parkrun_event.position)
+        positions.push(parseInt(parkrun_event.position))
     })
     var median = Math.floor(durations.length / 2)
-    var medianDuration = durations.sort()[median]
-    var medianTime = Math.floor(medianDuration / 60) + ":" + (medianDuration % 60)
-    var medianAgeGrade = ageGrades.sort()[median]
-    var medianPosition = positions.sort()[median]
+    var medianDuration = durations.sort(function (duration1, duration2) { return duration1 - duration2 })[median]
+    var medianTime = Math.floor(medianDuration / 60) + ":" + ("0" + (medianDuration % 60)).slice(-2)
+    var medianAgeGrade = ageGrades.sort(function (ageGrade1, ageGrade2) { return ageGrade1 - ageGrade2 })[median]
+    var medianPosition = positions.sort(function (position1, position2) { return position1 - position2 })[median]
     //console.log('medianTime: ' + medianTime + ', medianAgeGrade: ' + medianAgeGrade + ', medianPosition: ' + medianPosition)
     $("caption:contains('Summary Stats')").siblings("thead").find("th:contains('Slowest')").before("<th>Middle <br>(median)</th>")
     var summaryBody = $("caption:contains('Summary Stats')").siblings("tbody")
