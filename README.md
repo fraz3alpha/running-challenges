@@ -40,7 +40,7 @@ browser-specific files and libraries from either `browser-extensions/chrome` or
 `browser-extensions/firefox` when the extension is built.
 
 Most of the images live in the top-level directory `images` so that they are
-shared between the extensions and the website, there are also copied into the
+shared between the extensions and the website, they are also copied into the
 extension when a build occurs.
 
 ### Build Dependencies
