@@ -75,7 +75,8 @@ var domains = {
             "Run Report Writer": "Run Report Writer",
             "Other": "Other",
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
-            "Car Park Marshal": "Car Park Marshal"
+            "Car Park Marshal": "Car Park Marshal",
+            "Event Day Course Check": "Event Day Course Check"
         }
     },
     "www.parkrun.pl": {
