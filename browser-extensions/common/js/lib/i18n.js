@@ -375,6 +375,20 @@ var domains = {
         // It's all in English, so all links should work as-is
         // Volunteer roles are in ENGLISH
     },
+    "www.parkrun.jp": {
+        // Japan pages
+        // http://www.parkrun.jp/futakotamagawa/results/athletehistory/?athleteNumber=4493261
+        // The following two pages do not exist, and the links to them are dead.
+        // I wonder if this is just new-website teething problems, or an
+        // intentional action
+        // http://www.parkrun.my/results/athleteresultshistory/?athleteNumber=4493261
+        // http://www.parkrun.my/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
+        // It's all in Japanese, nothing will work without translations!
+        // Volunteer roles are as yet unknown
+        "table_all_results": "すべての結果",
+        "link_view_stats_for_all_parkruns": "この登録者のすべてのparkrunの記録を見る。",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "この登録者のすべてのparkrunの記録を見る。",
+    },
 }
 
 function get_localised_value(param, domain=location.host) {
