@@ -779,6 +779,7 @@ function get_flag_image_src(country) {
       "Iceland": "is",
       "Ireland": "ie",
       "Italy": "it",
+      "Japan": "jp",
       "Malaysia": "my",
       "Canada": "ca",
       "Namibia": "na",
