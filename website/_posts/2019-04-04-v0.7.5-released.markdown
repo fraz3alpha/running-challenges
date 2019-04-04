@@ -12,7 +12,7 @@ parkrun Japan is coming!
 
 This week parkrun starts in [Japan](https://parkrun.jp), and to make sure we are ready for it we have proactively put out this release to include the necessary changes to support the new site at [parkrun.jp](https://parkrun.jp). Obviously the website is all in Japanese, and hopefully we've done everything right to ensure the badges, challenges and stats appear in the correct places on the new website. There should also be a Japanese flag available for anyone completing a run in Japan!
 
-As this update includes overlaying data on a new domain (i.e. parkrun.jp), when the extension updates it will require extra permissions to do so - the extension will likely be disabled until you do this. If you using Chrome the icon may be a yellow circle instead of the usual green running man icon, and clicking on the yellow icon will allow you to accept the new permissions.
+As this update includes overlaying data on a new domain (i.e. parkrun.jp), when the extension updates it will require extra permissions to do so - the extension will likely be disabled until you do this. If you are using Chrome the icon may be a yellow circle instead of the usual green running man icon, and clicking on the yellow icon will allow you to accept the new permissions.
 
 
 Additionally, we have added the new volunteer badge recently introduced by parkrun HQ for the **Event Day Course Check** role. You can see the new badge over at the [badges page](https://running-challenges.co.uk/badges/).
