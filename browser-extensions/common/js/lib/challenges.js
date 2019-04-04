@@ -98,6 +98,28 @@ function generate_running_challenge_data(data) {
         {"month": 11},
       ],
       "help": "Run in each month of the year."}))
+    challenge_data.push(challenge_parkruns(data, {
+      "shortname": "trafalgar-way",
+      "name": "The Trafalgar Way",
+      "data": [
+        "Andover",
+        "Basingstoke",
+        "Bedfont Lakes",
+        "Blandford",
+        "Crane Park",
+        "Exeter Riverside",
+        "Frimley Lodge",
+        "Fulham Palace",
+        "Gunnersbury",
+        "Lanhydrock",
+        "Old Deer Park",
+        "Osterley",
+        "Salisbury",
+        "Seaton",
+        "Trelissick",
+        "Wormwood Scrubs"
+      ],
+      "help": "Run at all the parkruns along the Trafalgar way, from Falmouth to London - https://www.thetrafalgarway.org"}))
     challenge_data.push(challenge_in_a_year(data, {
       "shortname": "obsessive-bronze",
       "name": "Bronze Level Obsessive",
