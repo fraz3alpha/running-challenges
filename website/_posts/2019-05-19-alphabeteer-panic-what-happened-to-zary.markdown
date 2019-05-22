@@ -20,10 +20,10 @@ The Polish alphabet contains many letters that are not in the UK English alphabe
 with `Ż` being one of them. Of the 66 current parkruns shown on the map in Poland, the following
 list shows those that have an initial letter not in the UK English alphabet:
 
-[Łódź](https://www.parkrun.pl/lodz/)
-[Świdwin](https://www.parkrun.pl/swidwin/)
-[Świnoujście](https://www.parkrun.pl/swinoujscie/)
-[Żary](https://www.parkrun.pl/zary/)
+- [Łódź](https://www.parkrun.pl/lodz/)
+- [Świdwin](https://www.parkrun.pl/swidwin/)
+- [Świnoujście](https://www.parkrun.pl/swinoujscie/)
+- [Żary](https://www.parkrun.pl/zary/)
 
 The extension currently checks whether the first letter of a parkrun name is one of the characters in the
 list `abcdefghijklmnopqrstuvwyz` i.e. one of the characters of the UK Engish
@@ -51,6 +51,14 @@ As parkrun becomes ever more global it has to make sure the
 events in each country are accessible to those local communities. Having your
 local parkrun incorrectly spelt on the website can only hinder native Polish parkrunners
 finding it.
+
+Edit: 20190522. Word on the street is that the Polish parkrun community wanted
+the parkrun spelt correctly on their [apricot tees](https://www.prodirectrunning.com/articles/parkrun/parkrun-apricot/), seems reasonable!
+
+<div align="center">
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">From our secret source: &quot;The reason the Z was changed in Poland was because of the new Apricot t-shirts. The Poles wanted the correct alphabet for all the events. It didn’t come from HQ, but of course we did it for them.&quot;<br><br>And rightly so too. 👏👏👏 <a href="https://t.co/YRplDIeOOd">https://t.co/YRplDIeOOd</a></p>&mdash; With Me Now (@WithMeNowPod) <a href="https://twitter.com/WithMeNowPod/status/1131128642652856320?ref_src=twsrc%5Etfw">May 22, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 
 ### Why Does It Matter To Alphabeteers?
 
