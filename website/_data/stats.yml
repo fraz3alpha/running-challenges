@@ -137,3 +137,12 @@ stats:
       How many of the different volunteering roles have been completed.
       Note - this can include multiple roles per week e.g. if you were a marshal,
       did course setup, and close-down, that adds 3 to this stat.
+
+  - shortname: paj/v-index
+    name: v-index
+    description: >-
+      The number of volunteer roles which have been performed at least v times.
+      E.g. If you have volunteered in 4 different roles at least 4 times, your
+      v-index is 4. This stat was created by [Mel Erbacher](https://www.parkrun.com.au/results/athleteeventresultshistory/?athleteNumber=384152&eventNumber=0)
+      on [episode 158](https://parkrunadventurers.podbean.com/e/episode-158-v-index/)
+      of the [parkrun Adventurers podcast](https://www.facebook.com/parkrunadventurers/).

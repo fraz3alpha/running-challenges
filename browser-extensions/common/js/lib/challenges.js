@@ -355,6 +355,29 @@ function generate_stat_p_index(parkrun_results) {
   }
 }
 
+// The number of volunteer roles which have been performed at least _v_ times.
+// E.g. If you have volunteered in 4 different roles at least 4 times, your v-index
+// is 4.
+function generate_stat_v_index(volunteer_data) {
+  var v_index = 0
+  var descending_tally = Object.keys(volunteer_data).sort(function(a, b) {
+    return volunteer_data[b] - volunteer_data[a]
+  })
+  // Iterate through the roles, and as long as the number of times we have
+  // volunteered in the role is greater than the index value, increment the
+  // v-index
+  descending_tally.forEach(function(role_name, index) {
+    if (volunteer_data[role_name] > index) {
+      v_index += 1
+    }
+  })
+  return {
+    "display_name": "v-index",
+    "help": "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4.",
+    "value": v_index
+  }
+}
+
 // The maximum contiguous series of parkrun event numbers you have attended
 // (at any event), starting at 1.
 function generate_stat_wilson_index(parkrun_results) {
@@ -757,6 +780,7 @@ function generate_stats(data) {
   if (data.info.has_volunteer_data) {
     stats['total_volunteer_roles'] = generate_stat_total_volunteer_roles(data.volunteer_data)
     stats['total_distinct_volunteer_roles'] = generate_stat_total_distinct_volunteer_roles(data.volunteer_data)
+    stats['v_index'] = generate_stat_v_index(data.volunteer_data)
   }
 
   return stats
