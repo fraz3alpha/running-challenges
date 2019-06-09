@@ -9,5 +9,4 @@ RUN mkdir /rc
 
 WORKDIR /rc
 
-ENTRYPOINT ["./build/extension-chrome/build.sh"]
-ENTRYPOINT ["./build/extension-firefox/build.sh"]
+ENTRYPOINT ["./build_all.sh"]
