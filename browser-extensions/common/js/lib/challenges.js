@@ -1,5 +1,65 @@
 
 /*
+ * Some volunteer roles have changed names, or a role has been deprecated,
+ * or it makes sense to know a role by another name. This attempts to do that.
+ * This has lots of problems, such as the ability to display them in a language
+ * other than English, but that's how it currently works.
+ */
+
+volunteer_roles_map = [
+    {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
+    {"shortname": "comms-person", "name": "Communications Person"},
+    {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+    {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
+    {"shortname": "setup", "name": "Pre-event Setup"},
+    {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
+    {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+    {"shortname": "sign-language", "name": "Sign Language Support"},
+    {"shortname": "marshal", "name": "Marshal"},
+    {"shortname": "tail-walker", "name": "Tail Walker"},
+    {"shortname": "run-director", "name": "Run Director"},
+    {"shortname": "lead-bike", "name": "Lead Bike"},
+    {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
+    {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
+    {"shortname": "photographer", "name": "Photographer"},
+    {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
+    {"shortname": "funnel-manager", "name": "Funnel Manager"},
+    {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+    {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+    {"shortname": "manual-entry", "name": "Number Checker"},
+    {"shortname": "close-down", "name": "Post-event Close Down"},
+    {"shortname": "results-processing", "name": "Results Processor"},
+    {"shortname": "token-sorting", "name": "Token Sorting"},
+    {"shortname": "run-report-writer", "name": "Run Report Writer"},
+    {"shortname": "other", "name": "Other"},
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+]
+
+function group_volunteer_data(volunteer_data) {
+  // Populate the results with the above
+
+  grouped_volunteer_data = []
+
+  volunteer_roles_map.forEach(function (role) {
+    grouped_volunteer_data[role["name"]] = 0
+    if (role["matching-roles"] !== undefined){
+        for (var i=0; i<role["matching-roles"].length; i++) {
+            if (role["matching-roles"][i] in volunteer_data) {
+                grouped_volunteer_data[role["name"]] += volunteer_data[role["matching-roles"][i]]
+            }
+        }
+    } else {
+      if (role.name in volunteer_data) {
+          // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+          grouped_volunteer_data[role["name"]] = volunteer_data[role.name]
+      }
+    }
+  })
+
+  return grouped_volunteer_data
+}
+
+/*
  * These functions provide a way to generate the data relating to challenge
  * based on the results provided to them. This includes if the challenge
  * is complete, how many subparts there are, and how far you have to go etc..
@@ -131,51 +191,14 @@ function generate_volunteer_challenge_data(data) {
 
   if (data.volunteer_data) {
     volunteer_data = data.volunteer_data
-    var volunteer_roles = [
-        {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
-        {"shortname": "comms-person", "name": "Communications Person"},
-        {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
-        {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
-        {"shortname": "setup", "name": "Pre-event Setup"},
-        {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
-        {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
-        {"shortname": "sign-language", "name": "Sign Language Support"},
-        {"shortname": "marshal", "name": "Marshal"},
-        {"shortname": "tail-walker", "name": "Tail Walker"},
-        {"shortname": "run-director", "name": "Run Director"},
-        {"shortname": "lead-bike", "name": "Lead Bike"},
-        {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
-        {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
-        {"shortname": "photographer", "name": "Photographer"},
-        {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
-        {"shortname": "funnel-manager", "name": "Funnel Manager"},
-        {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
-        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
-        {"shortname": "manual-entry", "name": "Number Checker"},
-        {"shortname": "close-down", "name": "Post-event Close Down"},
-        {"shortname": "results-processing", "name": "Results Processor"},
-        {"shortname": "token-sorting", "name": "Token Sorting"},
-        {"shortname": "run-report-writer", "name": "Run Report Writer"},
-        {"shortname": "other", "name": "Other"},
-        {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
-    ]
+
+    volunteer_roles = group_volunteer_data(volunteer_data)
 
     // Populate the results with the above
-    volunteer_roles.forEach(function (role) {
+    volunteer_roles_map.forEach(function (role) {
         var this_role_data = create_data_object(role, "volunteer")
         this_role_data.summary_text = ""
-        this_role_data.subparts_completed_count = 0
-        if (role["matching-roles"] !== undefined){
-            for (var i=0; i<role["matching-roles"].length; i++) {
-                if (role["matching-roles"][i] in volunteer_data) {
-                    this_role_data.subparts_completed_count += volunteer_data[role["matching-roles"][i]]
-                }
-            }
-        }
-        if (role.name in volunteer_data) {
-            // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
-            this_role_data.subparts_completed_count = volunteer_data[role.name]
-        }
+        this_role_data.subparts_completed_count = volunteer_roles[role["name"]]
         if (this_role_data.subparts_completed_count > 0) {
             this_role_data.summary_text = "x"+this_role_data.subparts_completed_count
             this_role_data.complete = true
@@ -359,15 +382,19 @@ function generate_stat_p_index(parkrun_results) {
 // E.g. If you have volunteered in 4 different roles at least 4 times, your v-index
 // is 4.
 function generate_stat_v_index(volunteer_data) {
+
+  volunteer_roles = group_volunteer_data(volunteer_data)
+
   var v_index = 0
-  var descending_tally = Object.keys(volunteer_data).sort(function(a, b) {
-    return volunteer_data[b] - volunteer_data[a]
+  var descending_tally = Object.keys(volunteer_roles).sort(function(a, b) {
+    return volunteer_roles[b] - volunteer_roles[a]
   })
   // Iterate through the roles, and as long as the number of times we have
   // volunteered in the role is greater than the index value, increment the
   // v-index
   descending_tally.forEach(function(role_name, index) {
-    if (volunteer_data[role_name] > index) {
+    // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
+    if (volunteer_roles[role_name] > index) {
       v_index += 1
     }
   })
