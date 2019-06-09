@@ -393,7 +393,7 @@ function generate_stat_v_index(volunteer_data) {
   // volunteered in the role is greater than the index value, increment the
   // v-index
   descending_tally.forEach(function(role_name, index) {
-    console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
+    // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
     if (volunteer_roles[role_name] > index) {
       v_index += 1
     }
