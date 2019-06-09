@@ -104,18 +104,21 @@ roles, and they will need adding in in a few places:
 1. When everything has been tested and merged into master, tag master with the
 version in `build/version.sh`. This will trigger a Travis build to push the built
 zips to a Github release.
-```
-git tag v0.7.5
-git push origin v0.7.5
-```
+    ```
+    git tag v0.7.5
+    git push origin v0.7.5
+    ```
 1. Watch the [Travis build](https://travis-ci.org/fraz3alpha/running-challenges) run.
 1. Head over to the [releases](https://github.com/fraz3alpha/running-challenges/releases)
 tab in Github and find the release for the [version you tagged](https://github.com/fraz3alpha/running-challenges/releases/tag/v0.7.5).
 1. Edit the release with any information that you may want to include in release notes, or perhaps form the basis of the blog post.
 1. Download the zips and test them in Chrome and Firefox to check they load and don't give any errors - load a couple of profiles and if you have added some new countries or badges, check those.
-  - In Firefox, go to `about:debugging` and load a temporary add-on
-  - In Chrome, go to `chrome://extensions` and load an unpacked extension
+    - In Firefox, go to `about:debugging` and load a temporary add-on
+    - In Chrome, go to `chrome://extensions` and load an unpacked extension
 1. Go to the [Chrome webstore](https://chrome.google.com/webstore/developer/dashboard) and upload the new version.
 1. Go to the [Mozilla Add-ons site](https://addons.mozilla.org/en-GB/firefox/) and upload the new version. Make sure to check that it is compatible with Android, this is unchecked by default. Add the release notes when asked.
-1. Prepare for the next release by updating the version string in `build/version.sh` to the next appropriate number (this can always be changed later), and commit it to master.
-1. Add a blog post in `website/_posts` - just copy the last release and change the pertinent bits.
+1. Complete the release by creating a PR to include:
+    - Prepare for the next release by updating the version string in `build/version.sh`
+      to the next appropriate number (this can always be changed later)
+    - Add a blog post in `website/_posts` - just copy the last release and change
+      the pertinent bits.
