@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "Version 0.7.5 Released"
+date:   2019-04-04 20:24:00 +0100
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+parkrun Japan is coming!
+
+This week parkrun starts in [Japan](https://parkrun.jp), and to make sure we are ready for it we have proactively put out this release to include the necessary changes to support the new site at [parkrun.jp](https://parkrun.jp). Obviously the website is all in Japanese, and hopefully we've done everything right to ensure the badges, challenges and stats appear in the correct places on the new website. There should also be a Japanese flag available for anyone completing a run in Japan!
+
+As this update includes overlaying data on a new domain (i.e. parkrun.jp), when the extension updates it will require extra permissions to do so - the extension will likely be disabled until you do this. If you are using Chrome the icon may be a yellow circle instead of the usual green running man icon, and clicking on the yellow icon will allow you to accept the new permissions.
+
+
+Additionally, we have added the new volunteer badge recently introduced by parkrun HQ for the **Event Day Course Check** role. You can see the new badge over at the [badges page](https://running-challenges.co.uk/badges/).
+
+
+Happy parkrunning!
+
+If you have already installed the extension it should update soon - typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually. As mentioned above, you will likely need to accept the new permission before it will load. If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}

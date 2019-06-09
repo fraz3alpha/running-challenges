@@ -61,7 +61,7 @@ function generate_running_challenge_data(data) {
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "full-ponty",
       "name": "The Full Ponty",
-      "data": ["Pontefract","Pontypool","Pontypridd"],
+      "data": ["Pontefract","Pontypool","Pontypridd","Pont y Bala"],
       "help": "Run at all the parkruns named ponty... or ponte..."}))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "pilgrimage",
@@ -139,6 +139,7 @@ function generate_volunteer_challenge_data(data) {
         {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
         {"shortname": "comms-person", "name": "Communications Person"},
         {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+        {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
         {"shortname": "setup", "name": "Pre-event Setup"},
         {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
         {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
@@ -782,6 +783,7 @@ function get_flag_image_src(country) {
       "Iceland": "is",
       "Ireland": "ie",
       "Italy": "it",
+      "Japan": "jp",
       "Malaysia": "my",
       "Canada": "ca",
       "Namibia": "na",
