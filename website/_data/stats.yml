@@ -146,3 +146,11 @@ stats:
       v-index is 4. This stat was created by [Mel Erbacher](https://www.parkrun.com.au/results/athleteeventresultshistory/?athleteNumber=384152&eventNumber=0)
       on [episode 158](https://parkrunadventurers.podbean.com/e/episode-158-v-index/)
       of the [parkrun Adventurers podcast](https://www.facebook.com/parkrunadventurers/).
+
+  - shortname: volunteer_quotient
+    name: Volunteer Quotient
+    description: >-
+      A percentage showing how often you volunteer. Someone who never
+      participates at an event is on infinity, somebody who's volunteered 20
+      times and participated 100 times would be on 20%, and someone who never
+      volunteers would be on 0%.

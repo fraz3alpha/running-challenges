@@ -405,6 +405,34 @@ function generate_stat_v_index(volunteer_data) {
   }
 }
 
+// A percentage showing how often you volunteer. Someone who never participates
+// at an event is on infinity, somebody who's volunteered 20 times and
+// participated 100 times would be on 20%, and someone who never volunteers
+// would be on 0%.
+function generate_stat_volunteer_quotient(parkrun_results, volunteer_data) {
+  var volunteer_quotient = "&infin;"
+
+  var total_volunteer_roles = 0
+  $.each(volunteer_data, function(role, count) {
+    total_volunteer_roles += count
+  })
+
+  var total_runs = 0
+  parkrun_results.forEach(function(parkrun_event) {
+    total_runs += 1
+  })
+
+  if (total_runs > 0) {
+    volunteer_quotient = (100 * total_volunteer_roles / total_runs).toFixed(2) + "%"
+  }
+
+  return {
+    "display_name": "Volunteer Quotient",
+    "help": "A percentage showing how often you volunteer. Someone who never participates at an event is on infinity, somebody who's volunteered 20 times and participated 100 times would be on 20%, and someone who never volunteers would be on 0%.",
+    "value": volunteer_quotient
+  }
+}
+
 // The maximum contiguous series of parkrun event numbers you have attended
 // (at any event), starting at 1.
 function generate_stat_wilson_index(parkrun_results) {
@@ -808,6 +836,7 @@ function generate_stats(data) {
     stats['total_volunteer_roles'] = generate_stat_total_volunteer_roles(data.volunteer_data)
     stats['total_distinct_volunteer_roles'] = generate_stat_total_distinct_volunteer_roles(data.volunteer_data)
     stats['v_index'] = generate_stat_v_index(data.volunteer_data)
+    stats['volunteer_quotient'] = generate_stat_volunteer_quotient(data.parkrun_results, data.volunteer_data)
   }
 
   return stats
