@@ -89,6 +89,9 @@ bash ./build/extension-firefox/build.sh
 This will create an unpacked version of the extension in `browser-extensions/firefox/build`,
 together with a packaged version in the `web-ext-artifacts` directory.
 
+Your build of the extension is not signed, so Firefox does not allow you to install it directly from your built file.
+Instead, for testing purposes, you have to install it as a [temporary installation in Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) (it automatically deletes itself when you quit Firefox).
+
 # Automated builds
 
 This repository is integrated with TravisCI so that code pushed to the master
