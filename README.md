@@ -32,7 +32,23 @@ docker run --rm --name jekyll \
 jekyll/jekyll jekyll serve
 ```
 
-## Browser Extensions
+## Browser Extensions: Docker build
+
+You can test local changes by building both the Chrome and Firefox extensions at once with Docker:
+
+From the root of the repository, build the image:
+
+```
+docker build -t rc:latest .
+```
+
+Then run the Docker container:
+
+```
+docker run -v `pwd`:/rc rc:latest
+```
+
+## Browser Extensions: non-Docker build
 
 The bulk of the code that is common to the Chrome and Firefox extensions lives
 in the `browser-extensions/common` directory, and is supplemented by additional
