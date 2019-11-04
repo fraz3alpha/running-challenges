@@ -11,26 +11,31 @@ alphabet), 'Tourist' (running 20 or more different parkruns), and many more.
 
 ## Website
 
-The /website folder containers a Jekyll based website
+The `/website` folder containers a Jekyll-based website. You can build and serve the website
+locally for testing by running a bash script (Linux and Mac only).
 
-It can be built with:
+1. Download the git submodule which contains additional Running Challenges data (the build fails without this). From the root of the project:
+  
+    `cd running-challenges-data`
+  
+    `git submodule update --init --recursive`
+  
+    `cd ..`
+1. From the root of the project, run the bash script:
 
-```
-docker run --rm --name jekyll \
--v `pwd`:/srv/jekyll \
--v `pwd`/vendor/bundle:/usr/local/bundle \
-jekyll/jekyll jekyll build
-```
+    `./build/website/build-local-and-run.sh`
 
-or served for local testing with:
+    If you have other Jekyll sites running in Docker containers, you can specify a port mapping
+  when you run the script (eg to expose port 4002 instead of the default 4000):
 
-```
-docker run --rm --name jekyll \
--p 4000:4000 \
--v `pwd`:/srv/jekyll \
--v `pwd`/vendor/bundle:/usr/local/bundle \
-jekyll/jekyll jekyll serve
-```
+    `JEKYLL_PORT=4002 ./build/website/build-local-and-run.sh`
+1. In a web browser, open the locally-hosted website:
+
+    `http://localhost:4002/`
+
+    Any changes you make to pages of the website should automatically get picked up when you refresh (F5) the page.
+1. To stop the local website running, press CTRL+C in the terminal.
+
 
 ## Browser Extensions: Docker build
 
