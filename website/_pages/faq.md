@@ -52,6 +52,17 @@ can do, and the badge is only displayed for those runners who have completed all
 of the currently known parkruns - we recommend you take a screenshot of your
 badge when you first achieve it if you want to keep a record of it.
 
+#### Why isn't my volunteering included in more of the challenges?
+
+We agree that it would be nice to include volunteering in more of the challenges;
+ for example, counting volunteering weeks in the Gold Obsessive challenge.
+  However, the only volunteering data we 
+have access to is what you can see on your results pages. The parkrun website displays only the 
+volunteer roles you've done and which year you did them. As it's possible to do 
+multiple roles in one week, we can't even work out how many weeks you volunteered, 
+let alone which role you did on a given Saturday. If parkrun add more volunteering data to their website,
+we'll look at including it in challenges and stats.
+
 #### Why don't I see a French flag when I've done parkrun Mandavit in France but I can still see it in my list of parkruns I've done?
 
 When a parkrun closes, parkrun HQ remove it from the map file that they maintain of all
