@@ -51,3 +51,13 @@ additions. Unfortunately this means that we are limited with the calculations we
 can do, and the badge is only displayed for those runners who have completed all
 of the currently known parkruns - we recommend you take a screenshot of your
 badge when you first achieve it if you want to keep a record of it.
+
+#### Why don't I see a French flag when I've done parkrun Mandavit in France but I can still see it in my list of parkruns I've done?
+
+When a parkrun closes, parkrun HQ remove it from the map file that they maintain of all
+the currently live parkruns. Your results page on the parkrun website still lists you having done
+the closed parkrun, so the extension can include the closed parkrun in challenges (eg alphabeteer).
+However, your results page does not include country data so we can only go off the map file to 
+know which country a parkrun is in and which flags your page should display. 
+When the parkrun is removed from the map file, your flag unfortunately disappears too (if that's the only
+parkrun you have completed in that country).
