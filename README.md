@@ -50,7 +50,7 @@ docker build -t rc:latest .
 Then run the Docker container:
 
 ```
-docker run -v `pwd`:/rc rc:latest
+docker run --rm -v `pwd`:/rc rc:latest
 ```
 
 ## Browser Extensions: non-Docker build

@@ -3,6 +3,7 @@
 
 FROM node:lts-jessie
 
+RUN npm -g config set user root
 RUN npm install --global web-ext
 
 RUN mkdir /rc
