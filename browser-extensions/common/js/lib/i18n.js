@@ -154,6 +154,7 @@ var domains = {
             "Altro": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
             "Addetto parcheggio": "Car Park Marshal"
+            "Controllo percorso nel giorno dell'evento": "Event Day Course Check"
         }
 
     },
