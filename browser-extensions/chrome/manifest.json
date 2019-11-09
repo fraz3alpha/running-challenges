@@ -5,7 +5,7 @@
   "description": "Adds challenge progress information to your parkrun athlete results page.",
   "version": "REPLACE_EXTENSION_BUILD_VERSION.REPLACE_EXTENSION_BUILD_ID",
 
-  "content_security_policy": "default-src 'self'; connect-src https://www.parkrun.org.uk https://wiki.parkrun.com",
+  "content_security_policy": "default-src 'self'; connect-src https://www.parkrun.org.uk https://wiki.parkrun.com https://running-challenges.co.uk",
 
   "browser_action": {
     "default_icon": "images/logo/logo-128x128.png"
@@ -34,7 +34,9 @@
           "*://www.parkrun.fr/results/athleteeventresultshistory/*",
           "*://www.parkrun.no/results/athleteeventresultshistory/*",
           "*://www.parkrun.com.de/results/athleteeventresultshistory/*",
-          "*://www.parkrun.ru/results/athleteeventresultshistory/*"
+          "*://www.parkrun.ru/results/athleteeventresultshistory/*",
+          "*://www.parkrun.my/results/athleteeventresultshistory/*",
+          "*://www.parkrun.jp/results/athleteeventresultshistory/*"
       ],
       "js": [
           "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
@@ -77,7 +79,9 @@
         "*://www.parkrun.fr/results/athleteresultshistory/*",
         "*://www.parkrun.com.de/results/athleteresultshistory/*",
         "*://www.parkrun.no/results/athleteresultshistory/*",
-        "*://www.parkrun.ru/results/athleteresultshistory/*"
+        "*://www.parkrun.ru/results/athleteresultshistory/*",
+        "*://www.parkrun.my/results/athleteresultshistory/*",
+        "*://www.parkrun.jp/results/athleteresultshistory/*"
     ],
     "js": [
         "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
@@ -105,7 +109,9 @@
         "*://www.parkrun.fr/*/athletehistory/*",
         "*://www.parkrun.com.de/*/athletehistory/*",
         "*://www.parkrun.no/*/athletehistory/*",
-        "*://www.parkrun.ru/*/athletehistory/*"
+        "*://www.parkrun.ru/*/athletehistory/*",
+        "*://www.parkrun.my/*/results/athletehistory/*",
+        "*://www.parkrun.jp/*/results/athletehistory/*"
     ],
     "js": [
         "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",

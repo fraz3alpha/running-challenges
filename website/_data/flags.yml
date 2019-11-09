@@ -26,6 +26,9 @@ flags:
   - shortname: it
     name: Italy
 
+  - shortname: jp
+    name: Japan
+
   - shortname: my
     name: Malaysia
 

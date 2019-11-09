@@ -92,6 +92,10 @@ volunteer:
     name: Volunteer Co-ordinator
     description: Ensure the roster is packed full of friendly-folk ready to cheer everyone on and run a great event
 
+  - shortname: event-day-course-check
+    name: Event Day Course Check
+    description: Scout out the course on the day of the run to check for any problems.
+
   - shortname: setup
     name: Pre-event Setup
     description: Be the early bird and get to parkrun early and ensure that everything is ready for everyone else when they stroll up at 8:45
