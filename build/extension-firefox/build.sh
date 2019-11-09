@@ -47,7 +47,8 @@ cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 
 # Replace all instances of "chrome-extension://" with "moz-extension://" for
 # Firefox compatibility in css files
-find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec ${SED} -i "s/chrome-extension/moz-extension/g" {} \;
+# Deprecated in preference of using .patch files
+# find ${TMP_BUILD_DIR}/ -type f -name "*.css" -exec ${SED} -i "s/chrome-extension/moz-extension/g" {} \;
 
 # Copy the metadata
 cp browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
@@ -55,6 +56,9 @@ cp browser-extensions/firefox/manifest.json ${TMP_BUILD_DIR}/manifest.json
 # Replace placeholders in the manifest file
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
+
+# Apply the custom patches
+for i in patches/firefox/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < $i; done
 
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}

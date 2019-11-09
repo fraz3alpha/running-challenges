@@ -240,6 +240,7 @@ function create_regionnaire_map(div_id, data, challenge) {
       // "Iceland"--
       "Ireland": "ie",
       "Italy": "it",
+      "Japan": "jp",
       "Malaysia": "my",
       "Canada": "ca",
       "Norway": "no",
