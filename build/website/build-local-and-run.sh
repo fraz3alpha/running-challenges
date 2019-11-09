@@ -2,6 +2,9 @@
 
 # This script pushing the built copy of the this site to a staging repository
 
+JEKYLL_PORT=${JEKYLL_PORT:-4000}
+
+
 # Enable exit on failure
 set -e
 
@@ -58,7 +61,7 @@ SITE_DIR=_site
 rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
 docker run --rm --name jekyll \
--p 4000:4000 \
+-p ${JEKYLL_PORT}:4000 \
 -v `pwd`:/srv/jekyll \
 -v `pwd`/vendor/bundle:/usr/local/bundle \
 jekyll/jekyll jekyll serve
