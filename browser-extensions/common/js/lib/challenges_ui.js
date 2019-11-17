@@ -207,7 +207,7 @@ function generateRegionnaireTableEntry(table, data) {
   table.append(challenge_tbody_header)
   table.append(challenge_tbody_detail)
 
-  // drawRegionnaireMap(regionnaireMapId, data)
+  drawRegionnaireMap(regionnaireMapId, data)
 
   // create_regionnaire_map(regionnaire_map_id, data, challenge)
 
@@ -241,8 +241,10 @@ function generateRegionnaireTableEntry(table, data) {
 
 // }
 
-function create_regionnaire_map(div_id, data, challenge) {
-  // Create the map to start with
+function drawRegionnaireMap(divId, data) {
+
+  // Get a summary of the completion data
+  var countryCompletionInfo = calculateCountryCompletionInfo(data)
 
   // Find where to focus the map on to start with
   var default_centre = [25,0]
@@ -253,42 +255,17 @@ function create_regionnaire_map(div_id, data, challenge) {
     }
   }
 
-  var r_map = L.map(div_id).setView(default_centre, 2);
+  var r_map = L.map(divId).setView(default_centre, 2);
   // Allow it to be fullscreen
   r_map.addControl(new L.Control.Fullscreen());
 
   var map_data = {
       map: r_map,
-      events_completed_map: challenge.events_completed_map,
+      // events_completed_map: challenge.events_completed_map,
       layers: {
         subregions: [],
         events: []
       }
-  }
-
-  // Mapping countries to flag image files
-  var flag_map = {
-      "New Zealand": "nz",
-      "Australia": "au",
-      "Denmark": "dk",
-      "Finland": "fi",
-      "France": "fr",
-      "Germany": "de",
-      // "Iceland"--
-      "Ireland": "ie",
-      "Italy": "it",
-      "Japan": "jp",
-      "Malaysia": "my",
-      "Canada": "ca",
-      "Norway": "no",
-      "Poland": "pl",
-      "Russia": "ru",
-      "Singapore": "sg",
-      "South Africa": "za",
-      "Sweden": "se",
-      "UK": "gb",
-      "USA": "us"
-      // "Zimbabwe"--
   }
 
   // Set the openstreetmap tiles
@@ -297,12 +274,7 @@ function create_regionnaire_map(div_id, data, challenge) {
   })
   tilelayer_openstreetmap.addTo(r_map)
 
-  // Icon sets
-  var country_icon = L.ExtraMarkers.icon({
-    markerColor: 'green-light',
-    shape: 'circle'
-  });
-
+  // Icons
   var FlagIcon = L.Icon.extend({
       options: {
           shadowUrl: undefined,
@@ -310,11 +282,6 @@ function create_regionnaire_map(div_id, data, challenge) {
           // Centre the icon by default
           iconAnchor:   [20, 20]
       }
-  });
-
-  var sub_region_icon = L.ExtraMarkers.icon({
-    markerColor: 'cyan',
-    shape: 'circle'
   });
 
   // Iterate through the top level countries
@@ -327,62 +294,57 @@ function create_regionnaire_map(div_id, data, challenge) {
   var flag_icon_anchor_centred = [20,20]
   var flag_icon_anchor_with_pie = [40,20]
 
-  $.each(data.geo_data.data.countries, function (country_name, country_info) {
+  // Iterate over all the countries we know about
+  $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
 
-    var region_info = data.geo_data.data.regions[country_name]
-    var events_complete_count = 0
-    $.each(data.geo_data.data.regions[country_name].child_event_recursive_names, function(index, event_name) {
-      if (event_name in map_data.events_completed_map) {
-        events_complete_count += 1
-      }
-    })
-    var events_total_count = data.geo_data.data.regions[country_name].child_event_recursive_names.length
+    // We have the total number of events and complete events in the following
+    var countryChildEventsCount = countryCompletionInfo[countryName].childEventsCount
+    var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
 
-    // console.log(region_info)
     // Only bother displaying this country if it has any events
-    if (events_total_count > 0) {
-      if (event_has_valid_location(region_info)) {
+    if (countryChildEventsCount > 0) {
+      if (event_has_valid_location(countryInfo)) {
 
         // Get the location of the country mid-point, according to parkrun
-        var lat_lon = [+region_info.lat, +region_info.lon]
+        var lat_lon = [+countryInfo.lat, +countryInfo.lon]
         // Get the current regions id for later use by the on click callback function
-        var region_id = region_info.id
+        var countryId = countryInfo.id
 
         // If we haven't run any events, we omit the pie chart, so centre the
         // flag, else we shuffle it off to the left a bit so the combo is centred
         var flag_anchor = flag_icon_anchor_centred
-        if (events_complete_count > 0) {
+        if (countryChildEventsCompletedCount > 0) {
           flag_anchor = flag_icon_anchor_with_pie
         }
 
         // Top level countries have a flag
         var marker = L.marker(lat_lon, {
           icon: new FlagIcon({
-            iconUrl: browser.extension.getURL("/images/flags/"+flag_map[country_name]+".png"),
+            iconUrl: get_flag_image_src(countryName),
             iconAnchor: flag_anchor
           })
         })
         // Add a tooltip showing the name of the country and a summary of the
         // completion numbers
-        var marker_tooltip_text = country_name + ' ' + events_complete_count + '/' + events_total_count
+        var marker_tooltip_text = countryName + ' ' + countryChildEventsCompletedCount + '/' + countryChildEventsCount
         var marker_tooltip_options = {
           offset: [0, -16],
           direction: 'top'
         }
         marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
         marker.on('click', function() {
-          show_sub_regions_and_events(map_data, data, region_id, 0)
+          show_sub_regions_and_events(map_data, data, countryId, 0)
         })
         marker.addTo(map_data.layers.country_markers);
 
         // Only add the pie chart if we have completed any events at all
-        if (events_complete_count > 0) {
+        if (countryChildEventsCompletedCount > 0) {
           var pie_marker = L.piechartMarker(lat_lon, {
             radius: 16,
             data: [
               {
                 name: 'Run',
-                value: events_complete_count,
+                value: countryChildEventsCompletedCount,
                 style: {
                   fillStyle: 'rgba(0,140,57,.95)',
                   strokeStyle: 'rgba(0,0,0,.75)',
@@ -391,7 +353,7 @@ function create_regionnaire_map(div_id, data, challenge) {
               },
               {
                 name: 'Not Run',
-                value: (events_total_count - events_complete_count),
+                value: (countryChildEventsCount - countryChildEventsCompletedCount),
                 style: {
                   fillStyle: 'rgba(0,0,0,.15)',
                   strokeStyle: 'rgba(0,0,0,.75)',
@@ -406,7 +368,7 @@ function create_regionnaire_map(div_id, data, challenge) {
           // Add the same tooltips and on click actions as for the flag
           pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
           pie_marker.on('click', function() {
-            show_sub_regions_and_events(map_data, data, region_id, 0)
+            show_sub_regions_and_events(map_data, data, countryId, 0)
           })
           pie_marker.addTo(map_data.layers.country_markers);
         }
@@ -417,11 +379,10 @@ function create_regionnaire_map(div_id, data, challenge) {
   })
 
   map_data.layers.country_markers.addTo(map_data.map)
-
 }
 
 function show_sub_regions_and_events(map_data, data, region_id, depth) {
-  // console.log('Click for region: '+region_id+' depth='+depth)
+  console.log('Click for region: '+region_id+' depth='+depth)
 
   // Remove any existing subregions at or below our depth
   var regions_layer_key = 'subregions'
