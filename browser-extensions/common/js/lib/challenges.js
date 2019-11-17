@@ -175,12 +175,12 @@ function generate_running_challenge_data(data) {
       "help": "Run 50+ parkruns in one calendar year."}))
   }
 
-  if (data.parkrun_results && data.geo_data) {
-    challenge_data.push(challenge_by_region(data, {
-      "shortname": "regionnaire",
-      "name": "Regionnaire",
-      "help": "Run all the parkrun locations in a geographical region."}))
-  }
+  // if (data.parkrun_results && data.geo_data) {
+  //   challenge_data.push(challenge_by_region(data, {
+  //     "shortname": "regionnaire",
+  //     "name": "Regionnaire",
+  //     "help": "Run all the parkrun locations in a geographical region."}))
+  // }
 
   return challenge_data
 }

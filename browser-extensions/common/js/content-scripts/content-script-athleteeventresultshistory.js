@@ -482,7 +482,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
 
   // Use the acquired data to add all the additional information to the page
   add_badges(id_map["badges"], data)
-  add_flags(id_map["flags"], data)
+  // add_flags(id_map["flags"], data)
   add_challenge_results(id_map["main"], data)
   add_stats(id_map["stats"], data)
 
