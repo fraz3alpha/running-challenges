@@ -28,18 +28,6 @@ browser.browserAction.onClicked.addListener(function(tab) {
 // configured age
 
 var cache = {
-    // The old file format, dead on ~ 20191114
-    'geo': {
-        'raw_data': undefined,
-        'updated_at': undefined,
-        'last_update_attempt': undefined,
-        'updating': false,
-        'max_age': 3 * 24 * 60 * 60 * 1000,
-        'url': "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
-        'datatype': 'xml',
-        'enabled': false,
-        'timeout': 5000
-    },
     // The new data source, live since ~ July 2019
     'events': {
         'raw_data': undefined,
@@ -75,8 +63,8 @@ function get_cache_summary() {
     'countries': '<missing>',
     'event_status': '<missing>',
     'data': {
-      'geo': {
-        'updated_at': cache.geo.updated_at
+      'events': {
+        'updated_at': cache.events.updated_at
       },
       'technical_event_information': {
         'updated_at': cache.technical_event_information.updated_at
@@ -108,7 +96,7 @@ function get_cache_summary() {
 }
 
 function clear_cache() {
-  clear_cache_by_name("geo")
+  clear_cache_by_name("events")
   clear_cache_by_name("technical_event_information")
 }
 
@@ -120,47 +108,6 @@ function clear_cache_by_name(name) {
     regenerate_cache_data()
   }
 }
-
-// function traverse_geo_data(geo_data, region_name, depth=0) {
-
-//     // console.log('traverse_geo_data('+region_name+')')
-
-//     var regions = geo_data.regions
-//     var events = geo_data.events
-
-//     $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-//         traverse_geo_data(geo_data, child_region_name)
-//     })
-
-//     // REGIONS
-//     // Add all of our child region names and ids to the recursive list first
-//     $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-//         regions[region_name].child_region_recursive_names.push(child_region_name)
-//         regions[region_name].child_region_recursive_ids.push(regions[child_region_name].id)
-//     })
-//     // Now add all the ones from each of our children
-//     $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-//         $.each(regions[child_region_name].child_region_recursive_names, function(index, rec_child_region_name) {
-//             regions[region_name].child_region_recursive_names.push(rec_child_region_name)
-//             regions[region_name].child_region_recursive_ids.push(regions[rec_child_region_name].id)
-//         })
-//     })
-
-//     // EVENTS
-//     // Add all of our child event names and ids to the recursive list first
-//     $.each(regions[region_name].child_event_names, function(index, child_event_name) {
-//         regions[region_name].child_event_recursive_names.push(child_event_name)
-//         regions[region_name].child_event_recursive_ids.push(events[child_event_name].id)
-//     })
-//     // Now add all the ones from each of our children
-//     $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-//         $.each(regions[child_region_name].child_event_recursive_names, function(index, rec_child_event_name) {
-//             regions[region_name].child_event_recursive_names.push(rec_child_event_name)
-//             regions[region_name].child_event_recursive_ids.push(events[rec_child_event_name].id)
-//         })
-//     })
-
-// }
 
 function parse_events(data, events_data) {
   console.log('parse_events()')
@@ -234,215 +181,6 @@ function parse_events(data, events_data) {
   })
 
 }
-
-// function parse_geo_data_regions(geo_data, geo_xml) {
-
-//     // console.log('parse_geo_data_regions()')
-//     // console.log(geo_xml)
-
-//     if (geo_data === undefined) {
-//       return
-//     }
-//     if (geo_xml === undefined) {
-//       return
-//     }
-
-//     // Find all the regions
-//     $(geo_xml).find('r').each(function(region_index) {
-//         this_region = $(this)
-//         geo_data.regions[this_region.attr('n')] = {
-//             // All the standard attributes that come from the parkrun data
-//             "id": this_region.attr('id'),
-//             "name": this_region.attr('n'),
-//             "lat": this_region.attr('la'),
-//             "lon": this_region.attr('lo'),
-//             "zoom": this_region.attr('z'),
-//             "parent_id": this_region.attr('pid'),
-//             "url": this_region.attr('u'),
-
-//             // Extra attributes that we are going to fill in
-//             // Direct children regions and events
-//             "child_region_ids": [],
-//             "child_region_names": [],
-//             "child_event_ids": [],
-//             "child_event_names": [],
-//             // Children of children etc...
-//             "child_region_recursive_ids": [],
-//             "child_region_recursive_names": [],
-//             "child_event_recursive_ids": [],
-//             "child_event_recursive_names": []
-//         }
-//     })
-
-//     // We may wish to move some countries to a top level
-//     // If so, we can do that here
-//     // var moved_top_level_regions = ['Namibia', 'Swaziland']
-//     // $.each(moved_top_level_regions, function(index, region) {
-//     //     if (region in geo_data.regions) {
-//     //         if (geo_data.regions[region].parent_id != "1") {
-//     //             geo_data.regions[region].parent_id = "1"
-//     //         }
-//     //     }
-//     // })
-
-//     return
-// }
-
-// function parse_events_data_events(data, events_data) {
-
-//   if (data === undefined) {
-//     return
-//   }
-//   if (events_data === undefined) {
-//     return
-//   }
-
-//   // The events.json file is designed to be read straight into the map rendering library,
-//   // so the points on the map are in an array under events/features
-//   $.each(events_data['events']['features'], function(event_feature_index, event_info) {
-//     // Only process the 5k events
-//     if (event_info['properties']['seriesid'] == 1){
-//       event_name = event_info['properties']['EventShortName']
-
-//       data.events[event_name] = {
-//           // All the standard attributes that come from the parkrun data
-//           "shortname": event_info['properties']['EventShortName'],
-//           "name": event_info['properties']['eventname'],
-//           "country_id": event_info['properties']['countrycode'],
-//           "id": event_info['id'],
-//           "lat": event_info['geometry']['coordinates'][1],
-//           "lon": event_info['geometry']['coordinates'][0],
-//           // Extra attributes that we are going to fill in
-//           "region_name": "unknown",
-//           "country_name": "unknown"
-//       }
-//     }
-//   })
-
-//   return
-
-// }
-
-// function parse_geo_data_events(geo_data, geo_xml) {
-
-//   if (geo_data === undefined) {
-//     return
-//   }
-//   if (geo_xml === undefined) {
-//     return
-//   }
-
-//     // Find all the events
-//     $(geo_xml).find('e').each(function(region_index) {
-//         this_event = $(this)
-//         geo_data.events[this_event.attr('m')] = {
-//             // All the standard attributes that come from the parkrun data
-//             "shortname": this_event.attr('n'),
-//             "name": this_event.attr('m'),
-//             "region_id": this_event.attr('r'),
-//             "country_id": this_event.attr('c'),
-//             "id": this_event.attr('id'),
-//             "lat": this_event.attr('la'),
-//             "lon": this_event.attr('lo'),
-//             // Extra attributes that we are going to fill in
-//             "region_name": "unknown",
-//             "country_name": "unknown"
-//         }
-//     })
-
-//     return
-
-// }
-
-// function compute_events_data_heirachy(data) {
-//   if (data === undefined) {
-//     return
-//   }
-
-//   // Create maps between ids and names
-//   region_id_to_name_map = {}
-//   region_name_to_id_map = {}
-//   $.each(data.regions, function(region_name, region_info) {
-//       region_id_to_name_map[region_info.id] = region_name
-//       region_name_to_id_map[region_name] = region_info.id
-//   })
-
-// }
-
-// function compute_geo_data_heirachy(data) {
-
-//   if (data === undefined) {
-//     return
-//   }
-
-//     // Create maps between ids and names
-//     region_id_to_name_map = {}
-//     region_name_to_id_map = {}
-//     $.each(data.regions, function(region_name, region_info) {
-//         region_id_to_name_map[region_info.id] = region_name
-//         region_name_to_id_map[region_name] = region_info.id
-//     })
-
-//     // Add region as a child to its parent
-//     $.each(data.regions, function(region_name, region_info) {
-//         if (region_info.parent_id !== null && region_info.parent_id != "") {
-//             if (region_info.parent_id in region_id_to_name_map) {
-//                 parent_region_name = region_id_to_name_map[region_info.parent_id]
-//                 data.regions[parent_region_name].child_region_ids.push(region_info.id)
-//                 data.regions[parent_region_name].child_region_names.push(region_info.name)
-//             }
-//         }
-//     })
-
-
-//     // Find all the countries in the regions we have parsed
-//     $.each(data.regions, function(region_name, region_info) {
-//         // If the country's parent id is 1, that means it is directly
-//         // listed under "World"
-//         if (region_info.parent_id == "1") {
-//             data.countries[region_name] = {
-//                 "name": region_name,
-//                 "region_name": region_name,
-//                 "region_id": region_info.id
-//             }
-//         }
-//     })
-
-//     // Add each event to a region
-//     $.each(data.events, function(event_name, event_info) {
-//         if (event_info.region_id in region_id_to_name_map) {
-//             // Add the event under the region to which it belongs...
-//             // ... but only if it is a live event
-//             if (event_info.status === 'unknown' || event_info.status == 'Live') {
-//                 var event_region_name = region_id_to_name_map[event_info.region_id]
-//                 event_info.region_name = event_region_name
-//                 data.regions[event_region_name].child_event_ids.push(event_info.id)
-//                 data.regions[event_region_name].child_event_names.push(event_info.name)
-//            } else {
-//                // console.log("Skipping "+event_info.name+" as it is in state "+event_info.status)
-//            }
-//         } else {
-//             // console.log("Unknown region '"+event_info.region_id+"' for "+event_info.name)
-//         }
-//     })
-
-//     // Traverse the tree of regions from World down, and sum up all
-//     // the events and ids, but only if it exists in the data we have
-//     if ("World" in data.regions) {
-//       traverse_geo_data(data, "World")
-//     }
-
-//     // Iterate though each country and set an event's country
-//     $.each(data.countries, function(index, country_info) {
-//         $.each(data.regions[country_info.name].child_event_recursive_names, function(index, event_name) {
-//             data.events[event_name].country_name = country_info.name
-//             // console.log(data.regions[country_info.name].url)
-//             data.events[event_name].local_url = data.regions[country_info.name].url
-//         })
-//     })
-
-//     return data
-// }
 
 function parse_tee_data_event_status(data, result) {
 
@@ -622,14 +360,6 @@ function update_cache_data(data_events, data_tee) {
     'event_status': undefined
   }
 
-  // Removed as of 20191117, replaced with events JSON processing
-  // First of all lets go and parse all the regions and all of
-  // the events in the XML file and put them in out data structure.
-  // Any additional parsing or additions to this data will be
-  // done afterwards
-  // parse_geo_data_regions(data, data_geo)
-  // parse_geo_data_events(data, data_geo)
-
   // Replace the complicated events/regions parsing with a single call
   parse_events(data, data_events)
 
@@ -704,7 +434,7 @@ function notify_geo_data(f) {
             done = true
             break
           case "cache-geo-clear":
-            clear_cache_by_name("geo")
+            clear_cache_by_name("events")
             done = true
             break
           case "cache-tei-clear":
@@ -725,11 +455,11 @@ function notify_geo_data(f) {
             done = true
             break
           case "enable-geo":
-            cache.geo.enabled = true
+            cache.events.enabled = true
             done = true
             break
           case "disable-geo":
-            cache.geo.enabled = false
+            cache.events.enabled = false
             done = true
             break
           case "enable-tei":
