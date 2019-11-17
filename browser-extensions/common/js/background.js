@@ -86,15 +86,11 @@ function getCountryNameFromId(id) {
   }
 
   var countryName = "unknown"
-
   if (id in countryMap) {
     countryName = countryMap[id]
   }
-
-  console.log("Returning: "+countryName+" for id="+id)
-
+  // console.log("Returning: "+countryName+" for id="+id)
   return countryName
-
 }
 
 function get_cache_summary() {
@@ -201,6 +197,29 @@ function parse_events(data, events_data) {
   $.each(events_data['events']['features'], function(event_feature_index, event_info) {
     // Only process the 5k events
     if (event_info['properties']['seriesid'] == 1){
+
+      // Example
+      // {
+      //   "id": 280,
+      //   "type": "Feature",
+      //   "geometry": {
+      //     "type": "Point",
+      //     "coordinates": [
+      //       -1.310849,
+      //       51.069286
+      //     ]
+      //   },
+      //   "properties": {
+      //     "eventname": "winchester",
+      //     "EventLongName": "Winchester parkrun",
+      //     "EventShortName": "Winchester",
+      //     "LocalisedEventLongName": null,
+      //     "countrycode": 97,
+      //     "seriesid": 1,
+      //     "EventLocation": "North Walls Recreation Ground"
+      //   }
+      // }
+
       event_id = event_info['id']
       event_name = event_info['properties']['EventShortName']
       country_id = event_info['properties']['countrycode']
@@ -208,8 +227,8 @@ function parse_events(data, events_data) {
 
       data.events[event_name] = {
         // All the standard attributes that come from the parkrun data
-        "shortname": event_info['properties']['EventShortName'],
-        "name": event_info['properties']['eventname'],
+        "shortname": event_info['properties']['eventname'],
+        "name": event_info['properties']['EventShortName'],
         "country_id": country_id,
         "country_name": event_country_name,
         "id": event_info['id'],
@@ -225,8 +244,8 @@ function parse_events(data, events_data) {
 }
 
 function addEventToCountryData(data, country_name, event_id, event_name) {
-  console.log("Adding "+event_name+":"+event_id+" to "+country_name)
-  console.log("Current info for "+country_name+": event_ids="+data.countries[country_name]["child_event_ids"].length+" event_names="+data.countries[country_name]["child_event_names"].length)
+  // console.log("Adding "+event_name+":"+event_id+" to "+country_name)
+  // console.log("Current info for "+country_name+": event_ids="+data.countries[country_name]["child_event_ids"].length+" event_names="+data.countries[country_name]["child_event_names"].length)
   data.countries[country_name]["child_event_ids"].push(event_id)
   data.countries[country_name]["child_event_names"].push(event_name)
 }

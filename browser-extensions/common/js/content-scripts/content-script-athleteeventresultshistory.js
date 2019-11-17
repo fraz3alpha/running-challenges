@@ -390,6 +390,8 @@ function add_challenge_results(div_id, data) {
     if (data.info.has_challenge_running_results) {
       add_challenges_to_table(results_table, 'running_results', data)
     }
+    // Add the regionnaire table on it's own, after the challenges, always
+    generateRegionnaireTableEntry(results_table, data)
     if (data.info.has_challenge_volunteer_results) {
       add_table_break_row(results_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
       add_challenges_to_table(results_table, 'volunteer_results', data)
