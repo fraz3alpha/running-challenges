@@ -42,8 +42,8 @@ The following map lists the special events over the Christmas/New Year period fo
 
 - If you are interested in doing the double this New Year's Day, head over to the
 [Rikki Prince](https://twitter.com/rikkiprince)'s amazing
-[Double Finder Tool](http://tailrun.uk/nyd/2019/) to see which ones you might be
-able to do.
+[Double Finder Tool](https://tailrun.uk/nyd/2020/) to see which ones 
+you might be able to do in 2020.
 - If you are on the lookout for filling in a spot on your Wilson Index, head over
 to Mark Pinney's [Challenge Chaser](http://www.challenge-chaser.com/map).
 - And of course, for all things tourism related, check out
