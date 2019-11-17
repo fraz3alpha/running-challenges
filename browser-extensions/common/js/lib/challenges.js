@@ -817,12 +817,12 @@ function get_initial_letter(event_name) {
   return event_name[0].toLowerCase()
 }
 
-
 function get_flag_image_src(country) {
   // Mapping countries to flag image files
   var flag_map = {
       "New Zealand": "nz",
       "Australia": "au",
+      "Canada": "ca",
       "Denmark": "dk",
       "Finland": "fi",
       "France": "fr",
@@ -832,8 +832,8 @@ function get_flag_image_src(country) {
       "Italy": "it",
       "Japan": "jp",
       "Malaysia": "my",
-      "Canada": "ca",
       "Namibia": "na",
+      "New Zealand": "nz",
       "Norway": "no",
       "Poland": "pl",
       "Russia": "ru",
@@ -2000,6 +2000,54 @@ function iterate_unroll_regions(summary, region, parent_id) {
     iterate_unroll_regions(summary, sub_region, region.id)
   })
 
+}
+
+function calculateCountryCompletionInfo(data) {
+
+  var countryCompletionInfo = {}
+  // Pre-populate information about each country
+  $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
+    // Initialise an information object for the country
+    countryCompletionInfo[countryName] = {
+      "name": countryName,
+      "childEventsCount": countryInfo['child_event_names'].length,
+      "childEventsCompleted": [],
+      "childEventsCompletedCount": 0,
+      "firstRanOn": undefined,
+      "visited": false
+    }
+  })
+  // Iterate through each event that has been completed by athlete
+
+  var groupedResults = group_results_by_event(data.parkrun_results)
+  console.log(groupedResults)
+
+  $.each(groupedResults, function(eventName, eventAttendance){
+    // Find extra information from the events data
+    if (eventName in data.geo_data.data.events) {
+      var eventInfo = data.geo_data.data.events[eventName]
+      console.log(eventInfo)
+      var countryEntry = countryCompletionInfo[eventInfo.country_name]
+      countryEntry.childEventsCompleted.push(eventName)
+      countryEntry.childEventsCompletedCount += 1
+
+      // Mark this country as visited
+      countryEntry.visited = true
+
+      // Stash the date we first ran at this event
+      var eventFirstRunDate = eventAttendance[0].date_obj
+
+      // Find out if this was the ealiest we ever ran in this country
+      if (countryEntry.firstRanOn === undefined || eventFirstRunDate < countryEntry.firstRanOn) {
+        countryEntry.firstRanOn = eventFirstRunDate
+      }
+
+    } else {
+      // We don't know where this event was, perhaps it has closed
+    }
+  })
+
+  return countryCompletionInfo
 }
 
 function calculate_child_regions(regions, events_completed_map, parent_region) {

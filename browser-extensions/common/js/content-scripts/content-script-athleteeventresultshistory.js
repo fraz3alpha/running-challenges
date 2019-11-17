@@ -316,34 +316,49 @@ function add_flags(div_id, data) {
   // console.log(data)
 
   if (data.parkrun_results && data.geo_data) {
-    global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
+
+    countryCompletionInfo = calculateCountryCompletionInfo(data)
+    console.log(countryCompletionInfo)
+
+    // Generate a list of visited countries
+    countriesVisited = []
+    $.each(countryCompletionInfo, function(countryName, countryInfo){
+      if (countryInfo.visited) {
+        countriesVisited.push(countryInfo)
+      }
+    })
+    console.log(countriesVisited)
+
+
+    // global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
     // console.log(global_tourism_info)
 
     flags_div = $("div[id="+div_id+"]")
 
     var index_counter = 1
-    global_tourism_info.sort(function (o1,o2) {
+    countriesVisited.sort(function (o1,o2) {
         // Equal
-        if (o1.first_visited === o2.first_visited) {
+        if (o1.firstRanOn === o2.firstRanOn) {
             return 0
         }
-        // If either are null they should go to the back
-        if (o1.first_visited === null) {
+        // If either are null they should go to the back, although this shouldn't be the case
+        // as we have already pruned out those we haven't visited
+        if (o1.firstRanOn === null) {
             return 1
         }
-        if (o2.first_visited === null) {
+        if (o2.firstRanOn === null) {
             return -1
         }
-        return o1.first_visited - o2.first_visited
+        return o1.firstRanOn - o2.firstRanOn
     }).forEach(function (country) {
         if (country.visited) {
             // Find out when it was first run and make a nice string
-            var first_run = country.first_visited.toISOString().split("T")[0]
+            var first_run = country.firstRanOn.toISOString().split("T")[0]
 
             var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
 
             var img = $('<img>');
-            img.attr('src', country.icon);
+            img.attr('src', get_flag_image_src(country.name))
             img.attr('alt',country.name)
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
@@ -482,7 +497,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
 
   // Use the acquired data to add all the additional information to the page
   add_badges(id_map["badges"], data)
-  // add_flags(id_map["flags"], data)
+  add_flags(id_map["flags"], data)
   add_challenge_results(id_map["main"], data)
   add_stats(id_map["stats"], data)
 

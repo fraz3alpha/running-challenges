@@ -55,6 +55,48 @@ var cache = {
     'updated_at': undefined
 }
 
+function getCountryNameFromId(id) {
+  // Countries that no longer exists in the data are 
+  // prefixed "0_" and arbitrarily assigned numbers
+  // Sub-countries are assigned a number with a prefix of their main country site code.
+  var countryMap = {
+    "3": "Australia",
+    "14": "Canada",
+    "23": "Denmark",
+    "30": "Finland",
+    "31": "France",
+    "32": "Germany",
+    "0_2": "Iceland",
+    "42": "Ireland",
+    "44": "Italy",
+    "46": "Japan",
+    "57": "Malaysia",
+    "65": "New Zealand",
+    "85_2": "Namibia",
+    "67": "Norway",
+    "74": "Poland",
+    "79": "Russia",
+    "82": "Singapore",
+    "85": "South Africa",
+    "85_1": "Swaziland",
+    "88": "Sweden",
+    "97": "UK",
+    "98": "USA",
+    "0_1": "Zimbabwe",
+  }
+
+  var countryName = "unknown"
+
+  if (id in countryMap) {
+    countryName = countryMap[id]
+  }
+
+  console.log("Returning: "+countryName+" for id="+id)
+
+  return countryName
+
+}
+
 function get_cache_summary() {
 
   var summary = {
@@ -129,7 +171,7 @@ function parse_events(data, events_data) {
   country_id_name_map = {}
 
   $.each(events_data['countries'], function(country_id, country_info) {
-    country_name = country_info['url']
+    country_name = getCountryNameFromId(country_id)
     country_id_name_map[country_id] = country_name
 
     // The country centre point is no longer provided, instead it provides the bounds.
@@ -162,24 +204,31 @@ function parse_events(data, events_data) {
       event_id = event_info['id']
       event_name = event_info['properties']['EventShortName']
       country_id = event_info['properties']['countrycode']
+      event_country_name = country_id_name_map[country_id]
 
       data.events[event_name] = {
         // All the standard attributes that come from the parkrun data
         "shortname": event_info['properties']['EventShortName'],
         "name": event_info['properties']['eventname'],
         "country_id": country_id,
-        "country_name": country_id_name_map[country_id],
+        "country_name": event_country_name,
         "id": event_info['id'],
         "lat": event_info['geometry']['coordinates'][1],
         "lon": event_info['geometry']['coordinates'][0],
       }
 
       // Add this event to the appropriate country object
-      data.countries[country_name]["child_event_ids"].push(event_id)
-      data.countries[country_name]["child_event_names"].push(event_name)
+      addEventToCountryData(data, event_country_name, event_id, event_name)
     }
   })
 
+}
+
+function addEventToCountryData(data, country_name, event_id, event_name) {
+  console.log("Adding "+event_name+":"+event_id+" to "+country_name)
+  console.log("Current info for "+country_name+": event_ids="+data.countries[country_name]["child_event_ids"].length+" event_names="+data.countries[country_name]["child_event_names"].length)
+  data.countries[country_name]["child_event_ids"].push(event_id)
+  data.countries[country_name]["child_event_names"].push(event_name)
 }
 
 function parse_tee_data_event_status(data, result) {
