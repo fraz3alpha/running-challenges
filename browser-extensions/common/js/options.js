@@ -81,7 +81,7 @@ function show_debug_elements(visible=false) {
 function get_home_parkrun_info(parkrun_event_name) {
     // Look up extra pieces of information for this parkrun, if available
     console.log('looking up info for home parkrun '+parkrun_event_name)
-    if (geo_data !== null) {
+    if (geo_data != null && geo_data.data != null) {
         if (parkrun_event_name in geo_data.data.events) {
             home_event_info = geo_data.data.events[parkrun_event_name]
             console.log('Found info for '+parkrun_event_name+': '+JSON.stringify(home_event_info))
