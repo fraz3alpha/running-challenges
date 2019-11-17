@@ -2010,6 +2010,7 @@ function calculateCountryCompletionInfo(data) {
     // Initialise an information object for the country
     countryCompletionInfo[countryName] = {
       "name": countryName,
+      "id": countryInfo["id"],
       "childEventsCount": countryInfo['child_event_names'].length,
       "childEventsCompleted": [],
       "childEventsCompletedCount": 0,
