@@ -24,6 +24,10 @@ css_libs:
   - map.css
 ---
 
+The following map lists the special events over the Christmas/New Year period for
+2018/2019. We will revisit this map later in 2019 with updated data for the
+2019/2020 extra-parkrun season!
+
 <div id="mapid"></div>
 <br/>
 

@@ -56,6 +56,7 @@ header_pages:
   - _pages/badges.md
   - _pages/faq.md
   - _pages/getstarted.md
+  - _pages/more.md
 
 permalink: /:year/:month/:day/:title:output_ext
 
