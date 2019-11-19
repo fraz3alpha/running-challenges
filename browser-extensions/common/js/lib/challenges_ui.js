@@ -213,7 +213,7 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries below to expand the data.<br/>Note: Only currenty active events are included in the map and stats</td>'))
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Note: Only currenty active events are included in the map and stats</td>'))
     challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
@@ -227,34 +227,6 @@ function generateRegionnaireTableEntry(table, data) {
     // create_regionnaire_map(regionnaire_map_id, data, challenge)
   }
 }
-
-// function generate_regionnaire_table_entry(challenge, table, data) {
-//     var shortname = challenge['shortname']
-
-//     var challenge_tbody_header = get_tbody_header(challenge)
-//     var challenge_tbody_detail = get_tbody_content(challenge)
-
-//     // Create the header row and add it to the tbody that exists to hold
-//     // the title row
-//     var main_row = get_challenge_header_row(challenge, data)
-//     challenge_tbody_header.append(main_row)
-
-//     // Create a row to hold a map
-//     var regionnaire_map_id = 'regionnaire_map'
-//     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
-//     challenge_tbody_detail.append(map_row)
-//     var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries and regions below to expand the data.</td>'))
-//     challenge_tbody_detail.append(map_row)
-
-//     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
-//     drawRegionnaireDataTable(challenge_tbody_detail, data)
-
-//     // table.append(challenge_tbody_header)
-//     // table.append(challenge_tbody_detail)
-
-//     // create_regionnaire_map(regionnaire_map_id, data, challenge)
-
-// }
 
 function drawRegionnaireMap(divId, data) {
 
@@ -802,254 +774,21 @@ function drawRegionnaireDataTable(table, data) {
       var regionnaire_country_class = "regionnaire-country-"+countryId
       var regionnaire_parent_region_class_country = "regionnaire-parent-region-id-"+countryId
 
-      // This really needs an explanatory paragraph
-      // Create a function to attach to the onClick event for the country row.
-      // This will attempt to expand or hide the row, according to whether it is 
-      // currently marked as hidden or not.
-      var expand_country=function() {
-        var parent_tr = $(this).closest("tr")
-        if (parent_tr.hasClass("regionnaire-expanded")) {
-          // We need to collapse this section - and everything inside it
-          parent_tr.siblings('.'+regionnaire_country_class).each(function() {
-            $(this).hide()
-            // As we have collapsed everything, mark any sub elements as not expanded
-            $(this).removeClass("regionnaire-expanded")
-          })
-          parent_tr.removeClass("regionnaire-expanded")
-        } else {
-          // We need to expand this section, but only the top level things
-          // Only make visible those rows which have our country as the parent ID
-          var sibling_query = "."+regionnaire_parent_region_class_country
-          parent_tr.siblings(sibling_query).each(function() {
-            $(this).show()
-          })
-          parent_tr.addClass("regionnaire-expanded")
-        }
-      }
-
       // We fade out the regionnaire flag if it hasn't been visited, with
       // get_regionnaire_flag's second argumemt being a true/false value of whether
       // you have been. By stating whether the completion percentage is above zero
       // we can calculate this on the fly
       row.append($("<td/>").append(get_regionnaire_flag(countryName, countryCompletionPercentage > 0)).append($("<a/>").attr("name", countryName)))
-      row.append($("<td/>").append($("<b/>").text(countryName).click(expand_country).css('cursor', 'pointer')))
+      row.append($("<td/>").append($("<b/>").text(countryName)))
       row.append($("<td/>"))
       row.append($("<td/>").text(countryCompletionFractionString))
       table.append(row)
-
-      // // Add the events for the country
-      // country_region.child_events.forEach(function(event_name) {
-      //   var completed_event = country_region.child_events_completed[event_name]
-
-      //   var event_row = $("<tr/>", {class: regionnaire_country_class })
-      //   event_row.addClass(regionnaire_parent_region_class_country)
-      //   event_row.append($("<td/>"))
-      //   event_row.append($("<td/>").text(event_name))
-      //   if (completed_event !== undefined) {
-      //     event_row.append($("<td/>").text(completed_event.date))
-      //   } else {
-      //     event_row.append($("<td/>"))
-      //   }
-      //   event_row.append($("<td/>"))
-      //   // Start the event row hidden
-      //   event_row.hide()
-      //   table.append(event_row)
-      // })
 
     }
 
   })
 
 }
-
-// function iterate_regionnaire_data(table, region, level, region_group) {
-//
-//     if (level === undefined) {
-//         level = 0
-//     }
-//
-//     initially_hidden = false
-//     if (level > 1) {
-//       initially_hidden = true
-//     }
-//
-//     // Use the region ID in the class name, because the human readable names
-//     // are full of spaces, non-latin characters, and all sorts.
-//     var region_class_name = "regionnaire-class-"+region["id"]
-//     var region_event_class_name = region_class_name+"-event"
-//     var region_incomplete_event_class_name = region_class_name+"-event-incomplete"
-//     var region_complete_event_class_name = region_class_name+"-event-complete"
-//
-//     var hide_show_message = "parkruns I haven't done"
-//
-//     if (region["child_events_total"] == 0) {
-//         return
-//     }
-//
-//     var row = $('<tr/>')
-//     var twisty = $('<td/>').attr("id", region_class_name+"-twisty")
-//     row.append(twisty)
-//     if (level == 1) {
-//       // if (region["child_regions"].length > 0) {
-//       if (region["child_events_completed_count"] == 0) {
-//         twisty.append(get_regionnaire_flag(region["name"], false))
-//         // hide_region_sub_rows = true
-//       } else {
-//           twisty.append(get_regionnaire_flag(region["name"], true))
-//           row.addClass("region_visible")
-//       }
-//       // }
-//       // Set the geo region to the top level one (not world)
-//       // e.g. UK, Australia, Denmark
-//       region_group = region_class_name
-//     }
-//
-//     var region_start_visible = region_group+"-level-"+level+"-visible"
-//     var region_start_hidden = region_group+"-level-"+level+"-hidden"
-//
-//     console.log(region_start_visible + "/" + region_start_hidden)
-//
-//     // console.log("Hide subregions for "+region["name"]+"? - "+hide_region_sub_rows)
-//
-//     var clickable_country = $('<span/>')
-//     country_text = region["name"]
-//     // If the level is 0, 'World', then that is as special case and there are no
-//     // subparts that need indenting.
-//     // If the level is 1, i.e. a country, then there is nothing to join, and it is
-//     // just like 'World'
-//     // If the level is 2+, like 'UK > South East', then we need one '> ', which
-//     // we get by doing our join below.
-//     if (level > 1) {
-//       var prefix = Array(level).join("> ")
-//       country_text = prefix + region["name"]
-//     }
-//     clickable_country.append($('<b></b>').text(country_text))
-//     if (region["child_regions"].length > 0) {
-//       clickable_country.click(function(){
-//
-//       // Find the parent tr element
-//       var parent_tr = $(this).closest("tr")
-//       if (parent_tr.hasClass("region_visible")) {
-//         // Collapse it
-//         $("."+region_group+"-level-"+(level+1)+"-visible").hide();
-//         $("."+region_group+"-level-"+(level+1)+"-hidden").hide();
-//
-//         // var twisty = $("#"+region_group+"-twisty")
-//         // twisty.empty()
-//         // twisty.append($('<b></b>').text("+"))
-//         // Remove the class that says it is visible
-//         parent_tr.removeClass("region_visible")
-//       } else {
-//         var class_name_to_make_visible = region_group+"-level-"+(level+1)+"-visible"
-//         console.log("Making things visible with level="+(level+1)+" for "+class_name_to_make_visible)
-//         // Then show the things the next level down that we intend to show
-//         $("."+class_name_to_make_visible).show();
-//
-//         // var twisty = $("#"+region_group+"-twisty")
-//         // twisty.empty()
-//         // twisty.append($('<b></b>').text("-"))
-//
-//         parent_tr.addClass("region_visible")
-//       }
-//
-//       })
-//       clickable_country.click(function() {
-//         clicky();
-//       })
-//       clickable_country.css('cursor', 'pointer')
-//     }
-//     row.append($('<td/>').append(clickable_country))
-//
-//     // We may remove this column if it is no longer useful
-//     row.append($('<td></td>'))
-//
-//     var completion_string = region["child_events_completed_count"]+"/"+region["child_events_total"]
-//     row.append($('<td></td>').text(completion_string))
-//     row.addClass(region_event_class_name)
-//     row.addClass(region_group)
-//     row.addClass(region_start_visible)
-//     if (initially_hidden) {
-//       row.hide()
-//     }
-//     table.append(row)
-//
-//     // Print out those events that have been completed
-//     region["child_events"].forEach(function (child_event) {
-//         if (child_event in region["child_events_completed"]) {
-//             var row = $('<tr></tr>')
-//             row.addClass(region_complete_event_class_name)
-//             row.append($('<td></td>').text(""))
-//             row.append($('<td></td>'))
-//             row.append($('<td></td>').text(child_event))
-//             row.append($('<td></td>').text(region["child_events_completed"][child_event]["date"]))
-//             row.addClass(region_group)
-//             row.addClass(region_start_visible)
-//             if (initially_hidden) {
-//               row.hide()
-//             }
-//             table.append(row)
-//         }
-//     })
-//     // Print the info of the ones that you are missing (if any)
-//     if (region["complete"] == false) {
-//         // Add a link to display the missing events (with them being normally
-//         // hidden so as not to overwhelm the page)
-//         // But only if there are sub-events
-//         if (region.child_events.length > 0) {
-//             var show_more_row = $('<tr/>')
-//             show_more_row.append($('<td/>'))
-//             show_more_row.append($('<td/>').append($('<span/>').click(function(){
-//                     $("."+region_incomplete_event_class_name).show();
-//                     // Change the visibility of the buttons for this section
-//                     $("."+region_incomplete_event_class_name+"-show").hide();
-//                     $("."+region_incomplete_event_class_name+"-hide").show();
-//                 }).text('show '+hide_show_message+" ...")).attr('colspan', 3))
-//             show_more_row.addClass(region_incomplete_event_class_name+"-show")
-//             show_more_row.addClass(region_group)
-//             show_more_row.addClass(region_start_visible)
-//             if (initially_hidden) {
-//               show_more_row.hide()
-//             }
-//             table.append(show_more_row)
-//         }
-//
-//         // Create rows for all the unattended events, default to hidden
-//         region["child_events"].forEach(function (child_event) {
-//             if (!(child_event in region["child_events_completed"])) {
-//                 var row = $('<tr></tr>')
-//                 row.addClass(region_incomplete_event_class_name)
-//                 row.append($('<td></td>'))
-//                 row.append($('<td></td>'))
-//                 row.append($('<td></td>').text(child_event))
-//                 row.addClass(region_group)
-//                 row.addClass(region_start_hidden)
-//                 // Hide the row by default
-//                 row.hide()
-//                 table.append(row)
-//             }
-//         })
-//
-//         var hide_more_row = $('<tr/>')
-//         hide_more_row.append($('<td/>'))
-//         hide_more_row.append($('<td/>').append($('<span/>').click(function(){
-//                 $("."+region_incomplete_event_class_name).hide();
-//                 // Change the visibility of the buttons for this section
-//                 $("."+region_incomplete_event_class_name+"-show").show();
-//                 $("."+region_incomplete_event_class_name+"-hide").hide();
-//             }).text('hide '+hide_show_message)).attr('colspan', 3))
-//         hide_more_row.addClass(region_incomplete_event_class_name+"-hide")
-//         hide_more_row.addClass(region_group)
-//         hide_more_row.addClass(region_start_hidden)
-//         // Hide by default
-//         hide_more_row.hide()
-//         table.append(hide_more_row)
-//     }
-//
-//     region["child_regions"].forEach(function (child_region) {
-//         iterate_regionnaire_data(table, child_region, level+1, region_group)
-//     })
-//
-// }
 
 function generate_standard_table_entry(challenge, table, data) {
 
