@@ -375,7 +375,7 @@ function get_geo_data(notify_func, freshen=false) {
                 // anything.
                 if (data_events === undefined) {
                     // See if we have a previous one to fall back on
-                    if (cache.data_events.raw_data === undefined) {
+                    if (cache.events.raw_data === undefined) {
                         // If not, send something back
                         console.log('No data to go on!')
                         notify_geo_data(notify_func)
@@ -383,7 +383,7 @@ function get_geo_data(notify_func, freshen=false) {
                     } else {
                         // Else make the best use of what we had previously
                         console.log('Using previously obtained raw data')
-                        data_events = cache['events'].raw_data
+                        data_events = cache.events.raw_data
                     }
                 } else {
                   console.log('Fresh data available')

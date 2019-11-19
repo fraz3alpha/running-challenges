@@ -120,13 +120,15 @@ function get_flag_icon(country, height, width) {
 
 
 function get_challenge_icon(challenge, height, width) {
-    var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
-    badge_img.attr('alt', challenge.name)
-    badge_img.attr('title', challenge.name)
-    badge_img.attr('height', height)
-    badge_img.attr('width', width)
-
+    var badge_img = undefined
+    if (challenge.badge_icon !== undefined) {
+      badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
+      badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
+      badge_img.attr('alt', challenge.name)
+      badge_img.attr('title', challenge.name)
+      badge_img.attr('height', height)
+      badge_img.attr('width', width)
+    }
     return badge_img
 }
 
@@ -135,9 +137,13 @@ function get_challenge_header_row(challenge, data) {
     var main_row = $('<tr></tr>')
 
     var badge_img = get_challenge_icon(challenge, 24, 24)
-    badge_img.click(function(){
-        $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
-    });
+    if (badge_img !== undefined) {
+      badge_img.click(function(){
+          $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
+      });
+    } else {
+      badge_img = ''
+    }
 
     var anchor_tag = $('<a/>')
     anchor_tag.attr('name', challenge['shortname'])
@@ -168,7 +174,9 @@ function get_challenge_header_row(challenge, data) {
     if (challenge.summary_text !== undefined) {
         main_row.append($('<th></th>').text(challenge.summary_text))
     } else {
+      if (challenge.subparts_completed_count !== undefined && challenge.subparts_count !== undefined){
         main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+      }
     }
     if (challenge.complete) {
         main_row.append($('<img/>').attr('src', browser.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
@@ -178,7 +186,10 @@ function get_challenge_header_row(challenge, data) {
 }
 
 function generateRegionnaireTableEntry(table, data) {
+  // We can only do this if we have geo data
+  
   var challenge = {
+    "name": "Regionnaire Explorer",
     "shortname": "regionnaire"
   }
 
@@ -190,23 +201,31 @@ function generateRegionnaireTableEntry(table, data) {
   var main_row = get_challenge_header_row(challenge, data)
   challenge_tbody_header.append(main_row)
 
-  // Create a row to hold a map
-  var regionnaireMapId = 'regionnaire_map'
-  var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
-  challenge_tbody_detail.append(map_row)
-  var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries below to expand the data.<br/>Note: Only currenty active events are included in the map and stats</td>'))
-  challenge_tbody_detail.append(map_row)
+  if (data.geo_data === undefined) {
+    // When there is no geo data, just put a row in saying there is nothing to go on.
+    var infoRow = $("<tr/>").append($('<td colspan="4" align="center">No parkrun event location information, unable to generate regionnaire results</td>'))
+    challenge_tbody_detail.append(infoRow)
 
-  // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
-  drawRegionnaireDataTable(challenge_tbody_detail, data)
+    table.append(challenge_tbody_header)
+    table.append(challenge_tbody_detail)
+  } else {
+    // Create a row to hold a map
+    var regionnaireMapId = 'regionnaire_map'
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
+    challenge_tbody_detail.append(map_row)
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries below to expand the data.<br/>Note: Only currenty active events are included in the map and stats</td>'))
+    challenge_tbody_detail.append(map_row)
 
-  table.append(challenge_tbody_header)
-  table.append(challenge_tbody_detail)
+    // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
+    drawRegionnaireDataTable(challenge_tbody_detail, data)
 
-  drawRegionnaireMap(regionnaireMapId, data)
+    table.append(challenge_tbody_header)
+    table.append(challenge_tbody_detail)
 
-  // create_regionnaire_map(regionnaire_map_id, data, challenge)
+    drawRegionnaireMap(regionnaireMapId, data)
 
+    // create_regionnaire_map(regionnaire_map_id, data, challenge)
+  }
 }
 
 // function generate_regionnaire_table_entry(challenge, table, data) {
