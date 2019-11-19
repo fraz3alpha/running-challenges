@@ -225,7 +225,7 @@ function update_home_parkrun_dropdown() {
     if (geo_data !== null) {
 
         // Iterate over all the available events that we know about
-        Object.keys(geo_data.data.events).forEach(function (event_name) {
+        Object.keys(geo_data.data.events).sort().forEach(function (event_name) {
             event_o = geo_data.data.events[event_name]
             // Create a suitable option for this event
             var select_option = $('<option/>', {
