@@ -76,7 +76,7 @@ function add_challenges_to_table(table, challenge_results_type, data) {
        // console.log("Generating table rows for " + challenge.shortname)
        var start_time = new Date()
        if (challenge.shortname == 'regionnaire') {
-           generate_regionnaire_table_entry(challenge, table, data)
+          //  generate_regionnaire_table_entry(challenge, table, data)
        } else {
            generate_standard_table_entry(challenge, table, data)
        }
@@ -120,13 +120,15 @@ function get_flag_icon(country, height, width) {
 
 
 function get_challenge_icon(challenge, height, width) {
-    var badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
-    badge_img.attr('alt', challenge.name)
-    badge_img.attr('title', challenge.name)
-    badge_img.attr('height', height)
-    badge_img.attr('width', width)
-
+    var badge_img = undefined
+    if (challenge.badge_icon !== undefined) {
+      badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
+      badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
+      badge_img.attr('alt', challenge.name)
+      badge_img.attr('title', challenge.name)
+      badge_img.attr('height', height)
+      badge_img.attr('width', width)
+    }
     return badge_img
 }
 
@@ -135,9 +137,13 @@ function get_challenge_header_row(challenge, data) {
     var main_row = $('<tr></tr>')
 
     var badge_img = get_challenge_icon(challenge, 24, 24)
-    badge_img.click(function(){
-        $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
-    });
+    if (badge_img !== undefined) {
+      badge_img.click(function(){
+          $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
+      });
+    } else {
+      badge_img = ''
+    }
 
     var anchor_tag = $('<a/>')
     anchor_tag.attr('name', challenge['shortname'])
@@ -168,7 +174,9 @@ function get_challenge_header_row(challenge, data) {
     if (challenge.summary_text !== undefined) {
         main_row.append($('<th></th>').text(challenge.summary_text))
     } else {
+      if (challenge.subparts_completed_count !== undefined && challenge.subparts_count !== undefined){
         main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+      }
     }
     if (challenge.complete) {
         main_row.append($('<img/>').attr('src', browser.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
@@ -177,35 +185,81 @@ function get_challenge_header_row(challenge, data) {
     return main_row
 }
 
-function generate_regionnaire_table_entry(challenge, table, data) {
-    var shortname = challenge['shortname']
+function generateRegionnaireTableEntry(table, data) {
+  // We can only do this if we have geo data
+  
+  var challenge = {
+    "name": "Regionnaire Explorer",
+    "shortname": "regionnaire"
+  }
 
-    var challenge_tbody_header = get_tbody_header(challenge)
-    var challenge_tbody_detail = get_tbody_content(challenge)
+  var challenge_tbody_header = get_tbody_header(challenge)
+  var challenge_tbody_detail = get_tbody_content(challenge)
 
-    // Create the header row and add it to the tbody that exists to hold
-    // the title row
-    var main_row = get_challenge_header_row(challenge, data)
-    challenge_tbody_header.append(main_row)
+  // Create the header row and add it to the tbody that exists to hold
+  // the title row
+  var main_row = get_challenge_header_row(challenge, data)
+  challenge_tbody_header.append(main_row)
 
+  if (data.geo_data === undefined) {
+    // When there is no geo data, just put a row in saying there is nothing to go on.
+    var infoRow = $("<tr/>").append($('<td colspan="4" align="center">No parkrun event location information, unable to generate regionnaire results</td>'))
+    challenge_tbody_detail.append(infoRow)
+
+    table.append(challenge_tbody_header)
+    table.append(challenge_tbody_detail)
+  } else {
     // Create a row to hold a map
-    var regionnaire_map_id = 'regionnaire_map'
-    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
+    var regionnaireMapId = 'regionnaire_map'
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries and regions below to expand the data.</td>'))
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries below to expand the data.<br/>Note: Only currenty active events are included in the map and stats</td>'))
     challenge_tbody_detail.append(map_row)
 
-    draw_regionnaire_data_table(challenge_tbody_detail, challenge)
+    // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
+    drawRegionnaireDataTable(challenge_tbody_detail, data)
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
 
-    create_regionnaire_map(regionnaire_map_id, data, challenge)
+    drawRegionnaireMap(regionnaireMapId, data)
 
+    // create_regionnaire_map(regionnaire_map_id, data, challenge)
+  }
 }
 
-function create_regionnaire_map(div_id, data, challenge) {
-  // Create the map to start with
+// function generate_regionnaire_table_entry(challenge, table, data) {
+//     var shortname = challenge['shortname']
+
+//     var challenge_tbody_header = get_tbody_header(challenge)
+//     var challenge_tbody_detail = get_tbody_content(challenge)
+
+//     // Create the header row and add it to the tbody that exists to hold
+//     // the title row
+//     var main_row = get_challenge_header_row(challenge, data)
+//     challenge_tbody_header.append(main_row)
+
+//     // Create a row to hold a map
+//     var regionnaire_map_id = 'regionnaire_map'
+//     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaire_map_id+'" style="height:400px; width:400"></div></td>'))
+//     challenge_tbody_detail.append(map_row)
+//     var map_row = $("<tr/>").append($('<td colspan="4" align="center">Click the flags, pie-charts, and events in the map above for more info.<br/>Click on the countries and regions below to expand the data.</td>'))
+//     challenge_tbody_detail.append(map_row)
+
+//     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
+//     drawRegionnaireDataTable(challenge_tbody_detail, data)
+
+//     // table.append(challenge_tbody_header)
+//     // table.append(challenge_tbody_detail)
+
+//     // create_regionnaire_map(regionnaire_map_id, data, challenge)
+
+// }
+
+function drawRegionnaireMap(divId, data) {
+
+  // Get a summary of the completion data
+  var countryCompletionInfo = calculateCountryCompletionInfo(data)
 
   // Find where to focus the map on to start with
   var default_centre = [25,0]
@@ -216,42 +270,18 @@ function create_regionnaire_map(div_id, data, challenge) {
     }
   }
 
-  var r_map = L.map(div_id).setView(default_centre, 2);
+  console.log("Initialising the regionnaire map container")
+  var r_map = L.map(divId).setView(default_centre, 2);
   // Allow it to be fullscreen
   r_map.addControl(new L.Control.Fullscreen());
 
   var map_data = {
       map: r_map,
-      events_completed_map: challenge.events_completed_map,
+      countryCompletionInfo: countryCompletionInfo,
       layers: {
         subregions: [],
         events: []
       }
-  }
-
-  // Mapping countries to flag image files
-  var flag_map = {
-      "New Zealand": "nz",
-      "Australia": "au",
-      "Denmark": "dk",
-      "Finland": "fi",
-      "France": "fr",
-      "Germany": "de",
-      // "Iceland"--
-      "Ireland": "ie",
-      "Italy": "it",
-      "Japan": "jp",
-      "Malaysia": "my",
-      "Canada": "ca",
-      "Norway": "no",
-      "Poland": "pl",
-      "Russia": "ru",
-      "Singapore": "sg",
-      "South Africa": "za",
-      "Sweden": "se",
-      "UK": "gb",
-      "USA": "us"
-      // "Zimbabwe"--
   }
 
   // Set the openstreetmap tiles
@@ -260,12 +290,7 @@ function create_regionnaire_map(div_id, data, challenge) {
   })
   tilelayer_openstreetmap.addTo(r_map)
 
-  // Icon sets
-  var country_icon = L.ExtraMarkers.icon({
-    markerColor: 'green-light',
-    shape: 'circle'
-  });
-
+  // Icons
   var FlagIcon = L.Icon.extend({
       options: {
           shadowUrl: undefined,
@@ -273,11 +298,6 @@ function create_regionnaire_map(div_id, data, challenge) {
           // Centre the icon by default
           iconAnchor:   [20, 20]
       }
-  });
-
-  var sub_region_icon = L.ExtraMarkers.icon({
-    markerColor: 'cyan',
-    shape: 'circle'
   });
 
   // Iterate through the top level countries
@@ -290,62 +310,57 @@ function create_regionnaire_map(div_id, data, challenge) {
   var flag_icon_anchor_centred = [20,20]
   var flag_icon_anchor_with_pie = [40,20]
 
-  $.each(data.geo_data.data.countries, function (country_name, country_info) {
+  // Iterate over all the countries we know about
+  $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
 
-    var region_info = data.geo_data.data.regions[country_name]
-    var events_complete_count = 0
-    $.each(data.geo_data.data.regions[country_name].child_event_recursive_names, function(index, event_name) {
-      if (event_name in map_data.events_completed_map) {
-        events_complete_count += 1
-      }
-    })
-    var events_total_count = data.geo_data.data.regions[country_name].child_event_recursive_names.length
+    // We have the total number of events and complete events in the following
+    var countryChildEventsCount = countryCompletionInfo[countryName].childEventsCount
+    var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
 
-    // console.log(region_info)
     // Only bother displaying this country if it has any events
-    if (events_total_count > 0) {
-      if (event_has_valid_location(region_info)) {
+    if (countryChildEventsCount > 0) {
+      if (event_has_valid_location(countryInfo)) {
 
         // Get the location of the country mid-point, according to parkrun
-        var lat_lon = [+region_info.lat, +region_info.lon]
+        var lat_lon = [+countryInfo.lat, +countryInfo.lon]
         // Get the current regions id for later use by the on click callback function
-        var region_id = region_info.id
+        var countryId = countryInfo.id
 
         // If we haven't run any events, we omit the pie chart, so centre the
         // flag, else we shuffle it off to the left a bit so the combo is centred
         var flag_anchor = flag_icon_anchor_centred
-        if (events_complete_count > 0) {
+        if (countryChildEventsCompletedCount > 0) {
           flag_anchor = flag_icon_anchor_with_pie
         }
 
         // Top level countries have a flag
         var marker = L.marker(lat_lon, {
           icon: new FlagIcon({
-            iconUrl: browser.extension.getURL("/images/flags/"+flag_map[country_name]+".png"),
+            iconUrl: get_flag_image_src(countryName),
             iconAnchor: flag_anchor
           })
         })
         // Add a tooltip showing the name of the country and a summary of the
         // completion numbers
-        var marker_tooltip_text = country_name + ' ' + events_complete_count + '/' + events_total_count
+        var marker_tooltip_text = countryName + ' ' + countryChildEventsCompletedCount + '/' + countryChildEventsCount
         var marker_tooltip_options = {
           offset: [0, -16],
           direction: 'top'
         }
         marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
         marker.on('click', function() {
-          show_sub_regions_and_events(map_data, data, region_id, 0)
+          showCountryEvents(map_data, data, countryId, 0)
         })
         marker.addTo(map_data.layers.country_markers);
 
         // Only add the pie chart if we have completed any events at all
-        if (events_complete_count > 0) {
+        if (countryChildEventsCompletedCount > 0) {
           var pie_marker = L.piechartMarker(lat_lon, {
             radius: 16,
             data: [
               {
                 name: 'Run',
-                value: events_complete_count,
+                value: countryChildEventsCompletedCount,
                 style: {
                   fillStyle: 'rgba(0,140,57,.95)',
                   strokeStyle: 'rgba(0,0,0,.75)',
@@ -354,7 +369,7 @@ function create_regionnaire_map(div_id, data, challenge) {
               },
               {
                 name: 'Not Run',
-                value: (events_total_count - events_complete_count),
+                value: (countryChildEventsCount - countryChildEventsCompletedCount),
                 style: {
                   fillStyle: 'rgba(0,0,0,.15)',
                   strokeStyle: 'rgba(0,0,0,.75)',
@@ -369,7 +384,7 @@ function create_regionnaire_map(div_id, data, challenge) {
           // Add the same tooltips and on click actions as for the flag
           pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
           pie_marker.on('click', function() {
-            show_sub_regions_and_events(map_data, data, region_id, 0)
+            showCountryEvents(map_data, data, countryId, 0)
           })
           pie_marker.addTo(map_data.layers.country_markers);
         }
@@ -380,11 +395,10 @@ function create_regionnaire_map(div_id, data, challenge) {
   })
 
   map_data.layers.country_markers.addTo(map_data.map)
-
 }
 
-function show_sub_regions_and_events(map_data, data, region_id, depth) {
-  // console.log('Click for region: '+region_id+' depth='+depth)
+function showCountryEvents(map_data, data, countryId, depth) {
+  console.log('Click for countryId: '+countryId+' depth='+depth)
 
   // Remove any existing subregions at or below our depth
   var regions_layer_key = 'subregions'
@@ -419,65 +433,6 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
     'notdone': new L.featureGroup()
   });
 
-  $.each(data.geo_data.data.regions, function (region_name, region_info) {
-    if (region_info.parent_id == region_id) {
-
-      // Compute how many events under this region there are, and how many we have run
-      var events_complete_count = 0
-      $.each(data.geo_data.data.regions[region_name].child_event_recursive_names, function(index, event_name) {
-        if (event_name in map_data.events_completed_map) {
-          events_complete_count += 1
-        }
-      })
-      var events_total_count = data.geo_data.data.regions[region_name].child_event_recursive_names.length
-
-      // Only display this sub-region if there are some events in it
-      if (events_total_count > 0) {
-        if (event_has_valid_location(region_info)) {
-          // Get the location of the country mid-point, according to parkrun
-          var lat_lon = [+region_info.lat, +region_info.lon]
-          var sub_region_id = region_info.id
-          var marker = L.piechartMarker(lat_lon, {
-            radius: 16,
-            data: [
-              {
-                name: 'Run',
-                value: events_complete_count,
-                style: {
-                  fillStyle: 'rgba(0,140,57,.95)',
-                  strokeStyle: 'rgba(0,0,0,.75)',
-                  lineWidth: 1
-                }
-              },
-              {
-                name: 'Not Run',
-                value: (events_total_count - events_complete_count),
-                style: {
-                  fillStyle: 'rgba(0,0,0,.15)',
-                  strokeStyle: 'rgba(0,0,0,.75)',
-                  lineWidth: 1
-                }
-              }
-            ],
-          })
-          // var marker = L.marker(lat_lon, {icon: sub_region_icon})
-          // Add a tooltip showing the name of the region, and put it above
-          var marker_tooltip_text = region_name + ' ' + events_complete_count + '/' + events_total_count
-          var marker_tooltip_options = {
-            offset: [0, -16],
-            direction: 'top'
-          }
-          marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
-          marker.on('click', function() {
-            show_sub_regions_and_events(map_data, data, sub_region_id, depth+1)
-          })
-          marker.addTo(map_data.layers[regions_layer_key][depth])
-        }
-      }
-    }
-  })
-  map_data.layers[regions_layer_key][depth].addTo(map_data.map)
-
   // Icon for an event we have run
   var event_run_icon = L.ExtraMarkers.icon({
     markerColor: 'green-light',
@@ -491,15 +446,15 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
   });
 
   $.each(data.geo_data.data.events, function (event_name, event_info) {
-    if (event_info.region_id == region_id) {
+    if (event_info.country_id == countryId) {
       if (event_has_valid_location(event_info)) {
         // Get the location of the country mid-point, according to parkrun
         var lat_lon = [+event_info.lat, +event_info.lon]
         // Default marker shows we have not run it
         var marker = L.marker(lat_lon, {icon: event_not_run_icon})
-        if (event_name in map_data.events_completed_map) {
-          marker = L.marker(lat_lon, {icon: event_run_icon})
-        }
+        // if (event_name in map_data.events_completed_map) {
+        //   marker = L.marker(lat_lon, {icon: event_run_icon})
+        // }
         // Add a tooltip showing the name of the event
         var marker_tooltip_text = event_name
         var marker_tooltip_options = {
@@ -510,11 +465,11 @@ function show_sub_regions_and_events(map_data, data, region_id, depth) {
         // Create a popup which includes a link to the event
         marker.bindPopup(get_parkrun_popup(event_name, event_info, {distance: false, completed_info: map_data.events_completed_map}))
         // Add it to the appropriate layer group
-        if (event_name in map_data.events_completed_map) {
-          marker.addTo(map_data.layers[events_layer_key][depth].done)
-        } else {
+        // if (event_name in map_data.events_completed_map) {
+        //   marker.addTo(map_data.layers[events_layer_key][depth].done)
+        // } else {
           marker.addTo(map_data.layers[events_layer_key][depth].notdone)
-        }
+        // }
       }
     }
   })
@@ -804,59 +759,53 @@ function get_regionnaire_flag(country, visited) {
 
 }
 
-function draw_regionnaire_data_table(table, challenge_data) {
+// This is a very complicated table to draw. And given that we've had to rip out some bits
+// now that parkrun HQ doesn't allocate parkruns in to a region, this might be overly complex,
+// if it even works at all
+function drawRegionnaireDataTable(table, data) {
+
+  // Use the common function to see what countries we have visited
+  var countryCompletionInfo = calculateCountryCompletionInfo(data)
+  console.log(countryCompletionInfo)
 
   // First of all, add a row with the world stats on, which is the top level region
-  world_region = challenge_data.unrolled_regions[1]
+  // Generate a total for the current completion
+  var worldEventsCount = 0
+  var worldEventsCompletedCount = 0
+  $.each(countryCompletionInfo, function(countryName, countryInfo) {
+    worldEventsCount += countryInfo.childEventsCount
+    worldEventsCompletedCount += countryInfo.childEventsCompletedCount
+  })
 
-  var world_completion_percentage = world_region.recursive_child_events_completed / world_region.recursive_child_events_count
-  var world_completion_fraction_string = world_region.recursive_child_events_completed +"/"+ world_region.recursive_child_events_count
+  var worldCompletionFractionString = worldEventsCompletedCount +"/"+ worldEventsCount
 
   var row = $("<tr/>")
   row.append($("<td/>").append(get_regionnaire_flag("World", true)))
   row.append($("<td/>").append($("<b/>").text("World")))
   row.append($("<td/>"))
-  row.append($("<td/>").text(world_completion_fraction_string))
+  row.append($("<td/>").text(worldCompletionFractionString))
   table.append(row)
 
-  // Then iterate through the top level countries
-  top_level_countries = []
-  $.each(challenge_data.unrolled_regions, function(region_id, region) {
-    if (region.parent_id == 1) {
-      top_level_countries.push(region_id)
-    }
-  })
+  var alphabeticallySortedCountries = Object.keys(countryCompletionInfo).sort()
+  console.log(alphabeticallySortedCountries)
 
-  // Sort the top level countries alphabetically, otherwise they come out in
-  // id order, i.e. the order in which they had their first parkrun
-  top_level_countries_sorted = top_level_countries.sort(function(a,b) {
-    // Order the ids by the names of the regions they represent
-    // I'm pretty sure we'll never need to compare an id with itself, so
-    //  returning zero here for equality is mostly for completeness
-    if (a == b) {
-      return 0
-    }
-    if (challenge_data.unrolled_regions[a].name < challenge_data.unrolled_regions[b].name) {
-      return -1
-    } else {
-      return 1
-    }
-  })
-
-  top_level_countries.forEach(function(country_id) {
-    country_region = challenge_data.unrolled_regions[country_id]
-    // Skip those countries with no active parkruns
-    if (country_region.recursive_child_events_count > 0) {
-      // Calculate the proportion of parkruns completed.
-      // There should be no divide by zero here are we are only adding the country
-      //  if it has child regions
-      var completion_percentage = country_region.recursive_child_events_completed / country_region.recursive_child_events_count
-      var completion_fraction_string = country_region.recursive_child_events_completed +"/"+ country_region.recursive_child_events_count
+  $.each(alphabeticallySortedCountries, function(idx, countryName) {
+    var countryInfo = countryCompletionInfo[countryName]
+    var countryId = countryInfo["id"]
+    // Only show those countries with events
+    if (countryInfo.childEventsCount > 0) {
+      // Determine how complete this country is
+      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childEventsCount
+      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childEventsCount
 
       var row = $("<tr/>")
-      var regionnaire_country_class = "regionnaire-country-"+country_id
-      var regionnaire_parent_region_class_country = "regionnaire-parent-region-id-"+country_id
+      var regionnaire_country_class = "regionnaire-country-"+countryId
+      var regionnaire_parent_region_class_country = "regionnaire-parent-region-id-"+countryId
 
+      // This really needs an explanatory paragraph
+      // Create a function to attach to the onClick event for the country row.
+      // This will attempt to expand or hide the row, according to whether it is 
+      // currently marked as hidden or not.
       var expand_country=function() {
         var parent_tr = $(this).closest("tr")
         if (parent_tr.hasClass("regionnaire-expanded")) {
@@ -882,102 +831,33 @@ function draw_regionnaire_data_table(table, challenge_data) {
       // get_regionnaire_flag's second argumemt being a true/false value of whether
       // you have been. By stating whether the completion percentage is above zero
       // we can calculate this on the fly
-      row.append($("<td/>").append(get_regionnaire_flag(country_region.name, completion_percentage > 0)).append($("<a/>").attr("name", country_region.name)))
-      row.append($("<td/>").append($("<b/>").text(country_region.name).click(expand_country).css('cursor', 'pointer')))
+      row.append($("<td/>").append(get_regionnaire_flag(countryName, countryCompletionPercentage > 0)).append($("<a/>").attr("name", countryName)))
+      row.append($("<td/>").append($("<b/>").text(countryName).click(expand_country).css('cursor', 'pointer')))
       row.append($("<td/>"))
-      row.append($("<td/>").text(completion_fraction_string))
+      row.append($("<td/>").text(countryCompletionFractionString))
       table.append(row)
 
-      // Iterate though each of the child regions (if they exist)
-      country_region.child_regions.forEach(function(country_sub_region_id) {
-        country_sub_region = challenge_data.unrolled_regions[country_sub_region_id]
-        var regionnaire_parent_region_class_sub_region = "regionnaire-parent-region-id-"+country_sub_region_id
+      // // Add the events for the country
+      // country_region.child_events.forEach(function(event_name) {
+      //   var completed_event = country_region.child_events_completed[event_name]
 
-        var regionnaire_country_sub_region_class = "regionnaire-country-"+country_id+"-sub-region-"+country_sub_region_id
-
-        if (country_sub_region.recursive_child_events_count > 0) {
-          // Calculate the proportion of parkruns completed.
-          // There should be no divide by zero here are we are only adding the region
-          //  if the country has child regions
-          var country_sub_region_completion_percentage = country_sub_region.recursive_child_events_completed / country_sub_region.recursive_child_events_count
-          var country_sub_region_completion_fraction_string = country_sub_region.recursive_child_events_completed +"/"+ country_sub_region.recursive_child_events_count
-
-
-          var expand_country_sub_region=function() {
-            var parent_tr = $(this).closest("tr")
-            if (parent_tr.hasClass("regionnaire-expanded")) {
-              // We need to collapse this section - and everything inside it
-              parent_tr.siblings('.'+regionnaire_parent_region_class_sub_region).each(function() {
-                $(this).hide()
-                // As we have collapsed everything, mark any sub elements as not expanded
-                $(this).removeClass("regionnaire-expanded")
-              })
-              parent_tr.removeClass("regionnaire-expanded")
-            } else {
-              // We need to expand this section, but only the top level things
-              // Only make visible those rows which have our country as the parent ID
-              var sibling_query = "."+regionnaire_parent_region_class_sub_region
-              parent_tr.siblings(sibling_query).each(function() {
-                $(this).show()
-              })
-              parent_tr.addClass("regionnaire-expanded")
-            }
-          }
-
-          var sub_region_row = $("<tr/>")
-          sub_region_row.addClass(regionnaire_country_class)
-          sub_region_row.addClass(regionnaire_parent_region_class_country)
-          sub_region_row.append($("<td/>"))
-          sub_region_row.append($("<td/>").append($("<b/>").append($("<i/>").text(country_sub_region.name))).click(expand_country_sub_region).css('cursor', 'pointer'))
-          sub_region_row.append($("<td/>"))
-          sub_region_row.append($("<td/>").text(country_sub_region_completion_fraction_string))
-          // Start the sub-region row hidden
-          sub_region_row.hide()
-          table.append(sub_region_row)
-        }
-
-        // Add the events for each sub-region
-        country_sub_region.child_events.forEach(function(event_name) {
-          var completed_event = country_sub_region.child_events_completed[event_name]
-
-          var event_row = $("<tr/>")
-          event_row.addClass(regionnaire_country_class)
-          event_row.addClass(regionnaire_parent_region_class_sub_region)
-          event_row.append($("<td/>"))
-          event_row.append($("<td/>").text(event_name))
-          if (completed_event !== undefined) {
-            event_row.append($("<td/>").text(completed_event.date))
-          } else {
-            event_row.append($("<td/>"))
-          }
-          event_row.append($("<td/>"))
-          // Start the event row hidden
-          event_row.hide()
-          table.append(event_row)
-        })
-
-      })
-
-      // Add the events for the top level countries with no sub-regions
-      country_region.child_events.forEach(function(event_name) {
-        var completed_event = country_region.child_events_completed[event_name]
-
-        var event_row = $("<tr/>", {class: regionnaire_country_class })
-        event_row.addClass(regionnaire_parent_region_class_country)
-        event_row.append($("<td/>"))
-        event_row.append($("<td/>").text(event_name))
-        if (completed_event !== undefined) {
-          event_row.append($("<td/>").text(completed_event.date))
-        } else {
-          event_row.append($("<td/>"))
-        }
-        event_row.append($("<td/>"))
-        // Start the event row hidden
-        event_row.hide()
-        table.append(event_row)
-      })
+      //   var event_row = $("<tr/>", {class: regionnaire_country_class })
+      //   event_row.addClass(regionnaire_parent_region_class_country)
+      //   event_row.append($("<td/>"))
+      //   event_row.append($("<td/>").text(event_name))
+      //   if (completed_event !== undefined) {
+      //     event_row.append($("<td/>").text(completed_event.date))
+      //   } else {
+      //     event_row.append($("<td/>"))
+      //   }
+      //   event_row.append($("<td/>"))
+      //   // Start the event row hidden
+      //   event_row.hide()
+      //   table.append(event_row)
+      // })
 
     }
+
   })
 
 }
