@@ -1,3 +1,64 @@
+
+/*
+ * Some volunteer roles have changed names, or a role has been deprecated,
+ * or it makes sense to know a role by another name. This attempts to do that.
+ * This has lots of problems, such as the ability to display them in a language
+ * other than English, but that's how it currently works.
+ */
+
+volunteer_roles_map = [
+    {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
+    {"shortname": "comms-person", "name": "Communications Person"},
+    {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+    {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
+    {"shortname": "setup", "name": "Pre-event Setup"},
+    {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
+    {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+    {"shortname": "sign-language", "name": "Sign Language Support"},
+    {"shortname": "marshal", "name": "Marshal"},
+    {"shortname": "tail-walker", "name": "Tail Walker"},
+    {"shortname": "run-director", "name": "Run Director"},
+    {"shortname": "lead-bike", "name": "Lead Bike"},
+    {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
+    {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
+    {"shortname": "photographer", "name": "Photographer"},
+    {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
+    {"shortname": "funnel-manager", "name": "Funnel Manager"},
+    {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+    {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+    {"shortname": "manual-entry", "name": "Number Checker"},
+    {"shortname": "close-down", "name": "Post-event Close Down"},
+    {"shortname": "results-processing", "name": "Results Processor"},
+    {"shortname": "token-sorting", "name": "Token Sorting"},
+    {"shortname": "run-report-writer", "name": "Run Report Writer"},
+    {"shortname": "other", "name": "Other"},
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+]
+
+function group_volunteer_data(volunteer_data) {
+  // Populate the results with the above
+
+  grouped_volunteer_data = []
+
+  volunteer_roles_map.forEach(function (role) {
+    grouped_volunteer_data[role["name"]] = 0
+    if (role["matching-roles"] !== undefined){
+        for (var i=0; i<role["matching-roles"].length; i++) {
+            if (role["matching-roles"][i] in volunteer_data) {
+                grouped_volunteer_data[role["name"]] += volunteer_data[role["matching-roles"][i]]
+            }
+        }
+    } else {
+      if (role.name in volunteer_data) {
+          // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+          grouped_volunteer_data[role["name"]] = volunteer_data[role.name]
+      }
+    }
+  })
+
+  return grouped_volunteer_data
+}
+
 /*
  * These functions provide a way to generate the data relating to challenge
  * based on the results provided to them. This includes if the challenge
@@ -56,13 +117,21 @@ function generate_running_challenge_data(data) {
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "full-ponty",
       "name": "The Full Ponty",
-      "data": ["Pontefract","Pontypool","Pontypridd"],
+      "data": ["Pontefract","Pontypool","Pontypridd","Pont y Bala"],
       "help": "Run at all the parkruns named ponty... or ponte..."}))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "pilgrimage",
       "name": "Bushy Pilgrimage",
       "data": ["Bushy Park"],
       "help": "Run at Bushy parkrun, where it all began."}))
+    // Note for the dates, the month is zero indexed (0-11), the day of the month is (1-31)
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "christmas-day",
+      "name": "Christmas Day",
+      "data": [
+        {"month": 11, "day": 25}
+      ],
+      "help": "Run a parkrun on the 25th of December."}))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
       "name":  "NYD Double",
@@ -71,6 +140,24 @@ function generate_running_challenge_data(data) {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
       "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "all-weather-runner",
+      "name": "All Weather Runner",
+      "data": [
+        {"month": 0},
+        {"month": 1},
+        {"month": 2},
+        {"month": 3},
+        {"month": 4},
+        {"month": 5},
+        {"month": 6},
+        {"month": 7},
+        {"month": 8},
+        {"month": 9},
+        {"month": 10},
+        {"month": 11},
+      ],
+      "help": "Run in each month of the year."}))
     challenge_data.push(challenge_in_a_year(data, {
       "shortname": "obsessive-bronze",
       "name": "Bronze Level Obsessive",
@@ -109,49 +196,14 @@ function generate_volunteer_challenge_data(data) {
 
   if (data.volunteer_data) {
     volunteer_data = data.volunteer_data
-    var volunteer_roles = [
-        {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
-        {"shortname": "comms-person", "name": "Communications Person"},
-        {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
-        {"shortname": "setup", "name": "Pre-event Setup"},
-        {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
-        {"shortname": "sign-language", "name": "Sign Language Support"},
-        {"shortname": "marshal", "name": "Marshal"},
-        {"shortname": "tail-walker", "name": "Tail Walker"},
-        {"shortname": "run-director", "name": "Run Director"},
-        {"shortname": "lead-bike", "name": "Lead Bike"},
-        {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
-        {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
-        {"shortname": "photographer", "name": "Photographer"},
-        {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
-        {"shortname": "funnel-manager", "name": "Funnel Manager"},
-        {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
-        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
-        {"shortname": "manual-entry", "name": "Number Checker"},
-        {"shortname": "close-down", "name": "Post-event Close Down"},
-        {"shortname": "results-processing", "name": "Results Processor"},
-        {"shortname": "token-sorting", "name": "Token Sorting"},
-        {"shortname": "run-report-writer", "name": "Run Report Writer"},
-        {"shortname": "other", "name": "Other"},
-        {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
-    ]
+
+    volunteer_roles = group_volunteer_data(volunteer_data)
 
     // Populate the results with the above
-    volunteer_roles.forEach(function (role) {
+    volunteer_roles_map.forEach(function (role) {
         var this_role_data = create_data_object(role, "volunteer")
         this_role_data.summary_text = ""
-        this_role_data.subparts_completed_count = 0
-        if (role["matching-roles"] !== undefined){
-            for (var i=0; i<role["matching-roles"].length; i++) {
-                if (role["matching-roles"][i] in volunteer_data) {
-                    this_role_data.subparts_completed_count += volunteer_data[role["matching-roles"][i]]
-                }
-            }
-        }
-        if (role.name in volunteer_data) {
-            // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
-            this_role_data.subparts_completed_count = volunteer_data[role.name]
-        }
+        this_role_data.subparts_completed_count = volunteer_roles[role["name"]]
         if (this_role_data.subparts_completed_count > 0) {
             this_role_data.summary_text = "x"+this_role_data.subparts_completed_count
             this_role_data.complete = true
@@ -331,6 +383,33 @@ function generate_stat_p_index(parkrun_results) {
   }
 }
 
+// The number of volunteer roles which have been performed at least _v_ times.
+// E.g. If you have volunteered in 4 different roles at least 4 times, your v-index
+// is 4.
+function generate_stat_v_index(volunteer_data) {
+
+  volunteer_roles = group_volunteer_data(volunteer_data)
+
+  var v_index = 0
+  var descending_tally = Object.keys(volunteer_roles).sort(function(a, b) {
+    return volunteer_roles[b] - volunteer_roles[a]
+  })
+  // Iterate through the roles, and as long as the number of times we have
+  // volunteered in the role is greater than the index value, increment the
+  // v-index
+  descending_tally.forEach(function(role_name, index) {
+    // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
+    if (volunteer_roles[role_name] > index) {
+      v_index += 1
+    }
+  })
+  return {
+    "display_name": "v-index",
+    "help": "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4.",
+    "value": v_index
+  }
+}
+
 // The maximum contiguous series of parkrun event numbers you have attended
 // (at any event), starting at 1.
 function generate_stat_wilson_index(parkrun_results) {
@@ -443,6 +522,45 @@ function generate_stat_tourist_quotient(parkrun_results) {
   }
 }
 
+// Maximum number of consecutive different parkrun events
+function generate_stat_longest_tourism_streak(parkrun_results) {
+  var t_streak = 0
+  let event_streak = []
+
+  parkrun_results.forEach(function (parkrun_event, index) {
+
+    // If we get a duplicate parkrun, chop off the start of the streak
+    // up until the streak becomes unique again.
+    //
+    // e.g.
+    // [1,2,3,4] - going to add [1]
+    // will chop off the first element with splice(0,1)
+    // [1,2,3,4,5,6] - going to add [3]
+    // will chop off the first 3 elements
+    if (event_streak.includes(parkrun_event.name)) {
+
+      var f = 0
+      var filteredElements = event_streak.some(function(item, index) {
+         f = index; return item == parkrun_event.name
+      })
+
+      event_streak.splice(0,f+1)
+
+    }
+
+    // Add the new parkrun in - it will be unique in the list as we removed the
+    // existing entries in the list above.
+    event_streak.push(parkrun_event.name)
+    t_streak = Math.max(t_streak, event_streak.length)
+
+  })
+  return {
+    "display_name": "Longest tourism streak",
+    "help": "The highest number of consecutive different events attended.",
+    "value": t_streak + " parkruns"
+  }
+}
+
 function generate_stat_runs_this_year(parkrun_results) {
   // Find those parkrun events that have been completed
   var runs_this_year = 0
@@ -541,14 +659,20 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   })
 
   var value = "None"
+  var url_link = undefined
   if (count > 0) {
-    value = (lat_sum/count).toFixed(5) + "," + (lon_sum/count).toFixed(5)
+    var lat_av = (lat_sum/count).toFixed(5)
+    var lon_av = (lon_sum/count).toFixed(5)
+    value =  lat_av + "," + lon_av
+    // Provide a link to an openstreetmap with a marker in the location
+    url_link = "https://www.openstreetmap.org/?mlat="+lat_av+"&mlon="+lon_av+"#map=9/"+lat_av+"/"+lon_av
   }
 
   return {
     "display_name": "Average parkrun lat/lon location",
     "help": "The average latitude/longitude of all your parkrun attendances.",
-    "value": value
+    "value": value,
+    "url": url_link
   }
 }
 
@@ -667,7 +791,7 @@ function generate_stats(data) {
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
     stats['tourist_quotient'] = generate_stat_tourist_quotient(data.parkrun_results)
-
+    stats['tourism_streak'] = generate_stat_longest_tourism_streak(data.parkrun_results)
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
@@ -688,6 +812,7 @@ function generate_stats(data) {
   if (data.info.has_volunteer_data) {
     stats['total_volunteer_roles'] = generate_stat_total_volunteer_roles(data.volunteer_data)
     stats['total_distinct_volunteer_roles'] = generate_stat_total_distinct_volunteer_roles(data.volunteer_data)
+    stats['v_index'] = generate_stat_v_index(data.volunteer_data)
   }
 
   return stats
@@ -698,34 +823,51 @@ function get_initial_letter(event_name) {
 }
 
 
+function get_flag_image_src(country) {
+  // Mapping countries to flag image files
+  var flag_map = {
+      "New Zealand": "nz",
+      "Australia": "au",
+      "Denmark": "dk",
+      "Finland": "fi",
+      "France": "fr",
+      "Germany": "de",
+      "Iceland": "is",
+      "Ireland": "ie",
+      "Italy": "it",
+      "Japan": "jp",
+      "Malaysia": "my",
+      "Canada": "ca",
+      "Namibia": "na",
+      "Norway": "no",
+      "Poland": "pl",
+      "Russia": "ru",
+      "Singapore": "sg",
+      "South Africa": "za",
+      "Swaziland": "sz",
+      "Sweden": "se",
+      "UK": "gb",
+      "USA": "us",
+      "Zimbabwe": "zw",
+      "World": "world"
+  }
+
+  var flag_src = browser.extension.getURL("/images/flags/flag-unknown.png")
+
+  if (country in flag_map) {
+    flag_src = browser.extension.getURL("/images/flags/"+flag_map[country]+".png")
+  }
+
+  return flag_src
+
+}
+
 function generate_global_tourism_data(parkrun_results, geo_data) {
     // Generate essentially the same results as the regionnaire challenge all over again
     // console.log("generate_global_tourism_data()")
     var global_tourism = []
 
-    // Mapping countries to flag image files
-    var flag_map = {
-        "New Zealand": "nz",
-        "Australia": "au",
-        "Denmark": "dk",
-        "Finland": "fi",
-        "France": "fr",
-        "Germany": "de",
-        // "Iceland"--
-        "Ireland": "ie",
-        "Italy": "it",
-        "Malaysia": "my",
-        "Canada": "ca",
-        "Norway": "no",
-        "Poland": "pl",
-        "Russia": "ru",
-        "Singapore": "sg",
-        "South Africa": "za",
-        "Sweden": "se",
-        "UK": "gb",
-        "USA": "us"
-        // "Zimbabwe"--
-    }
+
 
     regions = geo_data.data.regions
     events_completed_map = group_results_by_event(parkrun_results)
@@ -741,11 +883,7 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
             "name": top_level_country.name,
             "visited": false,
             "first_visited": top_level_country.first_ran_on,
-            "icon": browser.extension.getURL("/images/flags/flag-unknown.png")
-        }
-        // Update the icon if it exists
-        if (top_level_country.name in flag_map) {
-            country_info.icon = browser.extension.getURL("/images/flags/"+flag_map[top_level_country.name]+".png")
+            "icon": get_flag_image_src(top_level_country.name)
         }
 
         var child_events = find_region_child_events(top_level_country)
@@ -1662,6 +1800,151 @@ function challenge_single_parkrun_count(data, params) {
     return update_data_object(o)
 }
 
+function challenge_on_dates(data, params) {
+  var parkrun_results = data.parkrun_results
+  var o = create_data_object(params, "runner")
+
+  // This challenge looks to see that parkruns have been done on specific dates,
+  // therefore we are passed in a set of days/months to match. It's not fair to
+  // pass in a specific year as well, as no-one can work towards that, so we only
+  // allow month & day combinations. E.g. for Christmas, or to run in every month
+  // of the year, or perhaps even every date of the year, or Feb 29th or something -
+  // all of these should work
+  var challenge_dates = params.data // dates should be an array
+
+  // For each part in the dates to match, make an empty array of matching
+  // parkrun events.
+  o.subparts = []
+  if (challenge_dates !== undefined) {
+    $.each(challenge_dates, function (index, this_challenge_date) {
+      o.subparts[index] = []
+    })
+    if (challenge_dates.length > 1) {
+      // If there is more than one subpart, then create the parts to show in the
+      // ui
+      $.each(challenge_dates, function (index, this_challenge_date) {
+
+        subpart_name = this_challenge_date.month+"/"+this_challenge_date.day
+        if (this_challenge_date.month !== undefined && this_challenge_date.day === undefined) {
+          subpart_name = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')[this_challenge_date.month]
+        } else if (this_challenge_date.month === undefined && this_challenge_date.day !== undefined) {
+          subpart_name = this_challenge_date.day+"st/nd/rd/th"
+        }
+
+        o.subparts_detail[index] = {
+            "subpart": subpart_name
+        }
+
+      })
+    }
+  }
+
+  o.summary_text = "0"
+
+  // We might be able to put these on a map, but not right now
+  o.has_map = false
+
+  parkrun_results.forEach(function (parkrun_event) {
+
+    if (challenge_dates !== undefined) {
+      $.each(challenge_dates, function (index, this_challenge_date) {
+        // Default to not matching
+        var applicable_month = false
+        var applicable_day = false
+
+        // Check if the month matches (getMonth() - 0-11)
+        if (this_challenge_date.month !== undefined ) {
+          if (this_challenge_date.month == parkrun_event.date_obj.getMonth()) {
+            // console.log("Event matches the month for : " + JSON.stringify(this_challenge_date))
+            applicable_month = true
+          }
+        } else {
+          // There is no month to match, so it's a wildcard and always matches
+          applicable_month = true
+        }
+
+        // Check if the day of the month matches (getDate() - 1-31)
+        if (this_challenge_date.day !== undefined ) {
+          if (this_challenge_date.day == parkrun_event.date_obj.getDate()) {
+            // console.log("Event matches the day for : " + JSON.stringify(this_challenge_date))
+            applicable_day = true
+          }
+        } else {
+          // There is no day to match, so it's a wildcard and always matches
+          applicable_day = true
+        }
+
+        if (applicable_day && applicable_month) {
+          console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
+          // Append this completed parkrun to the correct subpart list
+          o.subparts[index].push(parkrun_event)
+        }
+
+      })
+    }
+
+  })
+
+  // Work out how many times we have completed the challenge by looking at
+  // how many events have been added for each subpart
+  var completion_count = undefined;
+  console.log(o.subparts)
+  o.subparts.forEach(function(events_for_this_date) {
+    if (completion_count === undefined) {
+      completion_count = events_for_this_date.length
+    } else {
+      completion_count = Math.min(completion_count, events_for_this_date.length)
+    }
+  })
+
+  if (completion_count > 0) {
+    o.complete = true
+  }
+
+  console.log("This challenge has been completed x" + completion_count)
+  o.subparts_completed_count = completion_count
+
+  // If there is only one date, we can reasonably list the date that the parkrunner
+  // achieved this challenge. If it is a string of dates, it's nearly impossible
+  // to do that in a sensible manner
+  if (o.subparts.length == 1) {
+    o.subparts[0].forEach(function(parkrun_event) {
+      o.subparts_detail.push({
+          "name": parkrun_event.name,
+          "date": parkrun_event.date,
+          "info": parkrun_event.date,
+          "subpart": o.subparts_detail.length + 1
+      })
+    })
+  } else {
+    // If there is more than one date, then lets list them all
+    $.each(challenge_dates, function(index, matching_date) {
+
+      if (o.subparts[index].length > 0) {
+        o.subparts_detail[index].name = "x"+o.subparts[index].length
+        o.subparts_detail[index].date = o.subparts[index][0].date
+        o.subparts_detail[index].info = o.subparts[index][0].date
+      }
+    })
+  }
+  // If there are no subparts listed, make it a dash
+  if (o.subparts_detail.length == 0) {
+      o.subparts_detail.push({
+          "subpart": o.subparts_detail.length + 1,
+          "info": "-"
+      })
+  }
+
+  // Change the summary to indicate number of times completed
+  if (o.subparts_completed_count > 0) {
+      o.summary_text = "x"+o.subparts_completed_count
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
+
+}
+
 function challenge_nyd_double(data, params) {
 
   var parkrun_results = data.parkrun_results
@@ -1839,10 +2122,39 @@ function challenge_in_a_year(data, params) {
     return update_data_object(o)
 }
 
+function unroll_regions(sorted_region_heirachy) {
+
+  summary = {}
+  iterate_unroll_regions(summary, sorted_region_heirachy, 0)
+  return summary
+
+}
+
+function iterate_unroll_regions(summary, region, parent_id) {
+
+  summary[region.id] = {
+    name: region.name,
+    parent_id: parent_id,
+    complete: region.complete,
+    completed_on: region.completed_on,
+    child_regions: region.child_regions.map(r => r.id),
+    child_events: region.child_events,
+    child_events_completed: region.child_events_completed,
+    // Recursive data, for all child regions and their children, downloads
+    recursive_child_events_completed: region.child_events_completed_count,
+    recursive_child_events_count: region.child_events_total,
+  }
+  region.child_regions.forEach(function(sub_region) {
+    iterate_unroll_regions(summary, sub_region, region.id)
+  })
+
+}
+
 function calculate_child_regions(regions, events_completed_map, parent_region) {
 
     var region_info = {
         'name': parent_region,
+        "id": regions[parent_region]["id"],
         "complete": false,
         "completed_on": null,
         "child_regions": [],
@@ -1938,6 +2250,9 @@ function challenge_by_region(data, params) {
     // console.log(sorted_region_heirachy)
 
     o.regions = sorted_region_heirachy
+
+    o.unrolled_regions = unroll_regions(sorted_region_heirachy)
+
     o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
 
     // Work out of any regions have been completed

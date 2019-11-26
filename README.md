@@ -40,7 +40,7 @@ browser-specific files and libraries from either `browser-extensions/chrome` or
 `browser-extensions/firefox` when the extension is built.
 
 Most of the images live in the top-level directory `images` so that they are
-shared between the extensions and the website, there are also copied into the
+shared between the extensions and the website, they are also copied into the
 extension when a build occurs.
 
 ### Build Dependencies
@@ -83,3 +83,42 @@ webstores.
 
 Each PR created, and when additional commits are pushed to existing PR branches,
 an additional build it run to build a copy of the website on staging.running-challenges.co.uk .
+
+# Adding a new volunteer role
+
+Occasionally parkrun create a new volunteer role, for example the "Car Park Marshall",
+which needs to be added in. By default the extension won't pick up these unknown
+roles, and they will need adding in in a few places:
+
+- Add the name of the role, and any known translations to `browser-extensions/common/js/lib/i18n.js`,
+  putting an entry in at least the `default` section.
+- Add the `name` and a suitable `shortname` to the `generate_volunteer_challenge_data()`
+  function in `browser-extensions/common/js/lib/challenges.js`
+- Create the new badge as a layer in `images/badges/256x256/badges.xcf`, and export
+  it as a `.png` file.
+- Follow the instructions in `images/badges/README.md` to generate the star badges.
+- Update `website/_data/badges.yml` with a section for the additional role
+
+# Releasing a new version
+
+1. When everything has been tested and merged into master, tag master with the
+version in `build/version.sh`. This will trigger a Travis build to push the built
+zips to a Github release.
+    ```
+    git tag v0.7.5
+    git push origin v0.7.5
+    ```
+1. Watch the [Travis build](https://travis-ci.org/fraz3alpha/running-challenges) run.
+1. Head over to the [releases](https://github.com/fraz3alpha/running-challenges/releases)
+tab in Github and find the release for the [version you tagged](https://github.com/fraz3alpha/running-challenges/releases/tag/v0.7.5).
+1. Edit the release with any information that you may want to include in release notes, or perhaps form the basis of the blog post.
+1. Download the zips and test them in Chrome and Firefox to check they load and don't give any errors - load a couple of profiles and if you have added some new countries or badges, check those.
+    - In Firefox, go to `about:debugging` and load a temporary add-on
+    - In Chrome, go to `chrome://extensions` and load an unpacked extension
+1. Go to the [Chrome webstore](https://chrome.google.com/webstore/developer/dashboard) and upload the new version.
+1. Go to the [Mozilla Add-ons site](https://addons.mozilla.org/en-GB/firefox/) and upload the new version. Make sure to check that it is compatible with Android, this is unchecked by default. Add the release notes when asked.
+1. Complete the release by creating a PR to include:
+    - Prepare for the next release by updating the version string in `build/version.sh`
+      to the next appropriate number (this can always be changed later)
+    - Add a blog post in `website/_posts` - just copy the last release and change
+      the pertinent bits.

@@ -25,46 +25,6 @@ function get_table(id, caption) {
     })
 }
 
-function add_global_tourism_flags(div, data) {
-
-    flags_p = $("p", div)
-    flags_p.empty()
-
-    var index_counter = 1
-    data.sort(function (o1,o2) {
-        // Equal
-        if (o1.first_visited === o2.first_visited) {
-            return 0
-        }
-        // If either are null they should go to the back
-        if (o1.first_visited === null) {
-            return 1
-        }
-        if (o2.first_visited === null) {
-            return -1
-        }
-        return o1.first_visited - o2.first_visited
-    }).forEach(function (country) {
-        if (country.visited) {
-            // Find out when it was first run and make a nice string
-            var first_run = country.first_visited.toISOString().split("T")[0]
-            var img = $('<img>');
-            img.attr('src', country.icon);
-            img.attr('alt',country.name)
-            img.attr('title',country.name+": "+first_run)
-            img.attr('width',48)
-            img.attr('height',48)
-            img.attr('style', 'padding-left:6px; padding-right:6px')
-            flags_p.append(img)
-
-            if (index_counter > 0 && index_counter % 8 == 0) {
-                flags_p.append($('<br/>'))
-            }
-            index_counter += 1
-        }
-    })
-}
-
 function add_challenge_badges(div, data) {
 
   console.log('Adding '+JSON.stringify(data)+' to '+ div)
@@ -162,11 +122,11 @@ function parse_results_table() {
           table_cells = $("td", this)
           if (table_cells.length > 0) {
               // Find the name and other interesting bits of data for this parkrun
-              parkrun_name = table_cells[0].innerText
-              parkrun_date = table_cells[1].innerText
-              parkrun_event_number = table_cells[2].innerText
-              parkrun_position = table_cells[3].innerText
-              parkrun_time = table_cells[4].innerText
+              parkrun_name = table_cells[0].innerText.trim()
+              parkrun_date = table_cells[1].innerText.trim()
+              parkrun_event_number = table_cells[2].innerText.trim()
+              parkrun_position = table_cells[3].innerText.trim()
+              parkrun_time = table_cells[4].innerText.trim()
               parkrun_pb = table_cells[6].innerText.trim()
 
               // Create a date object, useful for comparing
@@ -379,6 +339,9 @@ function add_flags(div_id, data) {
         if (country.visited) {
             // Find out when it was first run and make a nice string
             var first_run = country.first_visited.toISOString().split("T")[0]
+
+            var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
+
             var img = $('<img>');
             img.attr('src', country.icon);
             img.attr('alt',country.name)
@@ -386,7 +349,9 @@ function add_flags(div_id, data) {
             img.attr('width',48)
             img.attr('height',48)
             img.attr('style', 'padding-left:6px; padding-right:6px')
-            flags_div.append(img)
+
+            regionnaire_link.append(img)
+            flags_div.append(regionnaire_link)
 
             if (index_counter > 0 && index_counter % 8 == 0) {
                 flags_div.append($('<br/>'))
@@ -507,6 +472,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   data.info.has_challenge_results = (data.challenge_results !== undefined)
   data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
   data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
+  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
   data.stats = generate_stats(data)
   // Update info with boolean for the presence of stats

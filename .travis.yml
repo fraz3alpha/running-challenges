@@ -14,7 +14,9 @@ before_script:
  - npm install -g web-ext
 
 script:
-   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./build/website/build-staging.sh; fi'
+   # Only build the staging website if the github token is available, which means
+   # that it will only happen for PRs from our own repo, not forks.
+   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then if [ "$RUNNING_CHALLENGES_GITHUB_TOKEN" != "" ]; then bash ./build/website/build-staging.sh; fi; fi'
    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./build/website/build.sh; fi'
    - './build/extension-chrome/build.sh'
    - './build/extension-firefox/build.sh'

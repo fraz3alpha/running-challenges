@@ -1,0 +1,3 @@
+[submodule "running-challenges-data"]
+	path = running-challenges-data
+	url = https://github.com/fraz3alpha/running-challenges-data.git
