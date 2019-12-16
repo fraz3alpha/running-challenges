@@ -8,9 +8,9 @@ We occasionally get asked by people if they can use parts of the Running Challen
 
 ## Source code licence
 
-The source code behind the extension is publicly available on [GitHub.com](https://github.com/fraz3alpha/running-challenges), a popular code-sharing website. It's good practice, when sharing source code, to explicitly state the licence of the code. The Running Challenges source code is licensed with the Open Source [MIT License](https://spdx.org/licenses/MIT.html). We used the MIT licence because, although the code is ours (our copyright), most of the ideas it implements are not. Many of the challenges come from the parkrun tourist community, and the website it extends comes from parkrun HQ. So it only seemed right to make the code available for anyone to reuse in any way.
+The source code behind the extension is publicly available on [GitHub.com](https://github.com/fraz3alpha/running-challenges) and is licensed with the Open Source [MIT License](https://spdx.org/licenses/MIT.html). We used the MIT licence to make the code available for anyone to reuse in any way. Although the code is ours (our copyright), most of the ideas it implements are not. Many of the challenges come from the parkrun tourist community, and the website it extends comes from parkrun HQ.
 
-That said, we don't want to harm parkrun. We wrote Running Challenges as a browser extension instead of re-hosting the data in separate website because the data belongs to parkrun. We also didn't want to take users away from the parkrun website (for sponsorship and advertising reasons). The extension just enhances what users see when visiting the official parkrun websites. If you use our code, please abide by this ethos.
+We wrote Running Challenges as a browser extension instead of re-hosting the data in separate website because the data belongs to parkrun. We also didn't want to take users away from the parkrun website (for sponsorship and advertising reasons). The extension just enhances what users see when visiting the official parkrun websites. If you use our code, please abide by this ethos.
 
 ## Badges, text, and other images licence
 
