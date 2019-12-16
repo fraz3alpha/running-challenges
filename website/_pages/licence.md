@@ -14,7 +14,7 @@ We wrote Running Challenges as a browser extension instead of re-hosting the dat
 
 ## Badges, text, and other images licence
 
-Our main contribution to Running Challenges is the challenge badges: both the idea of getting badges for completing the challenges and the images themselves. We've licensed the images, text, and any other media, separately from the code using [Creative Commons (CC-by-nc-nd)](https://creativecommons.org/licenses/by-nc-nd/4.0/). We spent a bit of time thinking about this because the badge images are the thing that most people are interested in reusing for various purposes.
+Our main contribution to Running Challenges is the challenge badges: both the idea of getting badges for completing the challenges and the images themselves. We've licensed the images, text, and any other media, separately from the code using [Creative Commons (CC-by-nc-nd)](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 The Creative Commons licence is really easy to read, so please [start there](https://creativecommons.org/licenses/by-nc-nd/4.0/). In addition, here are some concrete examples that hopefully clarify the ways in which we would like people to be able to use (and not use) the badges etc outside of the Running Challenges extension and website:
 
