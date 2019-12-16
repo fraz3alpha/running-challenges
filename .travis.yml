@@ -12,6 +12,8 @@ before_script:
  - chmod +x ./build/extension-chrome/build.sh
  - chmod +x ./build/extension-firefox/build.sh
  - npm install -g web-ext
+ - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
+ - gem install bundler -v 1.16.1
 
 script:
    # Only build the staging website if the github token is available, which means
