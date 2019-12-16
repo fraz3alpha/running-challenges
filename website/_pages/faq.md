@@ -34,6 +34,9 @@ All your data is kept on the parkrun website and in your web browser (much the
 same way as it is when you visit the webpage without the extension - it's just
 more fun this way!), no data is transmitted or stored anywhere else.
 
+**Can I use the Running Challenges badge images for something else?**
+Take a look at our [licence page](/licence) for answers to common questions about how you can use the Running Challenges badge images and other parts of the Running Challenges extension.
+
 ## Limitations
 
 #### Why can't I have a grace period for the 'Regionnaire' challenge?
