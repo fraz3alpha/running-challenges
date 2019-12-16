@@ -26,7 +26,7 @@ The Creative Commons licence is really easy to read, so please [start there](htt
 
     Yes, as long as they're for your own (or immediate family's) personal use.
 
-    TODO pic of Andy wearing t-shirt if get permission from Danny and credit him
+    ![Andy with his challenge badges (Photo by Danny Norman.)]({{ site.baseurl }}/img/pages/andy-badgetshirt-dannynorman-10pc.jpg "Andy with his challenge badges (Photo by Danny Norman.)"){: .center-image .image-border}
 
     Specifically, we're aware that a few people have had the Running Challenges badges they've gained printed as pins, magnets, etc. That's fine, but please don't use our images to make bulk orders for wider distribution. We get that it's cheaper the more you order at once, we really do, but please don't sell them on, even if you aren't planning to make a profit. Thank you.
 
