@@ -24,9 +24,13 @@ css_libs:
   - map.css
 ---
 
-The following map lists the special events over the Christmas/New Year period for
-2018/2019. We will revisit this map later in 2019 with updated data for the
-2019/2020 extra-parkrun season!
+The following map lists the special events over the 2019/20 Christmas/New Year period.
+
+This data was collated on 2019-12-19, by which time all events should have submitted their
+intended start times (if they are doing the extra events). Please bear in mind this data may
+still change, so please check the appropriate parkrun's webpage for confirmation before making the trip.
+
+Happy festive parkrunning!
 
 <div id="mapid"></div>
 <br/>
