@@ -9,8 +9,8 @@ javascript_libs:
   - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
   - third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
   - leaflet-slidemenu/leaflet-sidemenu.js
-  - data/geo.js
-  - data/special-events.js
+  - data/geo-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
+  - data/special-events-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
 javascript_onload:
   - file: map.js
     function: draw_map('mapid')
