@@ -122,29 +122,3 @@ tab in Github and find the release for the [version you tagged](https://github.c
       to the next appropriate number (this can always be changed later)
     - Add a blog post in `website/_posts` - just copy the last release and change
       the pertinent bits.
-
-# Special Events
-
-There was a simple time when the special events were Christmas and New Year, this meant that the 
-events had a easily named season - e.g. "2018-19", "2019-20". But now that parkrun is in ever
-more countries, the special events occur throughout the calendar year, including Chinese New Year,
-Reunification Day in Germany, Canada Day etc... - these don't fit into what we had previously called
-2018-19, as now we have to ask does a special event in October count as late in the season or early?
-
-So, we are going to have to think about this more sensibly, and just include a year. This then 
-needs some extra logic to decide when updates for that event happen, when to include it on the map,
-and which year to include on the map.
-
-I propose:
-- We generate a file for each special event date, for each year.
-- We only update the list for a given date for a period of 2 months before, and zero days after, the event date.
-- The map on the website will show the data for the next event during these two months, 
-  and until the next year's event is shown.
-
-Some queries:
-- When does the list get reset?
-
-Fortunately, the website seems to currently list the year for the data, e.g.
-- UK: "Christmas & New Year Compendium – 2019/20"
-- DE: "Kompendium für den 3. Oktober (Tag der Deutschen Einheit) & Neujahr 2019/20"
-- SG: "Special Events – 2020" (NYD & Chinese NY)
