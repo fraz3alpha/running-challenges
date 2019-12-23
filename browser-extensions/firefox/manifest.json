@@ -52,6 +52,7 @@
           "js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js",
           "js/lib/third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js",
           "js/lib/third-party/leaflet-piechart/leaflet-piechart-0.1.2.js",
+          "js/lib/third-party/d3-voronoi/d3-voronoi.js",
           "js/lib/i18n.js",
           "js/lib/challenges.js",
           "js/lib/challenges_ui.js",
