@@ -43,6 +43,9 @@ cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 
+# Write out the version file
+echo "var extensionVersion = \"${EXTENSION_BUILD_VERSION}\"" > ${TMP_BUILD_DIR}/js/lib/version.js
+
 # Copy the extras libraries and code for Firefox
 # None at the moment
 

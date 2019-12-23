@@ -46,6 +46,8 @@ function generate_challenge_table() {
     help_td.append(options_link)
     help_td.append(" | ")
     help_td.append(help_link)
+    help_td.append(" | ")
+    help_td.append("v" + extensionVersion)
 
     table.append($('<tr></tr>').append(help_td))
 
