@@ -36,6 +36,7 @@ cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/js/lib/third-part
 cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/d3-voronoi ${TMP_BUILD_DIR}/js/lib/third-party/
 
 # Copy the common code
 cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
