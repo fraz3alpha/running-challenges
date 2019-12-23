@@ -1133,7 +1133,7 @@ function challenge_start_letters(data, params) {
                         // Add the event
                         p = Object.create(parkrun_event)
                         p.subpart = initial_letter
-						p.name = p.eventlink
+                        p.name = p.eventlink
                         p.info = p.datelink
                         o.subparts_detail[i] = p
                         o.subparts_completed_count += 1
@@ -1257,7 +1257,7 @@ function challenge_words(data, params) {
                     // Add the event
                     p = Object.create(parkrun_event)
                     p.subpart = o.subparts[i]
-					p.name = p.eventlink
+                    p.name = p.eventlink
                     p.info = p.datelink
                     o.subparts_detail[i] = p
                     o.subparts_completed_count += 1
@@ -1342,7 +1342,7 @@ function challenge_parkruns(data, params) {
 
             p = Object.create(events[parkrun_name][0])
             p.subpart = o.subparts[subparts_index]
-			p.name = p.eventlink
+            p.name = p.eventlink
             p.info = p.datelink
             o.subparts_detail[subparts_index] = p
             o.subparts_completed_count += 1
@@ -1404,7 +1404,7 @@ function challenge_tourist(data, params) {
                 // Add it in for the next complete subpart
                 p = Object.create(parkrun_event)
                 p.subpart = o.subparts_completed_count
-				p.name = p.eventlink
+                p.name = p.eventlink
                 p.info = p.datelink
                 o.subparts_detail.push(p)
 
@@ -1560,7 +1560,7 @@ function challenge_stopwatch_bingo(data, params) {
         if (o.subparts_detail[subparts_detail_index] == null) {
             o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
             o.subparts_detail[subparts_detail_index].subpart = seconds
-			o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
+            o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
             o.subparts_detail[subparts_detail_index].info = parkrun_event.time
             o.subparts_completed_count += 1
 
