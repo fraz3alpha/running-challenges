@@ -387,6 +387,36 @@ var domains = {
         "table_all_results": "すべての結果",
         "link_view_stats_for_all_parkruns": "この登録者のすべてのparkrunの記録を見る。",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "この登録者のすべてのparkrunの記録を見る。",
+        // Volunteer roles are in JAPANESE largely provided by Bill Steffancin (A4782624) via email
+        "text_volunteer_role_map": {
+            "用具管理係": "Equipment Storage and Delivery",
+            // "": "Communications Person",
+            "ボランティア・コーディネーター": "Volunteer Co-ordinator",
+            "イベント準備係": "Pre-event Setup",
+            "初参加者への説明係": "First Timers Briefing",
+            // "": "Sign Language Support",
+            "コース誘導係": "Marshal",
+            "最後尾確認係": "Tail Walker",
+            "ランディレクター": "Run Director",
+            // "": "Lead Bike",
+            // "": "Pacer (5k only)",
+            // "": "VI Guide",
+            // "カメラマン": "Photographer",
+            "タイム計測係": "Timekeeper",
+            // "": "Backup Timer", // Have never had it
+            "着順確認係": "Funnel Manager",
+            "フィニッシュ・トークン係補助": "Finish Tokens",
+            "フィニッシュ後サポート係": "Finish Token Support",
+            "バーコード・スキャン係": "Barcode Scanning",
+            // "": "Number Checker",
+            "イベント後片付け係": "Post-event Close Down",
+            "結果集計係": "Results Processor",
+            "フィニッシュ・トークン整理係": "Token Sorting",
+            "レポート作成係": "Run Report Writer",
+            "その他": "Other",
+            // "": "Warm Up Leader (junior events only)",
+            // "": "Car Park Marshal"
+        }
     },
 }
 
