@@ -134,7 +134,6 @@
   "permissions": [
     "activeTab",
     "storage",
-    "tabs",
     "https://www.parkrun.org.uk/",
     "https://wiki.parkrun.com/"
   ],
