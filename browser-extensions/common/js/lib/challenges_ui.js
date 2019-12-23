@@ -213,7 +213,7 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Note: Only currenty active events are included in the map and stats</td>'))
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Note: Only currently active events are included in the map and stats</td>'))
     challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
@@ -226,6 +226,29 @@ function generateRegionnaireTableEntry(table, data) {
 
     // create_regionnaire_map(regionnaire_map_id, data, challenge)
   }
+}
+
+function zoomLevelToPointRadius(zoomLevel) {
+  var pointRadius = 1.5
+  if (zoomLevel >= 8) {
+    pointRadius = 2
+  }
+  if (zoomLevel >= 10) {
+    pointRadius = 3
+  }
+  if (zoomLevel >= 12) {
+    pointRadius = 4
+  }
+
+  return pointRadius
+}
+
+function zoomLevelToLineWidth(zoomLevel) {
+  var lineWidth = 1
+  if (zoomLevel >= 11) {
+    lineWidth = 2
+  }
+  return lineWidth
 }
 
 function createVoronoiMapPrototype() {
@@ -385,7 +408,7 @@ function createVoronoiMapPrototype() {
         // console.log("Drawing circle for " + JSON.stringify(cell))
         item_circle.setAttribute("cx", cell.data.x)
         item_circle.setAttribute("cy", cell.data.y)
-        item_circle.setAttribute("r", 2)
+        item_circle.setAttribute("r", zoomLevelToPointRadius(vmap.getZoom()))
         item_circle.setAttribute("stroke", "gray")
         item_circle.setAttribute("stroke-width", "1")
         item_circle.setAttribute("fill", "black")
@@ -401,11 +424,11 @@ function createVoronoiMapPrototype() {
         var item_path = document.createElement("path")
         item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
         item_path.setAttribute("stroke", "gray")
-        item_path.setAttribute("stroke-width", "0.5")
+        item_path.setAttribute("stroke-width", zoomLevelToLineWidth(vmap.getZoom()))
         item_path.setAttribute("fill", filtered_points[index].fill) //Math.random() > 0.5 ? "green" : "none")
         item_path.setAttribute("fill-opacity", "0.5")
 
-        // cell_group.appendChild(item_circle)
+        cell_group.appendChild(item_circle)
         cell_group.appendChild(item_path)
         // console.log(cell_group)
         this_container.appendChild(cell_group)
@@ -667,237 +690,239 @@ function showCountryEvents(map_data, data, countryId, depth) {
 
 var vmap
 
-function create_voronoi_map(map_id, data) {
-  console.log(map_id)
-  console.log(data)
+// function create_voronoi_map(map_id, data) {
+//   console.log(map_id)
+//   console.log(data)
 
-  var map_element = $('div[id="'+map_id+'"]').first()
-  map_element.height(500)
+//   var map_element = $('div[id="'+map_id+'"]').first()
+//   map_element.height(500)
 
-  var map_centre_lat_lon = [51.0632, -1.308]
+//   var map_centre_lat_lon = [51.0632, -1.308]
 
-  vmap = L.map(map_id).setView(map_centre_lat_lon, 10);
+//   vmap = L.map(map_id).setView(map_centre_lat_lon, 10);
 
-  var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  })
-  tilelayer_openstreetmap.addTo(vmap)
+//   var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//   })
+//   tilelayer_openstreetmap.addTo(vmap)
 
-  // http://usabilityetc.com/2016/06/how-to-create-leaflet-plugins/ has proved useful
-  L.VoronoiLayer = L.Layer.extend({
+//   // http://usabilityetc.com/2016/06/how-to-create-leaflet-plugins/ has proved useful
+//   L.VoronoiLayer = L.Layer.extend({
 
-      initialize: function(data) {
-        console.log('Voronoi Layer - initialize()')
-        this._data = data
-      },
+//       initialize: function(data) {
+//         console.log('Voronoi Layer - initialize()')
+//         this._data = data
+//       },
 
-      onAdd: function(map) {
-        console.log('Voronoi Layer - onAdd()')
-          // var nw_point = map.latLngToLayerPoint(bounds.getNorthWest())
-          // Store the map
-          this._map = map
+//       onAdd: function(map) {
+//         console.log('Voronoi Layer - onAdd()')
+//           // var nw_point = map.latLngToLayerPoint(bounds.getNorthWest())
+//           // Store the map
+//           this._map = map
 
-          var pane = map.getPane(this.options.pane);
-          this._pane = pane
+//           var pane = map.getPane(this.options.pane);
+//           this._pane = pane
 
-          // this._container = L.DomUtil.create("svg", "leaflet-zoom-hide")
-          // this._pane.appendChild(this._container);
-          //
-          // this._container = $("<svg/>")
-          //     .attr('id', 'overlay')
-          //     .attr("class", "leaflet-zoom-hide")
-          //     .attr("width", map.getSize().x + 'px')
-          //     .attr("height", map.getSize().y + 'px')
-          //     .css({
-          //       "margin-left": nw_point.x + "px",
-          //       "margin-top": nw_point.y + "px"
-          //     })
-          //
-          // pane.appendChild(this._container);
+//           // this._container = L.DomUtil.create("svg", "leaflet-zoom-hide")
+//           // this._pane.appendChild(this._container);
+//           //
+//           // this._container = $("<svg/>")
+//           //     .attr('id', 'overlay')
+//           //     .attr("class", "leaflet-zoom-hide")
+//           //     .attr("width", map.getSize().x + 'px')
+//           //     .attr("height", map.getSize().y + 'px')
+//           //     .css({
+//           //       "margin-left": nw_point.x + "px",
+//           //       "margin-top": nw_point.y + "px"
+//           //     })
+//           //
+//           // pane.appendChild(this._container);
 
-          map.on('zoomend viewreset moveend', this._update, this);
-          this._update()
-      },
+//           map.on('zoomend viewreset moveend', this._update, this);
+//           this._update()
+//       },
 
-      onRemove: function(map) {
-        console.log('Voronoi Layer - onRemove()')
-          L.DomUtil.remove(this._container);
-          map.off('zoomend viewreset', this._update, this);
-      },
+//       onRemove: function(map) {
+//         console.log('Voronoi Layer - onRemove()')
+//           L.DomUtil.remove(this._container);
+//           map.off('zoomend viewreset', this._update, this);
+//       },
 
-      _update: function() {
-        console.log('Voronoi Layer - _update()')
+//       _update: function() {
+//         console.log('Voronoi Layer - _update()')
 
-        // Remove the existing SVG container
-        // L.DomUtil.remove(this._container)
-        L.DomUtil.empty(this._pane)
+//         // Remove the existing SVG container
+//         // L.DomUtil.remove(this._container)
+//         L.DomUtil.empty(this._pane)
 
-        // Create a new SVG container, we will add everything to this
-        // before adding it to the DOM.
-        var this_container = L.DomUtil.create("svg", "leaflet-zoom-hide")
+//         // Create a new SVG container, we will add everything to this
+//         // before adding it to the DOM.
+//         var this_container = L.DomUtil.create("svg", "leaflet-zoom-hide")
 
-        var vmap = this._map
-        var bounds = vmap.getBounds()
-        // var padded_bounds = bounds.pad(0.4)
-        // var padded_bounds = bounds.pad(100)
-        var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
+//         var vmap = this._map
+//         var bounds = vmap.getBounds()
+//         // var padded_bounds = bounds.pad(0.4)
+//         // var padded_bounds = bounds.pad(100)
+//         var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
 
-    		var size = vmap.getSize()
+//     		var size = vmap.getSize()
 
-    		// set size of svg-container if changed
-    		// if (!this._svgSize || !this._svgSize.equals(size)) {
-    		// 	this._svgSize = size;
-    			this_container.setAttribute('width', size.x);
-    			this_container.setAttribute('height', size.y);
-          //       .style("margin-left", topLeft.x + "px")
-          //       .style("margin-top", topLeft.y + "px");
-          this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
-
-
-        // Work out which points are within the acceptabled padded bounds
-        var filtered_points = []
-        var layer_data = this._data
-        var completed_events = {}
-        $.each(layer_data.parkrun_results, function(index, parkrun_event) {
-          completed_events[parkrun_event.name] = true
-        })
-        // console.log(layer_data)
-        $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
-          if (event_has_valid_location(event_info)) {
-            lat_lon = [+event_info.lat, +event_info.lon]
-            // if (padded_bounds.contains(lat_lon)) {
-            // console.log(event_name + " " + lat_lon)
-            // Add the point to the array
-            var point = vmap.latLngToLayerPoint(lat_lon);
-            event_info.x = point.x
-            event_info.y = point.y
-            event_info.fill = "none"
-            if (completed_events[event_info.name] == true) {
-              event_info.fill = "green"
-            }
-            filtered_points.push(event_info)
-            // }
-          }
-
-        })
-
-        var voronoi = d3.voronoi()
-          .x(function(d) { return d.x; })
-          .y(function(d) { return d.y; });
-
-        // As we are using the .polygons() we need to set an extent so that things
-        // don't go wrong at the edges. Ordinarily we should set an extent of
-        // the size of the canvas, but for those cases where the canvas includes
-        // +/-180degrees, we need to crop the diagram there otherwise it goes
-        // weird when the lines expand into the repeated map provided by openstreetmap
-
-        // Find the left and right corners of the world :)
-        map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
-        map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
-
-        // console.log("Edges of the world: "+map_point_left_edge+" , "+map_point_right_edge)
-
-        // Default extents are the edges of the canvas, but if these take it over
-        // the edges of the world according to the calculations above, we box
-        // them in.
-        voronoi_extent_left = [Math.max(top_left.x, map_point_left_edge.x), Math.max(top_left.y, map_point_left_edge.y)]
-        voronoi_extent_right = [Math.min(top_left.x+size.x, map_point_right_edge.x), Math.min(top_left.y+size.y, map_point_right_edge.y)]
-
-        voronoi.extent([voronoi_extent_left, voronoi_extent_right]);
-
-        var voronoi_data = voronoi(filtered_points)
-
-        // For reference:
-        // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
-
-        // var cell_group = $("<g/>")
-        var cell_group = document.createElement("g")
-        cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
-        // L.DomUtil.setPosition(cell_group, [-top_left.x, -top_left.y]);
-
-        // console.log(cell_group)
-
-        var voronoi_polygons = voronoi_data.polygons()
-
-        $.each(voronoi_polygons, function(index, cell) {
-
-          // If there is no cell data, then keep looping
-          if (cell === undefined) {
-            // console.log("Undefined cell data at index "+index)
-            return true
-          }
-
-          // var item_circle = $("<circle/>")
-          //   .attr("cx", cell.data.x)
-          //   .attr("cy", cell.data.y)
-          //   .attr("r", 20)
-          //   .attr("stroke", "red")
-          //   .attr("stroke-width", "1")
-          //   .attr("fill", "red")
-
-          var item_circle = document.createElement("circle")
-          // console.log("Drawing circle for " + JSON.stringify(cell))
-          item_circle.setAttribute("cx", cell.data.x)
-          item_circle.setAttribute("cy", cell.data.y)
-          item_circle.setAttribute("r", 2)
-          item_circle.setAttribute("stroke", "gray")
-          item_circle.setAttribute("stroke-width", "1")
-          item_circle.setAttribute("fill", "black")
-          // console.log(item_circle)
-
-          // var item_path = $("<path/>")
-          //   .attr("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
-          //   .attr("stroke", "red")
-          //   .attr("stroke-width", "1")
-          //   .attr("fill", Math.random() > 0.5 ? "green" : "none")
-          //   .attr("fill-opacity", "0.5")
-
-          var item_path = document.createElement("path")
-          item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
-          item_path.setAttribute("stroke", "gray")
-          item_path.setAttribute("stroke-width", "0.5")
-          item_path.setAttribute("fill", filtered_points[index].fill) //Math.random() > 0.5 ? "green" : "none")
-          item_path.setAttribute("fill-opacity", "0.5")
-
-          // cell_group.appendChild(item_circle)
-          cell_group.appendChild(item_path)
-          // console.log(cell_group)
-          this_container.appendChild(cell_group)
-
-        })
-
-        // console.log("Map to add:")
-        // console.log(this_container)
-
-        // Store the SVG container in the object
-        this._container = this_container
-        // Add the SVG to the map
-        // this._pane.appendChild(this._container);
-        // $(this._container).append(svg.prop('outerHTML'))
-        $(this._pane).append($(this_container).prop('outerHTML'))
-
-      }
-  });
-
-  L.voronoiLayer = function(options) {
-    return new L.VoronoiLayer(options)
-  }
-
-  var voronoi_layer = L.voronoiLayer(data)
-  voronoi_layer.addTo(vmap)
+//     		// set size of svg-container if changed
+//     		// if (!this._svgSize || !this._svgSize.equals(size)) {
+//     		// 	this._svgSize = size;
+//     			this_container.setAttribute('width', size.x);
+//     			this_container.setAttribute('height', size.y);
+//           //       .style("margin-left", topLeft.x + "px")
+//           //       .style("margin-top", topLeft.y + "px");
+//           this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
 
 
-  // // Ideas taken from https://chriszetter.com/blog/2014/06/15/building-a-voronoi-map-with-d3-and-leaflet/
-  // var voronoi_layer = {
-  //   onAdd: function(map) {
-  //     map.on('viewreset moveend', draw_voronoi_layer, data);
-  //     draw_voronoi_layer(data);
-  //   }
-  // };
-  //
-  // vmap.addLayer(voronoi_layer);
+//         // Work out which points are within the acceptabled padded bounds
+//         var filtered_points = []
+//         var layer_data = this._data
+//         var completed_events = {}
+//         $.each(layer_data.parkrun_results, function(index, parkrun_event) {
+//           completed_events[parkrun_event.name] = true
+//         })
+//         // console.log(layer_data)
+//         $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
+//           if (event_has_valid_location(event_info)) {
+//             lat_lon = [+event_info.lat, +event_info.lon]
+//             // if (padded_bounds.contains(lat_lon)) {
+//             // console.log(event_name + " " + lat_lon)
+//             // Add the point to the array
+//             var point = vmap.latLngToLayerPoint(lat_lon);
+//             event_info.x = point.x
+//             event_info.y = point.y
+//             event_info.fill = "none"
+//             if (completed_events[event_info.name] == true) {
+//               event_info.fill = "green"
+//             }
+//             filtered_points.push(event_info)
+//             // }
+//           }
 
-}
+//         })
+
+//         var voronoi = d3.voronoi()
+//           .x(function(d) { return d.x; })
+//           .y(function(d) { return d.y; });
+
+//         // As we are using the .polygons() we need to set an extent so that things
+//         // don't go wrong at the edges. Ordinarily we should set an extent of
+//         // the size of the canvas, but for those cases where the canvas includes
+//         // +/-180degrees, we need to crop the diagram there otherwise it goes
+//         // weird when the lines expand into the repeated map provided by openstreetmap
+
+//         // Find the left and right corners of the world :)
+//         map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
+//         map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
+
+//         // console.log("Edges of the world: "+map_point_left_edge+" , "+map_point_right_edge)
+
+//         // Default extents are the edges of the canvas, but if these take it over
+//         // the edges of the world according to the calculations above, we box
+//         // them in.
+//         voronoi_extent_left = [Math.max(top_left.x, map_point_left_edge.x), Math.max(top_left.y, map_point_left_edge.y)]
+//         voronoi_extent_right = [Math.min(top_left.x+size.x, map_point_right_edge.x), Math.min(top_left.y+size.y, map_point_right_edge.y)]
+
+//         voronoi.extent([voronoi_extent_left, voronoi_extent_right]);
+
+//         var voronoi_data = voronoi(filtered_points)
+
+//         // For reference:
+//         // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
+
+//         console.log("Creating cell group")
+
+//         // var cell_group = $("<g/>")
+//         var cell_group = document.createElement("g")
+//         cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
+//         // L.DomUtil.setPosition(cell_group, [-top_left.x, -top_left.y]);
+
+//         // console.log(cell_group)
+
+//         var voronoi_polygons = voronoi_data.polygons()
+
+//         $.each(voronoi_polygons, function(index, cell) {
+
+//           // If there is no cell data, then keep looping
+//           if (cell === undefined) {
+//             console.log("Undefined cell data at index "+index)
+//             return true
+//           }
+
+//           // var item_circle = $("<circle/>")
+//           //   .attr("cx", cell.data.x)
+//           //   .attr("cy", cell.data.y)
+//           //   .attr("r", 20)
+//           //   .attr("stroke", "red")
+//           //   .attr("stroke-width", "1")
+//           //   .attr("fill", "red")
+
+//           var item_circle = document.createElement("circle")
+//           console.log("Drawing circle for " + JSON.stringify(cell))
+//           item_circle.setAttribute("cx", cell.data.x)
+//           item_circle.setAttribute("cy", cell.data.y)
+//           item_circle.setAttribute("r", 2)
+//           item_circle.setAttribute("stroke", "gray")
+//           item_circle.setAttribute("stroke-width", "1")
+//           item_circle.setAttribute("fill", "black")
+//           console.log(item_circle)
+
+//           // var item_path = $("<path/>")
+//           //   .attr("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
+//           //   .attr("stroke", "red")
+//           //   .attr("stroke-width", "1")
+//           //   .attr("fill", Math.random() > 0.5 ? "green" : "none")
+//           //   .attr("fill-opacity", "0.5")
+
+//           var item_path = document.createElement("path")
+//           item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
+//           item_path.setAttribute("stroke", "gray")
+//           item_path.setAttribute("stroke-width", "0.5")
+//           item_path.setAttribute("fill", filtered_points[index].fill) //Math.random() > 0.5 ? "green" : "none")
+//           item_path.setAttribute("fill-opacity", "0.5")
+
+//           cell_group.appendChild(item_circle)
+//           cell_group.appendChild(item_path)
+//           console.log(cell_group)
+//           this_container.appendChild(cell_group)
+
+//         })
+
+//         // console.log("Map to add:")
+//         // console.log(this_container)
+
+//         // Store the SVG container in the object
+//         this._container = this_container
+//         // Add the SVG to the map
+//         // this._pane.appendChild(this._container);
+//         // $(this._container).append(svg.prop('outerHTML'))
+//         $(this._pane).append($(this_container).prop('outerHTML'))
+
+//       }
+//   });
+
+//   L.voronoiLayer = function(options) {
+//     return new L.VoronoiLayer(options)
+//   }
+
+//   var voronoi_layer = L.voronoiLayer(data)
+//   voronoi_layer.addTo(vmap)
+
+
+//   // // Ideas taken from https://chriszetter.com/blog/2014/06/15/building-a-voronoi-map-with-d3-and-leaflet/
+//   // var voronoi_layer = {
+//   //   onAdd: function(map) {
+//   //     map.on('viewreset moveend', draw_voronoi_layer, data);
+//   //     draw_voronoi_layer(data);
+//   //   }
+//   // };
+//   //
+//   // vmap.addLayer(voronoi_layer);
+
+// }
 
 function draw_voronoi_layer(data) {
 
