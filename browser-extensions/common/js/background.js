@@ -275,8 +275,7 @@ function parse_tee_data_event_status(data, result) {
                  parkrun_event_director: content_table_row_cell[1].innerText.trim(),
                  parkrun_event_number: content_table_row_cell[2].innerText.trim(),
                  parkrun_status: content_table_row_cell[3].innerText.trim(),
-                 parkrun_country: content_table_row_cell[4].innerText.trim(),
-                 parkrun_portal_number: content_table_row_cell[5].innerText.trim()
+                 parkrun_country: content_table_row_cell[4].innerText.trim()
              }
              data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
              // console.log(parkrun_info)
