@@ -1,5 +1,5 @@
 .leaflet-control-fullscreen a {
-  background:#fff url('chrome-extension://__MSG_@@extension_id__/css/third-party/leaflet-fullscreen/images/fullscreen.png') no-repeat 0 0;
+  background:#fff url('images/fullscreen.png') no-repeat 0 0;
   background-size:26px 52px;
   }
   .leaflet-touch .leaflet-control-fullscreen a {
@@ -35,6 +35,6 @@
   (-webkit-min-device-pixel-ratio:2),
   (min-resolution:192dpi) {
     .leaflet-control-fullscreen a {
-      background-image: url('chrome-extension://__MSG_@@extension_id__/css/third-party/leaflet-fullscreen/images/fullscreen@2x.png');
+      background-image: url('images/fullscreen@2x.png');
     }
   }

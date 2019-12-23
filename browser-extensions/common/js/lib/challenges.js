@@ -1,3 +1,64 @@
+
+/*
+ * Some volunteer roles have changed names, or a role has been deprecated,
+ * or it makes sense to know a role by another name. This attempts to do that.
+ * This has lots of problems, such as the ability to display them in a language
+ * other than English, but that's how it currently works.
+ */
+
+volunteer_roles_map = [
+    {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
+    {"shortname": "comms-person", "name": "Communications Person"},
+    {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
+    {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
+    {"shortname": "setup", "name": "Pre-event Setup"},
+    {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
+    {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+    {"shortname": "sign-language", "name": "Sign Language Support"},
+    {"shortname": "marshal", "name": "Marshal"},
+    {"shortname": "tail-walker", "name": "Tail Walker"},
+    {"shortname": "run-director", "name": "Run Director"},
+    {"shortname": "lead-bike", "name": "Lead Bike"},
+    {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
+    {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
+    {"shortname": "photographer", "name": "Photographer"},
+    {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
+    {"shortname": "funnel-manager", "name": "Funnel Manager"},
+    {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
+    {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
+    {"shortname": "manual-entry", "name": "Number Checker"},
+    {"shortname": "close-down", "name": "Post-event Close Down"},
+    {"shortname": "results-processing", "name": "Results Processor"},
+    {"shortname": "token-sorting", "name": "Token Sorting"},
+    {"shortname": "run-report-writer", "name": "Run Report Writer"},
+    {"shortname": "other", "name": "Other"},
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+]
+
+function group_volunteer_data(volunteer_data) {
+  // Populate the results with the above
+
+  grouped_volunteer_data = []
+
+  volunteer_roles_map.forEach(function (role) {
+    grouped_volunteer_data[role["name"]] = 0
+    if (role["matching-roles"] !== undefined){
+        for (var i=0; i<role["matching-roles"].length; i++) {
+            if (role["matching-roles"][i] in volunteer_data) {
+                grouped_volunteer_data[role["name"]] += volunteer_data[role["matching-roles"][i]]
+            }
+        }
+    } else {
+      if (role.name in volunteer_data) {
+          // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+          grouped_volunteer_data[role["name"]] = volunteer_data[role.name]
+      }
+    }
+  })
+
+  return grouped_volunteer_data
+}
+
 /*
  * These functions provide a way to generate the data relating to challenge
  * based on the results provided to them. This includes if the challenge
@@ -56,13 +117,21 @@ function generate_running_challenge_data(data) {
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "full-ponty",
       "name": "The Full Ponty",
-      "data": ["Pontefract","Pontypool","Pontypridd"],
+      "data": ["Pontefract","Pontypool","Pontypridd","Pont y Bala"],
       "help": "Run at all the parkruns named ponty... or ponte..."}))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "pilgrimage",
       "name": "Bushy Pilgrimage",
       "data": ["Bushy Park"],
       "help": "Run at Bushy parkrun, where it all began."}))
+    // Note for the dates, the month is zero indexed (0-11), the day of the month is (1-31)
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "christmas-day",
+      "name": "Christmas Day",
+      "data": [
+        {"month": 11, "day": 25}
+      ],
+      "help": "Run a parkrun on the 25th of December."}))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
       "name":  "NYD Double",
@@ -71,6 +140,24 @@ function generate_running_challenge_data(data) {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
       "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "all-weather-runner",
+      "name": "All Weather Runner",
+      "data": [
+        {"month": 0},
+        {"month": 1},
+        {"month": 2},
+        {"month": 3},
+        {"month": 4},
+        {"month": 5},
+        {"month": 6},
+        {"month": 7},
+        {"month": 8},
+        {"month": 9},
+        {"month": 10},
+        {"month": 11},
+      ],
+      "help": "Run in each month of the year."}))
     challenge_data.push(challenge_in_a_year(data, {
       "shortname": "obsessive-bronze",
       "name": "Bronze Level Obsessive",
@@ -86,15 +173,14 @@ function generate_running_challenge_data(data) {
       "name": "Gold Level Obsessive",
       "data": 50,
       "help": "Run 50+ parkruns in one calendar year."}))
-
   }
 
-  if (data.parkrun_results && data.geo_data) {
-    challenge_data.push(challenge_by_region(data, {
-      "shortname": "regionnaire",
-      "name": "Regionnaire",
-      "help": "Run all the parkrun locations in a geographical region."}))
-  }
+  // if (data.parkrun_results && data.geo_data) {
+  //   challenge_data.push(challenge_by_region(data, {
+  //     "shortname": "regionnaire",
+  //     "name": "Regionnaire",
+  //     "help": "Run all the parkrun locations in a geographical region."}))
+  // }
 
   return challenge_data
 }
@@ -105,50 +191,14 @@ function generate_volunteer_challenge_data(data) {
 
   if (data.volunteer_data) {
     volunteer_data = data.volunteer_data
-    var volunteer_roles = [
-        {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
-        {"shortname": "comms-person", "name": "Communications Person"},
-        {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
-        {"shortname": "setup", "name": "Pre-event Setup"},
-        {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
-        {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
-        {"shortname": "sign-language", "name": "Sign Language Support"},
-        {"shortname": "marshal", "name": "Marshal"},
-        {"shortname": "tail-walker", "name": "Tail Walker"},
-        {"shortname": "run-director", "name": "Run Director"},
-        {"shortname": "lead-bike", "name": "Lead Bike"},
-        {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
-        {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
-        {"shortname": "photographer", "name": "Photographer"},
-        {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
-        {"shortname": "funnel-manager", "name": "Funnel Manager"},
-        {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
-        {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
-        {"shortname": "manual-entry", "name": "Number Checker"},
-        {"shortname": "close-down", "name": "Post-event Close Down"},
-        {"shortname": "results-processing", "name": "Results Processor"},
-        {"shortname": "token-sorting", "name": "Token Sorting"},
-        {"shortname": "run-report-writer", "name": "Run Report Writer"},
-        {"shortname": "other", "name": "Other"},
-        {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
-    ]
+
+    volunteer_roles = group_volunteer_data(volunteer_data)
 
     // Populate the results with the above
-    volunteer_roles.forEach(function (role) {
+    volunteer_roles_map.forEach(function (role) {
         var this_role_data = create_data_object(role, "volunteer")
         this_role_data.summary_text = ""
-        this_role_data.subparts_completed_count = 0
-        if (role["matching-roles"] !== undefined){
-            for (var i=0; i<role["matching-roles"].length; i++) {
-                if (role["matching-roles"][i] in volunteer_data) {
-                    this_role_data.subparts_completed_count += volunteer_data[role["matching-roles"][i]]
-                }
-            }
-        }
-        if (role.name in volunteer_data) {
-            // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
-            this_role_data.subparts_completed_count = volunteer_data[role.name]
-        }
+        this_role_data.subparts_completed_count = volunteer_roles[role["name"]]
         if (this_role_data.subparts_completed_count > 0) {
             this_role_data.summary_text = "x"+this_role_data.subparts_completed_count
             this_role_data.complete = true
@@ -325,6 +375,33 @@ function generate_stat_p_index(parkrun_results) {
     "display_name": "p-index",
     "help": "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4.",
     "value": p_index
+  }
+}
+
+// The number of volunteer roles which have been performed at least _v_ times.
+// E.g. If you have volunteered in 4 different roles at least 4 times, your v-index
+// is 4.
+function generate_stat_v_index(volunteer_data) {
+
+  volunteer_roles = group_volunteer_data(volunteer_data)
+
+  var v_index = 0
+  var descending_tally = Object.keys(volunteer_roles).sort(function(a, b) {
+    return volunteer_roles[b] - volunteer_roles[a]
+  })
+  // Iterate through the roles, and as long as the number of times we have
+  // volunteered in the role is greater than the index value, increment the
+  // v-index
+  descending_tally.forEach(function(role_name, index) {
+    // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
+    if (volunteer_roles[role_name] > index) {
+      v_index += 1
+    }
+  })
+  return {
+    "display_name": "v-index",
+    "help": "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4.",
+    "value": v_index
   }
 }
 
@@ -730,6 +807,7 @@ function generate_stats(data) {
   if (data.info.has_volunteer_data) {
     stats['total_volunteer_roles'] = generate_stat_total_volunteer_roles(data.volunteer_data)
     stats['total_distinct_volunteer_roles'] = generate_stat_total_distinct_volunteer_roles(data.volunteer_data)
+    stats['v_index'] = generate_stat_v_index(data.volunteer_data)
   }
 
   return stats
@@ -739,12 +817,12 @@ function get_initial_letter(event_name) {
   return event_name[0].toLowerCase()
 }
 
-
 function get_flag_image_src(country) {
   // Mapping countries to flag image files
   var flag_map = {
       "New Zealand": "nz",
       "Australia": "au",
+      "Canada": "ca",
       "Denmark": "dk",
       "Finland": "fi",
       "France": "fr",
@@ -752,9 +830,10 @@ function get_flag_image_src(country) {
       "Iceland": "is",
       "Ireland": "ie",
       "Italy": "it",
+      "Japan": "jp",
       "Malaysia": "my",
-      "Canada": "ca",
       "Namibia": "na",
+      "New Zealand": "nz",
       "Norway": "no",
       "Poland": "pl",
       "Russia": "ru",
@@ -1573,6 +1652,151 @@ function challenge_single_parkrun_count(data, params) {
     return update_data_object(o)
 }
 
+function challenge_on_dates(data, params) {
+  var parkrun_results = data.parkrun_results
+  var o = create_data_object(params, "runner")
+
+  // This challenge looks to see that parkruns have been done on specific dates,
+  // therefore we are passed in a set of days/months to match. It's not fair to
+  // pass in a specific year as well, as no-one can work towards that, so we only
+  // allow month & day combinations. E.g. for Christmas, or to run in every month
+  // of the year, or perhaps even every date of the year, or Feb 29th or something -
+  // all of these should work
+  var challenge_dates = params.data // dates should be an array
+
+  // For each part in the dates to match, make an empty array of matching
+  // parkrun events.
+  o.subparts = []
+  if (challenge_dates !== undefined) {
+    $.each(challenge_dates, function (index, this_challenge_date) {
+      o.subparts[index] = []
+    })
+    if (challenge_dates.length > 1) {
+      // If there is more than one subpart, then create the parts to show in the
+      // ui
+      $.each(challenge_dates, function (index, this_challenge_date) {
+
+        subpart_name = this_challenge_date.month+"/"+this_challenge_date.day
+        if (this_challenge_date.month !== undefined && this_challenge_date.day === undefined) {
+          subpart_name = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')[this_challenge_date.month]
+        } else if (this_challenge_date.month === undefined && this_challenge_date.day !== undefined) {
+          subpart_name = this_challenge_date.day+"st/nd/rd/th"
+        }
+
+        o.subparts_detail[index] = {
+            "subpart": subpart_name
+        }
+
+      })
+    }
+  }
+
+  o.summary_text = "0"
+
+  // We might be able to put these on a map, but not right now
+  o.has_map = false
+
+  parkrun_results.forEach(function (parkrun_event) {
+
+    if (challenge_dates !== undefined) {
+      $.each(challenge_dates, function (index, this_challenge_date) {
+        // Default to not matching
+        var applicable_month = false
+        var applicable_day = false
+
+        // Check if the month matches (getMonth() - 0-11)
+        if (this_challenge_date.month !== undefined ) {
+          if (this_challenge_date.month == parkrun_event.date_obj.getMonth()) {
+            // console.log("Event matches the month for : " + JSON.stringify(this_challenge_date))
+            applicable_month = true
+          }
+        } else {
+          // There is no month to match, so it's a wildcard and always matches
+          applicable_month = true
+        }
+
+        // Check if the day of the month matches (getDate() - 1-31)
+        if (this_challenge_date.day !== undefined ) {
+          if (this_challenge_date.day == parkrun_event.date_obj.getDate()) {
+            // console.log("Event matches the day for : " + JSON.stringify(this_challenge_date))
+            applicable_day = true
+          }
+        } else {
+          // There is no day to match, so it's a wildcard and always matches
+          applicable_day = true
+        }
+
+        if (applicable_day && applicable_month) {
+          console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
+          // Append this completed parkrun to the correct subpart list
+          o.subparts[index].push(parkrun_event)
+        }
+
+      })
+    }
+
+  })
+
+  // Work out how many times we have completed the challenge by looking at
+  // how many events have been added for each subpart
+  var completion_count = undefined;
+  console.log(o.subparts)
+  o.subparts.forEach(function(events_for_this_date) {
+    if (completion_count === undefined) {
+      completion_count = events_for_this_date.length
+    } else {
+      completion_count = Math.min(completion_count, events_for_this_date.length)
+    }
+  })
+
+  if (completion_count > 0) {
+    o.complete = true
+  }
+
+  console.log("This challenge has been completed x" + completion_count)
+  o.subparts_completed_count = completion_count
+
+  // If there is only one date, we can reasonably list the date that the parkrunner
+  // achieved this challenge. If it is a string of dates, it's nearly impossible
+  // to do that in a sensible manner
+  if (o.subparts.length == 1) {
+    o.subparts[0].forEach(function(parkrun_event) {
+      o.subparts_detail.push({
+          "name": parkrun_event.name,
+          "date": parkrun_event.date,
+          "info": parkrun_event.date,
+          "subpart": o.subparts_detail.length + 1
+      })
+    })
+  } else {
+    // If there is more than one date, then lets list them all
+    $.each(challenge_dates, function(index, matching_date) {
+
+      if (o.subparts[index].length > 0) {
+        o.subparts_detail[index].name = "x"+o.subparts[index].length
+        o.subparts_detail[index].date = o.subparts[index][0].date
+        o.subparts_detail[index].info = o.subparts[index][0].date
+      }
+    })
+  }
+  // If there are no subparts listed, make it a dash
+  if (o.subparts_detail.length == 0) {
+      o.subparts_detail.push({
+          "subpart": o.subparts_detail.length + 1,
+          "info": "-"
+      })
+  }
+
+  // Change the summary to indicate number of times completed
+  if (o.subparts_completed_count > 0) {
+      o.summary_text = "x"+o.subparts_completed_count
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
+
+}
+
 function challenge_nyd_double(data, params) {
 
   var parkrun_results = data.parkrun_results
@@ -1776,6 +2000,55 @@ function iterate_unroll_regions(summary, region, parent_id) {
     iterate_unroll_regions(summary, sub_region, region.id)
   })
 
+}
+
+function calculateCountryCompletionInfo(data) {
+
+  var countryCompletionInfo = {}
+  // Pre-populate information about each country
+  $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
+    // Initialise an information object for the country
+    countryCompletionInfo[countryName] = {
+      "name": countryName,
+      "id": countryInfo["id"],
+      "childEventsCount": countryInfo['child_event_names'].length,
+      "childEventsCompleted": [],
+      "childEventsCompletedCount": 0,
+      "firstRanOn": undefined,
+      "visited": false
+    }
+  })
+  // Iterate through each event that has been completed by athlete
+
+  var groupedResults = group_results_by_event(data.parkrun_results)
+  console.log(groupedResults)
+
+  $.each(groupedResults, function(eventName, eventAttendance){
+    // Find extra information from the events data
+    if (eventName in data.geo_data.data.events) {
+      var eventInfo = data.geo_data.data.events[eventName]
+      console.log(eventInfo)
+      var countryEntry = countryCompletionInfo[eventInfo.country_name]
+      countryEntry.childEventsCompleted.push(eventName)
+      countryEntry.childEventsCompletedCount += 1
+
+      // Mark this country as visited
+      countryEntry.visited = true
+
+      // Stash the date we first ran at this event
+      var eventFirstRunDate = eventAttendance[0].date_obj
+
+      // Find out if this was the ealiest we ever ran in this country
+      if (countryEntry.firstRanOn === undefined || eventFirstRunDate < countryEntry.firstRanOn) {
+        countryEntry.firstRanOn = eventFirstRunDate
+      }
+
+    } else {
+      // We don't know where this event was, perhaps it has closed
+    }
+  })
+
+  return countryCompletionInfo
 }
 
 function calculate_child_regions(regions, events_completed_map, parent_region) {

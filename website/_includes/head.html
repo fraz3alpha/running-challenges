@@ -1,0 +1,24 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  {%- feed_meta -%}
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google-analytics.html -%}
+  {%- elsif site.google_analytics_staging %}
+    {%- include google-analytics-staging.html -%}
+  {%- endif -%}
+
+  {% for css in page.css_libs %}
+  <link rel="stylesheet" href="{{ "/assets/css/" | relative_url }}{{ css }}">
+  {% endfor %}
+  {% for js in page.javascript_libs %}
+  <script type="text/javascript" src="{{ "/assets/js/lib/" | relative_url }}{{ js }}"></script>
+  {% endfor %}
+  {% for js in page.javascript_onload %}
+  <script type="text/javascript" src="{{ "/assets/js/lib/" | relative_url }}{{ js.file }}" async defer onload="{{ js.function }}"></script>
+  {% endfor %}
+
+</head>

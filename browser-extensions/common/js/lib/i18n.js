@@ -75,7 +75,8 @@ var domains = {
             "Run Report Writer": "Run Report Writer",
             "Other": "Other",
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
-            "Car Park Marshal": "Car Park Marshal"
+            "Car Park Marshal": "Car Park Marshal",
+            "Event Day Course Check": "Event Day Course Check"
         }
     },
     "www.parkrun.pl": {
@@ -84,7 +85,7 @@ var domains = {
         // http://www.parkrun.pl/rezultaty/athleteresultshistory/?athleteNumber=546975
         // http://www.parkrun.pl/rezultaty/athleteeventresultshistory/?athleteNumber=546975&eventNumber=0
         "url_athleteeventresultshistory": "rezultaty/athleteeventresultshistory/",
-        "table_all_results": "Wszystkie wyniki",
+        "table_all_results": "Wszystkie rezultaty",
         "link_view_stats_for_all_parkruns": "Zobacz statystyki uczestnika ze wszystkich biegów parkrun",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Zobacz wyniki tego zawodnika ze wszystkich biegów",
         "text_volunteer_role_map": {
@@ -152,7 +153,8 @@ var domains = {
             "Addetto report finale": "Run Report Writer",
             "Altro": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
-            "Addetto parcheggio": "Car Park Marshal"
+            "Addetto parcheggio": "Car Park Marshal",
+            "Controllo percorso nel giorno dell'evento": "Event Day Course Check"
         }
 
     },
@@ -332,6 +334,7 @@ var domains = {
         // http://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=1551222&eventNumber=0
         // Randomly partly in English
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Показать статистику этого спортсмена по всем забегам",
+        "table_all_results": "Все результаты",
         // Volunteer roles are in RUSSIAN (A1551222)
         "text_volunteer_role_map": {
             "Хранение и доставка оборудования": "Equipment Storage and Delivery",
@@ -373,6 +376,47 @@ var domains = {
         // http://www.parkrun.my/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
         // It's all in English, so all links should work as-is
         // Volunteer roles are in ENGLISH
+    },
+    "www.parkrun.jp": {
+        // Japan pages
+        // http://www.parkrun.jp/futakotamagawa/results/athletehistory/?athleteNumber=4493261
+        // http://www.parkrun.jp/results/athleteresultshistory/?athleteNumber=4493261
+        // http://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
+        // It's all in Japanese, nothing will work without translations!
+        // Volunteer roles are as yet unknown
+        "table_all_results": "すべての結果",
+        "link_view_stats_for_all_parkruns": "この登録者のすべてのparkrunの記録を見る。",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "この登録者のすべてのparkrunの記録を見る。",
+        // Volunteer roles are in JAPANESE largely provided by Bill Steffancin (A4782624) via email
+        "text_volunteer_role_map": {
+            "用具管理係": "Equipment Storage and Delivery",
+            // "": "Communications Person",
+            "ボランティア・コーディネーター": "Volunteer Co-ordinator",
+            "イベント準備係": "Pre-event Setup",
+            "初参加者への説明係": "First Timers Briefing",
+            // "": "Sign Language Support",
+            "コース誘導係": "Marshal",
+            "最後尾確認係": "Tail Walker",
+            "ランディレクター": "Run Director",
+            // "": "Lead Bike",
+            // "": "Pacer (5k only)",
+            // "": "VI Guide",
+            // "カメラマン": "Photographer",
+            "タイム計測係": "Timekeeper",
+            // "": "Backup Timer", // Have never had it
+            "着順確認係": "Funnel Manager",
+            "フィニッシュ・トークン係補助": "Finish Tokens",
+            "フィニッシュ後サポート係": "Finish Token Support",
+            "バーコード・スキャン係": "Barcode Scanning",
+            // "": "Number Checker",
+            "イベント後片付け係": "Post-event Close Down",
+            "結果集計係": "Results Processor",
+            "フィニッシュ・トークン整理係": "Token Sorting",
+            "レポート作成係": "Run Report Writer",
+            "その他": "Other",
+            // "": "Warm Up Leader (junior events only)",
+            // "": "Car Park Marshal"
+        }
     },
 }
 

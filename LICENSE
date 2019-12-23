@@ -1,6 +1,11 @@
+The source code of the Running Challenges extension is licensed under the [MIT License](https://spdx.org/licenses/MIT.html). Third-party libraries are individually attributed in their respective sub-directories (e.g. Leaflet libraries).
+
+The text, images, and other media in the extension (e.g. badge images) and on the website (e.g. blog posts, badge images) are licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC-by-nc-nd)](https://creativecommons.org/licenses/by-nc-nd/4.0/). Third-party media are individually attributed in their respective sub-directories (e.g. the flag icons). Permissions beyond the scope of this license may be available at https://running-challenges.co.uk/licence/.
+
+
 MIT License
 
-Copyright (c) 2018 Andy Taylor
+Copyright (c) 2018, 2019 Andy Taylor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
