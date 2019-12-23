@@ -625,7 +625,10 @@ function showCountryEvents(map_data, data, countryId, depth) {
   // Icon for an event we have not run
   var event_not_run_icon = L.ExtraMarkers.icon({
     markerColor: 'cyan',
-    shape: 'square'
+    shape: 'square',
+    // These still add the div elements for the shadow, it would be better if it didn't.
+    shadowUrl: null,
+    shadowSize: [0, 0],
   });
 
   $.each(data.geo_data.data.events, function (event_name, event_info) {
