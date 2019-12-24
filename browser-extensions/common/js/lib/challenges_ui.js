@@ -191,7 +191,7 @@ function generateRegionnaireTableEntry(table, data) {
   // We can only do this if we have geo data
   
   var challenge = {
-    "name": "Regionnaire Explorer",
+    "name": "parkrun Explorer",
     "shortname": "regionnaire"
   }
 
@@ -215,7 +215,7 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Note: Only currently active events are included in the map and stats</td>'))
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Only currently active events are included in the map and stats</td>'))
     challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)

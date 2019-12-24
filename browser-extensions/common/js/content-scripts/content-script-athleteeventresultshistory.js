@@ -367,7 +367,7 @@ function add_flags(div_id, data) {
             // Find out when it was first run and make a nice string
             var first_run = country.firstRanOn.toISOString().split("T")[0]
 
-            var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
+            var regionnaire_link = $("<a/>").attr("href", "#regionnaire")
 
             var img = $('<img>');
             img.attr('src', get_flag_image_src(country.name))
