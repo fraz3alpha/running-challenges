@@ -37,7 +37,7 @@ the map was overcrowded and slow to scroll and pan around. This new way seems to
 ### Do we have regions yet?
 
 Why not create your own region! Hopefully by colouring the cells in this way it should be easy to tell if you 
-have been to all the events in a particular area of the country / world - just look for the continguous green 
+have been to all the events in a particular area of the country / world - just look for the contiguous green 
 parts of the map!
 
 ### Can I play Blockbusters across the country with it?
