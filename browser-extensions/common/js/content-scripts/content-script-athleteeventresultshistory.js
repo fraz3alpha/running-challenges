@@ -25,38 +25,6 @@ function get_table(id, caption) {
     })
 }
 
-// function add_challenge_badges(div, data) {
-
-//   console.log('Adding '+JSON.stringify(data)+' to '+ div)
-
-//     badge_p = $("p", div)
-//     badge_p.empty()
-
-//     var index_counter = 1
-//     data.forEach(function (challenge) {
-//         var challenge_link = $('<a></a>')
-//         challenge_link.attr('href', challenge.link)
-
-//         var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-//         img.attr('src', challenge.icon);
-//         img.attr('alt',challenge.name)
-//         img.attr('title',challenge.name)
-//         img.attr('width',64)
-//         img.attr('height',64)
-//         img.attr('style', "transform:rotate(90deg);")
-
-//         challenge_link.append(img)
-
-//         badge_p.append(challenge_link)
-
-//         if (index_counter > 0 && index_counter % 8 == 0) {
-//             badge_p.append($('<br/>'))
-//         }
-//         index_counter += 1
-//     })
-
-// }
-
 function get_badge_location() {
     return $("div[id=content]").find("p:first")
 }
