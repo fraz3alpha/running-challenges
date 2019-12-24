@@ -25,36 +25,37 @@ function get_table(id, caption) {
     })
 }
 
-function add_challenge_badges(div, data) {
+// function add_challenge_badges(div, data) {
 
-  console.log('Adding '+JSON.stringify(data)+' to '+ div)
+//   console.log('Adding '+JSON.stringify(data)+' to '+ div)
 
-    badge_p = $("p", div)
-    badge_p.empty()
+//     badge_p = $("p", div)
+//     badge_p.empty()
 
-    var index_counter = 1
-    data.forEach(function (challenge) {
-        var challenge_link = $('<a></a>')
-        challenge_link.attr('href', challenge.link)
+//     var index_counter = 1
+//     data.forEach(function (challenge) {
+//         var challenge_link = $('<a></a>')
+//         challenge_link.attr('href', challenge.link)
 
-        var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-        img.attr('src', challenge.icon);
-        img.attr('alt',challenge.name)
-        img.attr('title',challenge.name)
-        img.attr('width',64)
-        img.attr('height',64)
+//         var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+//         img.attr('src', challenge.icon);
+//         img.attr('alt',challenge.name)
+//         img.attr('title',challenge.name)
+//         img.attr('width',64)
+//         img.attr('height',64)
+//         img.attr('style', "transform:rotate(90deg);")
 
-        challenge_link.append(img)
+//         challenge_link.append(img)
 
-        badge_p.append(challenge_link)
+//         badge_p.append(challenge_link)
 
-        if (index_counter > 0 && index_counter % 8 == 0) {
-            badge_p.append($('<br/>'))
-        }
-        index_counter += 1
-    })
+//         if (index_counter > 0 && index_counter % 8 == 0) {
+//             badge_p.append($('<br/>'))
+//         }
+//         index_counter += 1
+//     })
 
-}
+// }
 
 function get_badge_location() {
     return $("div[id=content]").find("p:first")
@@ -258,6 +259,8 @@ function add_badges(div_id, data) {
       img.attr('title',badge.name)
       img.attr('width',64)
       img.attr('height',64)
+
+      modifyStyle(img)
 
       badge_link.append(img)
       badge_div.append(badge_link)
@@ -539,4 +542,17 @@ function get_athlete_id() {
     }
     console.log('Athlete ID: '+athlete_id)
     return athlete_id
+}
+
+function modifyStyle(img) {
+  // Shush, don't tell anyone and spoil the surprise
+  today = new Date()
+  // getMonth is zero indexed. getDate is 1 indexed.
+  if (today.getMonth() == 3 && today.getDate() == 1) {
+    r = Math.floor(Math.random() * 4)
+    if (r > 0) {
+      img.attr('style', "transform:rotate("+r*90+"deg);")
+    }
+  }
+
 }
