@@ -175,12 +175,12 @@ function generate_running_challenge_data(data) {
       "help": "Run 50+ parkruns in one calendar year."}))
   }
 
-  if (data.parkrun_results && data.geo_data) {
-    challenge_data.push(challenge_by_region(data, {
-      "shortname": "regionnaire",
-      "name": "Regionnaire",
-      "help": "Run all the parkrun locations in a geographical region."}))
-  }
+  // if (data.parkrun_results && data.geo_data) {
+  //   challenge_data.push(challenge_by_region(data, {
+  //     "shortname": "regionnaire",
+  //     "name": "Regionnaire",
+  //     "help": "Run all the parkrun locations in a geographical region."}))
+  // }
 
   return challenge_data
 }
@@ -817,12 +817,12 @@ function get_initial_letter(event_name) {
   return event_name[0].toLowerCase()
 }
 
-
 function get_flag_image_src(country) {
   // Mapping countries to flag image files
   var flag_map = {
       "New Zealand": "nz",
       "Australia": "au",
+      "Canada": "ca",
       "Denmark": "dk",
       "Finland": "fi",
       "France": "fr",
@@ -832,8 +832,8 @@ function get_flag_image_src(country) {
       "Italy": "it",
       "Japan": "jp",
       "Malaysia": "my",
-      "Canada": "ca",
       "Namibia": "na",
+      "New Zealand": "nz",
       "Norway": "no",
       "Poland": "pl",
       "Russia": "ru",
@@ -1133,7 +1133,8 @@ function challenge_start_letters(data, params) {
                         // Add the event
                         p = Object.create(parkrun_event)
                         p.subpart = initial_letter
-                        p.info = p.date
+                        p.name = p.eventlink
+                        p.info = p.datelink
                         o.subparts_detail[i] = p
                         o.subparts_completed_count += 1
                         if (!(parkrun_event.name in o.completed_qualifying_events)) {
@@ -1256,7 +1257,8 @@ function challenge_words(data, params) {
                     // Add the event
                     p = Object.create(parkrun_event)
                     p.subpart = o.subparts[i]
-                    p.info = p.date
+                    p.name = p.eventlink
+                    p.info = p.datelink
                     o.subparts_detail[i] = p
                     o.subparts_completed_count += 1
 
@@ -1340,7 +1342,8 @@ function challenge_parkruns(data, params) {
 
             p = Object.create(events[parkrun_name][0])
             p.subpart = o.subparts[subparts_index]
-            p.info = p.date
+            p.name = p.eventlink
+            p.info = p.datelink
             o.subparts_detail[subparts_index] = p
             o.subparts_completed_count += 1
             if (!(parkrun_name in o.completed_qualifying_events)) {
@@ -1401,7 +1404,8 @@ function challenge_tourist(data, params) {
                 // Add it in for the next complete subpart
                 p = Object.create(parkrun_event)
                 p.subpart = o.subparts_completed_count
-                p.info = parkrun_event.date
+                p.name = p.eventlink
+                p.info = p.datelink
                 o.subparts_detail.push(p)
 
                 // Add to the events done list, so that we can map them
@@ -1556,6 +1560,7 @@ function challenge_stopwatch_bingo(data, params) {
         if (o.subparts_detail[subparts_detail_index] == null) {
             o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
             o.subparts_detail[subparts_detail_index].subpart = seconds
+            o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
             o.subparts_detail[subparts_detail_index].info = parkrun_event.time
             o.subparts_completed_count += 1
 
@@ -1602,7 +1607,7 @@ function challenge_single_parkrun_count(data, params) {
     parkrun_results.forEach(function (parkrun_event) {
         if (!(parkrun_event.name in parkruns_completed)) {
             parkruns_completed[parkrun_event.name] = {
-                "name": parkrun_event.name,
+                "name": parkrun_event.eventlink,
                 "count": 0,
                 "completed": false,
                 "completed_at": null,
@@ -1727,7 +1732,7 @@ function challenge_on_dates(data, params) {
         }
 
         if (applicable_day && applicable_month) {
-          console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
+          //console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
           // Append this completed parkrun to the correct subpart list
           o.subparts[index].push(parkrun_event)
         }
@@ -1762,9 +1767,9 @@ function challenge_on_dates(data, params) {
   if (o.subparts.length == 1) {
     o.subparts[0].forEach(function(parkrun_event) {
       o.subparts_detail.push({
-          "name": parkrun_event.name,
-          "date": parkrun_event.date,
-          "info": parkrun_event.date,
+          "name": parkrun_event.eventlink,
+          "date": parkrun_event.datelink,
+          "info": parkrun_event.datelink,
           "subpart": o.subparts_detail.length + 1
       })
     })
@@ -1774,8 +1779,8 @@ function challenge_on_dates(data, params) {
 
       if (o.subparts[index].length > 0) {
         o.subparts_detail[index].name = "x"+o.subparts[index].length
-        o.subparts_detail[index].date = o.subparts[index][0].date
-        o.subparts_detail[index].info = o.subparts[index][0].date
+        o.subparts_detail[index].date = o.subparts[index][0].datelink
+        o.subparts_detail[index].info = o.subparts[index][0].datelink
       }
     })
   }
@@ -1818,9 +1823,9 @@ function challenge_nyd_double(data, params) {
         if (previous_parkrun != null && day_month == "01/01/" && parkrun_event.date == previous_parkrun.date) {
 
             o.subparts_detail.push({
-                "name": parkrun_event.name+" and "+previous_parkrun.name,
-                "date": parkrun_event.date,
-                "info": parkrun_event.date,
+                "name": parkrun_event.eventlink+" and "+previous_parkrun.eventlink,
+                "date": parkrun_event.datelink,
+                "info": parkrun_event.datelink,
                 "subpart": o.subparts_detail.length + 1
             })
 
@@ -1879,9 +1884,9 @@ function challenge_groundhog_day(data, params) {
         if (previous_parkrun != null && parkrun_event.time == previous_parkrun.time && parkrun_event.name == previous_parkrun.name) {
 
             o.subparts_detail.push({
-                "name": parkrun_event.name,
+                "name": parkrun_event.eventlink,
                 "date": previous_parkrun.date+" and "+parkrun_event.date,
-                "info": parkrun_event.time+" on "+previous_parkrun.date+" and "+parkrun_event.date,
+                "info": parkrun_event.time+" on "+previous_parkrun.datelink+" and "+parkrun_event.datelink,
                 "subpart": o.subparts_detail.length + 1
             })
 
@@ -2000,6 +2005,55 @@ function iterate_unroll_regions(summary, region, parent_id) {
     iterate_unroll_regions(summary, sub_region, region.id)
   })
 
+}
+
+function calculateCountryCompletionInfo(data) {
+
+  var countryCompletionInfo = {}
+  // Pre-populate information about each country
+  $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
+    // Initialise an information object for the country
+    countryCompletionInfo[countryName] = {
+      "name": countryName,
+      "id": countryInfo["id"],
+      "childEventsCount": countryInfo['child_event_names'].length,
+      "childEventsCompleted": [],
+      "childEventsCompletedCount": 0,
+      "firstRanOn": undefined,
+      "visited": false
+    }
+  })
+  // Iterate through each event that has been completed by athlete
+
+  var groupedResults = group_results_by_event(data.parkrun_results)
+  console.log(groupedResults)
+
+  $.each(groupedResults, function(eventName, eventAttendance){
+    // Find extra information from the events data
+    if (eventName in data.geo_data.data.events) {
+      var eventInfo = data.geo_data.data.events[eventName]
+      // console.log(eventInfo)
+      var countryEntry = countryCompletionInfo[eventInfo.country_name]
+      countryEntry.childEventsCompleted.push(eventName)
+      countryEntry.childEventsCompletedCount += 1
+
+      // Mark this country as visited
+      countryEntry.visited = true
+
+      // Stash the date we first ran at this event
+      var eventFirstRunDate = eventAttendance[0].date_obj
+
+      // Find out if this was the ealiest we ever ran in this country
+      if (countryEntry.firstRanOn === undefined || eventFirstRunDate < countryEntry.firstRanOn) {
+        countryEntry.firstRanOn = eventFirstRunDate
+      }
+
+    } else {
+      // We don't know where this event was, perhaps it has closed
+    }
+  })
+
+  return countryCompletionInfo
 }
 
 function calculate_child_regions(regions, events_completed_map, parent_region) {
