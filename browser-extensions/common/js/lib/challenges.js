@@ -2032,7 +2032,7 @@ function calculateCountryCompletionInfo(data) {
     // Find extra information from the events data
     if (eventName in data.geo_data.data.events) {
       var eventInfo = data.geo_data.data.events[eventName]
-      console.log(eventInfo)
+      // console.log(eventInfo)
       var countryEntry = countryCompletionInfo[eventInfo.country_name]
       countryEntry.childEventsCompleted.push(eventName)
       countryEntry.childEventsCompletedCount += 1
