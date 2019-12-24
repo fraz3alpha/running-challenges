@@ -305,6 +305,18 @@ function createVoronoiMapPrototype() {
 
         map.on('zoomend viewreset moveend', this._update, this);
         this._update()
+
+        // Force the map to recalculate its size.
+        // When it is first drawn, the remainder of the page hasn't,
+        // so it it is narrower, and subsequent challenges pad it out -
+        // so this makes it correct as soon as it is interacted with.
+        // This unfortunately means it's not right initially, but it 
+        // fixes itself pretty quickly.
+
+        setTimeout(function(){ 
+          console.log("triggering a redraw")
+          map.invalidateSize()
+        }, 1000);
     },
 
     onRemove: function(map) {
@@ -331,10 +343,12 @@ function createVoronoiMapPrototype() {
       var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
 
       var size = vmap.getSize()
+      console.log(size)
 
       // set size of svg-container if changed
       // if (!this._svgSize || !this._svgSize.equals(size)) {
       // 	this._svgSize = size;
+      console.log("The SVG container is "+size.x+" by "+size.y)
         this_container.setAttribute('width', size.x);
         this_container.setAttribute('height', size.y);
         //       .style("margin-left", topLeft.x + "px")
