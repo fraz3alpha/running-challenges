@@ -288,21 +288,6 @@ function createVoronoiMapPrototype() {
         var pane = map.getPane(this.options.pane);
         this._pane = pane
 
-        // this._container = L.DomUtil.create("svg", "leaflet-zoom-hide")
-        // this._pane.appendChild(this._container);
-        //
-        // this._container = $("<svg/>")
-        //     .attr('id', 'overlay')
-        //     .attr("class", "leaflet-zoom-hide")
-        //     .attr("width", map.getSize().x + 'px')
-        //     .attr("height", map.getSize().y + 'px')
-        //     .css({
-        //       "margin-left": nw_point.x + "px",
-        //       "margin-top": nw_point.y + "px"
-        //     })
-        //
-        // pane.appendChild(this._container);
-
         map.on('zoomend viewreset moveend', this._update, this);
         this._update()
 
@@ -328,8 +313,7 @@ function createVoronoiMapPrototype() {
     _update: function() {
       console.log('Voronoi Layer - _update()')
 
-      // Remove the existing SVG container
-      // L.DomUtil.remove(this._container)
+      // Empty the current pane
       L.DomUtil.empty(this._pane)
 
       // Create a new SVG container, we will add everything to this
@@ -338,37 +322,24 @@ function createVoronoiMapPrototype() {
 
       var vmap = this._map
       var bounds = vmap.getBounds()
-      // var padded_bounds = bounds.pad(0.4)
-      // var padded_bounds = bounds.pad(100)
       var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
 
       var size = vmap.getSize()
-      console.log(size)
 
-      // set size of svg-container if changed
-      // if (!this._svgSize || !this._svgSize.equals(size)) {
-      // 	this._svgSize = size;
-      console.log("The SVG container is "+size.x+" by "+size.y)
-        this_container.setAttribute('width', size.x);
-        this_container.setAttribute('height', size.y);
-        //       .style("margin-left", topLeft.x + "px")
-        //       .style("margin-top", topLeft.y + "px");
-        this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
+      this_container.setAttribute('width', size.x);
+      this_container.setAttribute('height', size.y);
+      this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
 
-
-      // Work out which points are within the acceptabled padded bounds
       var filtered_points = []
       var layer_data = this._data
       var completed_events = {}
       $.each(layer_data.parkrun_results, function(index, parkrun_event) {
         completed_events[parkrun_event.name] = true
       })
-      // console.log(layer_data)
+      
       $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
         if (event_has_valid_location(event_info)) {
           lat_lon = [+event_info.lat, +event_info.lon]
-          // if (padded_bounds.contains(lat_lon)) {
-          // console.log(event_name + " " + lat_lon)
           // Add the point to the array
           var point = vmap.latLngToLayerPoint(lat_lon);
           event_info.x = point.x
@@ -400,8 +371,6 @@ function createVoronoiMapPrototype() {
       map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
       map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
 
-      // console.log("Edges of the world: "+map_point_left_edge+" , "+map_point_right_edge)
-
       // Default extents are the edges of the canvas, but if these take it over
       // the edges of the world according to the calculations above, we box
       // them in.
@@ -415,12 +384,8 @@ function createVoronoiMapPrototype() {
       // For reference:
       // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
 
-      // var cell_group = $("<g/>")
       var cell_group = document.createElement("g")
       cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
-      // L.DomUtil.setPosition(cell_group, [-top_left.x, -top_left.y]);
-
-      // console.log(cell_group)
 
       var voronoi_polygons = voronoi_data.polygons()
 
@@ -436,7 +401,6 @@ function createVoronoiMapPrototype() {
         }
 
         // Create an icon to represent the parkrun event
-
         var item_circle = document.createElement("circle")
         
         item_circle.setAttribute("cx", cell.data.x)
@@ -485,8 +449,6 @@ function createVoronoiMapPrototype() {
       // Store the SVG container in the object
       this._container = this_container
       // Add the SVG to the map
-      // this._pane.appendChild(this._container);
-      // $(this._container).append(svg.prop('outerHTML'))
       $(this._pane).append($(this_container).prop('outerHTML'))
 
     }
