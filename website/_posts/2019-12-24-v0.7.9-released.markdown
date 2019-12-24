@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Version 0.7.9 Released"
+title:  "New parkrun Explorer map (v0.7.9)"
 date:   2019-12-24 15:00:00 +0000
 categories:
   - chrome-extension
@@ -8,40 +8,36 @@ categories:
   - release
 ---
 
-Say hello to the improved parkrun explorer map!
+Say hello to the new and improved parkrun explorer map!
 
 ## The parkrun explorer map?
 
 Yes. You might remember this as being the map for the regionnaire challenge, but we've rebranded it and 
 added some more goodies for those people who generally want to plan their touristing and want to 
-visualise where they have run on a map. It now lives below the stats table, and before the challenge tables.
+visualise where they have run on a map. It now lives in-between the stats table and the challenge tables.
 
-### What's new?
+### What's changed?
 
-We have computer what is called a "[voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram)" - we 
-have divided the world into cells - the idea being that if you are within a particular cell, you know where the 
-nearest parkrun to that location is. A picure is worth a thousand words, so here's an example:
+We have computed what is called a "[voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram)". We 
+have divided the world into cells. If you are within a particular cell, you know where the 
+nearest parkrun is to that location. A picture is worth a thousand words, so here's an example:
 
 ![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/posts/voronoi-1.png "Running challenges voronoi diagram of the South coast of England"){: .center-image .image-border}
 
-A green cell shows that you have done the parkrun for that area. The green is semi-transparent so that
-you can see the features on the map behind.
+A green cell shows that you have done the parkrun for that area. The circles representing the parkruns 
+are green for ones you have done, and black for the others.
 
-The circles representing the parkruns are green for ones you have done, and black for the others.
-
-As you zoom in the markers change in size, and eventually there is enough space on the map to draw the parkrun
-event names - zoom right in if you want to find out which event you are looking at.
+Zoom right in if you want to find out the name of the event you are looking at.
 
 ![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/posts/voronoi-2.png "Zoomed in Running challenges voronoi diagram around Cheshire"){: .center-image .image-border}
 
-We found that having over a thousand markers on the map showing every parkrun didn't scale - and drawing the data
-in this way appears to be quite efficient. It is hopefully easy for you to see which parkruns you have done, 
-and which ones you haven't, without having lots of overlapping markers on the map.
+On the old map we found that having over a thousand markers showing every parkrun didn't scale - 
+the map was overcrowded and slow to scroll and pan around. This new way seems to work much better.
 
 ### Do we have regions yet?
 
 Why not create your own region! Hopefully by colouring the cells in this way it should be easy to tell if you 
-been to all the events in a particular area of the country / world - just look for the continguous green 
+have been to all the events in a particular area of the country / world - just look for the continguous green 
 parts of the map!
 
 ### Can I play Blockbusters across the country with it?
@@ -53,11 +49,11 @@ I'll have a P please Bob - cue everyone heading off to [Penistone parkrun](https
 ## Updated Japanese and Polish translations
 
 When we added support for [parkrun.jp](https://www.parkrun.jp/) no events had been run yet, and we didn't know any
-of the volunteer translations! Now, thanks to [William Steffancin (A4782624)](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=4782624&eventNumber=0) we have examples translations for most of the roles in Japan.
+of the volunteer translations! Now, thanks to [William Steffancin (A4782624)](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=4782624&eventNumber=0) we have example translations for most of the roles in Japan.
 
 Meanwhile, in Poland, parkrun HQ updated most (all?) of the volunteer roles names, probably to be more technically
-correct. Many thanks to [@sebuish](https://github.com/sebiush) who has provided us with an updated list. The purple 
-badges should be showing correctly for Poland once more.
+correct (the best kind of correct). Many thanks to [@sebuish](https://github.com/sebiush) who has provided us with 
+an updated list. The purple badges should be showing correctly for Poland once more.
 
 ## How do I get all of this great stuff?
 
