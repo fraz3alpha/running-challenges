@@ -642,7 +642,7 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   var count = 0
 
   parkrun_results.forEach(function (parkrun_event) {
-    // Work out how far the parkrunner has travelled to this location
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
     if (parkrun_event.name in geo_data.data.events) {
       var event_location_info = geo_data.data.events[parkrun_event.name]
       if (event_location_info.lat && event_location_info.lon) {
@@ -670,6 +670,65 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
     "url": url_link
   }
 }
+
+
+// calculate average parkrun location
+function calculate_average_parkrun_location(parkrun_results, geo_data) {
+var lat_sum = 0
+  var lon_sum = 0
+  var count = 0
+  var lat_av = ''
+  var lon_av = ''
+
+  parkrun_results.forEach(function (parkrun_event) {
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
+    if (parkrun_event.name in geo_data.data.events) {
+      var event_location_info = geo_data.data.events[parkrun_event.name]
+      if (event_location_info.lat && event_location_info.lon) {
+        lat_sum += parseFloat(event_location_info.lat)
+        lon_sum += parseFloat(event_location_info.lon)
+        count += 1
+      }
+    }
+  })
+
+  if (count > 0) {
+    lat_av = (lat_sum/count)
+    lon_av = (lon_sum/count)
+  }
+
+  return{
+    "lat" : lat_av,
+    "lon" : lon_av
+  }
+}
+
+// Which is the closest parkrun to your average parkrun location?
+function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
+  // Calculate average parkrun for user
+  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
+
+  var average_parkrun_event_name = ''
+  var average_parkrun_event_distance = undefined
+  
+  // For each parkrun event, get the event's information, which includes its lon and lat.
+  // (for each key-value pair in the ...events hash array, run the function passing in the key and value as parameters of that function.)
+  $.each(geo_data.data.events, function(event_name, event_location_info) {
+    // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
+    var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
+    // If the distance to the event from the average parkrun location is less than the distance currently stored, store the event
+    if (average_parkrun_event_distance == undefined || distance < average_parkrun_event_distance) {
+      average_parkrun_event_name = event_name
+      average_parkrun_event_distance = distance
+    }
+  })
+  return {
+    "display_name": "Average parkrun event",
+    "help": "The nearest parkrun event to your average parkrun location.",
+    "value": average_parkrun_event_name
+  }
+}
+
 
 // Furthest parkrun you have run away from your home parkrun
 function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkrun) {
@@ -794,6 +853,7 @@ function generate_stats(data) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
+    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data) // Laura
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
