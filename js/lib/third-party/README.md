@@ -1,7 +1,7 @@
 # Third party libraries
 
 The following third-party libraries have been used in this extension (this
-information exists in under each third [party library folder](https://github.com/fraz3alpha/running-challenges/tree/master/js/lib/third-party),
+information exists in under each [third-party library folder](https://github.com/fraz3alpha/running-challenges/tree/master/js/lib/third-party),
 but is summarised here for ease of use).
 
 jquery v3.3.1 - https://github.com/jquery/jquery/archive/3.3.1.zip
