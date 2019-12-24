@@ -230,30 +230,44 @@ function generateRegionnaireTableEntry(table, data) {
   }
 }
 
-function zoomLevelToPointRadius(zoomLevel) {
-  var pointRadius = 1.5
-  if (zoomLevel >= 8) {
-    pointRadius = 4
+function zoomLevelToScaleOptions(zoomLevel) {
+  options = {
+    "zoomLevel": zoomLevel,
+    "eventNameVisible": false,
+    "eventNameTextSize": 0,
+    "eventPointRadius": 1.5,
+    "pathLineWidth": 1
   }
+
+  if (zoomLevel >= 8) {
+    options.eventPointRadius = 4
+  }  
   if (zoomLevel >= 9) {
-    pointRadius = 8
+    options.eventPointRadius = 6
   }
   if (zoomLevel >= 10) {
-    pointRadius = 12
+    options.eventPointRadius = 8
+
+    // From this point onwards the event name is visible
+    options.eventNameVisible = true
+
+    options.eventNameTextSize = 12
+  }
+  if (zoomLevel >= 11) {
+    
+    options.eventPointRadius = 10
+
+    // We need a small line width generally, but it gets lost
+    // when there are more features on the map, so increase it
+    // when we we have zoomed in a lot
+    pathLineWidth = 2
   }
   if (zoomLevel >= 12) {
-    pointRadius = 16
+    options.eventPointRadius = 12
   }
 
-  return pointRadius
-}
+  return options
 
-function zoomLevelToLineWidth(zoomLevel) {
-  var lineWidth = 1
-  if (zoomLevel >= 11) {
-    lineWidth = 2
-  }
-  return lineWidth
 }
 
 function createVoronoiMapPrototype() {
@@ -396,6 +410,9 @@ function createVoronoiMapPrototype() {
 
       var voronoi_polygons = voronoi_data.polygons()
 
+      var zoomScaleOptions = zoomLevelToScaleOptions(vmap.getZoom())
+      console.log(zoomScaleOptions)
+
       $.each(voronoi_polygons, function(index, cell) {
 
         // If there is no cell data, then keep looping
@@ -410,10 +427,23 @@ function createVoronoiMapPrototype() {
         
         item_circle.setAttribute("cx", cell.data.x)
         item_circle.setAttribute("cy", cell.data.y)
-        item_circle.setAttribute("r", zoomLevelToPointRadius(vmap.getZoom()))
+        item_circle.setAttribute("r", zoomScaleOptions.eventPointRadius)
         item_circle.setAttribute("stroke", filtered_points[index].circleColourLine)
         item_circle.setAttribute("stroke-width", "1")
         item_circle.setAttribute("fill", filtered_points[index].circleColour)
+
+        // If we are zoomed in enough, maybe add some text
+        var item_text = undefined
+        if (zoomScaleOptions.eventNameVisible) {
+          item_text = document.createElement("text")
+          item_text.setAttribute("x", cell.data.x)
+          item_text.setAttribute("y", cell.data.y + zoomScaleOptions.eventPointRadius + 8) // Move the text down below the point, plus some padding
+          item_text.setAttribute("text-anchor", "middle")
+          item_text.setAttribute("font-size", zoomScaleOptions.eventNameTextSize+"px")
+          item_text.setAttribute("font-weight", "bold")
+          item_text.setAttribute("dominant-baseline", "hanging") // Hang the text below
+          item_text.innerText = filtered_points[index].name
+        }
 
         // Create a shape to represent the voronoi area associated with this parkrun event
         // It will be filled if the parkrun has been completed
@@ -421,7 +451,7 @@ function createVoronoiMapPrototype() {
         var item_path = document.createElement("path")
         item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
         item_path.setAttribute("stroke", "gray")
-        item_path.setAttribute("stroke-width", zoomLevelToLineWidth(vmap.getZoom()))
+        item_path.setAttribute("stroke-width", zoomScaleOptions.pathLineWidth)
         item_path.setAttribute("fill", filtered_points[index].fill)
         item_path.setAttribute("fill-opacity", "0.5")
 
@@ -429,6 +459,9 @@ function createVoronoiMapPrototype() {
         // that the parkrun event marker is drawn on top afterwards
         cell_group.appendChild(item_path)
         cell_group.appendChild(item_circle)
+        if (item_text !== undefined) {
+          cell_group.appendChild(item_text)
+        }
         
         // Add this group to the main SVG container
         this_container.appendChild(cell_group)
@@ -614,8 +647,13 @@ function zoomMapToCountryExtents(map_data, data, countryId) {
       var bottomLeft = L.latLng(countryInfo.bounds[1],countryInfo.bounds[0])
       var topRight = L.latLng(countryInfo.bounds[3],countryInfo.bounds[2])
       map_data.map.fitBounds(L.latLngBounds(bottomLeft,topRight))
+
+      return
     }
   })
+
+  // We should only end up here if the country ID didn't match any countries
+  // we know about, we would normally have returned by now.
 
 }
 
