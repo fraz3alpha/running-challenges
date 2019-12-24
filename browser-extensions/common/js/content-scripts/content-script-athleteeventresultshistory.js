@@ -163,8 +163,6 @@ function create_skeleton_elements(id_map) {
 
   top_of_the_page_anchor = $("div[id=content]").find("p:first")
 
-  top_of_the_page_anchor.after($('<div/>').attr("id", "voronoi"))
-
   // The top sections are badges, flags, and messages.
   // Initially the badges and flags are empty until the data is parsed and loaded,
   // and the messsages displayed will indicate progress.
@@ -206,16 +204,7 @@ function create_skeleton_elements(id_map) {
   // Add a spacer after the main table
   running_challenges_main_table_div.after($('<br/>'))
 
-  running_challenges_main_table_div.before(
-    $('<div/>').attr("id", "history").text("history").click(function() {
-      browser.runtime.sendMessage({data: "history"});
-    })
-  )
 }
-
-// function add_voronoi_map(div_id, data) {
-//   create_voronoi_map(div_id, data)
-// }
 
 function add_stats(div_id, data) {
   set_progress_message("Adding stats")
@@ -517,7 +506,6 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   add_flags(id_map["flags"], data)
   add_challenge_results(id_map["main"], data)
   add_stats(id_map["stats"], data)
-  // add_voronoi_map("voronoi", data)
 
   var errors = []
   if (data.info.has_geo_data == false) {
