@@ -1727,7 +1727,7 @@ function challenge_on_dates(data, params) {
         }
 
         if (applicable_day && applicable_month) {
-          console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
+          // console.log("Event matches both day & month for : " + JSON.stringify(this_challenge_date) + " - " + JSON.stringify(parkrun_event))
           // Append this completed parkrun to the correct subpart list
           o.subparts[index].push(parkrun_event)
         }
@@ -2027,7 +2027,7 @@ function calculateCountryCompletionInfo(data) {
     // Find extra information from the events data
     if (eventName in data.geo_data.data.events) {
       var eventInfo = data.geo_data.data.events[eventName]
-      console.log(eventInfo)
+      // console.log(eventInfo)
       var countryEntry = countryCompletionInfo[eventInfo.country_name]
       countryEntry.childEventsCompleted.push(eventName)
       countryEntry.childEventsCompletedCount += 1
