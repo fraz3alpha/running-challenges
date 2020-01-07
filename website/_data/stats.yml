@@ -114,6 +114,14 @@ stats:
       where you will be on average - probably in the sea!
 
 
+  - shortname: closest_average_parkrun
+    name: Closest parkrun to average
+    description: >-
+      The parkrun that is closest to the average latitude/longitude of all your
+      parkrun attendances. This will most likely be your home parkrun - but
+      could be somewhere entirely different if you do a lot of tourism!
+
+
   - shortname: furthest_travelled
     name: Furthest travelled
     description: >-

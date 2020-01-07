@@ -636,7 +636,7 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
   }
 }
 
-function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
+function get_average_parkrun_location(parkrun_results, geo_data) {
   var lat_sum = 0
   var lon_sum = 0
   var count = 0
@@ -653,14 +653,24 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
     }
   })
 
-  var value = "None"
-  var url_link = undefined
   if (count > 0) {
     var lat_av = (lat_sum/count).toFixed(5)
     var lon_av = (lon_sum/count).toFixed(5)
-    value =  lat_av + "," + lon_av
+  }
+
+  return {
+    lat: lat_av,
+    lon: lon_av
+  }
+}
+
+function generate_stat_average_parkrun_location(location) {
+  var value = "None"
+  var url_link = undefined
+  if (location.lat && location.lon) {
+    value =  location.lat + "," + location.lon
     // Provide a link to an openstreetmap with a marker in the location
-    url_link = "https://www.openstreetmap.org/?mlat="+lat_av+"&mlon="+lon_av+"#map=9/"+lat_av+"/"+lon_av
+    url_link = "https://www.openstreetmap.org/?mlat="+location.lat+"&mlon="+location.lon+"#map=9/"+location.lat+"/"+location.lon
   }
 
   return {
@@ -668,6 +678,26 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
     "help": "The average latitude/longitude of all your parkrun attendances.",
     "value": value,
     "url": url_link
+  }
+}
+
+function generate_stat_closest_average_parkrun(geo_data, average_location) {
+  var distance = undefined
+  var value = "None"
+
+  Object.keys(geo_data.data.events).forEach(function (event_name) {
+    var event = geo_data.data.events[event_name]
+    var event_distance_from_average = calculate_great_circle_distance(event, average_location)
+    if (distance === undefined || distance > event_distance_from_average) {
+      distance = event_distance_from_average
+      value = event.name + ', ' + event.country_name
+    }
+  })
+
+  return {
+    "display_name": "Closest parkrun to average ",
+    "help": "The parkrun which is closest to the average latitude/longitude of all your parkrun attendances.",
+    "value": value
   }
 }
 
@@ -791,9 +821,11 @@ function generate_stats(data) {
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
   if (data.info.has_parkrun_results && data.info.has_geo_data) {
+    var average_location = get_average_parkrun_location(data.parkrun_results, data.geo_data)
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
-    stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
+    stats['average_parkrun_location'] = generate_stat_average_parkrun_location(average_location)
+    stats['closest_average_parkrun'] = generate_stat_closest_average_parkrun(data.geo_data, average_location)
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
