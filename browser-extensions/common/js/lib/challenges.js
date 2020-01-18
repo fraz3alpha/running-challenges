@@ -72,7 +72,7 @@ function generate_running_challenge_data(data) {
   if (data.parkrun_results) {
     challenge_data.push(challenge_tourist(data, {
       "shortname": "tourist",
-      "name": "Tourist",
+      "name": "parkrun Tourism",
       "data": {
         // These stages should not overlap.
         // If a stage has more that item in the 'count' field, it is considered something
@@ -111,7 +111,8 @@ function generate_running_challenge_data(data) {
                 "badge_icon": "runner-cowell-club"
               }
             ]
-          }
+          },
+          // To be added
           // {
           //   "shortname": "freyne",
           //   "name": "Freyne Club",
@@ -120,7 +121,7 @@ function generate_running_challenge_data(data) {
           // }
         ]
       },
-      "help": "Run at different parkrun events all over the world!"}))
+      "help": "Run at different parkrun events all over the world! Get badges along your journey at 20,25,50,75, and 100 different events."}))
     // challenge_data.push(challenge_tourist(data, {
     //   "shortname": "cowell-club",
     //   "name": "Cowell Club",
@@ -1453,6 +1454,8 @@ function challenge_tourist(data, params) {
 
     var badgesAwarded = []
 
+    var gotAllBadges = true
+
     // Iterate through each stage, and see if we can award any badges for full or partial completion
     $.each(params.data.stages, function(index, stage){
       if (Array.isArray(stage.count)) {
@@ -1468,9 +1471,10 @@ function challenge_tourist(data, params) {
               "badge_icon": countInfo.badge_icon
             }
             // Set the subpart detail to include the badge was awarded at this point
-            o.subparts_detail[countInfo.count-1]["badge"] = countInfo.badge
+            o.subparts_detail[countInfo.count-1]["badge"] = currentBadge
           } else {
             console.log("Failed to get the badge for "+countInfo.name + " needed "+countInfo.count+", got "+distinctParkrunsCompleteCount)
+            gotAllBadges = false
           }
         })
         // Find the last badge we matched, and add that to the list of ones added by this challenge.
@@ -1481,19 +1485,25 @@ function challenge_tourist(data, params) {
         // This badge has a single target to hit, see if we have done so.
         if (distinctParkrunsCompleteCount >= stage.count) {
           console.log("Awarding the badge for "+stage.name)
-          badgesAwarded.push({
+          currentBadge = {
             "name": stage.name,
             "badge_icon": stage.badge_icon
-          })
+          }
+          badgesAwarded.push(currentBadge)
           // Set the subpart detail to include the badge was awarded at this point
-          o.subparts_detail[stage.count-1]["badge"] = stage.badge
+          o.subparts_detail[stage.count-1]["badge"] = currentBadge
         } else {
           console.log("Failed to get the badge for "+stage.name + " needed "+stage.count+", got "+distinctParkrunsCompleteCount)
+          gotAllBadges = false
         }
       }
     })
 
     o.badgesAwarded = badgesAwarded
+
+    if (gotAllBadges) {
+      o.complete = true
+    }
 
     console.log(o)
 
