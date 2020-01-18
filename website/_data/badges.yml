@@ -10,6 +10,10 @@ runner:
     name: Cowell Club
     description: Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75.
 
+  - shortname: freyne-club
+    name: Freyne Club
+    description: Run at 250+ different parkrun locations anywhere in the world. Named after the first parkrunner to complete it.
+
   - shortname: alphabeteer
     name: Alphabeteer
     description: Run at parkrun locations starting with each letter of the English alphabet (except X).
