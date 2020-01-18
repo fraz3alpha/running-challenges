@@ -15,6 +15,9 @@ before_script:
 #  - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
 #  - gem install bundler -v 1.16.1
 
+before_install:
+  - gem install bundler
+
 script:
    # Only build the staging website if the github token is available, which means
    # that it will only happen for PRs from our own repo, not forks.
