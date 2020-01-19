@@ -1,7 +1,7 @@
 
 # based on https://jekyllrb.com/docs/continuous-integration/travis-ci/
 language: ruby
-rvm: 2.3.3
+rvm: 2.6.3
 
 env:
   - EXTENSION_BUILD_ID=$TRAVIS_BUILD_NUMBER EXTENSION_BUILD_VERSION=$TRAVIS_TAG
@@ -12,8 +12,11 @@ before_script:
  - chmod +x ./build/extension-chrome/build.sh
  - chmod +x ./build/extension-firefox/build.sh
  - npm install -g web-ext
- - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
- - gem install bundler -v 1.16.1
+#  - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
+#  - gem install bundler -v 1.16.1
+
+before_install:
+  - gem install bundler
 
 script:
    # Only build the staging website if the github token is available, which means
@@ -54,3 +57,10 @@ deploy:
     repo: fraz3alpha/running-challenges
 
 sudo: false # route your build to the container-based infrastructure for a faster build
+
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+
+cache: bundler # caching bundler gem packages will speed up build

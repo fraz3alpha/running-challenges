@@ -72,14 +72,55 @@ function generate_running_challenge_data(data) {
   if (data.parkrun_results) {
     challenge_data.push(challenge_tourist(data, {
       "shortname": "tourist",
-      "name": "Tourist",
-      "data": 20,
-      "help": "Run at 20+ different parkrun locations anywhere in the world."}))
-    challenge_data.push(challenge_tourist(data, {
-      "shortname": "cowell-club",
-      "name": "Cowell Club",
-      "data": 100,
-      "help": "Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75."}))
+      "name": "parkrun Tourism",
+      "data": {
+        // These stages should not overlap.
+        // If a stage has more that item in the 'count' field, it is considered something
+        // that you can progress towards in fractions, before being awarded the final one.
+        // This allows for more club additions as the tourism bug means that ever higher
+        // achievements are being regularly recongnised.
+        "stages": [
+          {
+            "shortname": "tourist",
+            "name": "parkrun Tourist",
+            "count": 20,
+            "badge_icon": "runner-tourist"
+          },
+          {
+            "shortname": "cowell",
+            "name": "Cowell Club",
+            "count": [
+              {
+                "count": 25,
+                "name": "Quarter Cowell",
+                "badge_icon": "runner-quarter-cowell-club"
+              },
+              {
+                "count": 50,
+                "name": "Half Cowell - a 'Cow'",
+                "badge_icon": "runner-half-cowell-club"
+              },
+              {
+                "count": 75,
+                "name": "Three-Quarter Cowell",
+                "badge_icon": "runner-three-quarter-cowell-club"
+              },
+              {
+                "count": 100,
+                "name": "Cowell",
+                "badge_icon": "runner-cowell-club"
+              }
+            ]
+          },
+          {
+            "shortname": "freyne",
+            "name": "Freyne Club",
+            "count": 250,
+            "badge_icon": "runner-freyne-club"
+          }
+        ]
+      },
+      "help": "Run at different parkrun events all over the world! Get badges along your journey at 20,25,50,75,100, and 250 different events."}))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "alphabeteer",
       "name": "Alphabeteer",
@@ -1380,94 +1421,99 @@ function challenge_parkruns(data, params) {
 // Complete x different parkruns (20 and 100 are standard)
 function challenge_tourist(data, params) {
 
-    var parkrun_results = data.parkrun_results
-
-    var count = params.data
-
     var o = create_data_object(params, "runner")
-    o.has_map = true
 
     distinct_parkruns_completed = {}
 
-    // Add all the subparts to the list
-    for (i=0; i<count; i++) {
-        o.subparts.push("parkrun_"+i)
-    }
-
     $.each(data.parkrun_results, function(index, parkrun_event) {
-    // parkrun_results.forEach(function (parkrun_event) {
-        var completed_so_far = Object.keys(distinct_parkruns_completed).length
-        // Ony do the first 20
-        if (completed_so_far < o.subparts.length) {
-            if (!(parkrun_event.name in distinct_parkruns_completed)) {
-                o.subparts_completed_count += 1
-                // Add it in for the next complete subpart
-                p = Object.create(parkrun_event)
-                p.subpart = o.subparts_completed_count
-                p.name = p.eventlink
-                p.info = p.datelink
-                o.subparts_detail.push(p)
+      if (!(parkrun_event.name in distinct_parkruns_completed)) {
+        o.subparts_completed_count += 1
+        // Add it in for the next complete subpart
+        p = Object.create(parkrun_event)
+        p.subpart = o.subparts_completed_count
+        p.name = p.eventlink
+        p.info = p.datelink
+        o.subparts_detail.push(p)
 
-                // Add to the events done list, so that we can map them
-                if (!(parkrun_event.name in o.completed_qualifying_events)) {
-                  o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-                }
-
-                distinct_parkruns_completed[parkrun_event.name] = true
-            }
-            if (o.subparts_completed_count == o.subparts.length) {
-                o.complete = true
-                o.completed_on = parkrun_event.date
-            }
+        // Add to the events done list, so that we can map them
+        if (!(parkrun_event.name in o.completed_qualifying_events)) {
+          o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
         }
 
+        distinct_parkruns_completed[parkrun_event.name] = true
+      }
     });
 
-    // If we haven't completed this challenge, try and find out what possible
-    // events would allow us to complete it.
-    if (o.complete == false) {
-      if (data.info.has_geo_data) {
-        if (data.info.has_home_parkrun && data.info.is_our_page) {
-          sorted_events = sort_events_by_distance(data.geo_data.data.events, get_home_parkrun(data))
-          $.each(sorted_events, function(index, event) {
-            // Only consider this if we haven't done it
-            if (!(event.name in o.completed_qualifying_events)) {
-              // If we still need a top-up to get to completion, add it to nearest events
-              if (Object.keys(o.nearest_qualifying_events).length + Object.keys(o.completed_qualifying_events).length < o.subparts.length) {
-                if (!(event.name in o.nearest_qualifying_events)) {
-                  o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-                }
-              }
-            }
-          })
-        }
-        // Add any other qualifying events
-        $.each(data.geo_data.data.events, function(index, event) {
-          if (!(event.name in o.completed_qualifying_events) && !(event.name in o.nearest_qualifying_events)) {
-            if (!(event.name in o.all_qualifying_events)) {
-              o.all_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-            }
+    var distinctParkrunsCompleteCount = Object.keys(distinct_parkruns_completed).length
+
+    var badgesAwarded = []
+
+    var gotAllBadges = true
+
+    // Iterate through each stage, and see if we can award any badges for full or partial completion
+    $.each(params.data.stages, function(index, stage){
+      if (Array.isArray(stage.count)) {
+        // This is a badge where you can get incremental completion
+        var currentBadge = undefined
+        $.each(stage.count, function(countIndex, countInfo){
+          // If we have crossed the threshold for this partial badge, add the details.
+          // This assumes that they are ordered by increasing value.
+
+          // Define this badge once so we can award it, or add it to a row
+          thisBadge = {
+            "name": countInfo.name,
+            "badge_icon": countInfo.badge_icon
+          }
+          if (distinctParkrunsCompleteCount >= countInfo.count) {
+            console.log("Awarding the badge for "+countInfo.name)
+            // Set the subpart detail to include the badge was awarded at this point
+            o.subparts_detail[countInfo.count-1]["badge"] = thisBadge
+            // Note this this badge was awarded
+            currentBadge = thisBadge
+          } else {
+            console.log("Failed to get the badge for "+countInfo.name + " needed "+countInfo.count+", got "+distinctParkrunsCompleteCount)
+            gotAllBadges = false
+            // Add an empty subpart line so that people can see the badges they can still get
+            o.subparts_detail.push({
+              "subpart": countInfo.count,
+              "badge": thisBadge
+            })
           }
         })
+        // Find the last badge we matched, and add that to the list of ones added by this challenge.
+        if (currentBadge !== undefined) {
+          badgesAwarded.push(currentBadge)
+        }
+      } else {
+        currentBadge = {
+          "name": stage.name,
+          "badge_icon": stage.badge_icon
+        }
+        // This badge has a single target to hit, see if we have done so.
+        if (distinctParkrunsCompleteCount >= stage.count) {
+          console.log("Awarding the badge for "+stage.name)
+          badgesAwarded.push(currentBadge)
+          // Set the subpart detail to include the badge was awarded at this point
+          o.subparts_detail[stage.count-1]["badge"] = currentBadge
+        } else {
+          console.log("Failed to get the badge for "+stage.name + " needed "+stage.count+", got "+distinctParkrunsCompleteCount)
+          gotAllBadges = false
+          // Add an empty subpart line so that people can see the badges they can still get
+          o.subparts_detail.push({
+            "subpart": stage.count,
+            "badge": currentBadge
+          })
+        }
       }
+    })
+
+    o.badgesAwarded = badgesAwarded
+
+    if (gotAllBadges) {
+      o.complete = true
     }
 
-    // Work out if it is possible to have a partial completion
-    if (params.shortname == "cowell-club" && o.complete == false) {
-        if (o.subparts_completed_count >= 75) {
-            o.partial_completion = true
-            o.partial_completion_name = "Three-Quarter Cowell"
-            o.partial_completion_badge_icon = "runner-three-quarter-cowell-club"
-        } else if (o.subparts_completed_count >= 50) {
-            o.partial_completion = true
-            o.partial_completion_name = "Half Cowell"
-            o.partial_completion_badge_icon = "runner-half-cowell-club"
-        } else if (o.subparts_completed_count >= 25) {
-            o.partial_completion = true
-            o.partial_completion_name = "Quarter Cowell"
-            o.partial_completion_badge_icon = "runner-quarter-cowell-club"
-        }
-    }
+    console.log(o)
 
     // Return an object representing this challenge
     return update_data_object(o)

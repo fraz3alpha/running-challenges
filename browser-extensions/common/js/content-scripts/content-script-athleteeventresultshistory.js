@@ -198,7 +198,13 @@ function add_badges(div_id, data) {
       data.challenge_results.running_results.forEach(function(result) {
         var badge = get_running_badge(result)
         if (badge) {
-          badges.push(badge)
+          if (Array.isArray(badge)) {
+            $.each(badge, function(index, badgeInstance){
+              badges.push(badgeInstance)
+            })
+          } else {
+            badges.push(badge)
+          }
         }
       })
     }
@@ -247,18 +253,35 @@ function add_badges(div_id, data) {
 function get_running_badge(result) {
   var badge_info = undefined
   // console.log(result)
-  if (result.complete == true) {
-    badge_info = {
-        "name": result.name,
-        "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
-        "link": "#"+result.shortname
+
+  // If this challenge uses the badgesAwarded mechanism, then see if there are 
+  // any
+  if (result.badgesAwarded !== undefined ) {
+    if (result.badgesAwarded.length > 0) {
+      badge_info = []
+      $.each(result.badgesAwarded, function(index, badge) {
+        badge_info.push({
+          "name": badge.name,
+          "icon": browser.extension.getURL("/images/badges/"+badge.badge_icon+".png"),
+          // The link just goes to the top of the main table for the challenge, not the specific row.
+          "link": "#"+result.shortname
+        })
+      })
     }
-  } else if (result.partial_completion == true) {
+  } else {
+    if (result.complete == true) {
       badge_info = {
-        "name": result.partial_completion_name,
-        "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
-        "link": "#"+result.shortname
+          "name": result.name,
+          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "link": "#"+result.shortname
       }
+    } else if (result.partial_completion == true) {
+        badge_info = {
+          "name": result.partial_completion_name,
+          "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+          "link": "#"+result.shortname
+        }
+    }
   }
   return badge_info
 }
