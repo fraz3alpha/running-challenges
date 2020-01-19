@@ -8,7 +8,7 @@ categories:
   - release
 ---
 
-Say hello to the new and improved Tourism Challenge table and the addition of the Freyne Club badge
+Say hello to the new and improved Tourism and Obsessive Challenge tables, and the addition of the Freyne Club badge
 
 ## Tourism Challenge?
 
@@ -48,6 +48,25 @@ As of right now, the only person to achieve 500 different events appears to be .
 This is a feat that only a handful of people are ever likely to achieve, and to make a badge for it now seems excessive.
 If you've got the time, and disposable income, determination to get to that milestone, the personal satisfaction of 
 reaching that mark will have to be enough for now.
+
+### parkrun Obessive improvements
+
+The obsessive badges were among the first challenges to be added to the extension as counting up the number of
+events run per year is pretty straightforward :) There is, however, two things that were not quite right about 
+this challenge:
+
+1. We have always wanted to include volunteering in this count, not just running - but it is still the case that 
+parkrun doesn't display any information on the website to say when or where you have volunteered, so that's not
+something we can fix yet.
+
+2. Why do you get all 3 badges - Bronze, Silver, and Gold, for doing 50+ in a single year as that isn't how medals 
+work... well, this is something we can fix!
+
+Now the Obsessive challenge is a single table and you can get at most one badge awarded per year. Additionally,
+you will now also see the badges you haven't got yet (in a similar way to the tourism challenge) so that 
+you can see what you are working towards.
+
+![Running Challenges Obsessive Challenge Table]({{ site.baseurl }}/img/posts/obsessive-table.png "Running challenges table for the Obsessive Challenge with incomplete badges"){: .center-image .image-border}
 
 ## Version 1.0.0?
 
