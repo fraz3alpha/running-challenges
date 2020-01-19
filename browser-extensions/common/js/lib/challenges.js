@@ -136,6 +136,13 @@ function generate_running_challenge_data(data) {
       "shortname": "nyd-double",
       "name":  "NYD Double",
       "help": "Run two parkruns on one New Year's Day."}))
+    challenge_data.push(challenge_on_dates(data, {
+      "shortname": "leap-day",
+      "name": "Leap Day",
+      "data": [
+        {"month": 1, "day": 29}
+      ],
+      "help": "Run a parkrun on the 29th of February."}))
     challenge_data.push(challenge_groundhog_day(data, {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
