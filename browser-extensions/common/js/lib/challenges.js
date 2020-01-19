@@ -1458,21 +1458,25 @@ function challenge_tourist(data, params) {
         $.each(stage.count, function(countIndex, countInfo){
           // If we have crossed the threshold for this partial badge, add the details.
           // This assumes that they are ordered by increasing value.
-          currentBadge = {
+
+          // Define this badge once so we can award it, or add it to a row
+          thisBadge = {
             "name": countInfo.name,
             "badge_icon": countInfo.badge_icon
           }
           if (distinctParkrunsCompleteCount >= countInfo.count) {
             console.log("Awarding the badge for "+countInfo.name)
             // Set the subpart detail to include the badge was awarded at this point
-            o.subparts_detail[countInfo.count-1]["badge"] = currentBadge
+            o.subparts_detail[countInfo.count-1]["badge"] = thisBadge
+            // Note this this badge was awarded
+            currentBadge = thisBadge
           } else {
             console.log("Failed to get the badge for "+countInfo.name + " needed "+countInfo.count+", got "+distinctParkrunsCompleteCount)
             gotAllBadges = false
             // Add an empty subpart line so that people can see the badges they can still get
             o.subparts_detail.push({
               "subpart": countInfo.count,
-              "badge": currentBadge
+              "badge": thisBadge
             })
           }
         })
