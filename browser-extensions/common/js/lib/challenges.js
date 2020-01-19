@@ -202,9 +202,8 @@ function generate_running_challenge_data(data) {
     challenge_data.push(challenge_obsessive(data, 
       {
         "shortname": "obsessive-gold",
-        "badge_icon": "parkrun-obsessive-gold",
         "name": "parkrun Obsessive",
-        "help": "Run at 30+ (bronze), 40+ (silver), or 50+(gold) parkruns in a calendar year",
+        "help": "Run at 30+ (bronze), 40+ (silver), or 50+(gold) parkruns in a calendar year.",
         "stages": [
           {
             "count": 30,
