@@ -113,6 +113,11 @@ stats:
       towards your home parkrun. If, however, you visit all over the world, who knows
       where you will be on average - probably in the sea!
 
+  - shortname: average_parkrun_event
+    name: Average parkrun event
+    description: >-
+      The closest parkrun event to your average parkrun location.
+      In case you want to go run it.
 
   - shortname: furthest_travelled
     name: Furthest travelled

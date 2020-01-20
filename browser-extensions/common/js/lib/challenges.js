@@ -199,25 +199,33 @@ function generate_running_challenge_data(data) {
         {"month": 11},
       ],
       "help": "Run in each month of the year."}))
+    challenge_data.push(challenge_obsessive(data,
+      {
+        "shortname": "obsessive-gold",
+        "name": "parkrun Obsessive",
+        "help": "Run at 30+ (bronze), 40+ (silver), or 50+(gold) parkruns in a calendar year.",
+        "stages": [
+          {
+            "count": 30,
+            "name": "Bronze",
+            "badge_icon": "runner-obsessive-bronze"
+          },
+          {
+            "count": 40,
+            "name": "Silver",
+            "badge_icon": "runner-obsessive-silver"
+          },
+          {
+            "count": 50,
+            "name": "Gold",
+            "badge_icon": "runner-obsessive-gold"
+          }
+        ]
+      }))
     challenge_data.push(challenge_regular_running(data, {
       "shortname": "regular-running-day",
       "name": "Regular Running",
       "help": "Build a running community by running at an event every year since you first attended."}))
-    challenge_data.push(challenge_in_a_year(data, {
-      "shortname": "obsessive-bronze",
-      "name": "Bronze Level Obsessive",
-      "data": 30,
-      "help": "Run 30+ parkruns in one calendar year."}))
-    challenge_data.push(challenge_in_a_year(data, {
-      "shortname": "obsessive-silver",
-      "name": "Silver Level Obsessive",
-      "data": 40,
-      "help": "Run 40+ parkruns in one calendar year."}))
-    challenge_data.push(challenge_in_a_year(data, {
-      "shortname": "obsessive-gold",
-      "name": "Gold Level Obsessive",
-      "data": 50,
-      "help": "Run 50+ parkruns in one calendar year."}))
   }
 
   // if (data.parkrun_results && data.geo_data) {
@@ -681,13 +689,14 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
   }
 }
 
+// Calculate average lat/lon of all parkruns completed
 function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   var lat_sum = 0
   var lon_sum = 0
   var count = 0
 
   parkrun_results.forEach(function (parkrun_event) {
-    // Work out how far the parkrunner has travelled to this location
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
     if (parkrun_event.name in geo_data.data.events) {
       var event_location_info = geo_data.data.events[parkrun_event.name]
       if (event_location_info.lat && event_location_info.lon) {
@@ -712,6 +721,81 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
     "display_name": "Average parkrun lat/lon location",
     "help": "The average latitude/longitude of all your parkrun attendances.",
     "value": value,
+    "url": url_link
+  }
+}
+
+
+// Calculate average parkrun location
+function calculate_average_parkrun_location(parkrun_results, geo_data) {
+var lat_sum = 0
+  var lon_sum = 0
+  var count = 0
+  var lat_av = ''
+  var lon_av = ''
+
+  parkrun_results.forEach(function (parkrun_event) {
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
+    if (parkrun_event.name in geo_data.data.events) {
+      var event_location_info = geo_data.data.events[parkrun_event.name]
+      if (event_location_info.lat && event_location_info.lon) {
+        lat_sum += parseFloat(event_location_info.lat)
+        lon_sum += parseFloat(event_location_info.lon)
+        count += 1
+      }
+    }
+  })
+
+  if (count > 0) {
+    lat_av = (lat_sum/count)
+    lon_av = (lon_sum/count)
+  }
+
+  return{
+    "lat" : lat_av,
+    "lon" : lon_av
+  }
+}
+
+// What's the URL of the parkrun's webpage?
+function get_parkrun_page_url(data, parkrun_name) {
+  parkrun_page_url = undefined
+  if (data.info.has_geo_data) {
+    if (parkrun_name in data.geo_data.data.events) {
+      parkrun_shortname = data.geo_data.data.events[parkrun_name].shortname
+      country_name = data.geo_data.data.events[parkrun_name].country_name
+      if (country_name in data.geo_data.data.countries) {
+        domain_url = data.geo_data.data.countries[country_name].url
+        parkrun_page_url = "https://" + domain_url + "/" + parkrun_shortname
+      }
+    }
+  }
+  return parkrun_page_url
+}
+
+// Which is the closest parkrun to your average parkrun location?
+function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
+  // Calculate average parkrun for user
+  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
+  var average_parkrun_event_name = ''
+  var average_parkrun_event_distance = undefined
+  // For each parkrun event, get the event's information, which includes its lon and lat.
+  $.each(geo_data.data.events, function(event_name, event_location_info) {
+    // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
+    var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
+    // If the distance to the event from the average parkrun location is less than the distance currently stored, store the event
+    if (average_parkrun_event_distance == undefined || distance < average_parkrun_event_distance) {
+      average_parkrun_event_name = event_name
+      average_parkrun_event_distance = distance
+    }
+  })
+
+  var url_link = get_parkrun_page_url(data, average_parkrun_event_name)
+  
+  return {
+    "display_name": "Average parkrun event",
+    "help": "The nearest parkrun event to your average parkrun location.",
+    "value": average_parkrun_event_name,
     "url": url_link
   }
 }
@@ -741,10 +825,13 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
     furthest_travelled.display_name = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
   }
 
+  var url_link = get_parkrun_page_url(data, furthest_travelled.parkrun_event.name)
+
   return {
     "display_name": "Furthest travelled",
     "help": "The furthest away parkrun you have been to (calculated from your home parkrun).",
-    "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km"
+    "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km",
+    "url": url_link
   }
 }
 
@@ -781,10 +868,13 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
     value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
   }
 
+  var url_link = get_parkrun_page_url(data, nendy.name)
+
   return {
     "display_name": "Nearest event not done yet (NENDY)",
     "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
-    "value": value
+    "value": value,
+    "url": url_link
   }
 }
 
@@ -839,6 +929,7 @@ function generate_stats(data) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
+    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data)
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
@@ -2086,14 +2177,16 @@ function challenge_regular_running(data, params) {
   return update_data_object(o)
 }
 
-function challenge_in_a_year(data, params) {
+function challenge_obsessive(data, params) {
 
     var parkrun_results = data.parkrun_results
-    var count = params.data
+    var stages = params.stages
 
     var o = create_data_object(params, "runner")
     o.subparts = ["1"]
     o.summary_text = "0"
+
+    var badgesAwarded = []
 
     by_year = {}
 
@@ -2109,32 +2202,99 @@ function challenge_in_a_year(data, params) {
 
     })
 
-    Object.keys(by_year).sort().forEach(function (year) {
-        if (by_year[year].length >= count) {
-            o.subparts_detail.push({
-                "name": year,
-                "date": year,
-                "info": by_year[year].length,
-                "subpart": count+"+"
-            })
-            o.subparts_completed_count += 1
-            if (!o.complete) {
-                o.complete = true
-                o.completed_on = year
-            }
-        }
+    // We now have an object showing us how many parkruns were attended in each year.
+    // Until such a time as volunteering can be allocated in this way, this just means 
+    // running and getting a result.
+
+    console.log(by_year)
+
+    var subBadgesAvailable = []
+
+    $.each(stages, function(index, obsessiveMilestone) {
+      subBadgesAvailable.push({
+        "awarded": false
+      })
     })
 
-    if (o.subparts_detail.length == 0) {
+    // Now lets look at each year for which we have data, and see if the different milestones 
+    // have been reached.
+    Object.keys(by_year).sort().forEach(function (year) {
+      var currentBadge = undefined
+      $.each(stages, function(index, obsessiveMilestone) {
+        if (by_year[year].length >= obsessiveMilestone.count) {
+          currentBadge = {
+            "index": index,
+            "name": obsessiveMilestone.name,
+            "count": obsessiveMilestone.count,
+            "badge_icon": obsessiveMilestone.badge_icon
+          }
+        }
+      })
+      if (currentBadge !== undefined) {
+        // Award a badge for this year
         o.subparts_detail.push({
-            "subpart": count+"+",
-            "info": "-"
+          "name": year,
+          "date": year,
+          "info": by_year[year].length,
+          "subpart": currentBadge.name+" ("+currentBadge.count+"+)",
+          "badge": currentBadge
         })
-    }
+        // Ensure that we add the badge at the top
+        subBadgesAvailable[currentBadge.index].awarded = true
+      }
+
+    })
 
     // Change the summary to indicate number of times completed
-    if (o.subparts_completed_count > 0) {
-        o.summary_text = "x"+o.subparts_completed_count
+    if (o.subparts_detail.length > 0) {
+      o.summary_text = "x"+o.subparts_detail.length
+    }
+
+    // Award the badges to be displayed at the top
+    $.each(subBadgesAvailable, function(index, subBadge) {
+      if (subBadge.awarded == true) {
+        badgesAwarded.push({
+          "name": stages[index].name,
+          "badge_icon": stages[index].badge_icon
+        })
+      }
+    })
+
+    o.badgesAwarded = badgesAwarded
+
+
+    // Display the badges above what the parkrunner has, so they can see
+    // what is still to come. i.e. if they have nothing, show all 3 badges,
+    // if they have bronze, show silver+gold, have silver, show gold, if 
+    // they already have gold, they then don't need hints and that'll do :)
+
+    // Find the highest ones they have.
+    var maxBadgeAwarded = -1
+    $.each(subBadgesAvailable, function(index, subBadge) {
+      if (subBadge.awarded) {
+        maxBadgeAwarded = index
+      }
+    })
+    console.log("parkrunner has achieved max obsessive level of " + maxBadgeAwarded)
+
+    // Add the badge for any higher badges than the ones they have
+    $.each(stages, function(index, obsessiveMilestone) {
+      if (index > maxBadgeAwarded) {
+        o.subparts_detail.push({
+          // "subpart": count+"+",
+          "badge": {
+            "name": obsessiveMilestone.name,
+            "badge_icon": obsessiveMilestone.badge_icon
+          },
+          "subpart": obsessiveMilestone.name+" ("+obsessiveMilestone.count+"+)",
+          "name": "-"
+        })
+      }
+    })
+
+    // If they have been awarded the maximum badge, then give them a tick
+    if (maxBadgeAwarded == stages.length-1) {
+      o.complete = true
     }
 
     // Return an object representing this challenge
