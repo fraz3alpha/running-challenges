@@ -686,13 +686,14 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
   }
 }
 
+// Calculate average lat/lon of all parkruns completed
 function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   var lat_sum = 0
   var lon_sum = 0
   var count = 0
 
   parkrun_results.forEach(function (parkrun_event) {
-    // Work out how far the parkrunner has travelled to this location
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
     if (parkrun_event.name in geo_data.data.events) {
       var event_location_info = geo_data.data.events[parkrun_event.name]
       if (event_location_info.lat && event_location_info.lon) {
@@ -717,6 +718,81 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
     "display_name": "Average parkrun lat/lon location",
     "help": "The average latitude/longitude of all your parkrun attendances.",
     "value": value,
+    "url": url_link
+  }
+}
+
+
+// Calculate average parkrun location
+function calculate_average_parkrun_location(parkrun_results, geo_data) {
+var lat_sum = 0
+  var lon_sum = 0
+  var count = 0
+  var lat_av = ''
+  var lon_av = ''
+
+  parkrun_results.forEach(function (parkrun_event) {
+    // Is this parkrun still live (know where it is), and has it got a location we can do something with?
+    if (parkrun_event.name in geo_data.data.events) {
+      var event_location_info = geo_data.data.events[parkrun_event.name]
+      if (event_location_info.lat && event_location_info.lon) {
+        lat_sum += parseFloat(event_location_info.lat)
+        lon_sum += parseFloat(event_location_info.lon)
+        count += 1
+      }
+    }
+  })
+
+  if (count > 0) {
+    lat_av = (lat_sum/count)
+    lon_av = (lon_sum/count)
+  }
+
+  return{
+    "lat" : lat_av,
+    "lon" : lon_av
+  }
+}
+
+// What's the URL of the parkrun's webpage?
+function get_parkrun_page_url(data, parkrun_name) {
+  parkrun_page_url = undefined
+  if (data.info.has_geo_data) {
+    if (parkrun_name in data.geo_data.data.events) {
+      parkrun_shortname = data.geo_data.data.events[parkrun_name].shortname
+      country_name = data.geo_data.data.events[parkrun_name].country_name
+      if (country_name in data.geo_data.data.countries) {
+        domain_url = data.geo_data.data.countries[country_name].url
+        parkrun_page_url = "https://" + domain_url + "/" + parkrun_shortname
+      }
+    }
+  }
+  return parkrun_page_url
+}
+
+// Which is the closest parkrun to your average parkrun location?
+function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
+  // Calculate average parkrun for user
+  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
+  var average_parkrun_event_name = ''
+  var average_parkrun_event_distance = undefined
+  // For each parkrun event, get the event's information, which includes its lon and lat.
+  $.each(geo_data.data.events, function(event_name, event_location_info) {
+    // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
+    var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
+    // If the distance to the event from the average parkrun location is less than the distance currently stored, store the event
+    if (average_parkrun_event_distance == undefined || distance < average_parkrun_event_distance) {
+      average_parkrun_event_name = event_name
+      average_parkrun_event_distance = distance
+    }
+  })
+
+  var url_link = get_parkrun_page_url(data, average_parkrun_event_name)
+  
+  return {
+    "display_name": "Average parkrun event",
+    "help": "The nearest parkrun event to your average parkrun location.",
+    "value": average_parkrun_event_name,
     "url": url_link
   }
 }
@@ -746,10 +822,13 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
     furthest_travelled.display_name = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
   }
 
+  var url_link = get_parkrun_page_url(data, furthest_travelled.parkrun_event.name)
+
   return {
     "display_name": "Furthest travelled",
     "help": "The furthest away parkrun you have been to (calculated from your home parkrun).",
-    "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km"
+    "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km",
+    "url": url_link
   }
 }
 
@@ -786,10 +865,13 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
     value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
   }
 
+  var url_link = get_parkrun_page_url(data, nendy.name)
+
   return {
     "display_name": "Nearest event not done yet (NENDY)",
     "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
-    "value": value
+    "value": value,
+    "url": url_link
   }
 }
 
@@ -844,6 +926,7 @@ function generate_stats(data) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
+    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data)
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
