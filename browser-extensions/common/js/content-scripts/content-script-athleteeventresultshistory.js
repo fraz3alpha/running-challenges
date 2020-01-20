@@ -25,37 +25,6 @@ function get_table(id, caption) {
     })
 }
 
-function add_challenge_badges(div, data) {
-
-  console.log('Adding '+JSON.stringify(data)+' to '+ div)
-
-    badge_p = $("p", div)
-    badge_p.empty()
-
-    var index_counter = 1
-    data.forEach(function (challenge) {
-        var challenge_link = $('<a></a>')
-        challenge_link.attr('href', challenge.link)
-
-        var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-        img.attr('src', challenge.icon);
-        img.attr('alt',challenge.name)
-        img.attr('title',challenge.name)
-        img.attr('width',64)
-        img.attr('height',64)
-
-        challenge_link.append(img)
-
-        badge_p.append(challenge_link)
-
-        if (index_counter > 0 && index_counter % 8 == 0) {
-            badge_p.append($('<br/>'))
-        }
-        index_counter += 1
-    })
-
-}
-
 function get_badge_location() {
     return $("div[id=content]").find("p:first")
 }
@@ -122,8 +91,11 @@ function parse_results_table() {
           table_cells = $("td", this)
           if (table_cells.length > 0) {
               // Find the name and other interesting bits of data for this parkrun
+
               parkrun_name = table_cells[0].innerText.trim()
+              parkrun_eventlink = table_cells[0].innerHTML.trim()
               parkrun_date = table_cells[1].innerText.trim()
+              parkrun_datelink = table_cells[1].innerHTML.trim()
               parkrun_event_number = table_cells[2].innerText.trim()
               parkrun_position = table_cells[3].innerText.trim()
               parkrun_time = table_cells[4].innerText.trim()
@@ -139,7 +111,9 @@ function parse_results_table() {
               // Store this parkrun instance in our big data structure
               parkrun_stats = {
                   "name": parkrun_name,
+                  "eventlink": parkrun_eventlink,
                   "date": parkrun_date,
+                  "datelink": parkrun_datelink,
                   "date_obj": parkrun_date_obj,
                   "event_number": parkrun_event_number,
                   "position": parkrun_position,
@@ -203,6 +177,7 @@ function create_skeleton_elements(id_map) {
 
   // Add a spacer after the main table
   running_challenges_main_table_div.after($('<br/>'))
+
 }
 
 function add_stats(div_id, data) {
@@ -223,7 +198,13 @@ function add_badges(div_id, data) {
       data.challenge_results.running_results.forEach(function(result) {
         var badge = get_running_badge(result)
         if (badge) {
-          badges.push(badge)
+          if (Array.isArray(badge)) {
+            $.each(badge, function(index, badgeInstance){
+              badges.push(badgeInstance)
+            })
+          } else {
+            badges.push(badge)
+          }
         }
       })
     }
@@ -253,6 +234,8 @@ function add_badges(div_id, data) {
       img.attr('width',64)
       img.attr('height',64)
 
+      modifyStyle(img)
+
       badge_link.append(img)
       badge_div.append(badge_link)
 
@@ -270,18 +253,35 @@ function add_badges(div_id, data) {
 function get_running_badge(result) {
   var badge_info = undefined
   // console.log(result)
-  if (result.complete == true) {
-    badge_info = {
-        "name": result.name,
-        "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
-        "link": "#"+result.shortname
+
+  // If this challenge uses the badgesAwarded mechanism, then see if there are 
+  // any
+  if (result.badgesAwarded !== undefined ) {
+    if (result.badgesAwarded.length > 0) {
+      badge_info = []
+      $.each(result.badgesAwarded, function(index, badge) {
+        badge_info.push({
+          "name": badge.name,
+          "icon": browser.extension.getURL("/images/badges/"+badge.badge_icon+".png"),
+          // The link just goes to the top of the main table for the challenge, not the specific row.
+          "link": "#"+result.shortname
+        })
+      })
     }
-  } else if (result.partial_completion == true) {
+  } else {
+    if (result.complete == true) {
       badge_info = {
-        "name": result.partial_completion_name,
-        "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
-        "link": "#"+result.shortname
+          "name": result.name,
+          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "link": "#"+result.shortname
       }
+    } else if (result.partial_completion == true) {
+        badge_info = {
+          "name": result.partial_completion_name,
+          "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+          "link": "#"+result.shortname
+        }
+    }
   }
   return badge_info
 }
@@ -355,7 +355,7 @@ function add_flags(div_id, data) {
             // Find out when it was first run and make a nice string
             var first_run = country.firstRanOn.toISOString().split("T")[0]
 
-            var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
+            var regionnaire_link = $("<a/>").attr("href", "#regionnaire")
 
             var img = $('<img>');
             img.attr('src', get_flag_image_src(country.name))
@@ -387,11 +387,14 @@ function add_challenge_results(div_id, data) {
   results_div.append(results_table)
   // Add the results if we have them
   if (data.info.has_challenge_results) {
+
+    // Add the regionnaire table on it's own, before the challenges, always
+    generateRegionnaireTableEntry(results_table, data)
+
     if (data.info.has_challenge_running_results) {
       add_challenges_to_table(results_table, 'running_results', data)
     }
-    // Add the regionnaire table on it's own, after the challenges, always
-    generateRegionnaireTableEntry(results_table, data)
+
     if (data.info.has_challenge_volunteer_results) {
       add_table_break_row(results_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
       add_challenges_to_table(results_table, 'volunteer_results', data)
@@ -530,4 +533,17 @@ function get_athlete_id() {
     }
     console.log('Athlete ID: '+athlete_id)
     return athlete_id
+}
+
+function modifyStyle(img) {
+  // Shush, don't tell anyone and spoil the surprise
+  today = new Date()
+  // getMonth is zero indexed. getDate is 1 indexed.
+  if (today.getMonth() == 3 && today.getDate() == 1) {
+    r = Math.floor(Math.random() * 4)
+    if (r > 0) {
+      img.attr('style', "transform:rotate("+r*90+"deg);")
+    }
+  }
+
 }

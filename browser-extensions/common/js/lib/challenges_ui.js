@@ -46,6 +46,8 @@ function generate_challenge_table() {
     help_td.append(options_link)
     help_td.append(" | ")
     help_td.append(help_link)
+    help_td.append(" | ")
+    help_td.append("v" + extensionVersion)
 
     table.append($('<tr></tr>').append(help_td))
 
@@ -175,7 +177,11 @@ function get_challenge_header_row(challenge, data) {
         main_row.append($('<th></th>').text(challenge.summary_text))
     } else {
       if (challenge.subparts_completed_count !== undefined && challenge.subparts_count !== undefined){
-        main_row.append($('<th></th>').text(challenge.subparts_completed_count+"/"+challenge.subparts_count))
+        var progress = challenge.subparts_completed_count
+        if (challenge.subparts_count > 0) {
+          progress +="/"+challenge.subparts_count
+        }
+        main_row.append($('<th></th>').text(progress))
       }
     }
     if (challenge.complete) {
@@ -189,7 +195,7 @@ function generateRegionnaireTableEntry(table, data) {
   // We can only do this if we have geo data
   
   var challenge = {
-    "name": "Regionnaire Explorer",
+    "name": "parkrun Explorer",
     "shortname": "regionnaire"
   }
 
@@ -213,7 +219,7 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Note: Only currenty active events are included in the map and stats</td>'))
+    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Only currently active events are included in the map and stats</td>'))
     challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
@@ -226,6 +232,236 @@ function generateRegionnaireTableEntry(table, data) {
 
     // create_regionnaire_map(regionnaire_map_id, data, challenge)
   }
+}
+
+function zoomLevelToScaleOptions(zoomLevel) {
+  options = {
+    "zoomLevel": zoomLevel,
+    "eventNameVisible": false,
+    "eventNameTextSize": 0,
+    "eventPointRadius": 1.5,
+    "pathLineWidth": 1
+  }
+
+  if (zoomLevel >= 8) {
+    options.eventPointRadius = 4
+  }  
+  if (zoomLevel >= 9) {
+    options.eventPointRadius = 6
+  }
+  if (zoomLevel >= 10) {
+    options.eventPointRadius = 8
+
+    // From this point onwards the event name is visible
+    options.eventNameVisible = true
+
+    options.eventNameTextSize = 12
+  }
+  if (zoomLevel >= 11) {
+    
+    options.eventPointRadius = 10
+
+    // We need a small line width generally, but it gets lost
+    // when there are more features on the map, so increase it
+    // when we we have zoomed in a lot
+    pathLineWidth = 2
+  }
+  if (zoomLevel >= 12) {
+    options.eventPointRadius = 12
+  }
+
+  return options
+
+}
+
+function createVoronoiMapPrototype() {
+  // http://usabilityetc.com/2016/06/how-to-create-leaflet-plugins/ has proved useful
+  L.VoronoiLayer = L.Layer.extend({
+
+    initialize: function(data) {
+      console.log('Voronoi Layer - initialize()')
+      this._data = data
+    },
+
+    onAdd: function(map) {
+      console.log('Voronoi Layer - onAdd()')
+        // var nw_point = map.latLngToLayerPoint(bounds.getNorthWest())
+        // Store the map
+        this._map = map
+
+        var pane = map.getPane(this.options.pane);
+        this._pane = pane
+
+        map.on('zoomend viewreset moveend', this._update, this);
+        this._update()
+
+        // Force the map to recalculate its size.
+        // When it is first drawn, the remainder of the page hasn't,
+        // so it it is narrower, and subsequent challenges pad it out -
+        // so this makes it correct as soon as it is interacted with.
+        // This unfortunately means it's not right initially, but it 
+        // fixes itself pretty quickly.
+
+        setTimeout(function(){ 
+          console.log("triggering a redraw")
+          map.invalidateSize()
+        }, 1000);
+    },
+
+    onRemove: function(map) {
+      console.log('Voronoi Layer - onRemove()')
+        L.DomUtil.remove(this._container);
+        map.off('zoomend viewreset', this._update, this);
+    },
+
+    _update: function() {
+      console.log('Voronoi Layer - _update()')
+
+      // Empty the current pane
+      L.DomUtil.empty(this._pane)
+
+      // Create a new SVG container, we will add everything to this
+      // before adding it to the DOM.
+      var this_container = L.DomUtil.create("svg", "leaflet-zoom-hide")
+
+      var vmap = this._map
+      var bounds = vmap.getBounds()
+      var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
+
+      var size = vmap.getSize()
+
+      this_container.setAttribute('width', size.x);
+      this_container.setAttribute('height', size.y);
+      this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
+
+      var filtered_points = []
+      var layer_data = this._data
+      var completed_events = {}
+      $.each(layer_data.parkrun_results, function(index, parkrun_event) {
+        completed_events[parkrun_event.name] = true
+      })
+      
+      $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
+        if (event_has_valid_location(event_info)) {
+          lat_lon = [+event_info.lat, +event_info.lon]
+          // Add the point to the array
+          var point = vmap.latLngToLayerPoint(lat_lon);
+          event_info.x = point.x
+          event_info.y = point.y
+          event_info.fill = "none"
+          event_info.circleColour = "black"
+          event_info.circleColourLine = "gray"
+          if (completed_events[event_info.name] == true) {
+            event_info.fill = "green"
+            event_info.circleColour = "#006000"
+          }
+          filtered_points.push(event_info)
+          // }
+        }
+
+      })
+
+      var voronoi = d3.voronoi()
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; });
+
+      // As we are using the .polygons() we need to set an extent so that things
+      // don't go wrong at the edges. Ordinarily we should set an extent of
+      // the size of the canvas, but for those cases where the canvas includes
+      // +/-180degrees, we need to crop the diagram there otherwise it goes
+      // weird when the lines expand into the repeated map provided by openstreetmap
+
+      // Find the left and right corners of the world :)
+      map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
+      map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
+
+      // Default extents are the edges of the canvas, but if these take it over
+      // the edges of the world according to the calculations above, we box
+      // them in.
+      voronoi_extent_left = [Math.max(top_left.x, map_point_left_edge.x), Math.max(top_left.y, map_point_left_edge.y)]
+      voronoi_extent_right = [Math.min(top_left.x+size.x, map_point_right_edge.x), Math.min(top_left.y+size.y, map_point_right_edge.y)]
+
+      voronoi.extent([voronoi_extent_left, voronoi_extent_right]);
+
+      var voronoi_data = voronoi(filtered_points)
+
+      // For reference:
+      // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
+
+      var cell_group = document.createElement("g")
+      cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
+
+      var voronoi_polygons = voronoi_data.polygons()
+
+      var zoomScaleOptions = zoomLevelToScaleOptions(vmap.getZoom())
+      console.log(zoomScaleOptions)
+
+      $.each(voronoi_polygons, function(index, cell) {
+
+        // If there is no cell data, then keep looping
+        if (cell === undefined) {
+          // console.log("Undefined cell data at index "+index)
+          return true
+        }
+
+        // Create an icon to represent the parkrun event
+        var item_circle = document.createElement("circle")
+        
+        item_circle.setAttribute("cx", cell.data.x)
+        item_circle.setAttribute("cy", cell.data.y)
+        item_circle.setAttribute("r", zoomScaleOptions.eventPointRadius)
+        item_circle.setAttribute("stroke", filtered_points[index].circleColourLine)
+        item_circle.setAttribute("stroke-width", "1")
+        item_circle.setAttribute("fill", filtered_points[index].circleColour)
+
+        // If we are zoomed in enough, maybe add some text
+        var item_text = undefined
+        if (zoomScaleOptions.eventNameVisible) {
+          item_text = document.createElement("text")
+          item_text.setAttribute("x", cell.data.x)
+          item_text.setAttribute("y", cell.data.y + zoomScaleOptions.eventPointRadius + 8) // Move the text down below the point, plus some padding
+          item_text.setAttribute("text-anchor", "middle")
+          item_text.setAttribute("font-size", zoomScaleOptions.eventNameTextSize+"px")
+          item_text.setAttribute("font-weight", "bold")
+          item_text.setAttribute("dominant-baseline", "hanging") // Hang the text below
+          item_text.innerText = filtered_points[index].name
+        }
+
+        // Create a shape to represent the voronoi area associated with this parkrun event
+        // It will be filled if the parkrun has been completed
+
+        var item_path = document.createElement("path")
+        item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
+        item_path.setAttribute("stroke", "gray")
+        item_path.setAttribute("stroke-width", zoomScaleOptions.pathLineWidth)
+        item_path.setAttribute("fill", filtered_points[index].fill)
+        item_path.setAttribute("fill-opacity", "0.5")
+
+        // Add the parkrun event and the path object to a holding object - the path goes first so
+        // that the parkrun event marker is drawn on top afterwards
+        cell_group.appendChild(item_path)
+        cell_group.appendChild(item_circle)
+        if (item_text !== undefined) {
+          cell_group.appendChild(item_text)
+        }
+        
+        // Add this group to the main SVG container
+        this_container.appendChild(cell_group)
+
+      })
+
+      // Store the SVG container in the object
+      this._container = this_container
+      // Add the SVG to the map
+      $(this._pane).append($(this_container).prop('outerHTML'))
+
+    }
+  });
+
+  L.voronoiLayer = function(options) {
+    return new L.VoronoiLayer(options)
+  }
+
 }
 
 function drawRegionnaireMap(divId, data) {
@@ -241,6 +477,9 @@ function drawRegionnaireMap(divId, data) {
       default_centre = [+home_parkrun.lat, +home_parkrun.lon]
     }
   }
+
+  // Creating the Voronoi Map prototype on the L. object.
+  createVoronoiMapPrototype();
 
   console.log("Initialising the regionnaire map container")
   var r_map = L.map(divId).setView(default_centre, 2);
@@ -261,6 +500,11 @@ function drawRegionnaireMap(divId, data) {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   })
   tilelayer_openstreetmap.addTo(r_map)
+
+  // Add the Voronoi layer
+
+  var voronoi_layer = L.voronoiLayer(data)
+  voronoi_layer.addTo(r_map)
 
   // Icons
   var FlagIcon = L.Icon.extend({
@@ -321,7 +565,9 @@ function drawRegionnaireMap(divId, data) {
         }
         marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
         marker.on('click', function() {
-          showCountryEvents(map_data, data, countryId, 0)
+          // Instead of showing the events, lets just move the map to show the country
+          // showCountryEvents(map_data, data, countryId, 0)
+          zoomMapToCountryExtents(map_data, data, countryId)
         })
         marker.addTo(map_data.layers.country_markers);
 
@@ -356,7 +602,8 @@ function drawRegionnaireMap(divId, data) {
           // Add the same tooltips and on click actions as for the flag
           pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
           pie_marker.on('click', function() {
-            showCountryEvents(map_data, data, countryId, 0)
+            // showCountryEvents(map_data, data, countryId, 0)
+            zoomMapToCountryExtents(map_data, data, countryId)
           })
           pie_marker.addTo(map_data.layers.country_markers);
         }
@@ -367,6 +614,27 @@ function drawRegionnaireMap(divId, data) {
   })
 
   map_data.layers.country_markers.addTo(map_data.map)
+}
+
+function zoomMapToCountryExtents(map_data, data, countryId) {
+  console.log('Centering on countryId: '+countryId)
+
+  $.each(data.geo_data.data.countries, function(index, countryInfo) {
+    if (countryInfo.id == countryId) {
+      // Fit the map to the coordinates provided by the country
+      console.log("Centering map on " + countryInfo.bounds)
+
+      var bottomLeft = L.latLng(countryInfo.bounds[1],countryInfo.bounds[0])
+      var topRight = L.latLng(countryInfo.bounds[3],countryInfo.bounds[2])
+      map_data.map.fitBounds(L.latLngBounds(bottomLeft,topRight))
+
+      return
+    }
+  })
+
+  // We should only end up here if the country ID didn't match any countries
+  // we know about, we would normally have returned by now.
+
 }
 
 function showCountryEvents(map_data, data, countryId, depth) {
@@ -414,7 +682,11 @@ function showCountryEvents(map_data, data, countryId, depth) {
   // Icon for an event we have not run
   var event_not_run_icon = L.ExtraMarkers.icon({
     markerColor: 'cyan',
-    shape: 'square'
+    shape: 'square',
+    // These still add the div elements for the shadow, it would be better if it didn't.
+    // shadowUrl: null,
+    // shadowRetinaUrl: null,
+    // shadowSize: [0, 0],
   });
 
   $.each(data.geo_data.data.events, function (event_name, event_info) {
@@ -450,6 +722,23 @@ function showCountryEvents(map_data, data, countryId, depth) {
   map_data.layers[events_layer_key][depth].done.addTo(map_data.map)
 
 }
+
+var vmap
+
+function get_voronoi_poly(cell) {
+  var real_edges = []
+  // console.log(cell)
+  // console.log(cell.length)
+  for (var i=0; i<cell.length; i++) {
+    if (cell[i] != null) {
+      var point = cell[i].join(" ")
+      real_edges.push(point)
+    }
+  }
+
+  return real_edges
+}
+
 
 var challenge_maps = {}
 
@@ -809,12 +1098,18 @@ function generate_standard_table_entry(challenge, table, data) {
     // Print the subparts
     challenge.subparts_detail.forEach(function (subpart_detail) {
         var subpart_row = $('<tr></tr>')
-        subpart_row.append($('<td></td>').text("-"))
+        if (subpart_detail["badge"] !== undefined) {
+          console.log("Adding a badge to the table - "+subpart_detail["badge"])
+          subpart_row.append($('<td></td>').append(get_challenge_icon(subpart_detail["badge"], 24, 24)))
+        } else {
+          subpart_row.append($('<td></td>').text("-"))
+        }
+        
         if (subpart_detail != null) {
 
             subpart_row.append($('<td></td>').text(subpart_detail.subpart))
-            subpart_row.append($('<td></td>').text(subpart_detail.name))
-            subpart_row.append($('<td></td>').text(subpart_detail.info))
+            subpart_row.append($('<td></td>').html(subpart_detail.name))
+            subpart_row.append($('<td></td>').html(subpart_detail.info))
 
             challenge_tbody_detail.append(subpart_row)
         } else {

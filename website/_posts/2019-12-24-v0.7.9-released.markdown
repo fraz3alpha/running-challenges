@@ -1,0 +1,66 @@
+---
+layout: post
+title:  "New parkrun Explorer map (v0.7.9)"
+date:   2019-12-24 15:00:00 +0000
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+Say hello to the new and improved parkrun explorer map!
+
+## The parkrun explorer map?
+
+Yes. You might remember this as being the map for the regionnaire challenge, but we've rebranded it and 
+added some more goodies for those people who generally want to plan their touristing and want to 
+visualise where they have run on a map. It now lives in-between the stats table and the challenge tables.
+
+### What's changed?
+
+We have computed what is called a "[voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram)". We 
+have divided the world into cells. If you are within a particular cell, you know where the 
+nearest parkrun is to that location. A picture is worth a thousand words, so here's an example:
+
+![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/posts/voronoi-1.png "Running challenges voronoi diagram of the South coast of England"){: .center-image .image-border}
+
+A green cell shows that you have done the parkrun for that area. The circles representing the parkruns 
+are green for ones you have done, and black for the others.
+
+Zoom right in if you want to find out the name of the event you are looking at.
+
+![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/posts/voronoi-2.png "Zoomed in Running challenges voronoi diagram around Cheshire"){: .center-image .image-border}
+
+On the old map we found that having over a thousand markers showing every parkrun didn't scale - 
+the map was overcrowded and slow to scroll and pan around. This new way seems to work much better.
+
+### Do we have regions yet?
+
+Why not create your own region! Hopefully by colouring the cells in this way it should be easy to tell if you 
+have been to all the events in a particular area of the country / world - just look for the contiguous green 
+parts of the map!
+
+### Can I play Blockbusters across the country with it?
+
+Yes. We think that would be an excellent idea. 
+
+I'll have a P please Bob - cue everyone heading off to [Penistone parkrun](https://www.parkrun.org.uk/penistone/) :)
+
+## Updated Japanese and Polish translations
+
+When we added support for [parkrun.jp](https://www.parkrun.jp/) no events had been run yet, and we didn't know any
+of the volunteer translations! Now, thanks to [William Steffancin (A4782624)](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=4782624&eventNumber=0) we have example translations for most of the roles in Japan.
+
+Meanwhile, in Poland, parkrun HQ updated most (all?) of the volunteer roles names, probably to be more technically
+correct (the best kind of correct). Many thanks to [@sebuish](https://github.com/sebiush) who has provided us with 
+an updated list. The purple badges should be showing correctly for Poland once more.
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon - typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
