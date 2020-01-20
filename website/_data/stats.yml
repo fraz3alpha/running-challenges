@@ -115,7 +115,7 @@ stats:
 
   - shortname: average_parkrun_event
     name: Average parkrun event
-     description: >-
+    description: >-
       The closest parkrun event to your average parkrun location.
       In case you want to go run it.
 
