@@ -636,6 +636,7 @@ function generate_stat_total_countries_visited(parkrun_results, geo_data) {
   }
 }
 
+// Calculate average lat/lon of all parkruns completed
 function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   var lat_sum = 0
   var lon_sum = 0
@@ -672,7 +673,7 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
 }
 
 
-// calculate average parkrun location
+// Calculate average parkrun location
 function calculate_average_parkrun_location(parkrun_results, geo_data) {
 var lat_sum = 0
   var lon_sum = 0
@@ -703,6 +704,24 @@ var lat_sum = 0
   }
 }
 
+// What's the URL of the parkrun's page?
+function get_parkrun_page_url(data, parkrun_name) {
+  parkrun_page_url = undefined
+  if (data.info.has_geo_data) {
+    if (parkrun_name in data.geo_data.data.events) {
+      parkrun_shortname = data.geo_data.data.events[parkrun_name].shortname
+      country_name = data.geo_data.data.events[parkrun_name].country_name
+      if (country_name in data.geo_data.data.countries) {
+        domain_url = data.geo_data.data.countries[country_name].url
+        parkrun_page_url = "https://" + domain_url + "/" + parkrun_shortname
+      }
+    }
+  }
+  return parkrun_page_url
+}
+
+
+
 // Which is the closest parkrun to your average parkrun location?
 function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   // Calculate average parkrun for user
@@ -722,12 +741,21 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
       average_parkrun_event_distance = distance
     }
   })
+
+  var url_link = get_parkrun_page_url(data, average_parkrun_event_name)
+  console.log(url_link)
   return {
     "display_name": "Average parkrun event",
     "help": "The nearest parkrun event to your average parkrun location.",
-    "value": average_parkrun_event_name
+    "value": average_parkrun_event_name,
+    "url": url_link
   }
 }
+
+
+
+
+
 
 
 // Furthest parkrun you have run away from your home parkrun
@@ -853,7 +881,7 @@ function generate_stats(data) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
-    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data) // Laura
+    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data)
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
