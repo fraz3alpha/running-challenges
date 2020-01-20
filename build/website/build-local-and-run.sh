@@ -72,7 +72,7 @@ docker run --rm --name jekyll \
 -p ${JEKYLL_PORT}:4000 \
 -v `pwd`:/srv/jekyll \
 -v `pwd`/vendor/bundle:/usr/local/bundle \
-jekyll/jekyll jekyll serve --future
+jekyll/jekyll jekyll serve --future --trace
 
 # Print summary
 echo "Built site, total size: `du -sh ${SITE_DIR}`"

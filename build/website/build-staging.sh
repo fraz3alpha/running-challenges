@@ -77,7 +77,7 @@ sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
 
 # Build the site
 bundle install
-bundle exec jekyll build
+bundle exec jekyll build --trace
 
 # Print summary
 echo "Built site, total size: `du -sh ${SITE_DIR}`"
