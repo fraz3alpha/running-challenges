@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "Freyne Club added and Tourism badge changes (v1.0.0)"
+date:   2020-01-18 19:00:00 +0000
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+Say hello to the new and improved Tourism and Obsessive Challenge tables, and the addition of the Freyne Club badge.
+
+## Tourism challenge?
+
+The Tourist challenge and Cowell Club have now joined forces and are available under the single umbrella
+of the "Tourism" challenge. You still get awarded the same badges as before, but now they appear as milestones
+on your tourism journey, rather than as distinct challenge tables with their own separate lists of events.
+This has several benefits that help people out:
+
+1. The Tourism challenge never stops: you can see all the unique parkrun events you have run, 
+and it doesn't just stop when it reaches the number defined in the challenge (20,100, etc...).
+2. We don't have to repeat ourselves on the page: the Tourist Challenge (20 parkrun events) was a subset
+of the Cowell Club Challenge (100 parkrun events), so we were wasting 20+ table rows by repeating those 
+first 20 events.
+3. It's easy to add a new or different milestones.
+
+A picture describes it best, so here's a screenshot from [a parkrunner](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1309364&eventNumber=0) who has got their 'Cow' (Half Cowell), but hasn't yet reached the lofty heights of the Cowell Club.
+
+![Running Challenges Tourism Challenge Table]({{ site.baseurl }}/img/posts/tourism-challenge-table.png "Running challenges table for the Tourism Challenge with incomplete badges"){: .center-image .image-border}
+
+As you can see in the picture, the point at which a badge is awarded is denoted by including a small version
+of the badge at the start of that row. 
+
+### Freyne club (250 different events)
+
+The eagle-eyed among you may have noticed that there is another badge available beyond the Cowell Club at 100 events. 
+This is for joining the Freyne club for which you need to have visited 250 different events! Like the Cowell Club, this 
+was named by the parkrun tourist community by the first person to reach the milestone, [Paul FREYNE](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=5227&eventNumber=0).
+
+Here is a larger version of the new badge. We've taken to calling it the *Freyne Train* :)
+
+![Running Challenges Freyne Club badge]({{ site.baseurl }}/img/badges/runner-freyne-club.png "Running Challenges Freyne Club badge"){: .center-image}
+
+### Only 250 different events? Hasn't someone already got to 500?
+
+As of right now, the only person to achieve 500 different events appears to be ... [Paul FREYNE](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=5227&eventNumber=0), he of the aforementioned 250 club fame.
+This is a feat that only a handful of people are ever likely to achieve, and to make a badge for it now seems excessive.
+If you've got the time, disposable income, and determination to get to that milestone, the personal satisfaction of 
+reaching that mark will have to be enough for now.
+
+### parkrun Obessive improvements
+
+The Obsessive badges were among the first challenges to be added to the extension, as counting up the number of
+events run per year is pretty straightforward. :) There are, however, two things that were not quite right about 
+this challenge:
+
+1. We have always wanted to include volunteering in this count, not just running. We still can't fix that yet because
+parkrun still doesn't display any information on the website to say when or where you have volunteered.
+
+2. Why do you get all 3 badges (Bronze, Silver, and Gold) for doing 50+ in a single year as that isn't how medals 
+work... Well, this is something we can fix!
+
+The Obsessive challenge is now a single table and you can get at most one badge awarded per year. Additionally,
+you can now also see the badges that you haven't got yet (in a similar way to the tourism challenge) so that 
+you can see what you are working towards.
+
+![Running Challenges Obsessive Challenge Table]({{ site.baseurl }}/img/posts/obsessive-table.png "Running challenges table for the Obsessive Challenge with incomplete badges"){: .center-image .image-border}
+
+### What's the closest parkrun to your average parkrun location?
+
+Yes, we know that calculating your average parkrun location is a fairly useless stat but now we've extended it
+to work out which parkrun event is the closest to that location. So you can go run it, if you want. Just click 
+the parkrun's name to find out more about it.
+
+## Version 1.0.0?
+
+We have been releasing this extension as version 0.something for nearly two years. We decided that it's clearly 
+working well enough to be worthly of a version 1 release! We'll try and be a bit more logical with our numbering
+system in the future, and increase the second number whenever we add a new badge, stat, or challenge, or something 
+significant changes in the way things are displayed on the webpage.
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon. Typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}

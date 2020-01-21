@@ -123,6 +123,32 @@ roles, and they will need adding in in a few places:
 - Follow the instructions in `images/badges/README.md` to generate the star badges.
 - Update `website/_data/badges.yml` with a section for the additional role
 
+# Version numbers
+
+There hasn't been any real consistency in how the versions have been numbered, with the versions mostly going up
+a point release when something was changed. The only thing that has been consistent is that the last number has 
+referred back to the Travis build that generated the release.
+
+To make this more consistent, from January 2020 the numbering, which follows the format 
+`<major>.<minor>.<patch>.<build-number>` will refer to:
+
+### Major version
+
+Something big has changed in the way the extension works. We may never go to version 2, but it's here if that happens.
+
+### Minor version
+
+A new challenge, stat, or badge has been added - or there has been a significant addition to the way the data is 
+displayed on the webpage.
+
+### Patch version
+
+Bug fixes or minor rendering changes 
+
+### Build Number
+
+This will remain as it always has, including the Travis build number.
+
 # Releasing a new version
 
 1. When everything has been tested and merged into master, tag master with the
