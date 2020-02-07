@@ -420,6 +420,42 @@ var domains = {
             // "": "Car Park Marshal"
         }
     },
+    "parkrun.co.nl": {
+        "table_all_results": "Alle resultaten",
+        "link_view_stats_for_all_parkruns": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
+        // Volunteer roles are in DUTCH
+        "text_volunteer_role_map": {
+            // "": "Equipment Storage and Delivery",
+            // "": "Communications Person",
+            // "": "Volunteer Co-ordinator",
+            // "": "Pre-event Setup",
+            "Briefing nieuwe lopers	": "First Timers Briefing",
+            // "": "Sign Language Support",
+            "Routecontroleur": "Marshal",
+            "Sluitloper": "Tail Walker",
+            "Evenementcoördinator": "Run Director",
+            // "": "Lead Bike",
+            // "": "Pacer (5k only)",
+            // "": "VI Guide",
+            // "": "Photographer",
+            "Tijdwaarnemer": "Timekeeper",
+            // "": "Backup Timer",
+            // "": "Funnel Manager",
+            // "": "Finish Tokens",
+            // "": "Finish Token Support",
+            "Barcodescanner": "Barcode Scanning",
+            // "": "Number Checker",
+            // "": "Post-event Close Down",
+            // "": "Results Processor",
+            // "": "Token Sorting",
+            // "": "Run Report Writer",
+            // "": "Other",
+            // "": "Warm Up Leader (junior events only)",
+            // "": "Car Park Marshal",
+            // "": "Event Day Course Check"
+        }
+    }
 }
 
 function get_localised_value(param, domain=location.host) {
