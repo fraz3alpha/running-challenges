@@ -801,8 +801,7 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
 function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkrun) {
   furthest_travelled = {
     'parkrun_event': undefined,
-    'distance': 0,
-    'display_name': ''
+    'distance': undefined
   }
   parkrun_results.forEach(function (parkrun_event) {
     // Work out how far the parkrunner has travelled to this location
@@ -810,7 +809,7 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
     if (event_location_info !== undefined) {
       if (parkrun_event.name != home_parkrun.name) {
         var distance = Math.round(calculate_great_circle_distance(event_location_info, home_parkrun))
-        if (distance > furthest_travelled.distance) {
+        if (furthest_travelled.distance === undefined || distance > furthest_travelled.distance) {
           furthest_travelled.distance = distance
           furthest_travelled.parkrun_event = event_location_info
         }
@@ -818,18 +817,18 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
     }
   })
 
-  if (furthest_travelled.parkrun_event !== undefined) {
-    furthest_travelled.display_name = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
-  }
-
-  var url_link = get_parkrun_page_url(data, furthest_travelled.parkrun_event.name)
-
-  return {
+  stat_info = {
     "display_name": "Furthest travelled",
     "help": "The furthest away parkrun you have been to (calculated from your home parkrun).",
-    "value": furthest_travelled.display_name + ", "+ furthest_travelled.distance + "km",
-    "url": url_link
+    "value": "None",
   }
+
+  if (furthest_travelled.parkrun_event !== undefined) {
+    stat_info["value"] = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
+    stat_info["url_link"] = get_parkrun_page_url(data, furthest_travelled.parkrun_event.name)
+  }
+
+  return stat_info
 }
 
 // Which is the closest parkrun you haven't done yet
