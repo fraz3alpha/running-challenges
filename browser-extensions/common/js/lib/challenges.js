@@ -126,16 +126,24 @@ function generate_running_challenge_data(data) {
       "name": "Alphabeteer",
       "data": "abcdefghijklmnopqrstuvwyz",
       "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."}))
-    challenge_data.push(challenge_single_parkrun_count(data, {
-      "shortname": "single-ton",
-      "name": "Single-Ton",
-      "data": 100,
-      "help": "Run 100+ parkruns at the same location."}))
-    challenge_data.push(challenge_single_parkrun_count(data, {
-      "shortname": "double-ton",
-      "name": "Double-Ton",
-      "data": 200,
-      "help": "Run 200+ parkruns at the same location."}))
+    challenge_data.push(challenge_single_parkrun_count(data, 
+      {
+        "shortname": "double-ton",
+        "name": "Tons of runs",
+        "help": "Run 100+ or 200+ times at the same location.",
+        "stages": [
+          {
+            "count": 100,
+            "name": "Single-ton",
+            "badge_icon": "runner-single-ton"
+          },
+          {
+            "count": 200,
+            "name": "Double-ton",
+            "badge_icon": "runner-double-ton"
+          }
+        ]
+      }))
     challenge_data.push(challenge_stopwatch_bingo(data, {
       "shortname": "stopwatch-bingo",
       "name": "Stopwatch Bingo",
@@ -1728,72 +1736,139 @@ function challenge_stopwatch_bingo(data, params) {
     return update_data_object(o)
 }
 
-// Complete 100 parkruns at the same venue
+// Complete 100 or 200 parkruns at the same venue
 function challenge_single_parkrun_count(data, params) {
 
   var parkrun_results = data.parkrun_results
+  var stages = params.stages
 
-    var count = params.data
+  var o = create_data_object(params, "runner")
+  o.subparts = ["1"]
+  o.summary_text = "0"
 
-    var o = create_data_object(params, "runner")
-    o.subparts = ["1"]
+  var badgesAwarded = []
 
-    parkruns_completed = {}
-    max_count = 0
-    max_parkrun = null
+  parkruns_completed = {}
+  max_count = 0
+  max_parkrun = null
 
-    parkrun_results.forEach(function (parkrun_event) {
-        if (!(parkrun_event.name in parkruns_completed)) {
-            parkruns_completed[parkrun_event.name] = {
-                "name": parkrun_event.eventlink,
-                "count": 0,
-                "completed": false,
-                "completed_at": null,
-                "subpart": count+"+"
-            }
+  parkrun_results.forEach(function (parkrun_event) {
+    if (!(parkrun_event.name in parkruns_completed)) {
+      parkruns_completed[parkrun_event.name] = {
+        "name": parkrun_event.eventlink,
+        "count": 0,
+        "completed": false,
+        "completed_at": null
+      }
+    }
+    parkruns_completed[parkrun_event.name].count += 1
+  })
+
+  // Now we have an object showing how many times each
+  // parkrun has been completed
+
+  var subBadgesAvailable = []
+
+  $.each(stages, function(index, tonMilestone) {
+    subBadgesAvailable.push({
+      "awarded": false
+    })
+  })
+console.log("parkruns completed: " + parkruns_completed)
+  // Now look at which completed parkruns have reached
+  // the 'ton' milestones
+  Object.keys(parkruns_completed).sort().forEach(function (name) {
+    var currentBadge = undefined
+    $.each(stages, function(index, tonMilestone) {
+      if (parkruns_completed[name].count >= tonMilestone.count) {
+        currentBadge = {
+          "index": index,
+          "name": tonMilestone.name,
+          "count": tonMilestone.count,
+          "badge_icon": tonMilestone.badge_icon
         }
-        parkruns_completed[parkrun_event.name].count += 1
-        if (parkruns_completed[parkrun_event.name].count > max_count) {
-            max_parkrun = Object.create(parkruns_completed[parkrun_event.name])
-            max_count = parkruns_completed[parkrun_event.name].count
-        }
-        // Mark as complete if we've hit the magic 100 at this parkrun,
-        // and store some good bits of data
-        if (parkruns_completed[parkrun_event.name].count == count) {
-            o.complete = true
-            o.subparts_completed_count += 1
-            parkruns_completed[parkrun_event.name].completed = true
-            parkruns_completed[parkrun_event.name].completed_at = parkrun_event.date
-            if (o.completed_on == null) {
-                o.completed_on = parkrun_event.date
-            }
-        }
-    });
-
-    if (o.complete) {
-        // Return all parkrun events where the limit has been reached
-        Object.keys(parkruns_completed).forEach(function (parkrun) {
-            if (parkruns_completed[parkrun].completed) {
-                p = parkruns_completed[parkrun]
-                p.info = p.count
-                o.subparts_detail.push(p)
-                if (!(parkrun in o.completed_qualifying_events)) {
-                  o.completed_qualifying_events[parkrun] = get_parkrun_event_details(data, parkrun)
-                }
-            }
+      }
+    })
+      if (currentBadge !== undefined) {
+        // Award a badge for this parkrun event
+        o.subparts_detail.push({
+          "name": name,
+          "date": name,
+          "info": parkruns_completed[name].count,
+          "subpart": currentBadge.name+" ("+currentBadge.count+"+)",
+          "badge": currentBadge
         })
-    } else {
-        if (max_parkrun !== null) {
-            // If it isn't complete, give the biggest one so far as detail info
-            max_parkrun.info = max_parkrun.count
-            o.subparts_detail.push(max_parkrun)
-        }
+        // Ensure that we add the badge at the top
+        subBadgesAvailable[currentBadge.index].awarded = true
+      }
+    })
+
+    // Change the summary to indicate number of times completed
+    if (o.subparts_detail.length > 0) {
+      o.summary_text = "x"+o.subparts_detail.length
     }
 
+    // Award the badges to be displayed at the top
+    $.each(subBadgesAvailable, function(index, subBadge) {
+      if (subBadge.awarded == true) {
+        badgesAwarded.push({
+          "name": stages[index].name,
+          "badge_icon": stages[index].badge_icon
+        })
+      }
+    })
+
+    o.badgesAwarded = badgesAwarded
+
+    // Display the badges above what the parkrunner has, so they can see
+    // what is still to come. i.e. if they have nothing, show all badges,
+    // if they have 100, show 200, if  they already have 200
+    // they then don't need hints and that'll do :)
+
+    // Find the highest ones they have.
+    var maxBadgeAwarded = -1
+    $.each(subBadgesAvailable, function(index, subBadge) {
+      if (subBadge.awarded) {
+        maxBadgeAwarded = index
+      }
+    })
+    console.log("parkrunner has achieved max ton level of " + maxBadgeAwarded)
+
+/* 
+    // Identify which parkrun event is most attended 
+    // so that we can print progress towards the badge
+    // if haven't already got one
+    if (parkruns_completed[parkrun_event.name].count > max_count) {
+      max_parkrun = Object.create(parkruns_completed[parkrun_event.name])
+      max_count = parkruns_completed[parkrun_event.name].count
+  }
+ */
+
+
+    // Add the badge for any higher badges than the ones they have
+    $.each(stages, function(index, tonMilestone) {
+      if (index > maxBadgeAwarded) {
+        o.subparts_detail.push({
+          // "subpart": count+"+",
+          "badge": {
+            "name": tonMilestone.name,
+            "badge_icon": tonMilestone.badge_icon
+          },
+          "subpart": tonMilestone.name+" ("+tonMilestone.count+"+)",
+          "name": "-"
+        })
+      }
+    })
+
+    // If they have been awarded the maximum badge, then give them a tick
+    if (maxBadgeAwarded == stages.length-1) {
+      o.complete = true
+    }
 
     // Return an object representing this challenge
     return update_data_object(o)
-}
+  }
+
 
 function challenge_on_dates(data, params) {
   var parkrun_results = data.parkrun_results
