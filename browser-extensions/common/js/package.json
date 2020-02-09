@@ -1,0 +1,16 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dummy-app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^16.1.0",
+    "mocha": "^7.0.1",
+    "rewire": "^4.0.1"
+  }
+}

@@ -755,14 +755,14 @@ var lat_sum = 0
 }
 
 // What's the URL of the parkrun's webpage?
-function get_parkrun_page_url(data, parkrun_name) {
+function get_parkrun_page_url(geo_data, parkrun_name) {
   parkrun_page_url = undefined
-  if (data.info.has_geo_data) {
-    if (parkrun_name in data.geo_data.data.events) {
-      parkrun_shortname = data.geo_data.data.events[parkrun_name].shortname
-      country_name = data.geo_data.data.events[parkrun_name].country_name
-      if (country_name in data.geo_data.data.countries) {
-        domain_url = data.geo_data.data.countries[country_name].url
+  if (geo_data.data !== undefined) {
+    if (parkrun_name in geo_data.data.events) {
+      parkrun_shortname = geo_data.data.events[parkrun_name].shortname
+      country_name = geo_data.data.events[parkrun_name].country_name
+      if (country_name in geo_data.data.countries) {
+        domain_url = geo_data.data.countries[country_name].url
         parkrun_page_url = "https://" + domain_url + "/" + parkrun_shortname
       }
     }
@@ -787,7 +787,7 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
     }
   })
 
-  var url_link = get_parkrun_page_url(data, average_parkrun_event_name)
+  var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
   
   return {
     "display_name": "Average parkrun event",
@@ -803,29 +803,30 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
     'parkrun_event': undefined,
     'distance': undefined
   }
+
   parkrun_results.forEach(function (parkrun_event) {
     // Work out how far the parkrunner has travelled to this location
     var event_location_info = geo_data.data.events[parkrun_event.name]
     if (event_location_info !== undefined) {
-      if (parkrun_event.name != home_parkrun.name) {
-        var distance = Math.round(calculate_great_circle_distance(event_location_info, home_parkrun))
-        if (furthest_travelled.distance === undefined || distance > furthest_travelled.distance) {
-          furthest_travelled.distance = distance
-          furthest_travelled.parkrun_event = event_location_info
-        }
+      var distance = Math.round(calculate_great_circle_distance(event_location_info, home_parkrun))
+      if (furthest_travelled.distance === undefined || distance > furthest_travelled.distance) {
+        furthest_travelled.distance = distance
+        furthest_travelled.parkrun_event = event_location_info
       }
     }
   })
 
+  // Default to "None" If they haven't run any parkruns, or "Unknown" if they have - as it might be that we 
+  // don't know where the parkruns they have done, are.
   stat_info = {
     "display_name": "Furthest travelled",
     "help": "The furthest away parkrun you have been to (calculated from your home parkrun).",
-    "value": "None",
+    "value": parkrun_results.length > 0 ? "Unknown" : "None"
   }
 
   if (furthest_travelled.parkrun_event !== undefined) {
     stat_info["value"] = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
-    stat_info["url_link"] = get_parkrun_page_url(data, furthest_travelled.parkrun_event.name)
+    stat_info["url_link"] = get_parkrun_page_url(geo_data, furthest_travelled.parkrun_event.name)
   }
 
   return stat_info
@@ -864,7 +865,7 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
     value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
   }
 
-  var url_link = get_parkrun_page_url(data, nendy.name)
+  var url_link = get_parkrun_page_url(geo_data, nendy.name)
 
   return {
     "display_name": "Nearest event not done yet (NENDY)",
