@@ -136,6 +136,7 @@ It is impossible to add a new country until the new website is made live, and th
 - Add the ISO code for the country to the flag map in `challenges.js`
 - Add the ISO code to the list of flags for the website under the `flags.yml` data file.
 - Get the flag from https://emojipedia.org/twitter/twemoji-2.6/ as described in the flags README.
+- Add the country code and country name to `background.js`
 
 # Version numbers
 
