@@ -777,7 +777,10 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   var average_parkrun_event_name = undefined
   var average_parkrun_event_distance = undefined
   // For each parkrun event, get the event's information, which includes its lon and lat.
-  $.each(geo_data.data.events, function(event_name, event_location_info) {
+  // Remove the JQuery dependency
+  // $.each(geo_data.data.events, function(event_name, event_location_info) {
+  Object.keys(geo_data.data.events).forEach(function(event_name) {
+    var event_location_info = geo_data.data.events[event_name]
     // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
     var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
     // If the distance to the event from the average parkrun location is less than the distance currently stored, store the event
@@ -847,7 +850,11 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   })
   var event_distances = {}
 
-  $.each(geo_data.data.events, function (event_name, event_info) {
+  
+  // Remove the JQuery dependency
+  // $.each(geo_data.data.events, function (event_name, event_info) {
+  Object.keys(geo_data.data.events).forEach(function(event_name) {
+    var event_info = geo_data.data.events[event_name]
     if (!(event_name in events_run)) {
       if ((event_info.status == 'Live' || event_info.status == 'unknown') && event_info.lat && event_info.lon) {
         event_distances[event_name] = calculate_great_circle_distance(event_info, home_parkrun_info)

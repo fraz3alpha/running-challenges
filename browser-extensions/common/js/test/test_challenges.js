@@ -193,18 +193,32 @@ describe("challenges", function() {
         })
     })
 
-    // describe("generate_stat_nearest_event_not_done_yet", function() {
+    describe("generate_stat_nearest_event_not_done_yet", function() {
 
-    //     // Use the special '__get__' accessor to get your private function.
-    //     var generate_stat_nearest_event_not_done_yet = challenges.__get__('generate_stat_nearest_event_not_done_yet');
+        // Use the special '__get__' accessor to get your private function.
+        var generate_stat_nearest_event_not_done_yet = challenges.__get__('generate_stat_nearest_event_not_done_yet');
 
-    //     it("should return the home parkrun if you haven't run any events", function() {
-    //         var parkrunResults = []
-    //         var homeParkrun = getParkrunEventInfo("Winchester")
-    //         var r = generate_stat_nearest_event_not_done_yet(parkrunResults, geoData, homeParkrun)
-    //         assert.equal(r.value, "Winchester")
-    //     })
+        it("should return the home parkrun if you haven't run any events", function() {
+            var parkrunResults = []
+            var homeParkrun = getParkrunEventInfo("Winchester")
+            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, geoData, homeParkrun)
+            assert.equal(r.value, "Winchester, UK - 0km away")
+        })
 
-    // })
+    })
+
+    describe("generate_stat_average_parkrun_event", function() {
+
+        // Use the special '__get__' accessor to get your private function.
+        var generate_stat_average_parkrun_event = challenges.__get__('generate_stat_average_parkrun_event');
+
+        it("should return \"None\" if you haven't run any events", function() {
+            var parkrunResults = []
+            var homeParkrun = getParkrunEventInfo("Winchester")
+            var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
+            assert.equal(r.value, "None")
+        })
+
+    })
 
 })
