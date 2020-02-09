@@ -11,6 +11,7 @@ before_script:
  - chmod +x ./build/website/build-staging.sh
  - chmod +x ./build/extension-chrome/build.sh
  - chmod +x ./build/extension-firefox/build.sh
+ - nvm install 10
  - npm install -g web-ext
  - node --version
  - bash -c "cd ./browser-extensions/common/js && npm install"
