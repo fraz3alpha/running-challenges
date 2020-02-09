@@ -129,14 +129,13 @@ function createParkrunResult(specificData) {
     return parkrunResult
 }
 
+var geoData = getGeoData()
 
 describe("challenges", function() {
     describe("generate_stat_furthest_travelled", function() {
 
         // Use the special '__get__' accessor to get your private function.
         var generate_stat_furthest_travelled = challenges.__get__('generate_stat_furthest_travelled');
-
-        var geoData = getGeoData()
 
         it('should return "None" if no events have been run', function() {
             var parkrunResults = []
@@ -193,5 +192,19 @@ describe("challenges", function() {
             assert.equal(r.value, "Fell Foot, UK")
         })
     })
+
+    // describe("generate_stat_nearest_event_not_done_yet", function() {
+
+    //     // Use the special '__get__' accessor to get your private function.
+    //     var generate_stat_nearest_event_not_done_yet = challenges.__get__('generate_stat_nearest_event_not_done_yet');
+
+    //     it("should return the home parkrun if you haven't run any events", function() {
+    //         var parkrunResults = []
+    //         var homeParkrun = getParkrunEventInfo("Winchester")
+    //         var r = generate_stat_nearest_event_not_done_yet(parkrunResults, geoData, homeParkrun)
+    //         assert.equal(r.value, "Winchester")
+    //     })
+
+    // })
 
 })
