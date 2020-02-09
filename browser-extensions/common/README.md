@@ -20,3 +20,21 @@ Unfeasibly large number of different parkuns, and totals in a year: [Paul FREYNE
 
 Me: https://www.google.com/maps/search/?api=1&query=50.050091595041295,0.3533679090909079
 Laura: https://www.google.com/maps/search/?api=1&query=50.99635012087909,-4.604887230769234
+
+## Automated Testing
+
+We had added a Mocha test framework to test the Javascript libraries, and the testcases are found in the 
+`js/test` directory.
+
+We might wish to publish our code coverage metrics like this: https://maximilianschmitt.me/posts/istanbul-code-coverage-badge-github/.
+
+Currently they will just be printed to the Travis output
+
+Run the tests in the `js` directory with:
+```
+npm test
+```
+Or, if you want the coverage report:
+```
+npm run test-with-coverage
+``
