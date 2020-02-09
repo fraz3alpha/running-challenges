@@ -774,7 +774,7 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   // Calculate average parkrun for user
   var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
-  var average_parkrun_event_name = ''
+  var average_parkrun_event_name = undefined
   var average_parkrun_event_distance = undefined
   // For each parkrun event, get the event's information, which includes its lon and lat.
   $.each(geo_data.data.events, function(event_name, event_location_info) {
@@ -787,14 +787,17 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
     }
   })
 
-  var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
-  
-  return {
+  var statInfo = {
     "display_name": "Average parkrun event",
     "help": "The nearest parkrun event to your average parkrun location.",
-    "value": average_parkrun_event_name,
-    "url": url_link
+    "value": parkrun_results.length > 0 ? "Unknown" : "None"
   }
+
+  if (average_parkrun_event_name !== undefined) {
+    statInfo["url_link"] = get_parkrun_page_url(geo_data, average_parkrun_event_name)
+  }
+  
+  return statInfo
 }
 
 // Furthest parkrun you have run away from your home parkrun
@@ -857,22 +860,20 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
       return event_distances[a] - event_distances[b]
   })
 
-  var value = "All parkruns completed!"
+  var statInfo =  {
+    "display_name": "Nearest event not done yet (NENDY)",
+    "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
+    "value": "No more events available"
+  }
 
   if (sorted_events.length > 0) {
     var nendy_name = sorted_events[0]
     var nendy = geo_data.data.events[nendy_name]
-    value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
+    statInfo.value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
+    statInfo["url_link"] = get_parkrun_page_url(geo_data, nendy.name)
   }
 
-  var url_link = get_parkrun_page_url(geo_data, nendy.name)
-
-  return {
-    "display_name": "Nearest event not done yet (NENDY)",
-    "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
-    "value": value,
-    "url": url_link
-  }
+  return statInfo
 }
 
 // How many times has your name appeared on the volunteer roster (note, not the
