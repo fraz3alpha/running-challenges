@@ -12,6 +12,7 @@ before_script:
  - chmod +x ./build/extension-chrome/build.sh
  - chmod +x ./build/extension-firefox/build.sh
  - npm install -g web-ext
+ - cd ./browser-extensions/common/js && npm install
 #  - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
 #  - gem install bundler -v 1.16.1
 
@@ -19,6 +20,8 @@ before_install:
   - gem install bundler
 
 script:
+   # Run the tests against the Javascript libraries we have writte
+   - cd ./browser-extensions/common/js && npm test
    # Only build the staging website if the github token is available, which means
    # that it will only happen for PRs from our own repo, not forks.
    - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then if [ "$RUNNING_CHALLENGES_GITHUB_TOKEN" != "" ]; then bash ./build/website/build-staging.sh; fi; fi'
