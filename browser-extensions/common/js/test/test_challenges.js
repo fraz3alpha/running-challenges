@@ -98,6 +98,34 @@ function getGeoData() {
     
 }
 
+function filterGeoData(geoData, filters) {
+    // Possible Filters are:
+    // "countries": [] (list of countries to leave in)
+    // "events": [] (list of event names to leave in)
+
+    // Create a deep copy of the input data
+    newGeoData = JSON.parse(JSON.stringify(geoData))
+
+    if (filters.countries !== undefined) {
+        // Remove countries that are not in the list provided
+        Object.keys(newGeoData.data.countries).forEach(function(countryName){
+            if (!(countryName in filters.countries)) {
+                delete newGeoData.data.countries[countryName]
+            }
+        })
+    } 
+    if (filters.events !== undefined) {
+        // Remove events that are not in the list provided
+        Object.keys(newGeoData.data.events).forEach(function(eventName){
+            if (!(eventName in filters.events)) {
+                delete newGeoData.data.events[eventName]
+            }
+        })
+    }
+
+    return newGeoData
+}
+
 function getParkrunEventInfo(parkrunName) {
     parkrunEventInfo = getGeoData().data.events[parkrunName]
     return parkrunEventInfo
@@ -214,10 +242,40 @@ describe("challenges", function() {
 
         it("should return \"None\" if you haven't run any events", function() {
             var parkrunResults = []
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
+            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
             assert.equal(r.value, "None")
         })
+
+        it("should return \"Winchester\" if you have only run at Winchester once", function() {
+            var parkrunResults = [
+                createParkrunResult({name: "Winchester"})
+            ]
+            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+            assert.equal(r.value, "Winchester")
+        })
+        
+        it("should return \"Winchester\" if you have only run there Winchester, but been there multiple times", function() {
+            var parkrunResults = [
+                createParkrunResult({name: "Winchester"}),
+                createParkrunResult({name: "Winchester"}),
+                createParkrunResult({name: "Winchester"})
+            ]
+            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+            assert.equal(r.value, "Winchester")
+        })
+
+        it("should return \"Bushy Park\" if you have run there most often", function() {
+            var parkrunResults = [
+                createParkrunResult({name: "Bushy Park"}),
+                createParkrunResult({name: "Bushy Park"}),
+                createParkrunResult({name: "Winchester"})
+            ]
+            // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
+            var r = generate_stat_average_parkrun_event(parkrunResults, filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]}))
+            assert.equal(r.value, "Bushy Park")
+        })
+
+        filterGeoData
 
     })
 
