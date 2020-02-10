@@ -109,7 +109,7 @@ function filterGeoData(geoData, filters) {
     if (filters.countries !== undefined) {
         // Remove countries that are not in the list provided
         Object.keys(newGeoData.data.countries).forEach(function(countryName){
-            if (!(countryName in filters.countries)) {
+            if (!(filters.countries.includes(countryName))) {
                 delete newGeoData.data.countries[countryName]
             }
         })
@@ -117,7 +117,7 @@ function filterGeoData(geoData, filters) {
     if (filters.events !== undefined) {
         // Remove events that are not in the list provided
         Object.keys(newGeoData.data.events).forEach(function(eventName){
-            if (!(eventName in filters.events)) {
+            if (!(filters.events.includes(eventName))) {
                 delete newGeoData.data.events[eventName]
             }
         })
@@ -233,6 +233,27 @@ describe("challenges", function() {
             assert.equal(r.value, "Winchester, UK - 0km away")
         })
 
+        it("should return Bushy Park if the home run is Winchester, which has been run", function() {
+            var parkrunResults = [
+                createParkrunResult({name: "Winchester"})
+            ]
+            var homeParkrun = getParkrunEventInfo("Winchester")
+            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
+            assert.equal(r.value, "Bushy Park, UK - 78km away")
+        })
+        
+        it("should say \"No more events available\" if you have done all events", function() {
+            var parkrunResults = [
+                createParkrunResult({name: "Winchester"}),
+                createParkrunResult({name: "Bushy Park"})
+            ]
+            var homeParkrun = getParkrunEventInfo("Winchester")
+            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
+            assert.equal(r.value, "No more events available")
+        })
+
     })
 
     describe("generate_stat_average_parkrun_event", function() {
@@ -271,7 +292,8 @@ describe("challenges", function() {
                 createParkrunResult({name: "Winchester"})
             ]
             // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
-            var r = generate_stat_average_parkrun_event(parkrunResults, filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]}))
+            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+            var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData)
             assert.equal(r.value, "Bushy Park")
         })
 

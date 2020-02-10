@@ -796,7 +796,8 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   if (average_parkrun_location !== undefined) {
 
     // For each parkrun event, get the event's information, which includes its lon and lat.
-    $.each(geo_data.data.events, function(event_name, event_location_info) {
+    Object.keys(geo_data.data.events).forEach(function(event_name) {
+      var event_location_info = geo_data.data.events[event_name]
       // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
       var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
       // If the distance to the event from the average parkrun location is less than the distance currently stored, store the event
@@ -806,7 +807,7 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
       }
     })
 
-    var url_link = get_parkrun_page_url(data, average_parkrun_event_name)
+    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
     
     average_parkrun_stat_info = {
       "display_name": "Average parkrun event",
