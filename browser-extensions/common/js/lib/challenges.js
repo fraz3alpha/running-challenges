@@ -848,7 +848,7 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
 
   if (furthest_travelled.parkrun_event !== undefined) {
     stat_info["value"] = furthest_travelled.parkrun_event.name + ", " + furthest_travelled.parkrun_event.country_name
-    stat_info["url_link"] = get_parkrun_page_url(geo_data, furthest_travelled.parkrun_event.name)
+    stat_info["url"] = get_parkrun_page_url(geo_data, furthest_travelled.parkrun_event.name)
   }
 
   return stat_info
@@ -893,7 +893,7 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
     var nendy_name = sorted_events[0]
     var nendy = geo_data.data.events[nendy_name]
     statInfo.value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
-    statInfo["url_link"] = get_parkrun_page_url(geo_data, nendy.name)
+    statInfo["url"] = get_parkrun_page_url(geo_data, nendy.name)
   }
 
   return statInfo
