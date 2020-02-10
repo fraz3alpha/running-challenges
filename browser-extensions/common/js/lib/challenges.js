@@ -371,10 +371,10 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
   var value = "None"
   // Group results by year
   parkrun_results.forEach(function (parkrun_event) {
-    if (!(parkrun_event.date_obj.getFullYear() in runs_per_year)) {
-      runs_per_year[parkrun_event.date_obj.getFullYear()] = 0
+    if (!(parkrun_event.date_obj.getUTCFullYear() in runs_per_year)) {
+      runs_per_year[parkrun_event.date_obj.getUTCFullYear()] = 0
     }
-    runs_per_year[parkrun_event.date_obj.getFullYear()] += 1
+    runs_per_year[parkrun_event.date_obj.getUTCFullYear()] += 1
   })
   // Sort years by number of runs descending
   var best_year_sorted = Object.keys(runs_per_year).sort(function(a, b) {
@@ -489,7 +489,7 @@ function generate_stat_parkrun_birthday(parkrun_results) {
     // Format the date as a string with the user's locale
     // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
     // for more options
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
     // In en-GB this gives something like : "Thursday, 20 December 2012"
     // in en-US it would be "Thursday, December 20, 2012"
     // in pl-PL it would be "czwartek, 20 grudnia 2012"
@@ -508,13 +508,16 @@ function generate_stat_years_parkrunning(parkrun_results) {
   if (parkrun_results.length > 0) {
     var birthday_date = parkrun_results[0].date_obj
     var now = new Date()
-    // .getDay() returns the day of the week (0-6)
-    // .getDate() returns the day of the month (1-31)
+    // .getDay() and .getUTCDay() returns the day of the week (0-6)
+    // .getDate() and .getUTCDate() returns the day of the month (1-31)
     // So be careful when comparing!
-    if (now.getMonth() > birthday_date.getMonth() || (now.getMonth() == birthday_date.getMonth() && now.getDate() >= birthday_date.getDate())) {
-      years = now.getFullYear() - birthday_date.getFullYear()
+    // Also, make sure to use the non-UTC version for today's date
+    // which is in the user's locale, and use the UTC version for 
+    // any dates parsed from website and therefore stored in UTC.
+    if (now.getMonth() > birthday_date.getUTCMonth() || (now.getMonth() == birthday_date.getUTCMonth() && now.getDate() >= birthday_date.getUTCDate())) {
+      years = now.getFullYear() - birthday_date.getUTCFullYear()
     } else {
-      years = now.getFullYear() - birthday_date.getFullYear() - 1
+      years = now.getFullYear() - birthday_date.getUTCFullYear() - 1
     }
   }
   return {
@@ -612,7 +615,7 @@ function generate_stat_runs_this_year(parkrun_results) {
   var now = new Date()
 
   parkrun_results.forEach(function (parkrun_event) {
-    if (parkrun_event.date_obj.getFullYear() == now.getFullYear()) {
+    if (parkrun_event.date_obj.getUTCFullYear() == now.getFullYear()) {
       runs_this_year += 1
     }
   })
@@ -1847,9 +1850,9 @@ function challenge_on_dates(data, params) {
         var applicable_month = false
         var applicable_day = false
 
-        // Check if the month matches (getMonth() - 0-11)
+        // Check if the month matches (getUTCMonth() - 0-11)
         if (this_challenge_date.month !== undefined ) {
-          if (this_challenge_date.month == parkrun_event.date_obj.getMonth()) {
+          if (this_challenge_date.month == parkrun_event.date_obj.getUTCMonth()) {
             // console.log("Event matches the month for : " + JSON.stringify(this_challenge_date))
             applicable_month = true
           }
@@ -1858,9 +1861,9 @@ function challenge_on_dates(data, params) {
           applicable_month = true
         }
 
-        // Check if the day of the month matches (getDate() - 1-31)
+        // Check if the day of the month matches (getUTCDate() - 1-31)
         if (this_challenge_date.day !== undefined ) {
-          if (this_challenge_date.day == parkrun_event.date_obj.getDate()) {
+          if (this_challenge_date.day == parkrun_event.date_obj.getUTCDate()) {
             // console.log("Event matches the day for : " + JSON.stringify(this_challenge_date))
             applicable_day = true
           }
