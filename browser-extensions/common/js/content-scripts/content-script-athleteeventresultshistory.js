@@ -105,7 +105,7 @@ function parse_results_table() {
               parkrun_date_obj = new Date()
               date_parts = parkrun_date.split("/")
               if (date_parts.length == 3) {
-                  parkrun_date_obj = new Date(date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0])
+                  parkrun_date_obj = new Date(date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0]+"T00:00:00Z")
               }
 
               // Store this parkrun instance in our big data structure
