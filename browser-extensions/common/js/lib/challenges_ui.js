@@ -1060,8 +1060,11 @@ function drawRegionnaireDataTable(table, data) {
     // Only show those countries with events
     if (countryInfo.childEventsCount > 0) {
       // Determine how complete this country is
-      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childEventsCount
-      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childEventsCount
+      // Find out how many of the events in this country are actually live
+
+      console.log(countryInfo.childActiveEventsCount + " active events for "+countryName)
+      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childActiveEventsCount
+      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childActiveEventsCount
 
       var row = $("<tr/>")
       var regionnaire_country_class = "regionnaire-country-"+countryId

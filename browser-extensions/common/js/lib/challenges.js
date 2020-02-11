@@ -2306,11 +2306,20 @@ function calculateCountryCompletionInfo(data) {
   var countryCompletionInfo = {}
   // Pre-populate information about each country
   $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
+    // Find out how many of the events are active
+    var countryActiveEvents = 0
+    countryInfo['child_event_names'].forEach(function(eventName){
+      var eventInfo = data.geo_data.data.events[eventName]
+      if (eventInfo.status == 'Live' || eventInfo.status == 'unknown') {
+        countryActiveEvents += 1
+      }
+    })
     // Initialise an information object for the country
     countryCompletionInfo[countryName] = {
       "name": countryName,
       "id": countryInfo["id"],
       "childEventsCount": countryInfo['child_event_names'].length,
+      "childActiveEventsCount": countryActiveEvents,
       "childEventsCompleted": [],
       "childEventsCompletedCount": 0,
       "firstRanOn": undefined,
