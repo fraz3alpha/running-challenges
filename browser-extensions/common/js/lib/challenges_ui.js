@@ -342,7 +342,7 @@ function createVoronoiMapPrototype() {
       })
       
       $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
-        if (event_has_valid_location(event_info)) {
+        if (event_has_valid_location(event_info) && event_has_started(event_info)) {
           lat_lon = [+event_info.lat, +event_info.lon]
           // Add the point to the array
           var point = vmap.latLngToLayerPoint(lat_lon);
@@ -972,6 +972,10 @@ function event_has_valid_location(event_info) {
     }
   }
   return valid_location
+}
+
+function event_has_started(event_info) {
+  return (event_info.status == 'Live' || event_info.status == 'unknown')
 }
 
 function get_parkrun_popup(event_name, event_info, custom_options) {
