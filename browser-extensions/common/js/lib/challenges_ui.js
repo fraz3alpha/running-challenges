@@ -1057,8 +1057,8 @@ function drawRegionnaireDataTable(table, data) {
   $.each(alphabeticallySortedCountries, function(idx, countryName) {
     var countryInfo = countryCompletionInfo[countryName]
     var countryId = countryInfo["id"]
-    // Only show those countries with events
-    if (countryInfo.childEventsCount > 0) {
+    // Only show those countries with active events
+    if (countryInfo.childActiveEventsCount > 0) {
       // Determine how complete this country is
       // Find out how many of the events in this country are actually live
 
