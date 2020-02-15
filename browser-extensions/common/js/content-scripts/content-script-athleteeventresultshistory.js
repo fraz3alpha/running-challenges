@@ -76,6 +76,64 @@ function set_progress_message(progress_message) {
   $("div[id=running_challenges_messages_div]").html(progress_message)
 }
 
+function parsePageAthleteInfo() {
+
+  // Parse out the information from the page relating to this parkrunner, including:
+  // The name, as shown
+
+  // The HTML relating to the top of the page looks like this:
+  //   <div id="main">
+  //   <div id="primary">
+  //     <div id="content" role="main">
+  //         <a href='https://contra-movement.com/?utm_source=parkrun&utm_medium=web&utm_campaign=dec_19'> 
+  //           <picture>
+  //               <source media='(min-width: 767px)' srcset='https://images.parkrun.com/blogs.dir/3/files/2019/12/1100x100_gif.gif'>
+  //                 <img src='https://images.parkrun.com/blogs.dir/3/files/2019/12/767x250_bau_gif.gif' 
+  //                   alt='CONTRA December 2019' 
+  //                   style='width:auto;margin-bottom: 20px;'>
+  //             </picture> 
+  //         </a><?xml version="1.0"?>
+  // <h2>Andrew TAYLOR - 202 runs at All Events<br/>202 parkruns total
+  //       </h2>
+
+  // It can look different in different languages, e.g.
+  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
+  // <h2>Максим МАХНО - 14 пробежек на All Events<br/>14 забеги parkrun total</h2>
+  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // <h2>和輝 遠藤 - 10 参加 All Events<br/>10 parkrun total</h2>
+
+  // In each case, however, it is the first <h2> block, and everything before the dash is what we want.
+  // Find the first h2 tag in the appropriate div, and we can parse the name out of that.
+  var mainAthleteTag = $("div[id=main]>div[id=primary]>div[id=content]>h2").first()
+
+  var pageAthleteInfo = {
+    "name": getAthleteName(mainAthleteTag.text())
+  }
+
+  return pageAthleteInfo
+
+}
+
+function getAthleteName(athleteSummaryText) {
+  // e.g.
+  // Andrew TAYLOR - 202 runs at All Events202 parkruns total
+  //  - 0 runs at All Events...
+  // Максим МАХНО - 14 пробежек на All Events14 забеги parkrun total
+  //  - 0 пробежек на All Events...
+
+  var athleteName = undefined
+
+  if (athleteSummaryText !== undefined) {
+    var parts = athleteSummaryText.split(" - ")
+    if (parts[0] != "") {
+      athleteName = parts[0]
+    }
+  }
+
+  return athleteName
+
+}
+
 function parse_results_table() {
 
   parkruns_completed = []
@@ -379,6 +437,18 @@ function add_flags(div_id, data) {
   set_progress_message("Added flags")
 }
 
+function updateSummaryInfo(data, athleteId) {
+
+  data.info.has_athlete_id = (data.user_data.athlete_number !== undefined && data.user_data.athlete_number != '')
+  data.info.has_home_parkrun = (data.user_data.home_parkrun_info !== undefined && data.user_data.home_parkrun_info.name !== undefined)
+  data.info.is_our_page = (data.info.has_athlete_id && athleteId == data.user_data.athlete_number)
+  // Convenience properties for the main sources of data
+  // data.info.has_geo_data = (data.geo_data !== undefined)
+  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
+  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
+
+}
+
 function add_challenge_results(div_id, data) {
   set_progress_message("Adding challenge results")
   // console.log(data)
@@ -418,6 +488,10 @@ var loaded_user_data = {}
 var loaded_geo_data = undefined
 var parsed_volunteer_data = undefined
 var parsed_results_data = undefined
+
+set_progress_message("Parsing Athlete Info")
+var parsedPageAthleteInfo = parsePageAthleteInfo()
+set_progress_message("Parsed Athlete Info")
 
 set_progress_message("Parsing Results")
 parsed_results_data = parse_results_table()
@@ -476,16 +550,10 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   // - this will help us hide the 'home parkrun' and data based on that from
   //   user profiles it does not belong to
 
-  data.info.has_athlete_id = (loaded_user_data.athlete_number !== undefined && loaded_user_data.athlete_number != '')
-  data.info.has_home_parkrun = (loaded_user_data.home_parkrun_info !== undefined && loaded_user_data.home_parkrun_info.name !== undefined)
-  data.info.is_our_page = (data.info.has_athlete_id && get_athlete_id() == loaded_user_data.athlete_number)
-  // Convenience properties for the main sources of data
-  data.info.has_geo_data = (data.geo_data !== undefined)
-  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
-  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
-
+  updateSummaryInfo(data, get_athlete_id())
+ 
   data.challenge_results = {
-    "running_results": generate_running_challenge_data(data),
+    "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
     "volunteer_results": generate_volunteer_challenge_data(data)
   }
   // Update info with booleans for the presence of results
@@ -507,7 +575,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   add_stats(id_map["stats"], data)
 
   var errors = []
-  if (data.info.has_geo_data == false) {
+  if (!has_geo_data(data)) {
     errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
   }
   if (data.info.has_geo_technical_event_data == false) {

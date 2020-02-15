@@ -161,7 +161,7 @@ function get_challenge_header_row(challenge, data) {
     var challenge_map_link_id = "challenge_"+challenge['shortname']+"_show_map"
     var challenge_map_id = "challenge_"+challenge['shortname']+"_map"
     var challenge_map_link = ''
-    if (data.info.has_geo_data && challenge.has_map === true) {
+    if (has_geo_data(data) && challenge.has_map === true) {
         challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).html("<span style=\"cursor: default\">show map</span>").click(function() {
         console.log(challenge_map_id)
         console.log(challenge)

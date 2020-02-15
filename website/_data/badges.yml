@@ -70,6 +70,10 @@ runner:
     name: All Weather Runner
     description: Run in each month of the year.
 
+  - shortname: name-badge
+    name: Name Badge
+    description: Spell out your registered name with parkruns.
+
   - shortname: obsessive-bronze
     name: Bronze Level Obsessive
     description:  Run 30+ parkruns in one calendar year.
