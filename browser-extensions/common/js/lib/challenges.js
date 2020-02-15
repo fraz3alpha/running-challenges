@@ -1168,7 +1168,8 @@ function group_global_events_by_initial_letter(geo_data) {
     var event_info = geo_data.data.events[event_name]
   
     if (event_info.status == 'Live' || event_info.status == 'unknown') {
-      event_letter = get_initial_letter(event_info["shortname"])
+      // 'shortname' sorts by URL name, 'name' sorts by actual name
+      event_letter = get_initial_letter(event_info["name"])
       if (events[event_letter] === undefined) {
         events[event_letter] = []
       }
