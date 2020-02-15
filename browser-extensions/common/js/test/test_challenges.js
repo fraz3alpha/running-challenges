@@ -159,158 +159,215 @@ function createParkrunResult(specificData) {
 
 var geoData = getGeoData()
 
-describe("challenges", function() {
-    describe("generate_stat_furthest_travelled", function() {
+describe("challenges.js", function() {
 
-        // Use the special '__get__' accessor to get your private function.
-        var generate_stat_furthest_travelled = challenges.__get__('generate_stat_furthest_travelled');
+    describe("stats", function() {
 
-        it('should return "None" if no events have been run', function() {
-            var parkrunResults = []
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "None")
-            assert.equal(r.url, undefined)
+        describe("generate_stat_furthest_travelled", function() {
+
+            // Use the special '__get__' accessor to get your private function.
+            var generate_stat_furthest_travelled = challenges.__get__('generate_stat_furthest_travelled');
+
+            it('should return "None" if no events have been run', function() {
+                var parkrunResults = []
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "None")
+                assert.equal(r.url, undefined)
+            })
+
+            it('should return the only parkrun done if they have only done one, and it is their home run', function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Winchester, UK")
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+            })
+
+            it('should return the only parkrun done if they have only done one, and it is not their home run', function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Bushy Park"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Bushy Park, UK")
+                assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
+            })
+
+            it('should return "Unknown" if none of the parkruns they have done have a known location', function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "A Closed Parkrun"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Unknown")
+                assert.equal(r.url, undefined)
+            })
+
+            it('should return the only parkrun event done if they have only been to one place, but been there multiple times', function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"}),
+                    createParkrunResult({name: "Winchester"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Bushy Park")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Winchester, UK")
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+            })
+
+            it('should return the correct parkrun event in a list of mixed events', function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Fell Foot"}),
+                    createParkrunResult({name: "Winchester"}),
+                    createParkrunResult({name: "Bushy Park"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Bushy Park")
+                var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Fell Foot, UK")
+                assert.equal(r.url, "https://www.parkrun.org.uk/fellfoot")
+            })
         })
 
-        it('should return the only parkrun done if they have only done one, and it is their home run', function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Winchester, UK")
-            assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+        describe("generate_stat_nearest_event_not_done_yet", function() {
+
+            // Use the special '__get__' accessor to get your private function.
+            var generate_stat_nearest_event_not_done_yet = challenges.__get__('generate_stat_nearest_event_not_done_yet');
+
+            it("should return the home parkrun if you haven't run any events", function() {
+                var parkrunResults = []
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var r = generate_stat_nearest_event_not_done_yet(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Winchester, UK - 0km away")
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+            })
+
+            it("should return Bushy Park if the home run is Winchester, which has been run", function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
+                assert.equal(r.value, "Bushy Park, UK - 78km away")
+                assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
+            })
+            
+            it("should say \"No more events available\" if you have done all events", function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"}),
+                    createParkrunResult({name: "Bushy Park"})
+                ]
+                var homeParkrun = getParkrunEventInfo("Winchester")
+                var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
+                assert.equal(r.value, "No more events available")
+                assert.equal(r.url, undefined)
+            })
+
         })
 
-        it('should return the only parkrun done if they have only done one, and it is not their home run', function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Bushy Park"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Bushy Park, UK")
-            assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
+        describe("generate_stat_average_parkrun_event", function() {
+
+            // Use the special '__get__' accessor to get your private function.
+            var generate_stat_average_parkrun_event = challenges.__get__('generate_stat_average_parkrun_event');
+
+            it("should return \"None\" if you haven't run any events", function() {
+                var parkrunResults = []
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+                assert.equal(r.value, "None")
+                assert.equal(r.url, undefined)
+            })
+
+            it("should return \"Winchester\" if you have only run at Winchester once", function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"})
+                ]
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+                assert.equal(r.value, "Winchester")
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+            })
+            
+            it("should return \"Winchester\" if you have only run there Winchester, but been there multiple times", function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Winchester"}),
+                    createParkrunResult({name: "Winchester"}),
+                    createParkrunResult({name: "Winchester"})
+                ]
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+                assert.equal(r.value, "Winchester")
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+            })
+
+            it("should return \"Bushy Park\" if you have run there most often", function() {
+                var parkrunResults = [
+                    createParkrunResult({name: "Bushy Park"}),
+                    createParkrunResult({name: "Bushy Park"}),
+                    createParkrunResult({name: "Winchester"})
+                ]
+                // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
+                var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData)
+                assert.equal(r.value, "Bushy Park")
+                assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
+            })
+
         })
 
-        it('should return "Unknown" if none of the parkruns they have done have a known location', function() {
-            var parkrunResults = [
-                createParkrunResult({name: "A Closed Parkrun"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Unknown")
-            assert.equal(r.url, undefined)
-        })
-
-        it('should return the only parkrun event done if they have only been to one place, but been there multiple times', function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"}),
-                createParkrunResult({name: "Winchester"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Bushy Park")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Winchester, UK")
-            assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-        })
-
-        it('should return the correct parkrun event in a list of mixed events', function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Fell Foot"}),
-                createParkrunResult({name: "Winchester"}),
-                createParkrunResult({name: "Bushy Park"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Bushy Park")
-            var r = generate_stat_furthest_travelled(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Fell Foot, UK")
-            assert.equal(r.url, "https://www.parkrun.org.uk/fellfoot")
-        })
     })
 
-    describe("generate_stat_nearest_event_not_done_yet", function() {
+    describe("challenges", function() {
 
-        // Use the special '__get__' accessor to get your private function.
-        var generate_stat_nearest_event_not_done_yet = challenges.__get__('generate_stat_nearest_event_not_done_yet');
+        describe("challenge_name_badge", function() {
 
-        it("should return the home parkrun if you haven't run any events", function() {
+            // Use the special '__get__' accessor to get your private function.
+            var challenge_name_badge = challenges.__get__('challenge_name_badge');
+
+            // A simple testcase we can work with
             var parkrunResults = []
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, geoData, homeParkrun)
-            assert.equal(r.value, "Winchester, UK - 0km away")
-            assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
+
+            var data = {
+                "parkrun_results": parkrunResults,
+                "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+            }
+
+            // Seems a bit odd we have to call it like this, we should probably refactor it to 
+            // only take the athlete name data
+            var r = challenge_name_badge(data, {
+                "shortname": "name-badge",
+                "name": "Name Badge",
+                "data": {
+                    "name": "andrew TAYLOR"
+                }
+            })
+
+            it("shouldn't give the badge if no events have been run", function() {
+                // With the data above, we should not have completed this challenge as we haven't run any events
+                assert.equal(r.complete, false)
+            })
+
+            it("should give the badge if all letters are available and have been run", function() {
+                assert(false)
+            })
+            it("should give the badge if not all letters are available, but those are have been run", function() {
+                assert(false)
+            })
+ 
+            it("shouldn't give the badge if too few events have been run", function() {
+                assert(false)
+            })
+            it("shouldn't give the badge if no letters in the name match parkrun events", function() {
+                assert(false)
+            })
+            it("should handle being given names with hyphens in", function() {
+                assert(false)
+            })
+            it("should handle Japanese names being passed in", function() {
+                assert(false)
+            })
+
         })
-
-        it("should return Bushy Park if the home run is Winchester, which has been run", function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
-            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
-            assert.equal(r.value, "Bushy Park, UK - 78km away")
-            assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
-        })
-        
-        it("should say \"No more events available\" if you have done all events", function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"}),
-                createParkrunResult({name: "Bushy Park"})
-            ]
-            var homeParkrun = getParkrunEventInfo("Winchester")
-            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
-            var r = generate_stat_nearest_event_not_done_yet(parkrunResults, filteredGeoData, homeParkrun)
-            assert.equal(r.value, "No more events available")
-            assert.equal(r.url, undefined)
-        })
-
-    })
-
-    describe("generate_stat_average_parkrun_event", function() {
-
-        // Use the special '__get__' accessor to get your private function.
-        var generate_stat_average_parkrun_event = challenges.__get__('generate_stat_average_parkrun_event');
-
-        it("should return \"None\" if you haven't run any events", function() {
-            var parkrunResults = []
-            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-            assert.equal(r.value, "None")
-            assert.equal(r.url, undefined)
-        })
-
-        it("should return \"Winchester\" if you have only run at Winchester once", function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"})
-            ]
-            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-            assert.equal(r.value, "Winchester")
-            assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-        })
-        
-        it("should return \"Winchester\" if you have only run there Winchester, but been there multiple times", function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Winchester"}),
-                createParkrunResult({name: "Winchester"}),
-                createParkrunResult({name: "Winchester"})
-            ]
-            var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-            assert.equal(r.value, "Winchester")
-            assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-        })
-
-        it("should return \"Bushy Park\" if you have run there most often", function() {
-            var parkrunResults = [
-                createParkrunResult({name: "Bushy Park"}),
-                createParkrunResult({name: "Bushy Park"}),
-                createParkrunResult({name: "Winchester"})
-            ]
-            // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
-            var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
-            var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData)
-            assert.equal(r.value, "Bushy Park")
-            assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
-        })
-
-        filterGeoData
 
     })
 

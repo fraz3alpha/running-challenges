@@ -65,7 +65,7 @@ function group_volunteer_data(volunteer_data) {
  * is complete, how many subparts there are, and how far you have to go etc..
  */
 
-function generate_running_challenge_data(data) {
+function generate_running_challenge_data(data, thisAthleteInfo) {
   // console.log(data)
   challenge_data = []
 
@@ -207,6 +207,12 @@ function generate_running_challenge_data(data) {
         {"month": 11},
       ],
       "help": "Run in each month of the year."}))
+    // Pass in the current athlete info
+    challenge_data.push(challenge_name_badge(data, {
+      "shortname": "name-badge",
+      "name": "Name Badge",
+      "data": thisAthleteInfo
+    }))
     challenge_data.push(challenge_obsessive(data, 
       {
         "shortname": "obsessive-gold",
@@ -1097,7 +1103,13 @@ function create_data_object(params, category) {
 function update_data_object(o) {
     o['stop_time'] = new Date()
     o['duration'] = o.stop_time - o.start_time
-    o['subparts_count'] = o.subparts.length
+
+    // Only set the subparts_count if we have not calculated it already.
+    // Some challenges have more data stored in the subparts than is possible to get
+    // so this will allow them to decide on their own how many parts there are.
+    if (o["subparts_count"] === undefined) {
+      o['subparts_count'] = o.subparts.length
+    }
     // console.log("Completed data for " + o.shortname + " in " + o['duration'] + "ms")
     return o
 }
@@ -1150,7 +1162,10 @@ function group_global_events_by_initial_letter(geo_data) {
 
   var events = {}
 
-  $.each(geo_data.data.events, function (event_name, event_info) {
+  // $.each(geo_data.data.events, function (event_name, event_info) {
+  Object.keys(geo_data.data.events).forEach(function(event_name) {
+    var event_info = geo_data.data.events[event_name]
+  
     if (event_info.status == 'Live' || event_info.status == 'unknown') {
       event_letter = get_initial_letter(event_info["shortname"])
       if (events[event_letter] === undefined) {
@@ -1253,6 +1268,179 @@ function get_parkrun_event_details(data, parkrun_name) {
     }
   }
   return parkrun_event_details
+}
+
+function challenge_name_badge(data, params) {
+  // challenge_data.push(challenge_name_badge(data, {
+  //   "shortname": "name-badge",
+  //   "name": "Name Badge",
+  //   "data": thisAthleteInfo
+  // }))
+
+  // This works for English speaking countries, and we might be able to manage a bit of Russian, 
+  // but we are broken for Japanese Kanji names :(
+  // Some samples
+  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
+  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  //
+  // PS-H, which has a hyphen is his surname:
+  // https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0
+
+  // Find the data we are interested in
+  parkrun_results = data.parkrun_results
+  geo_data = data.geo_data
+  user_data = data.user_data
+  home_parkrun = undefined
+  if (user_data) {
+    home_parkrun = user_data.home_parkrun_info
+  }
+
+  var o = create_data_object(params, "runner")
+  // No map yet
+  o.has_map = false
+
+  // Find the initial letters from the athlete information passed through.
+  var pageAthleteInfo = params.data
+  console.log(pageAthleteInfo)
+  console.log(pageAthleteInfo.name)
+
+  // Lets keep the spaces, but we will need to work out if all the other characters are actually available
+  var groupedEventsByInitialLetter = group_global_events_by_initial_letter(geo_data)
+  console.log(groupedEventsByInitialLetter)
+
+  // Create an object containing how many of each letter is available, so that we can work out if that is 
+  // enough for our name.
+  var groupedEventsByInitialLetterCount = {}
+  Object.keys(groupedEventsByInitialLetter).forEach(function(initialLetter) {
+    groupedEventsByInitialLetterCount[initialLetter] = groupedEventsByInitialLetter[initialLetter].length
+  })
+  console.log(groupedEventsByInitialLetterCount)
+
+  // We need to know the current athlete detais for this challenge to work, otherwise 
+  // there is no challenge.
+
+  // This challenge will also potentially add numerous output lines that are not achieveable 
+  // sub-parts, e.g. for "ANDREW TAYLOR" that is 13 characters (with the space), but only 12
+  // letters to get. Similarly the '-' in "PAUL SINTON-HEWITT" needs to be accounted for.
+  // This means that our current way of having 'subparts' and the details associated with them
+  // doesn't work if they do double duty for rendering on the page, and calculating progress.
+
+  // We currently have the following data:
+  // shortname
+  // name
+  // help
+  // complete
+  // completed_on
+  // subparts
+  // subparts_completed_count
+  // subparts_detail
+  //   subpart
+  //   name
+  //   info
+  // badge_icon
+  // completed_qualifying_events
+  // nearest_qualifying_events
+  // all_qualifying_events
+  // has_map
+  // home_parkrun
+  // start/stop time/duration for determing processing overhead
+  // subparts_count << this is currently automatically computed, but we should not do this in all situations.
+
+  // We are going to compute the number of subparts manually
+  // Setting this to a value means that it won't be computed automatically 
+  // by the final call to update_data_object()
+  o.subparts_count = 0
+
+  if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
+    for(var i=0; i< pageAthleteInfo.name.length; i++) {
+      var letter = pageAthleteInfo.name[i].toLowerCase()
+      console.log(letter)
+      if (letter != " ") {
+        // See if it is available
+        var letterAvailable = false
+        if (letter in groupedEventsByInitialLetterCount) {
+          if (groupedEventsByInitialLetterCount[letter] > 0) {
+            letterAvailable = true
+            // Decrement available parkruns for this letter
+            groupedEventsByInitialLetterCount[letter] -= 1
+            console.log("Letter "+letter+" is available, "+groupedEventsByInitialLetterCount[letter]+ " remaining")
+          }
+        }
+        if (letterAvailable) {
+          o.subparts.push(letter)
+          o.subparts_detail.push({
+            "subpart": letter,
+            "info": "-"
+          })
+          // Mark this as a subpart we can actually achieve
+          o.subparts_count += 1
+        } else {
+          o.subparts.push(letter)
+          // What do we put there to say it is not possible?
+          // Lets put a dash.
+          o.subparts_detail.push({
+            "subpart": letter,
+            "name": "-",
+            "info": "-"
+          })
+        }
+      } else {
+        o.subparts.push(" ")
+        o.subparts_detail.push({
+          "subpart": " ",
+          "info": ""
+        })
+        // Just add a literal space placeholder
+      }
+    }
+
+    // Now lets work out which ones we've done
+
+    // Keep track of ones we have already used.
+    checked_parkruns = []
+
+    // We need to loop over the events in the order they were first run, so we iterate over
+    // the results here.
+    parkrun_results.forEach(function (parkrun_event) {
+
+      if (!(checked_parkruns.includes(parkrun_event.name))) {
+          initial_letter = parkrun_event.name[0].toLowerCase()
+          // Skips those parkruns that aren't going to match any of the subparts
+          if (o.subparts.includes(initial_letter)) {
+              // Loop through all the letters we are looking for
+              for (i=0; i<o.subparts.length; i++) {
+                  // Find a matching subpart that hasn't yet been filled in
+                  if (o.subparts_detail[i].info == "-" && o.subparts[i] == initial_letter) {
+                      // Add the event
+                      p = Object.create(parkrun_event)
+                      p.subpart = initial_letter
+                      p.name = p.eventlink
+                      p.info = p.datelink
+                      o.subparts_detail[i] = p
+                      o.subparts_completed_count += 1
+                      if (!(parkrun_event.name in o.completed_qualifying_events)) {
+                        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+                      }
+
+                      if (o.subparts_count == o.subparts_completed_count) {
+                          o.complete = true
+                          o.completed_on = p.date
+                      }
+                      // Get out of the for loop
+                      break
+                  }
+              }
+          }
+
+          // Lets not process this parkrun again, even if we have run it more than once
+          checked_parkruns.push(parkrun_event.name)
+      }
+
+    })
+  }
+
+  return update_data_object(o)
+
 }
 
 function challenge_start_letters(data, params) {
