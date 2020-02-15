@@ -342,7 +342,7 @@ function createVoronoiMapPrototype() {
       })
       
       $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
-        if (event_has_valid_location(event_info)) {
+        if (event_has_valid_location(event_info) && event_has_started(event_info)) {
           lat_lon = [+event_info.lat, +event_info.lon]
           // Add the point to the array
           var point = vmap.latLngToLayerPoint(lat_lon);
@@ -974,6 +974,10 @@ function event_has_valid_location(event_info) {
   return valid_location
 }
 
+function event_has_started(event_info) {
+  return (event_info.status == 'Live' || event_info.status == 'unknown')
+}
+
 function get_parkrun_popup(event_name, event_info, custom_options) {
 
   var options = {
@@ -1053,11 +1057,14 @@ function drawRegionnaireDataTable(table, data) {
   $.each(alphabeticallySortedCountries, function(idx, countryName) {
     var countryInfo = countryCompletionInfo[countryName]
     var countryId = countryInfo["id"]
-    // Only show those countries with events
-    if (countryInfo.childEventsCount > 0) {
+    // Only show those countries with active events
+    if (countryInfo.childActiveEventsCount > 0) {
       // Determine how complete this country is
-      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childEventsCount
-      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childEventsCount
+      // Find out how many of the events in this country are actually live
+
+      console.log(countryInfo.childActiveEventsCount + " active events for "+countryName)
+      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childActiveEventsCount
+      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childActiveEventsCount
 
       var row = $("<tr/>")
       var regionnaire_country_class = "regionnaire-country-"+countryId
