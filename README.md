@@ -123,6 +123,21 @@ roles, and they will need adding in in a few places:
 - Follow the instructions in `images/badges/README.md` to generate the star badges.
 - Update `website/_data/badges.yml` with a section for the additional role
 
+# Adding a new country
+
+It is impossible to add a new country until the new website is made live, and there are events on the map.
+
+- Find the website URLs for the 3 pages the extension modifies. They seem to follow the english spelling these days:
+  - "*://www.parkrun.jp/results/athleteeventresultshistory/*"
+  - "*://www.parkrun.jp/results/athleteresultshistory/*"
+  - "*://www.parkrun.jp/*/results/athletehistory/*"
+  Each of these needs to be added to the `manifest.json` file for all the supported browsers.
+- Look in the volunteer rosters and attempt to find the translations to add to the `i18n.js` (internationalisation) file
+- Add the ISO code for the country to the flag map in `challenges.js`
+- Add the ISO code to the list of flags for the website under the `flags.yml` data file.
+- Get the flag from https://emojipedia.org/twitter/twemoji-2.6/ as described in the flags README.
+- Add the country code and country name to `background.js`
+
 # Version numbers
 
 There hasn't been any real consistency in how the versions have been numbered, with the versions mostly going up

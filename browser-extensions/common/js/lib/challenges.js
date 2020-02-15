@@ -993,6 +993,7 @@ function get_flag_image_src(country) {
       "Japan": "jp",
       "Malaysia": "my",
       "Namibia": "na",
+      "Netherlands": "nl",
       "New Zealand": "nz",
       "Norway": "no",
       "Poland": "pl",

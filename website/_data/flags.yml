@@ -32,11 +32,14 @@ flags:
   - shortname: my
     name: Malaysia
 
-  - shortname: "no"
-    name: Norway
+  - shortname: nl
+    name: Netherlands
 
   - shortname: nz
     name: New Zealand
+
+  - shortname: "no"
+    name: Norway
 
   - shortname: pl
     name: Poland
