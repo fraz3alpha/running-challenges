@@ -211,7 +211,8 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
     challenge_data.push(challenge_name_badge(data, {
       "shortname": "name-badge",
       "name": "Name Badge",
-      "data": thisAthleteInfo
+      "data": thisAthleteInfo,
+      "help": "Spell out your registered name with parkruns."
     }))
     challenge_data.push(challenge_obsessive(data, 
       {
@@ -1324,27 +1325,6 @@ function challenge_name_badge(data, params) {
   // letters to get. Similarly the '-' in "PAUL SINTON-HEWITT" needs to be accounted for.
   // This means that our current way of having 'subparts' and the details associated with them
   // doesn't work if they do double duty for rendering on the page, and calculating progress.
-
-  // We currently have the following data:
-  // shortname
-  // name
-  // help
-  // complete
-  // completed_on
-  // subparts
-  // subparts_completed_count
-  // subparts_detail
-  //   subpart
-  //   name
-  //   info
-  // badge_icon
-  // completed_qualifying_events
-  // nearest_qualifying_events
-  // all_qualifying_events
-  // has_map
-  // home_parkrun
-  // start/stop time/duration for determing processing overhead
-  // subparts_count << this is currently automatically computed, but we should not do this in all situations.
 
   // We are going to compute the number of subparts manually
   // Setting this to a value means that it won't be computed automatically 
