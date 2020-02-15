@@ -347,24 +347,130 @@ describe("challenges.js", function() {
                 assert.equal(r.complete, false)
             })
 
+            it("should set the number of subparts the the number of achieveable letters", function() {
+                // For ANDREW TAYLOR we have only got a reference to WINCHESTER that matches
+                assert.equal(r.subparts_count, 1)
+            })
+
             it("should give the badge if all letters are available and have been run", function() {
-                assert(false)
+                // Call it again with a name that matches the events we have run
+                var r = challenge_name_badge(
+                {
+                    "parkrun_results": [
+                        createParkrunResult({name: "Winchester"}),
+                        createParkrunResult({name: "Bushy Park"}),
+                    ],
+                    "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                }, {
+                    "shortname": "name-badge",
+                    "name": "Name Badge",
+                    "data": {
+                        "name": "b w"
+                    }
+                })
+                assert.equal(r.subparts_count, 2)
+                assert.equal(r.subparts_completed_count, 2)
+                assert.equal(r.complete, true)
+
             })
             it("should give the badge if not all letters are available, but those are have been run", function() {
-                assert(false)
+                // Call it again with a name that matches the events we have run
+                var r = challenge_name_badge(
+                    {
+                        "parkrun_results": [
+                            createParkrunResult({name: "Winchester"}),
+                            createParkrunResult({name: "Bushy Park"}),
+                        ],
+                        "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                    }, {
+                        "shortname": "name-badge",
+                        "name": "Name Badge",
+                        "data": {
+                            "name": "b w-abcdefgh"
+                        }
+                    })
+                assert.equal(r.subparts_count, 2)
+                assert.equal(r.subparts_completed_count, 2)
+                assert.equal(r.complete, true)
             })
  
             it("shouldn't give the badge if too few events have been run", function() {
-                assert(false)
+                // Call it again with a name that matches the events we have run
+                var r = challenge_name_badge(
+                    {
+                        "parkrun_results": [
+                            createParkrunResult({name: "Winchester"}),
+                        ],
+                        "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                    }, {
+                        "shortname": "name-badge",
+                        "name": "Name Badge",
+                        "data": {
+                            "name": "b wabcdefgh"
+                        }
+                    })
+                assert.equal(r.subparts_count, 2)
+                assert.equal(r.subparts_completed_count, 1)
+                assert.equal(r.complete, false)
             })
+
             it("shouldn't give the badge if no letters in the name match parkrun events", function() {
-                assert(false)
+                // Call it again with a name that matches the events we have run
+                var r = challenge_name_badge(
+                    {
+                        "parkrun_results": [
+                            createParkrunResult({name: "Winchester"}),
+                        ],
+                        "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                    }, {
+                        "shortname": "name-badge",
+                        "name": "Name Badge",
+                        "data": {
+                            "name": "cde fgh"
+                        }
+                    })
+                assert.equal(r.subparts_count, 0)
+                assert.equal(r.subparts_completed_count, 0)
+                assert.equal(r.complete, false)
             })
             it("should handle being given names with hyphens in", function() {
-                assert(false)
+                // Call it again with a name that matches the events we have run
+                var r = challenge_name_badge(
+                    {
+                        "parkrun_results": [
+                            createParkrunResult({name: "Winchester"}),
+                            createParkrunResult({name: "Bushy Park"}),
+                        ],
+                        "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                    }, {
+                        "shortname": "name-badge",
+                        "name": "Name Badge",
+                        "data": {
+                            "name": "b w-h"
+                        }
+                    })
+                assert.equal(r.subparts_count, 2)
+                assert.equal(r.subparts_completed_count, 2)
+                assert.equal(r.complete, true)
             })
-            it("should handle Japanese names being passed in", function() {
-                assert(false)
+            it("should handle Japanese names being passed in, but won't get the badge", function() {
+                var r = challenge_name_badge(
+                    {
+                        "parkrun_results": [
+                            createParkrunResult({name: "Winchester"}),
+                            createParkrunResult({name: "Bushy Park"}),
+                        ],
+                        "geo_data": filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
+                    }, {
+                        "shortname": "name-badge",
+                        "name": "Name Badge",
+                        "data": {
+                            "name": "和輝 遠藤"
+                        }
+                    })
+                assert.equal(r.subparts_count, 0)
+                assert.equal(r.subparts_completed_count, 0)
+                assert.equal(r.complete, false)
             })
 
         })

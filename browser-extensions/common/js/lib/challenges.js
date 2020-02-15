@@ -956,7 +956,7 @@ function generate_stats(data) {
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
-  if (data.info.has_parkrun_results && data.info.has_geo_data) {
+  if (data.info.has_parkrun_results && has_geo_data(data)) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
@@ -965,7 +965,7 @@ function generate_stats(data) {
 
   // Stats that need the user data available, and we are on their page (i.e. has
   // to be the person who has installed the plugin)
-  if (data.info.has_parkrun_results && data.info.has_geo_data && data.info.is_our_page && data.info.has_home_parkrun) {
+  if (data.info.has_parkrun_results && has_geo_data(data) && is_our_page(data) && data.info.has_home_parkrun) {
     stats['furthest_travelled'] = generate_stat_furthest_travelled(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
     stats['nearest_event_not_done_yet'] = generate_stat_nearest_event_not_done_yet(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
   }
@@ -1251,7 +1251,7 @@ function get_parkrun_event_details(data, parkrun_name) {
     "name": parkrun_name
   }
   // Everything else needs geo data
-  if (data.info.has_geo_data) {
+  if (has_geo_data(data)) {
     // Add the location in if we have it
     if (parkrun_name in data.geo_data.data.events) {
       geo_event = data.geo_data.data.events[parkrun_name]
@@ -1260,7 +1260,7 @@ function get_parkrun_event_details(data, parkrun_name) {
         parkrun_event_details.lon = geo_event.lon
         // Now we have the location, we can also add in the distance to our
         // home parkrun, if we have set that, and we are looking at our page
-        if (data.info.is_our_page && data.info.has_home_parkrun) {
+        if (is_our_page(data) && data.info.has_home_parkrun) {
           parkrun_event_details.distance = calculate_great_circle_distance(geo_event, get_home_parkrun(data))
         }
       }
@@ -1303,12 +1303,12 @@ function challenge_name_badge(data, params) {
 
   // Find the initial letters from the athlete information passed through.
   var pageAthleteInfo = params.data
-  console.log(pageAthleteInfo)
-  console.log(pageAthleteInfo.name)
+  // console.log(pageAthleteInfo)
+  // console.log(pageAthleteInfo.name)
 
   // Lets keep the spaces, but we will need to work out if all the other characters are actually available
   var groupedEventsByInitialLetter = group_global_events_by_initial_letter(geo_data)
-  console.log(groupedEventsByInitialLetter)
+  // console.log(groupedEventsByInitialLetter)
 
   // Create an object containing how many of each letter is available, so that we can work out if that is 
   // enough for our name.
@@ -1316,7 +1316,7 @@ function challenge_name_badge(data, params) {
   Object.keys(groupedEventsByInitialLetter).forEach(function(initialLetter) {
     groupedEventsByInitialLetterCount[initialLetter] = groupedEventsByInitialLetter[initialLetter].length
   })
-  console.log(groupedEventsByInitialLetterCount)
+  // console.log(groupedEventsByInitialLetterCount)
 
   // We need to know the current athlete detais for this challenge to work, otherwise 
   // there is no challenge.
@@ -1335,7 +1335,7 @@ function challenge_name_badge(data, params) {
   if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
     for(var i=0; i< pageAthleteInfo.name.length; i++) {
       var letter = pageAthleteInfo.name[i].toLowerCase()
-      console.log(letter)
+      // console.log(letter)
       if (letter != " ") {
         // See if it is available
         var letterAvailable = false
@@ -1344,7 +1344,7 @@ function challenge_name_badge(data, params) {
             letterAvailable = true
             // Decrement available parkruns for this letter
             groupedEventsByInitialLetterCount[letter] -= 1
-            console.log("Letter "+letter+" is available, "+groupedEventsByInitialLetterCount[letter]+ " remaining")
+            // console.log("Letter "+letter+" is available, "+groupedEventsByInitialLetterCount[letter]+ " remaining")
           }
         }
         if (letterAvailable) {
@@ -1522,7 +1522,7 @@ function challenge_start_letters(data, params) {
 
             // If this is our page (i.e. the athlete id in our profile matches
             // that of this page), then we can try and work out which are closest
-            if (data.info.is_our_page) {
+            if (is_our_page(data)) {
               // console.log(sorted_grouped_events)
               // if (sorted_grouped_events !== undefined) {
               if (o.subparts[i] in sorted_grouped_events) {
@@ -1568,9 +1568,9 @@ function challenge_words(data, params) {
     // code will iterate over an empty objection
     grouped_events = {}
     sorted_grouped_events = {}
-    if (data.info.has_geo_data) {
+    if (has_geo_data(data)) {
       grouped_events = group_global_events_by_containing_word(geo_data, o.subparts)
-      if (data.info.has_home_parkrun && data.info.is_our_page) {
+      if (data.info.has_home_parkrun && is_our_page(data)) {
         sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, data.user_data.home_parkrun_info)
       }
     }
@@ -1697,7 +1697,7 @@ function challenge_parkruns(data, params) {
             // Add all of the missing events to the 'all' collection, as it doesn't
             // really make a lot of sense for them to be in the 'closest' set,
             // as they are all the closest
-            if (data.info.has_geo_data) {
+            if (has_geo_data(data)) {
               o.all_qualifying_events[o.subparts[i]] = get_parkrun_event_details(data, o.subparts[i])
             }
         }

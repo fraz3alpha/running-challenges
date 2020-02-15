@@ -437,6 +437,18 @@ function add_flags(div_id, data) {
   set_progress_message("Added flags")
 }
 
+function updateSummaryInfo(data, athleteId) {
+
+  data.info.has_athlete_id = (data.user_data.athlete_number !== undefined && data.user_data.athlete_number != '')
+  data.info.has_home_parkrun = (data.user_data.home_parkrun_info !== undefined && data.user_data.home_parkrun_info.name !== undefined)
+  data.info.is_our_page = (data.info.has_athlete_id && athleteId == data.user_data.athlete_number)
+  // Convenience properties for the main sources of data
+  // data.info.has_geo_data = (data.geo_data !== undefined)
+  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
+  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
+
+}
+
 function add_challenge_results(div_id, data) {
   set_progress_message("Adding challenge results")
   // console.log(data)
@@ -538,14 +550,8 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   // - this will help us hide the 'home parkrun' and data based on that from
   //   user profiles it does not belong to
 
-  data.info.has_athlete_id = (loaded_user_data.athlete_number !== undefined && loaded_user_data.athlete_number != '')
-  data.info.has_home_parkrun = (loaded_user_data.home_parkrun_info !== undefined && loaded_user_data.home_parkrun_info.name !== undefined)
-  data.info.is_our_page = (data.info.has_athlete_id && get_athlete_id() == loaded_user_data.athlete_number)
-  // Convenience properties for the main sources of data
-  data.info.has_geo_data = (data.geo_data !== undefined)
-  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
-  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
-
+  updateSummaryInfo(data, get_athlete_id())
+ 
   data.challenge_results = {
     "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
     "volunteer_results": generate_volunteer_challenge_data(data)
@@ -569,7 +575,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   add_stats(id_map["stats"], data)
 
   var errors = []
-  if (data.info.has_geo_data == false) {
+  if (!has_geo_data(data)) {
     errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
   }
   if (data.info.has_geo_technical_event_data == false) {
