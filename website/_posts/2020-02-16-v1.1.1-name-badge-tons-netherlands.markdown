@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "Name Badge challenge, tons of runs, parkrun Netherlands, and bug fixes (v1.1.0)"
+title:  "Name Badge challenge, tons of runs, parkrun Netherlands, and bug fixes (v1.1.1)"
 date:   2020-02-16 19:00:00 +0000
 categories:
   - chrome-extension
   - firefox-addon
   - release
 ---
-Loads of stuff in v1.1.0, both new and bugs fixes. Take a look...
+Loads of stuff in v1.1.1, both new and bugs fixes. Take a look...
 
 ## New!
 
