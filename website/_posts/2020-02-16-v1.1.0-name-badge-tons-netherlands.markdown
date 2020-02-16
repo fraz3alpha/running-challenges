@@ -50,7 +50,7 @@ If something still doesn't work, [create a new issue](https://github.com/fraz3al
 
 If you are a parkrunner in the USA, you might have noticed that some of your stats are inconsistent (e.g. parkruns this year or most parkruns in a year), you've apparently run a total of 14 times in the month of December when you can count only 11, you've been incorrectly awarded a Christmas Day badge when you've never run on Christmas Day, or your first parkrun is reported as having happened on a Friday. Something was clearly a bit off, but we've finally fixed it.
 
-Thanks hugely to Tim Freer, not only for reporting this problem way back last year (and others who reported it even longer ago), but also for then investigating the code and sending us a full explanation of what he'd found and how to fix it.
+Thanks hugely to Tim Keer, not only for reporting this problem way back last year (and others who reported it even longer ago), but also for then investigating the code and sending us a full explanation of what he'd found and how to fix it.
 
 ### Error for people who've run at a single parkrun location
 
