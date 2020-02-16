@@ -139,7 +139,6 @@
       "/css/*"
   ],
   "permissions": [
-    "activeTab",
     "storage",
     "https://www.parkrun.org.uk/",
     "https://wiki.parkrun.com/"
