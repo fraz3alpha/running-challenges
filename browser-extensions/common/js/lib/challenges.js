@@ -965,6 +965,7 @@ function generate_stats(data) {
 
   // Stats that need the user data available, and we are on their page (i.e. has
   // to be the person who has installed the plugin)
+  console.log("Should we add the NENDY? - is_our_page:"+is_our_page(data) + " has_geo_data:"+has_geo_data(data))
   if (data.info.has_parkrun_results && has_geo_data(data) && is_our_page(data) && data.info.has_home_parkrun) {
     stats['furthest_travelled'] = generate_stat_furthest_travelled(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
     stats['nearest_event_not_done_yet'] = generate_stat_nearest_event_not_done_yet(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
@@ -1811,7 +1812,8 @@ function challenge_tourist(data, params) {
 // Just return true for now
 // Return true if the athlete id for this page match what is stored in the user data
 function is_our_page(data) {
-  return has_user_data_athlete_id(data) && has_this_athlete_id(data) && get_user_data_athlete_id(data) == get_this_athlete_id(data)
+  // return has_user_data_athlete_id(data) && has_this_athlete_id(data) && get_user_data_athlete_id(data) == get_this_athlete_id(data)
+  return data.info.is_our_page
 }
 
 function has_user_data(data) {
