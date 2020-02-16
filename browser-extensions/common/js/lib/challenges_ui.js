@@ -530,7 +530,7 @@ function drawRegionnaireMap(divId, data) {
   $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
 
     // We have the total number of events and complete events in the following
-    var countryChildEventsCount = countryCompletionInfo[countryName].childEventsCount
+    var countryChildEventsCount = countryCompletionInfo[countryName].childActiveEventsCount
     var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
 
     // Only bother displaying this country if it has any events
@@ -1038,7 +1038,7 @@ function drawRegionnaireDataTable(table, data) {
   var worldEventsCount = 0
   var worldEventsCompletedCount = 0
   $.each(countryCompletionInfo, function(countryName, countryInfo) {
-    worldEventsCount += countryInfo.childEventsCount
+    worldEventsCount += countryInfo.childActiveEventsCount
     worldEventsCompletedCount += countryInfo.childEventsCompletedCount
   })
 

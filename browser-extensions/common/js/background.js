@@ -253,38 +253,49 @@ function addEventToCountryData(data, country_name, event_id, event_name) {
 
 function parse_tee_data_event_status(data, result) {
 
-  if (result === undefined) {
-    return
+  var parseSuccess = false
+
+  if (result !== undefined) {
+
+    // Reset the event status data to a blank map
+    data.event_status = {}
+
+    var ownerDocument = document.implementation.createHTMLDocument('virtual');
+    // Load the results into a virtual document, so that it doesn't attempt to load
+    // inline scripts etc...
+    // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
+    // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
+    $(result, ownerDocument).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+      var content_table = $(this)
+
+      content_table.find('tbody>tr').each(function(row_index) {
+          var content_table_row_cell = $('td', this)
+          // Only attempt to parse it if there are enough cells
+          if (content_table_row_cell[0] !== undefined) {
+            if (content_table_row_cell.length >= 5) {
+                var parkrun_info = {
+                    parkrun_name: content_table_row_cell[0].innerText.trim(),
+                    parkrun_event_director: content_table_row_cell[1].innerText.trim(),
+                    parkrun_event_number: content_table_row_cell[2].innerText.trim(),
+                    parkrun_status: content_table_row_cell[3].innerText.trim(),
+                    parkrun_country: content_table_row_cell[4].innerText.trim()
+                }
+                data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
+                // Note that we've parsed at least something successfully.
+                parseSuccess = true
+                // console.log(parkrun_info)
+            }
+          } else {
+            console.log("Techincal Event Information table row is malformed: "+JSON.stringify(content_table_row_cell))
+          }
+      })
+    })
+
+    console.log(Object.keys(data.event_status).length + " event statuses available")
+
   }
 
-  // Reset the event status data to a blank map
-  data.event_status = {}
-
-  var ownerDocument = document.implementation.createHTMLDocument('virtual');
-  // Load the results into a virtual document, so that it doesn't attempt to load
-  // inline scripts etc...
-  // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
-  // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
-  $(result, ownerDocument).find('div[id=mw-content-text]>table:first').each(function(table_index) {
-     var content_table = $(this)
-
-     content_table.find('tbody>tr').each(function(row_index) {
-         var content_table_row_cell = $('td', this)
-         if (content_table_row_cell[0] !== undefined) {
-             var parkrun_info = {
-                 parkrun_name: content_table_row_cell[0].innerText.trim(),
-                 parkrun_event_director: content_table_row_cell[1].innerText.trim(),
-                 parkrun_event_number: content_table_row_cell[2].innerText.trim(),
-                 parkrun_status: content_table_row_cell[3].innerText.trim(),
-                 parkrun_country: content_table_row_cell[4].innerText.trim()
-             }
-             data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
-             // console.log(parkrun_info)
-         }
-     })
-  })
-
- return
+  return parseSuccess
 
 }
 
@@ -433,9 +444,10 @@ function update_cache_data(data_events, data_tee) {
 
   // If the technical event information has been obtained, then
   // lets parse that.
-  // if (data_tee !== null) {
-  parse_tee_data_event_status(data, data_tee)
-  // }
+  var parseResult = parse_tee_data_event_status(data, data_tee)
+  console.log("Techincal Event Information parse result: "+parseResult)
+  // If the page hasn't been fetched, or the file can't be parsed, parseResult will be false.
+  // We should do something with that value, like mark that the page should be fetched again.
 
   // This could potentially do nothing if no event info is available
   compute_event_status(data)
