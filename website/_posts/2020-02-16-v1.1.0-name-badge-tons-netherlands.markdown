@@ -1,0 +1,82 @@
+---
+layout: post
+title:  "Name Badge challenge, tons of runs, parkrun Netherlands, and bug fixes (v1.1.0)"
+date:   2020-02-16 19:00:00 +0000
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+Loads of stuff in v1.1.0, both new and bugs fixes. Take a look...
+
+## New!
+
+We have a new Name Badge challenge, support for parkrun Netherlands, and collapsed Single-ton and Double-ton challenges into a single Tons of Runs challenge.
+
+### New challenge: the Name Badge
+
+![Name Badge challenge badge]({{ site.baseurl }}/img/badges/runner-name-badge.png "Name Badge challenge badge"){: .center-image .image-border}
+
+Run a parkrun for each letter in your name to complete the new Name Badge challenge. This challenge was suggested by [Fell Foot parkrun](https://twitter.com/FellFootparkrun/status/1227536074408439808). We take the name you registered with and list the letters in it. Then you run a parkrun that starts with each of the letters. That's basically it:
+
+![Name Badge challenge table]({{ site.baseurl }}/img/posts/my-name-is-laura.png "Name Badge challenge table"){: .center-image .image-border}
+
+Of course, if your name has an "X" or punctuation marks in it, you get those for free. Similarly, if you have multiple occurrences of the same letter and there aren't enough different parkruns in the world starting with that letter, you'll get the extra occurrences for free.
+
+Unfortunately, the challenge currently only works if your name contains latin characters and not, say, for Japanese names written in Kanji, nor Russian names written in Cyrillic letters. If you're familiar with those languages and have an idea for a similar challenge that would work in non-latin languages, [let us know](https://github.com/fraz3alpha/running-challenges/issues) and we'll investigate whether it's possible to add.
+
+### Netherlands support
+
+[parkrun is coming to the Netherlands](https://twitter.com/parkrunnl) so we've started to add Netherlands support to Running Challenges. Most obviously, this includes the flag, but also things like translations of volunteer roles so that we can calculate how many times parkrunners have volunteered at Netherlands events. Of course, we can't properly test this until the events are live so there might be some updates to this later in the year...
+
+### Tons of runs challenge
+
+Following on from our recent update that collapses the Obsessives badges into a single challenge, the Single-ton and Double-ton badges are now also a single challenge. You can get one badge per parkrun event. For example, when this runner has completed 200 runs at Basingstoke, she'll have two 200 badges and zero 100 badges:
+
+![Tons of Runs challenge with two badges]({{ site.baseurl }}/img/posts/tonsofruns-1.png "Tons of Runs challenge with two badges"){: .center-image .image-border}
+
+When you have neither badge, you can see which parkrun you've run at most often:
+
+![Tons of Runs challenge with no badges]({{ site.baseurl }}/img/posts/tonsofruns-2.png "Tons of Runs challenge with no badges"){: .center-image .image-border}
+
+
+## Bug fixes
+
+If anything hasn't worked for you recently, we might have fixed it in this release, so see below.
+
+If something still doesn't work, [create a new issue](https://github.com/fraz3alpha/running-challenges/issues) for us (or just send an email/tweet if that's easier) with as much detail as you can including, if you can, a screenshot, the address of the page where it's not working, and your athlete ID so that we can test it ourselves.
+
+### Timezone fix for USA parkrunners
+
+If you are a parkrunner in the USA, you might have noticed that some of your stats are inconsistent (e.g. parkruns this year or most parkruns in a year), you've apparently run a total of 14 times in the month of December when you can count only 11, you've been incorrectly awarded a Christmas Day badge when you've never run on Christmas Day, or your first parkrun is reported as having happened on a Friday. Something was clearly a bit off, but we've finally fixed it.
+
+Thanks hugely to Tim Freer, not only for reporting this problem way back last year (and others who reported it even longer ago), but also for then investigating the code and sending us a full explanation of what he'd found and how to fix it.
+
+### Error for people who've run at a single parkrun location
+
+Several (many!) people have been in touch recently to let us know that they have been seeing this error when they open Running Challenges: `Error: TypeError: Cannot read property 'name' of undefined`
+
+Turns out, it was because we did something wrong when calculating the furthest parkrun location that you'd run if you had run at just a single parkrun location. Obviously, that should mean your furthest parkrun location _is_ that parkrun. And that's what it does mean..._now_. Sorry about that.
+
+### parkrun Explorer map was showing non-live parkrun events
+
+It doesn't now. parkruns that haven't started yet are no longer included in the total available parkruns.
+
+### Average parkrun event when no 5k parkruns are completed
+
+Previously, if you hadn't completed any 5k parkruns, you might get an arbitrary parkrun listed in your stats table as the nearest event to your average parkrun location. Now, it more accurately shows "None":
+
+![When you have no average parkrun]({{ site.baseurl }}/img/posts/no-average-parkrun.png "When you have no average parkrun"){: .center-image .image-border}
+
+This is the case when you have run no parkruns at all or only 2k junior parkruns. We currently don't properly support location-based stats or challenges for junior parkruns. It's something [we're looking at](https://github.com/fraz3alpha/running-challenges/issues/236) but it's not a simple update to implement.
+
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon. Typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
