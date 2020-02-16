@@ -66,4 +66,4 @@ web-ext lint
 web-ext build
 
 # Print the size of the built extension
-ls -l "${TMP_BUILD_DIR}/web-ext-artifacts/running_challenges-*.zip"
+ls -l web-ext-artifacts/running_challenges-*.zip
