@@ -271,8 +271,8 @@ function parse_tee_data_event_status(data, result) {
       content_table.find('tbody>tr').each(function(row_index) {
           var content_table_row_cell = $('td', this)
           // Only attempt to parse it if there are enough cells
-          if (content_table_row_cell !== undefined && content_table_row_cell.length >= 5) {
-            if (content_table_row_cell[0] !== undefined) {
+          if (content_table_row_cell[0] !== undefined) {
+            if (content_table_row_cell.length >= 5) {
                 var parkrun_info = {
                     parkrun_name: content_table_row_cell[0].innerText.trim(),
                     parkrun_event_director: content_table_row_cell[1].innerText.trim(),
@@ -285,9 +285,13 @@ function parse_tee_data_event_status(data, result) {
                 parseSuccess = true
                 // console.log(parkrun_info)
             }
+          } else {
+            console.log("Techincal Event Information table row is malformed: "+JSON.stringify(content_table_row_cell))
           }
       })
     })
+
+    console.log(Object.keys(data.event_status).length + " event statuses available")
 
   }
 
@@ -441,6 +445,7 @@ function update_cache_data(data_events, data_tee) {
   // If the technical event information has been obtained, then
   // lets parse that.
   var parseResult = parse_tee_data_event_status(data, data_tee)
+  console.log("Techincal Event Information parse result: "+parseResult)
   // If the page hasn't been fetched, or the file can't be parsed, parseResult will be false.
   // We should do something with that value, like mark that the page should be fetched again.
 
