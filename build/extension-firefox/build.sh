@@ -68,3 +68,6 @@ for i in patches/firefox/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < 
 cd ${TMP_BUILD_DIR}
 web-ext lint
 web-ext build
+
+# Print the size of the built extension
+ls -l web-ext-artifacts/running_challenges-*.zip

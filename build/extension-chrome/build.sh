@@ -64,3 +64,6 @@ cd ${TMP_BUILD_DIR}
 # zip -r extension.zip js/ html/ images/ css/ manifest.json
 web-ext lint
 web-ext build
+
+# Print the size of the built extension
+ls -l web-ext-artifacts/running_challenges-*.zip
