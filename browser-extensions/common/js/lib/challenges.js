@@ -1812,8 +1812,8 @@ function challenge_tourist(data, params) {
 // Just return true for now
 // Return true if the athlete id for this page match what is stored in the user data
 function is_our_page(data) {
-  // return has_user_data_athlete_id(data) && has_this_athlete_id(data) && get_user_data_athlete_id(data) == get_this_athlete_id(data)
-  return data.info.is_our_page
+  // return has_user_data_athlete_id(data) && has_this_athlete_id(data) && get_user_data_athlete_id(data) == get_this_athlete_id(data) 
+  return (data.info !== undefined && data.info.is_our_page)
 }
 
 function has_user_data(data) {
