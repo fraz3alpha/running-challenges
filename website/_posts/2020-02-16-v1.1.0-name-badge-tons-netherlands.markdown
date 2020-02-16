@@ -23,15 +23,15 @@ Run a parkrun for each letter in your name to complete the new Name Badge challe
 
 Of course, if your name has an "X" or punctuation marks in it, you get those for free. Similarly, if you have multiple occurrences of the same letter and there aren't enough different parkruns in the world starting with that letter, you'll get the extra occurrences for free.
 
-Unfortunately, the challenge currently only works if your name contains latin characters and not, say, for Japanese names written in Kanji, nor Russian names written in Cyrillic letters. If you're familiar with those languages and have an idea for a similar challenge that would work in non-latin languages, [let us know(https://github.com/fraz3alpha/running-challenges/issues) and we'll investigate whether it's possible to add.
+Unfortunately, the challenge currently only works if your name contains latin characters and not, say, for Japanese names written in Kanji, nor Russian names written in Cyrillic letters. If you're familiar with those languages and have an idea for a similar challenge that would work in non-latin languages, [let us know](https://github.com/fraz3alpha/running-challenges/issues) and we'll investigate whether it's possible to add.
 
 ### Netherlands support
 
-[parkrun is coming to the Netherlands](https://blog.parkrun.com/uk/2019/09/18/parkrun-netherlands-launching-in-2020/) so we've started to add Netherlands support to Running Challenges. Most obviously, this includes the flag, but also things like translations of volunteer roles so that we can calculate how many times parkrunners have volunteered at Netherlands events. Of course, we can't properly test this until the events are live so there might be some updates to this later in the year...
+[parkrun is coming to the Netherlands](https://twitter.com/parkrunnl) so we've started to add Netherlands support to Running Challenges. Most obviously, this includes the flag, but also things like translations of volunteer roles so that we can calculate how many times parkrunners have volunteered at Netherlands events. Of course, we can't properly test this until the events are live so there might be some updates to this later in the year...
 
 ### Tons of runs challenge
 
-Following on from our recent update that collapses the Obsessives badges into a single challenge, the Single-ton and Double-ton badges are now also a single challenge. You can get one badge per parkrun event (when this runner has completed 200 runs at Basingstoke, she'll have two 200 badges and zero 100 badges):
+Following on from our recent update that collapses the Obsessives badges into a single challenge, the Single-ton and Double-ton badges are now also a single challenge. You can get one badge per parkrun event. For example, when this runner has completed 200 runs at Basingstoke, she'll have two 200 badges and zero 100 badges:
 
 ![Tons of Runs challenge with two badges]({{ site.baseurl }}/img/posts/tonsofruns-1.png "Tons of Runs challenge with two badges"){: .center-image .image-border}
 
@@ -48,7 +48,7 @@ If something still doesn't work, [create a new issue](https://github.com/fraz3al
 
 ### Timezone fix for USA parkrunners
 
-If you are a parkrunner in the USA, you might have noticed that some of your stats are a bit off or inconsistent (e.g. parkruns this year or most parkruns in a year), you've apparently run 14 times in Decembers when you can count only 11, you've been incorrectly awarded a Christmas Day badge when you've never run on Christmas Day, or your first parkrun is reported as having happened on a Friday. Something was clearly a bit off, but we've finally fixed it.
+If you are a parkrunner in the USA, you might have noticed that some of your stats are inconsistent (e.g. parkruns this year or most parkruns in a year), you've apparently run a total of 14 times in the month of December when you can count only 11, you've been incorrectly awarded a Christmas Day badge when you've never run on Christmas Day, or your first parkrun is reported as having happened on a Friday. Something was clearly a bit off, but we've finally fixed it.
 
 Thanks hugely to Tim Freer, not only for reporting this problem way back last year (and others who reported it even longer ago), but also for then investigating the code and sending us a full explanation of what he'd found and how to fix it.
 
@@ -56,11 +56,11 @@ Thanks hugely to Tim Freer, not only for reporting this problem way back last ye
 
 Several (many!) people have been in touch recently to let us know that they have been seeing this error when they open Running Challenges: `Error: TypeError: Cannot read property 'name' of undefined`
 
-Turns out, it was because we did something wrong when calculating the furthest parkrun location that you'd run when you had run at just a single parkrun location. Obviously, that should mean your furthest parkrun location _is_ that parkrun. And that's what it does mean..._now_. Sorry about that.
+Turns out, it was because we did something wrong when calculating the furthest parkrun location that you'd run if you had run at just a single parkrun location. Obviously, that should mean your furthest parkrun location _is_ that parkrun. And that's what it does mean..._now_. Sorry about that.
 
 ### parkrun Explorer map was showing non-live parkrun events
 
-It doesn't now. For example, countries like Iceland that used to have a parkrun but no longer do, are now hidden on the map.
+It doesn't now. parkruns that haven't started yet are no longer included in the total available parkruns.
 
 ### Average parkrun event when no 5k parkruns are completed
 
