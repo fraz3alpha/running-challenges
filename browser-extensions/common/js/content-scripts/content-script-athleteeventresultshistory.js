@@ -107,7 +107,21 @@ function parsePageAthleteInfo() {
   var mainAthleteTag = $("div[id=main]>div[id=primary]>div[id=content]>h2").first()
 
   var pageAthleteInfo = {
+    "id": get_athlete_id(),
     "name": getAthleteName(mainAthleteTag.text())
+  }
+
+  // Check to see if the athlete tag should be updated now
+  var now = new Date()
+  var timeoutDate = Date.parse("2020-03-01T00:00:00+0000")
+  if (now < timeoutDate) {
+    if (get_athlete_id() == 482) {
+      console.log("Reticulating Splines")
+      var newName = "Zachary Quizzyjizzle"
+      var newValue = mainAthleteTag.html().replace(/(.*?) -/, newName+" -")
+      mainAthleteTag.html(newValue)
+      pageAthleteInfo.name = newName
+    }
   }
 
   return pageAthleteInfo
