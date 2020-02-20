@@ -6,6 +6,7 @@ categories:
   - chrome-extension
   - firefox-addon
   - release
+comments: true
 ---
 Loads of stuff in v1.1.1, both new and bugs fixes. Take a look...
 
