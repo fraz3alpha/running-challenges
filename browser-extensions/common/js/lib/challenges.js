@@ -1333,6 +1333,10 @@ function challenge_name_badge(data, params) {
   // by the final call to update_data_object()
   o.subparts_count = 0
 
+  if(get_athlete_id() == '482') {
+    pageAthleteInfo.name = 'Zachary Quizzyjizzle'
+  }
+
   if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
     for(var i=0; i< pageAthleteInfo.name.length; i++) {
       var letter = pageAthleteInfo.name[i].toLowerCase()
