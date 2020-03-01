@@ -237,6 +237,11 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
           }
         ]
       }))
+    challenge_data.push(challenge_home_runner(data,
+      {
+        "shortname": "home-runner",
+        "name": "Home Runner"
+        "help": "Run regularly at your Home parkrun.",}))
 
   }
 
@@ -2670,3 +2675,104 @@ function challenge_by_region(data, params) {
     // Return an object representing this challenge
     return update_data_object(o)
 }
+
+function challenge_home_runner(data,params) {
+  // challenge_data.push(challenge_home_runner(data, {
+  //   "shortname": "home-runner",
+  //   "name": "Home Runner"
+  //   "help": "Run regularly at your Home parkrun.",
+  // }))
+  
+  // This challenge is designed to encourage runners to commit to their home parkruns
+  
+  // Find the data we are interested in
+  parkrun_results = data.parkrun_results
+  user_data = data.user_data
+  home_parkrun = undefined
+  if (user_data) {
+    if (is_our_page(data)) {
+      home_parkrun = user_data.home_parkrun_info
+    } else {
+      // This will get the most attented parkrun for when a different page is being viewed
+      parkruns_completed = {}
+      max_count = 0
+      max_parkrun = undefined
+      parkrun_results.forEach(function (parkrun_event) {
+        if (!(parkrun_event.name in parkruns_completed)) {
+          parkruns_completed[parkrun_event.name] = {
+            "name": parkrun_event.eventlink,
+            "count": 0,
+            "completed": false,
+            "completed_at": null
+          }
+        }
+        parkruns_completed[parkrun_event.name].count += 1
+
+        // Identify which parkrun event is most attended
+        if (parkruns_completed[parkrun_event.name].count > max_count) {
+          max_parkrun = Object.create(parkruns_completed[parkrun_event.name])
+          max_count = parkruns_completed[parkrun_event.name].count
+        }
+      })
+      
+      home_parkrun = max_parkrun
+    }
+  }
+  
+  var o = create_data_object(params, "runner")
+  // No map for challenge
+  o.has_map = false
+  
+  // Setting out variables
+  var HS = 0
+  var AS = 0
+  var PHS = 0
+  var PAS = 0
+  var i = 0
+
+  // First checks whether most recent run was at home
+  if (parkrun_results[i].parkrun_event.name == home_parkrun.name) {
+    while (parkrun_results[i].parkrun_event.name == home_parkrun.name) {
+      HS += 1;
+      i += 1;
+    }
+    while (parkrun_results[i].parkrun_event.name != home_parkrun.name) {
+      PAS += 1;
+      i += 1;
+    }
+    while (parkrun_results[i].parkrun_event.name == home_parkrun.name) {
+      PHS += 1;
+    i += 1;
+    }
+  } else {
+    while (parkrun_results[i].parkrun_event.name != home_parkrun.name) {
+      AS += 1
+      i += 1
+    }
+    while (parkrun_results[i].parkrun_event.name == home_parkrun.name) {
+      PHS += 1
+      i += 1
+    }
+    while (parkrun_results[i].parkrun_event.name != home_parkrun.name) {
+      PAS += 1
+    i += 1
+    }
+  }
+  
+  // Tests for if the challenge is complete
+  if (PHS > PAS) {
+      if (PHS > AS) {
+        o.complete = true
+      } else {
+        o.complete = false
+      }
+  } else {
+      if (HS > PAS) {
+        o.complete = true
+      } else {
+        o.complete = false
+      }
+  }
+}
+  
+  

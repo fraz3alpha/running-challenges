@@ -85,6 +85,10 @@ runner:
   - shortname: obsessive-gold
     name: Gold Level Obsessive
     description:  Run 50+ parkruns in one calendar year.
+   
+  - shortname: home-runner
+    name: Home Runner
+    description: Run regularly at your home parkrun.
 
 volunteer:
 
