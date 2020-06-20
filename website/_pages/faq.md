@@ -27,12 +27,7 @@ Running Challenges is currently available only for Chrome or Firefox web browser
 The Running Challenges extension works on several parkrun country websites, not just Canada (`.ca`). The Chrome Web Store just chooses (for some reason!) to display one of the web addresses. If you want to know what the Running Challenges extension does with your data, read on...
 
 **What does the Running Challenges extension do with my data?**
-When you visit your parkrun results page, Running Challenges looks at your results
-on the parkrun page you are viewing and adds your badges and progress tables to
-the top of the page.
-All your data is kept on the parkrun website and in your web browser (much the
-same way as it is when you visit the webpage without the extension - it's just
-more fun this way!), no data is transmitted or stored anywhere else.
+Take a look at our [privacy page](/privacy).
 
 **Can I use the Running Challenges badge images for something else?**
 Take a look at our [licence page](/licence) for answers to common questions about how you can use the Running Challenges badge images and other parts of the Running Challenges extension.

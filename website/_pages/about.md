@@ -24,6 +24,10 @@ for Android. It is as easy as clicking 'install' in either the Chrome or Firefox
 webstore, but if you need more detailed instructions see the [getting started page](/getstarted)
 for more help.
 
+## Privacy
+
+Take a look at our [privacy page](/privacy).
+
 ## Ethos
 
 We want everyone to have a bit of fun with this, and hopefully it encourages a few
