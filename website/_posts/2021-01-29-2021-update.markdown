@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "2021 Update"
+date:   2021-01-29 13:00:00 +0000
+categories:
+  - news
+---
+
+It's 2021, there are still a very limited number of parkrun events happening around the world - so what's happening with the Running Challenges extension?
+
+## Hiatus
+
+The last release of the extension was in February 2020, and a lot has happened since then. Most notably parkrun stopped worldwide in March, and - to be brutally honest - our enthusiasm to do work on the Running Challenges extension dropped dramatically, and we essentially shelved it while we worked out how to get our lives sorted.
+
+## Issues that cropped up
+
+The world of software moves fast, and web browsers are no exception these days - especially when it comes to security. Writing a piece of software so heavily dependent on the integration with another leaves you open to breaking changes that mean things stop working unless you keep up. As a result, the following things have happened while we weren't looking:
+
+- Firefox on Android dropped support for the vast majority of extensions submitted to the the Add-Ons store - only a few highly vetted ones are now available as the powers-that-be take a harder line on ensuring that extensions meet security standards. This is time consuming and expensive work - but lots of developers are in the same boat as us, namely that their extension is no longer available, and there is nothing we can do about it. [Github issue 276](https://github.com/fraz3alpha/running-challenges/issues/276)
+
+- Chrome changed the security policy that broke fetching the volunteer data, so any users of the non-parkrun.org.uk site found it saying: `Error: [object Object]`. [Github issue 277](https://github.com/fraz3alpha/running-challenges/issues/277)
+
+## Changes at home
+
+The number of us here at Team-TC Towers has recently increased from 2 to 3, but unfortunately the new-hire isn't so handy with Javascript - they are currently only proficient at filling a nappy and providing a background of screams and wails.
+We'll have to teach them the ropes, but this will take a lot of our time, so there won't be any updates to the extension for a while.
