@@ -541,7 +541,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
     // domain into our CSP, which is a bit annoying, but would maybe
     // turn out to be more efficient for the user in a country far away
     // from the UK (depending on where parkrun host these servers)
-    url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+get_athlete_id(),
+    url: location.protocol + '//' + location.host + '/results/athleteresultshistory/?athleteNumber='+get_athlete_id(),
     dataType: 'html'})
 }).then((results) => {
   set_progress_message("Loaded volunteer data")
