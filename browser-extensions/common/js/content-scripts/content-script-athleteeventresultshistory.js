@@ -38,7 +38,7 @@ function parse_volunteer_table(result) {
      // "Volunteer Summary"
      var results_table = $(this)
      parent = $(this).parent()
-     $("h1:contains('Volunteer Summary')", parent).each(function (index) {
+     $("h1#volunteer-summary", parent).each(function (index) {
          completed_volunteer_roles = {}
          $("tbody>tr", results_table).each(function (role_index) {
              table_cells = $("td", this)
