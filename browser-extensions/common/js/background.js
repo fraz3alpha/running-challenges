@@ -20,7 +20,6 @@ browser.browserAction.onClicked.addListener(function(tab) {
             console.log("Home parkrun info: "+JSON.stringify(home_parkrun_info))
 
             // Previously, I think we must have had local_url come back, but now it doesn't by default
-            delete home_parkrun_info.local_url
             if ("local_url" in home_parkrun_info) {
               local_url = home_parkrun_info.local_url
               console.log("Overriding local_url for this to: " + local_url)
@@ -39,7 +38,11 @@ browser.browserAction.onClicked.addListener(function(tab) {
                     var country_info = cache.data.countries[home_parkrun_info["country_name"]]
                     if ("url" in country_info) {
                       local_url = country_info["url"]
-                      // TODO: Save this back the user's saved data so that it is there for next time
+                      // Persist this data back into the user's saved information
+                      home_parkrun_info["local_url"] = local_url
+                      browser.storage.local.set({"home_parkrun_info": home_parkrun_info}).then(() => {
+                        console.log("Saved updated user data to include local_url")
+                      })
                     }
                 }
                 }
