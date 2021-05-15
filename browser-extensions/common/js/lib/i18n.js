@@ -85,7 +85,6 @@ var domains = {
         // http://www.parkrun.pl/rezultaty/athleteresultshistory/?athleteNumber=546975
         // http://www.parkrun.pl/rezultaty/athleteeventresultshistory/?athleteNumber=546975&eventNumber=0
         // https://www.parkrun.pl/rezultaty/athleteeventresultshistory/?athleteNumber=3859211&eventNumber=0
-        "url_athleteeventresultshistory": "rezultaty/athleteeventresultshistory/",
         "table_all_results": "Wszystkie rezultaty",
         "link_view_stats_for_all_parkruns": "Zobacz statystyki uczestnika ze wszystkich biegów parkrun",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Zobacz wyniki tego zawodnika ze wszystkich biegów",
