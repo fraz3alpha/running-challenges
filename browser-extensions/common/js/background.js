@@ -11,12 +11,44 @@ browser.browserAction.onClicked.addListener(function(tab) {
         if (items.athlete_number == '') {
             browser.runtime.openOptionsPage();
         } else {
-            var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
-            // Don't redirect Malaysian users as their website doesn't work
-            if ("local_url" in items.home_parkrun_info && items.home_parkrun_info.local_url.indexOf('parkrun.my') === -1) {
-              var local_url = items.home_parkrun_info.local_url
-              results_url = local_url+"/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            // If they have set it up, then redirect to their home parkrun's site,
+            // else default to the UK site.
+
+            var home_parkrun_info = items.home_parkrun_info
+
+            var local_url = "parkrun.org.uk"
+            console.log("Home parkrun info: "+JSON.stringify(home_parkrun_info))
+
+            // Previously, I think we must have had local_url come back, but now it doesn't by default
+            delete home_parkrun_info.local_url
+            if ("local_url" in home_parkrun_info) {
+              local_url = home_parkrun_info.local_url
+              console.log("Overriding local_url for this to: " + local_url)
+            } else {
+              // So, lets try and work out what the local URL is, if possible
+              console.log("unknown local url")
+              if ("country_name" in home_parkrun_info) {
+
+                // This will always be undefined before the extension is loaded the first time,
+                // so it'll always send people to the wrong site if the we need to take this code
+                // path when the browser is first loaded.
+                if (cache.data !== undefined) {
+
+                  // This mirrors the way we try to do it in the options page
+                  if ("country_name" in home_parkrun_info) {
+                    var country_info = cache.data.countries[home_parkrun_info["country_name"]]
+                    if ("url" in country_info) {
+                      local_url = country_info["url"]
+                      // TODO: Save this back the user's saved data so that it is there for next time
+                    }
+                }
+                }
+              }
+              // else we'll end up with the UK site
             }
+
+            console.log("local_url for this user is: " + local_url)
+            results_url = "https://" + local_url + "/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             browser.tabs.create({ url: results_url });
         }
 
