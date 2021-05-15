@@ -14,7 +14,7 @@ function get_athlete_id() {
 
 var athlete_id = get_athlete_id()
 if (athlete_id != null) {
-    url = location.protocol + '//' + location.host + "/" + get_localised_value('url_athleteeventresultshistory')+'?athleteNumber='+athlete_id+'&eventNumber=0'
+    url = 'https://' + location.host + "/" + get_localised_value('url_athleteeventresultshistory')+'?athleteNumber='+athlete_id+'&eventNumber=0'
 
     if (url != null) {
         var challenge_link = $("<a/>").attr("href", url)
