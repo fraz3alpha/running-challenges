@@ -137,7 +137,6 @@
   ],
   "permissions": [
     "storage",
-    "https://www.parkrun.org.uk/",
     "https://wiki.parkrun.com/"
   ],
   "options_ui": {
