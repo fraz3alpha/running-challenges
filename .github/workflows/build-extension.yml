@@ -97,11 +97,9 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            console.log(context)
             console.log(context.ref)
-            console.log(github.ref)
             // This script will create a release, and upload our files and release notes to it
-            if (!"${{ github.ref }}".startsWith('refs/tags/v')) {
+            if (!"${{ context.ref }}".startsWith('refs/tags/v')) {
               return
             }
             // Find the version tag
@@ -115,8 +113,8 @@ jobs:
 
             // Create a release
             github.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner: context.repository.owner,
+              repo: context.repository.repo,
               tag_name: version_tag,
               name: <name of the release>,
               body: <text for the release>,
@@ -126,8 +124,8 @@ jobs:
 
             // Upload all the artifacts to it
             github.repos.uploadReleaseAsset({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner: context.repository.owner,
+              repo: context.repository.repo,
               release_id: ...
             })
             */
