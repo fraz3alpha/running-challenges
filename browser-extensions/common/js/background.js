@@ -11,12 +11,47 @@ browser.browserAction.onClicked.addListener(function(tab) {
         if (items.athlete_number == '') {
             browser.runtime.openOptionsPage();
         } else {
-            var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
-            // Don't redirect Malaysian users as their website doesn't work
-            if ("local_url" in items.home_parkrun_info && items.home_parkrun_info.local_url.indexOf('parkrun.my') === -1) {
-              var local_url = items.home_parkrun_info.local_url
-              results_url = local_url+"/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            // If they have set it up, then redirect to their home parkrun's site,
+            // else default to the UK site.
+
+            var home_parkrun_info = items.home_parkrun_info
+
+            var local_url = "parkrun.org.uk"
+            console.log("Home parkrun info: "+JSON.stringify(home_parkrun_info))
+
+            // Previously, I think we must have had local_url come back, but now it doesn't by default
+            if ("local_url" in home_parkrun_info) {
+              local_url = home_parkrun_info.local_url
+              console.log("Overriding local_url for this to: " + local_url)
+            } else {
+              // So, lets try and work out what the local URL is, if possible
+              console.log("unknown local url")
+              if ("country_name" in home_parkrun_info) {
+
+                // This will always be undefined before the extension is loaded the first time,
+                // so it'll always send people to the wrong site if the we need to take this code
+                // path when the browser is first loaded.
+                if (cache.data !== undefined) {
+
+                  // This mirrors the way we try to do it in the options page
+                  if ("country_name" in home_parkrun_info) {
+                    var country_info = cache.data.countries[home_parkrun_info["country_name"]]
+                    if ("url" in country_info) {
+                      local_url = country_info["url"]
+                      // Persist this data back into the user's saved information
+                      home_parkrun_info["local_url"] = local_url
+                      browser.storage.local.set({"home_parkrun_info": home_parkrun_info}).then(() => {
+                        console.log("Saved updated user data to include local_url")
+                      })
+                    }
+                }
+                }
+              }
+              // else we'll end up with the UK site
             }
+
+            console.log("local_url for this user is: " + local_url)
+            results_url = "https://" + local_url + "/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             browser.tabs.create({ url: results_url });
         }
 
@@ -260,16 +295,42 @@ function parse_tee_data_event_status(data, result) {
     // Reset the event status data to a blank map
     data.event_status = {}
 
-    var ownerDocument = document.implementation.createHTMLDocument('virtual');
+    // console.log("Attempting to load the Technical Event Information into a virtual DOM")
+    // var ownerDocument = document.implementation.createHTMLDocument('virtual');
     // Load the results into a virtual document, so that it doesn't attempt to load
     // inline scripts etc...
     // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
     // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
-    $(result, ownerDocument).find('div[id=mw-content-text]>table:first').each(function(table_index) {
-      var content_table = $(this)
 
-      content_table.find('tbody>tr').each(function(row_index) {
-          var content_table_row_cell = $('td', this)
+    // This ends up with a shed load of errors about:
+    //   Refused to apply inline style because it violates the following Content Security Policy directive: 
+    //   "default-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-0EZqoz+oBhx7gF4nvY2bSqoGyy4zLjNF+SDQXGp/ZrY='), 
+    //   or a nonce ('nonce-...') is required to enable inline execution. Note also that 'style-src' was not explicitly set, 
+    //  so 'default-src' is used as a fallback.
+    // This seems to be because loading the document inlines the styles, which I'd quite happily do away with
+    // if only I knew how to.
+
+    // I have abandoned using the HTML parser directly as it brings too much baggage, instead
+    // we will parse the wiki page as an XML document until we get to the row we are interested
+    // in, and then only parse that as a HTML document - thus skipping all the scripts and other
+    // junk the page loads in elsewhere and it will be as clean as possible.
+    // This does mean we have to do a few odd things to make a valid HTML doc, but it does mean it
+    // throws no security errors anymore, and we still get the data we want.
+
+    console.log("Attempting to load the Technical Event Information into an XML document")
+    var xmlDoc = $.parseXML(result)
+
+    $(xmlDoc).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+      var content_table = $(this)
+      // console.log(content_table)
+
+      content_table.find('tr').each(function(row_index) {
+          // Reconstitute a valid document with a top level tag for the HTML parser
+          var row_html_content = "<tr>"+$(this).html()+"</tr>"
+          // Parse it into a JQuery object
+          var html_row = $(row_html_content)
+          // Find the td elements
+          var content_table_row_cell = $('td', html_row)
           // Only attempt to parse it if there are enough cells
           if (content_table_row_cell[0] !== undefined) {
             if (content_table_row_cell.length >= 5) {
@@ -286,10 +347,15 @@ function parse_tee_data_event_status(data, result) {
                 // console.log(parkrun_info)
             }
           } else {
-            console.log("Techincal Event Information table row is malformed: "+JSON.stringify(content_table_row_cell))
+            // Don't bother printing that the top row is malformed, it's probably the header,
+            // we'll just flag up if one of the other rows is weird.
+            if (row_index != 0) {
+              console.log("Techincal Event Information table row is malformed on row "+row_index+": "+JSON.stringify(content_table_row_cell))
+            }
           }
       })
     })
+    console.log("Technical Event Information processing complete")
 
     console.log(Object.keys(data.event_status).length + " event statuses available")
 

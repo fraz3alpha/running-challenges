@@ -26,7 +26,7 @@
           "*://www.parkrun.co.za/results/athleteeventresultshistory/*",
           "*://www.parkrun.us/results/athleteeventresultshistory/*",
           "*://www.parkrun.sg/results/athleteeventresultshistory/*",
-          "*://www.parkrun.pl/rezultaty/athleteeventresultshistory/*",
+          "*://www.parkrun.pl/results/athleteeventresultshistory/*",
           "*://www.parkrun.it/results/athleteeventresultshistory/*",
           "*://www.parkrun.dk/results/athleteeventresultshistory/*",
           "*://www.parkrun.se/results/athleteeventresultshistory/*",
@@ -74,7 +74,7 @@
         "*://www.parkrun.co.za/results/athleteresultshistory/*",
         "*://www.parkrun.us/results/athleteresultshistory/*",
         "*://www.parkrun.sg/results/athleteresultshistory/*",
-        "*://www.parkrun.pl/rezultaty/athleteresultshistory/*",
+        "*://www.parkrun.pl/results/athleteresultshistory/*",
         "*://www.parkrun.it/results/athleteresultshistory/*",
         "*://www.parkrun.dk/results/athleteresultshistory/*",
         "*://www.parkrun.se/results/athleteresultshistory/*",
@@ -137,7 +137,6 @@
   ],
   "permissions": [
     "storage",
-    "https://www.parkrun.org.uk/",
     "https://wiki.parkrun.com/"
   ],
   "options_ui": {

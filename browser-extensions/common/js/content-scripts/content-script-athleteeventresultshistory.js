@@ -38,7 +38,7 @@ function parse_volunteer_table(result) {
      // "Volunteer Summary"
      var results_table = $(this)
      parent = $(this).parent()
-     $("h1:contains('Volunteer Summary')", parent).each(function (index) {
+     $("h1#volunteer-summary", parent).each(function (index) {
          completed_volunteer_roles = {}
          $("tbody>tr", results_table).each(function (role_index) {
              table_cells = $("td", this)
@@ -541,7 +541,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
     // domain into our CSP, which is a bit annoying, but would maybe
     // turn out to be more efficient for the user in a country far away
     // from the UK (depending on where parkrun host these servers)
-    url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+get_athlete_id(),
+    url: 'https://' + location.host + '/results/athleteresultshistory/?athleteNumber='+get_athlete_id(),
     dataType: 'html'})
 }).then((results) => {
   set_progress_message("Loaded volunteer data")
