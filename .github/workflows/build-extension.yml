@@ -82,7 +82,7 @@ jobs:
     needs: 
       - build-extension
       - test-javascript-libraries
-    # if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - name: Download all built extension packages
@@ -99,7 +99,7 @@ jobs:
           script: |
             console.log(context.ref)
             // This script will create a release, and upload our files and release notes to it
-            if (!"${{ context.ref }}".startsWith('refs/tags/v')) {
+            if (!context.ref.startsWith('refs/tags/v')) {
               return
             }
             // Find the version tag
@@ -129,7 +129,6 @@ jobs:
               release_id: ...
             })
             */
-        # if: startsWith(github.ref, 'refs/tags/v')
  
 
       # - id: get-branch-version-tag
@@ -144,12 +143,10 @@ jobs:
       #   if: startsWith(github.ref, 'refs/tags/v')
 
       - run: echo "branch version tag is ${{steps.get-branch-version-tag.outputs.version_tag}}"
-        # if: startsWith(github.ref, 'refs/tags/v')
 
       # We might be able to use the github script action instead of this to script what we need to do in one go
       - name: Create release
         uses: softprops/action-gh-release@v1 # Read the docs here: https://github.com/softprops/action-gh-release
-        if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: Running Challenges ${{steps.get-branch-version-tag.outputs.version_tag}}
           files: "extension-binaries/*/running_challenges*.zip"
