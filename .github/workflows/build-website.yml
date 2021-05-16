@@ -53,4 +53,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           jekyll_src: 'website'
           jekyll_env: production
-          build_only: true # Delegate pushing of the built site the subsquent step so that we can direct which repo it goes to
+          # For now, lets make it push to the main repository, and see if that works,
+          # we can dev dev builds working later
+          target_branch: gh-pages
+          # build_only: true # Delegate pushing of the built site the subsquent step so that we can direct which repo it goes to
