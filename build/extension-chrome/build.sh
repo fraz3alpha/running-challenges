@@ -65,5 +65,8 @@ cd ${TMP_BUILD_DIR}
 web-ext lint
 web-ext build
 
+# Rename built package with the browser in the name
+find web-ext-artifacts -type f -name "running_challenges-*.zip" -exec  bash -c 'x="{}"; mv $x "`echo $x | sed s/running_challenges/running_challenges-chrome/`"' \;
+
 # Print the size of the built extension
 ls -l web-ext-artifacts/running_challenges-*.zip
