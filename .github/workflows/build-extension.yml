@@ -103,7 +103,7 @@ jobs:
               return
             }
             // Find the version tag
-            var version_tag = github.ref.replace("refs/tags/", "")
+            var version_tag = context.ref.replace("refs/tags/", "")
             console.log(version_tag)
             // Store it in the step output variables
             core.setOutput('version_tag', version_tag)
@@ -130,18 +130,6 @@ jobs:
             })
             */
  
-
-      # - id: get-branch-version-tag
-      #   uses: actions/github-script@v4
-      #   with:
-      #     script: |
-      #       var version_tag = ''
-      #       if (github.ref.startsWith('refs/tags/v')){
-      #         version_tag = github.ref.split('/')[2]
-      #       }
-      #       core.setOutput('version_tag', version_tag)
-      #   if: startsWith(github.ref, 'refs/tags/v')
-
       - run: echo "branch version tag is ${{steps.get-branch-version-tag.outputs.version_tag}}"
 
       # We might be able to use the github script action instead of this to script what we need to do in one go
