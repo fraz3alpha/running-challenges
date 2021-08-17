@@ -1,7 +1,7 @@
 
 # based on https://jekyllrb.com/docs/continuous-integration/travis-ci/
 language: ruby
-rvm: 2.3.3
+rvm: 2.6.3
 
 env:
   - EXTENSION_BUILD_ID=$TRAVIS_BUILD_NUMBER EXTENSION_BUILD_VERSION=$TRAVIS_TAG
@@ -11,7 +11,15 @@ before_script:
  - chmod +x ./build/website/build-staging.sh
  - chmod +x ./build/extension-chrome/build.sh
  - chmod +x ./build/extension-firefox/build.sh
+ - nvm install 10
  - npm install -g web-ext
+ - node --version
+ - bash -c "cd ./browser-extensions/common/js && npm install"
+#  - gem uninstall -i $(rvm gemdir)@global -ax bundler || true
+#  - gem install bundler -v 1.16.1
+
+before_install:
+  - gem install bundler
 
 script:
    # Only build the staging website if the github token is available, which means
@@ -20,6 +28,11 @@ script:
    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./build/website/build.sh; fi'
    - './build/extension-chrome/build.sh'
    - './build/extension-firefox/build.sh'
+   # Moving the test until after the build to start with, so that I can defer having to work out how
+   # not to bundle the coverage data into the extension zip files.
+   # Perhaps we should actually be testing the bundled code, rather than that in the repo, not sure.
+   # Run the tests against the Javascript libraries we have written
+   - bash -c "cd ./browser-extensions/common/js && npm run test-with-coverage"
 
 # branch whitelist.
 # For GitHub Pages - if we push code to master the built code goes to gh-pages
@@ -52,3 +65,10 @@ deploy:
     repo: fraz3alpha/running-challenges
 
 sudo: false # route your build to the container-based infrastructure for a faster build
+
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+
+cache: bundler # caching bundler gem packages will speed up build

@@ -11,12 +11,47 @@ browser.browserAction.onClicked.addListener(function(tab) {
         if (items.athlete_number == '') {
             browser.runtime.openOptionsPage();
         } else {
-            var results_url = "http://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+items.athlete_number+"&eventNumber=0"
-            // Don't redirect Malaysian users as their website doesn't work
-            if ("local_url" in items.home_parkrun_info && items.home_parkrun_info.local_url.indexOf('parkrun.my') === -1) {
-              var local_url = items.home_parkrun_info.local_url
-              results_url = local_url+"/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            // If they have set it up, then redirect to their home parkrun's site,
+            // else default to the UK site.
+
+            var home_parkrun_info = items.home_parkrun_info
+
+            var local_url = "parkrun.org.uk"
+            console.log("Home parkrun info: "+JSON.stringify(home_parkrun_info))
+
+            // Previously, I think we must have had local_url come back, but now it doesn't by default
+            if ("local_url" in home_parkrun_info) {
+              local_url = home_parkrun_info.local_url
+              console.log("Overriding local_url for this to: " + local_url)
+            } else {
+              // So, lets try and work out what the local URL is, if possible
+              console.log("unknown local url")
+              if ("country_name" in home_parkrun_info) {
+
+                // This will always be undefined before the extension is loaded the first time,
+                // so it'll always send people to the wrong site if the we need to take this code
+                // path when the browser is first loaded.
+                if (cache.data !== undefined) {
+
+                  // This mirrors the way we try to do it in the options page
+                  if ("country_name" in home_parkrun_info) {
+                    var country_info = cache.data.countries[home_parkrun_info["country_name"]]
+                    if ("url" in country_info) {
+                      local_url = country_info["url"]
+                      // Persist this data back into the user's saved information
+                      home_parkrun_info["local_url"] = local_url
+                      browser.storage.local.set({"home_parkrun_info": home_parkrun_info}).then(() => {
+                        console.log("Saved updated user data to include local_url")
+                      })
+                    }
+                }
+                }
+              }
+              // else we'll end up with the UK site
             }
+
+            console.log("local_url for this user is: " + local_url)
+            results_url = "https://" + local_url + "/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
             browser.tabs.create({ url: results_url });
         }
 
@@ -28,14 +63,15 @@ browser.browserAction.onClicked.addListener(function(tab) {
 // configured age
 
 var cache = {
-    'geo': {
+    // The new data source, live since ~ July 2019
+    'events': {
         'raw_data': undefined,
         'updated_at': undefined,
         'last_update_attempt': undefined,
         'updating': false,
         'max_age': 3 * 24 * 60 * 60 * 1000,
-        'url': "https://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml",
-        'datatype': 'xml',
+        'url': "https://images.parkrun.com/events.json",
+        'datatype': 'json',
         'enabled': true,
         'timeout': 5000
     },
@@ -54,6 +90,45 @@ var cache = {
     'updated_at': undefined
 }
 
+function getCountryNameFromId(id) {
+  // Countries that no longer exists in the data are 
+  // prefixed "0_" and arbitrarily assigned numbers
+  // Sub-countries are assigned a number with a prefix of their main country site code.
+  var countryMap = {
+    "3": "Australia",
+    "14": "Canada",
+    "23": "Denmark",
+    "30": "Finland",
+    "31": "France",
+    "32": "Germany",
+    "0_2": "Iceland",
+    "42": "Ireland",
+    "44": "Italy",
+    "46": "Japan",
+    "57": "Malaysia",
+    "64": "Netherlands",
+    "65": "New Zealand",
+    "85_2": "Namibia",
+    "67": "Norway",
+    "74": "Poland",
+    "79": "Russia",
+    "82": "Singapore",
+    "85": "South Africa",
+    "85_1": "Swaziland",
+    "88": "Sweden",
+    "97": "UK",
+    "98": "USA",
+    "0_1": "Zimbabwe",
+  }
+
+  var countryName = "unknown"
+  if (id in countryMap) {
+    countryName = countryMap[id]
+  }
+  // console.log("Returning: "+countryName+" for id="+id)
+  return countryName
+}
+
 function get_cache_summary() {
 
   var summary = {
@@ -62,8 +137,8 @@ function get_cache_summary() {
     'countries': '<missing>',
     'event_status': '<missing>',
     'data': {
-      'geo': {
-        'updated_at': cache.geo.updated_at
+      'events': {
+        'updated_at': cache.events.updated_at
       },
       'technical_event_information': {
         'updated_at': cache.technical_event_information.updated_at
@@ -95,7 +170,7 @@ function get_cache_summary() {
 }
 
 function clear_cache() {
-  clear_cache_by_name("geo")
+  clear_cache_by_name("events")
   clear_cache_by_name("technical_event_information")
 }
 
@@ -108,241 +183,185 @@ function clear_cache_by_name(name) {
   }
 }
 
-function traverse_geo_data(geo_data, region_name, depth=0) {
-
-    // console.log('traverse_geo_data('+region_name+')')
-
-    var regions = geo_data.regions
-    var events = geo_data.events
-
-    $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-        traverse_geo_data(geo_data, child_region_name)
-    })
-
-    // REGIONS
-    // Add all of our child region names and ids to the recursive list first
-    $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-        regions[region_name].child_region_recursive_names.push(child_region_name)
-        regions[region_name].child_region_recursive_ids.push(regions[child_region_name].id)
-    })
-    // Now add all the ones from each of our children
-    $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-        $.each(regions[child_region_name].child_region_recursive_names, function(index, rec_child_region_name) {
-            regions[region_name].child_region_recursive_names.push(rec_child_region_name)
-            regions[region_name].child_region_recursive_ids.push(regions[rec_child_region_name].id)
-        })
-    })
-
-    // EVENTS
-    // Add all of our child event names and ids to the recursive list first
-    $.each(regions[region_name].child_event_names, function(index, child_event_name) {
-        regions[region_name].child_event_recursive_names.push(child_event_name)
-        regions[region_name].child_event_recursive_ids.push(events[child_event_name].id)
-    })
-    // Now add all the ones from each of our children
-    $.each(regions[region_name].child_region_names, function(index, child_region_name) {
-        $.each(regions[child_region_name].child_event_recursive_names, function(index, rec_child_event_name) {
-            regions[region_name].child_event_recursive_names.push(rec_child_event_name)
-            regions[region_name].child_event_recursive_ids.push(events[rec_child_event_name].id)
-        })
-    })
-
-}
-
-function parse_geo_data_regions(geo_data, geo_xml) {
-
-    // console.log('parse_geo_data_regions()')
-    // console.log(geo_xml)
-
-    if (geo_data === undefined) {
-      return
-    }
-    if (geo_xml === undefined) {
-      return
-    }
-
-    // Find all the regions
-    $(geo_xml).find('r').each(function(region_index) {
-        this_region = $(this)
-        geo_data.regions[this_region.attr('n')] = {
-            // All the standard attributes that come from the parkrun data
-            "id": this_region.attr('id'),
-            "name": this_region.attr('n'),
-            "lat": this_region.attr('la'),
-            "lon": this_region.attr('lo'),
-            "zoom": this_region.attr('z'),
-            "parent_id": this_region.attr('pid'),
-            "url": this_region.attr('u'),
-
-            // Extra attributes that we are going to fill in
-            // Direct children regions and events
-            "child_region_ids": [],
-            "child_region_names": [],
-            "child_event_ids": [],
-            "child_event_names": [],
-            // Children of children etc...
-            "child_region_recursive_ids": [],
-            "child_region_recursive_names": [],
-            "child_event_recursive_ids": [],
-            "child_event_recursive_names": []
-        }
-    })
-
-    // We may wish to move some countries to a top level
-    // If so, we can do that here
-    // var moved_top_level_regions = ['Namibia', 'Swaziland']
-    // $.each(moved_top_level_regions, function(index, region) {
-    //     if (region in geo_data.regions) {
-    //         if (geo_data.regions[region].parent_id != "1") {
-    //             geo_data.regions[region].parent_id = "1"
-    //         }
-    //     }
-    // })
-
-    return
-}
-
-function parse_geo_data_events(geo_data, geo_xml) {
-
-  if (geo_data === undefined) {
-    return
-  }
-  if (geo_xml === undefined) {
-    return
-  }
-
-    // Find all the events
-    $(geo_xml).find('e').each(function(region_index) {
-        this_event = $(this)
-        geo_data.events[this_event.attr('m')] = {
-            // All the standard attributes that come from the parkrun data
-            "shortname": this_event.attr('n'),
-            "name": this_event.attr('m'),
-            "region_id": this_event.attr('r'),
-            "country_id": this_event.attr('c'),
-            "id": this_event.attr('id'),
-            "lat": this_event.attr('la'),
-            "lon": this_event.attr('lo'),
-            // Extra attributes that we are going to fill in
-            "region_name": "unknown",
-            "country_name": "unknown"
-        }
-    })
-
-    return
-
-}
-
-function compute_geo_data_heirachy(data) {
+function parse_events(data, events_data) {
+  console.log('parse_events()')
+  console.log(events_data)
 
   if (data === undefined) {
     return
   }
+  if (events_data === undefined) {
+    return
+  }
 
-    // Create maps between ids and names
-    region_id_to_name_map = {}
-    region_name_to_id_map = {}
-    $.each(data.regions, function(region_name, region_info) {
-        region_id_to_name_map[region_info.id] = region_name
-        region_name_to_id_map[region_name] = region_info.id
-    })
+  // We don't have the names of countries any more, they are just IDs, and URLs
+  // We'll probably need to make a mapping that we can use everywhere
 
-    // Add region as a child to its parent
-    $.each(data.regions, function(region_name, region_info) {
-        if (region_info.parent_id !== null && region_info.parent_id != "") {
-            if (region_info.parent_id in region_id_to_name_map) {
-                parent_region_name = region_id_to_name_map[region_info.parent_id]
-                data.regions[parent_region_name].child_region_ids.push(region_info.id)
-                data.regions[parent_region_name].child_region_names.push(region_info.name)
-            }
-        }
-    })
+  // We will create a name > info map as we go, but the events are referenced by ID, 
+  // so populate an ID > name map too.
 
+  country_id_name_map = {}
 
-    // Find all the countries in the regions we have parsed
-    $.each(data.regions, function(region_name, region_info) {
-        // If the country's parent id is 1, that means it is directly
-        // listed under "World"
-        if (region_info.parent_id == "1") {
-            data.countries[region_name] = {
-                "name": region_name,
-                "region_name": region_name,
-                "region_id": region_info.id
-            }
-        }
-    })
+  $.each(events_data['countries'], function(country_id, country_info) {
+    country_name = getCountryNameFromId(country_id)
+    country_id_name_map[country_id] = country_name
 
-    // Add each event to a region
-    $.each(data.events, function(event_name, event_info) {
-        if (event_info.region_id in region_id_to_name_map) {
-            // Add the event under the region to which it belongs...
-            // ... but only if it is a live event
-            if (event_info.status === 'unknown' || event_info.status == 'Live') {
-                var event_region_name = region_id_to_name_map[event_info.region_id]
-                event_info.region_name = event_region_name
-                data.regions[event_region_name].child_event_ids.push(event_info.id)
-                data.regions[event_region_name].child_event_names.push(event_info.name)
-           } else {
-               // console.log("Skipping "+event_info.name+" as it is in state "+event_info.status)
-           }
-        } else {
-            // console.log("Unknown region '"+event_info.region_id+"' for "+event_info.name)
-        }
-    })
+    // The country centre point is no longer provided, instead it provides the bounds.
+    // This is potentially useful, but for migration we'll compute the centre point.
+    country_centre_lat = (country_info['bounds'][1] + country_info['bounds'][3]) / 2
+    country_centre_lon = (country_info['bounds'][0] + country_info['bounds'][2]) / 2
+    // The zoom, therefore, doesn't make any sense either, so lets arbitrarily set it to 8.
+    country_zoom = 8
 
-    // Traverse the tree of regions from World down, and sum up all
-    // the events and ids, but only if it exists in the data we have
-    if ("World" in data.regions) {
-      traverse_geo_data(data, "World")
+    data.countries[country_name] = {
+      // All the standard attributes that come from the parkrun data
+      "id": country_id,
+      "name": country_name,
+      "lat": country_centre_lat,
+      "lon": country_centre_lon,
+      "bounds": country_info['bounds'],
+      "url": country_info['url'],
+
+      // Extra attributes that we are going to fill in
+      "child_event_ids": [],
+      "child_event_names": []
     }
+  })
 
-    // Iterate though each country and set an event's country
-    $.each(data.countries, function(index, country_info) {
-        $.each(data.regions[country_info.name].child_event_recursive_names, function(index, event_name) {
-            data.events[event_name].country_name = country_info.name
-            // console.log(data.regions[country_info.name].url)
-            data.events[event_name].local_url = data.regions[country_info.name].url
-        })
-    })
+  // The events.json file is designed to be read straight into the map rendering library,
+  // so the points on the map are in an array under events/features
+  $.each(events_data['events']['features'], function(event_feature_index, event_info) {
+    // Only process the 5k events
+    if (event_info['properties']['seriesid'] == 1){
 
-    return data
+      // Example
+      // {
+      //   "id": 280,
+      //   "type": "Feature",
+      //   "geometry": {
+      //     "type": "Point",
+      //     "coordinates": [
+      //       -1.310849,
+      //       51.069286
+      //     ]
+      //   },
+      //   "properties": {
+      //     "eventname": "winchester",
+      //     "EventLongName": "Winchester parkrun",
+      //     "EventShortName": "Winchester",
+      //     "LocalisedEventLongName": null,
+      //     "countrycode": 97,
+      //     "seriesid": 1,
+      //     "EventLocation": "North Walls Recreation Ground"
+      //   }
+      // }
+
+      event_id = event_info['id']
+      event_name = event_info['properties']['EventShortName']
+      country_id = event_info['properties']['countrycode']
+      event_country_name = country_id_name_map[country_id]
+
+      data.events[event_name] = {
+        // All the standard attributes that come from the parkrun data
+        "shortname": event_info['properties']['eventname'],
+        "name": event_info['properties']['EventShortName'],
+        "country_id": country_id,
+        "country_name": event_country_name,
+        "id": event_info['id'],
+        "lat": event_info['geometry']['coordinates'][1],
+        "lon": event_info['geometry']['coordinates'][0],
+      }
+
+      // Add this event to the appropriate country object
+      addEventToCountryData(data, event_country_name, event_id, event_name)
+    }
+  })
+
+}
+
+function addEventToCountryData(data, country_name, event_id, event_name) {
+  // console.log("Adding "+event_name+":"+event_id+" to "+country_name)
+  // console.log("Current info for "+country_name+": event_ids="+data.countries[country_name]["child_event_ids"].length+" event_names="+data.countries[country_name]["child_event_names"].length)
+  data.countries[country_name]["child_event_ids"].push(event_id)
+  data.countries[country_name]["child_event_names"].push(event_name)
 }
 
 function parse_tee_data_event_status(data, result) {
 
-  if (result === undefined) {
-    return
+  var parseSuccess = false
+
+  if (result !== undefined) {
+
+    // Reset the event status data to a blank map
+    data.event_status = {}
+
+    // console.log("Attempting to load the Technical Event Information into a virtual DOM")
+    // var ownerDocument = document.implementation.createHTMLDocument('virtual');
+    // Load the results into a virtual document, so that it doesn't attempt to load
+    // inline scripts etc...
+    // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
+    // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
+
+    // This ends up with a shed load of errors about:
+    //   Refused to apply inline style because it violates the following Content Security Policy directive: 
+    //   "default-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-0EZqoz+oBhx7gF4nvY2bSqoGyy4zLjNF+SDQXGp/ZrY='), 
+    //   or a nonce ('nonce-...') is required to enable inline execution. Note also that 'style-src' was not explicitly set, 
+    //  so 'default-src' is used as a fallback.
+    // This seems to be because loading the document inlines the styles, which I'd quite happily do away with
+    // if only I knew how to.
+
+    // I have abandoned using the HTML parser directly as it brings too much baggage, instead
+    // we will parse the wiki page as an XML document until we get to the row we are interested
+    // in, and then only parse that as a HTML document - thus skipping all the scripts and other
+    // junk the page loads in elsewhere and it will be as clean as possible.
+    // This does mean we have to do a few odd things to make a valid HTML doc, but it does mean it
+    // throws no security errors anymore, and we still get the data we want.
+
+    console.log("Attempting to load the Technical Event Information into an XML document")
+    var xmlDoc = $.parseXML(result)
+
+    $(xmlDoc).find('div[id=mw-content-text]>table:first').each(function(table_index) {
+      var content_table = $(this)
+      // console.log(content_table)
+
+      content_table.find('tr').each(function(row_index) {
+          // Reconstitute a valid document with a top level tag for the HTML parser
+          var row_html_content = "<tr>"+$(this).html()+"</tr>"
+          // Parse it into a JQuery object
+          var html_row = $(row_html_content)
+          // Find the td elements
+          var content_table_row_cell = $('td', html_row)
+          // Only attempt to parse it if there are enough cells
+          if (content_table_row_cell[0] !== undefined) {
+            if (content_table_row_cell.length >= 5) {
+                var parkrun_info = {
+                    parkrun_name: content_table_row_cell[0].innerText.trim(),
+                    parkrun_event_director: content_table_row_cell[1].innerText.trim(),
+                    parkrun_event_number: content_table_row_cell[2].innerText.trim(),
+                    parkrun_status: content_table_row_cell[3].innerText.trim(),
+                    parkrun_country: content_table_row_cell[4].innerText.trim()
+                }
+                data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
+                // Note that we've parsed at least something successfully.
+                parseSuccess = true
+                // console.log(parkrun_info)
+            }
+          } else {
+            // Don't bother printing that the top row is malformed, it's probably the header,
+            // we'll just flag up if one of the other rows is weird.
+            if (row_index != 0) {
+              console.log("Techincal Event Information table row is malformed on row "+row_index+": "+JSON.stringify(content_table_row_cell))
+            }
+          }
+      })
+    })
+    console.log("Technical Event Information processing complete")
+
+    console.log(Object.keys(data.event_status).length + " event statuses available")
+
   }
 
-  // Reset the event status data to a blank map
-  data.event_status = {}
-
-  var ownerDocument = document.implementation.createHTMLDocument('virtual');
-  // Load the results into a virtual document, so that it doesn't attempt to load
-  // inline scripts etc...
-  // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
-  // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
-  $(result, ownerDocument).find('div[id=mw-content-text]>table:first').each(function(table_index) {
-     var content_table = $(this)
-
-     content_table.find('tbody>tr').each(function(row_index) {
-         var content_table_row_cell = $('td', this)
-         if (content_table_row_cell[0] !== undefined) {
-             var parkrun_info = {
-                 parkrun_name: content_table_row_cell[0].innerText.trim(),
-                 parkrun_event_director: content_table_row_cell[1].innerText.trim(),
-                 parkrun_event_number: content_table_row_cell[2].innerText.trim(),
-                 parkrun_status: content_table_row_cell[3].innerText.trim(),
-                 parkrun_country: content_table_row_cell[4].innerText.trim(),
-                 parkrun_portal_number: content_table_row_cell[5].innerText.trim()
-             }
-             data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
-             // console.log(parkrun_info)
-         }
-     })
-  })
-
- return
+  return parseSuccess
 
 }
 
@@ -374,7 +393,7 @@ function get_geo_data(notify_func, freshen=false) {
     // and construct a parallel ajax call to fetch whichever ones we need
     // this allows for easy extension in the future by adding data sources
     // with not a lot of code changes
-    var data_sources = ['geo', 'technical_event_information']
+    var data_sources = ['events', 'technical_event_information']
     var ajax_calls = []
     // Make a not if any deferred ajax calls are created
     var update_needed = false
@@ -423,14 +442,17 @@ function get_geo_data(notify_func, freshen=false) {
 
     if (update_needed) {
         // console.log('Updated required, executing deferred AJAX requests')
+        // We always have two calls, but often the calls contain the cached data, rather than freshly
+        // retrieved data.
         $.when( ajax_calls[0], ajax_calls[1] ).done(
-            function ( data_geo, data_tee ) {
+            // 20191117 - data_geo replaced with data_events 
+            function ( data_events, data_tee ) {
 
-                // We absolutely need the geo data, without which we can't do
+                // We absolutely need the events data, without which we can't do
                 // anything.
-                if (data_geo === undefined) {
+                if (data_events === undefined) {
                     // See if we have a previous one to fall back on
-                    if (cache.geo.raw_data === undefined) {
+                    if (cache.events.raw_data === undefined) {
                         // If not, send something back
                         console.log('No data to go on!')
                         notify_geo_data(notify_func)
@@ -438,7 +460,7 @@ function get_geo_data(notify_func, freshen=false) {
                     } else {
                         // Else make the best use of what we had previously
                         console.log('Using previously obtained raw data')
-                        data_geo = cache['geo'].raw_data
+                        data_events = cache.events.raw_data
                     }
                 } else {
                   console.log('Fresh data available')
@@ -449,7 +471,7 @@ function get_geo_data(notify_func, freshen=false) {
                     data_tee = cache.technical_event_information.raw_data
                 }
 
-                update_cache_data(data_geo, data_tee)
+                update_cache_data(data_events, data_tee)
 
                 notify_geo_data(notify_func)
                 return
@@ -464,12 +486,12 @@ function get_geo_data(notify_func, freshen=false) {
 }
 
 function regenerate_cache_data() {
-  update_cache_data(cache.geo.raw_data, cache.technical_event_information.raw_data)
+  update_cache_data(cache.events.raw_data, cache.technical_event_information.raw_data)
 }
 
-function update_cache_data(data_geo, data_tee) {
+function update_cache_data(data_events, data_tee) {
 
-  if (data_geo === undefined) {
+  if (data_events === undefined) {
     cache.data = undefined
     cache.updated_at = undefined
     return cache.data
@@ -483,24 +505,21 @@ function update_cache_data(data_geo, data_tee) {
     'event_status': undefined
   }
 
-  // First of all lets go and parse all the regions and all of
-  // the events in the XML file and put them in out data structure.
-  // Any additional parsing or additions to this data will be
-  // done afterwards
-  parse_geo_data_regions(data, data_geo)
-  parse_geo_data_events(data, data_geo)
+  // Replace the complicated events/regions parsing with a single call
+  parse_events(data, data_events)
 
   // If the technical event information has been obtained, then
   // lets parse that.
-  // if (data_tee !== null) {
-  parse_tee_data_event_status(data, data_tee)
-  // }
+  var parseResult = parse_tee_data_event_status(data, data_tee)
+  console.log("Techincal Event Information parse result: "+parseResult)
+  // If the page hasn't been fetched, or the file can't be parsed, parseResult will be false.
+  // We should do something with that value, like mark that the page should be fetched again.
 
   // This could potentially do nothing if no event info is available
   compute_event_status(data)
   // console.log(data)
   // Create the heirachy of events by region
-  compute_geo_data_heirachy(data)
+  // compute_geo_data_heirachy(data)
 
   // Update the global cache
   cache.data = data
@@ -561,7 +580,7 @@ function notify_geo_data(f) {
             done = true
             break
           case "cache-geo-clear":
-            clear_cache_by_name("geo")
+            clear_cache_by_name("events")
             done = true
             break
           case "cache-tei-clear":
@@ -582,11 +601,11 @@ function notify_geo_data(f) {
             done = true
             break
           case "enable-geo":
-            cache.geo.enabled = true
+            cache.events.enabled = true
             done = true
             break
           case "disable-geo":
-            cache.geo.enabled = false
+            cache.events.enabled = false
             done = true
             break
           case "enable-tei":

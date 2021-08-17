@@ -81,10 +81,17 @@ function show_debug_elements(visible=false) {
 function get_home_parkrun_info(parkrun_event_name) {
     // Look up extra pieces of information for this parkrun, if available
     console.log('looking up info for home parkrun '+parkrun_event_name)
-    if (geo_data !== null) {
+    if (geo_data != null && geo_data.data != null) {
         if (parkrun_event_name in geo_data.data.events) {
             home_event_info = geo_data.data.events[parkrun_event_name]
             console.log('Found info for '+parkrun_event_name+': '+JSON.stringify(home_event_info))
+            // Attempting to find country website URL
+            if ("country_name" in home_event_info) {
+                var country_info = geo_data.data.countries[home_event_info["country_name"]]
+                if ("url" in country_info) {
+                    home_event_info["local_url"] = country_info["url"]
+                }
+            }
             return home_event_info
         }
     }
@@ -225,7 +232,7 @@ function update_home_parkrun_dropdown() {
     if (geo_data !== null) {
 
         // Iterate over all the available events that we know about
-        Object.keys(geo_data.data.events).forEach(function (event_name) {
+        Object.keys(geo_data.data.events).sort().forEach(function (event_name) {
             event_o = geo_data.data.events[event_name]
             // Create a suitable option for this event
             var select_option = $('<option/>', {

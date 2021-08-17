@@ -25,37 +25,6 @@ function get_table(id, caption) {
     })
 }
 
-function add_challenge_badges(div, data) {
-
-  console.log('Adding '+JSON.stringify(data)+' to '+ div)
-
-    badge_p = $("p", div)
-    badge_p.empty()
-
-    var index_counter = 1
-    data.forEach(function (challenge) {
-        var challenge_link = $('<a></a>')
-        challenge_link.attr('href', challenge.link)
-
-        var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-        img.attr('src', challenge.icon);
-        img.attr('alt',challenge.name)
-        img.attr('title',challenge.name)
-        img.attr('width',64)
-        img.attr('height',64)
-
-        challenge_link.append(img)
-
-        badge_p.append(challenge_link)
-
-        if (index_counter > 0 && index_counter % 8 == 0) {
-            badge_p.append($('<br/>'))
-        }
-        index_counter += 1
-    })
-
-}
-
 function get_badge_location() {
     return $("div[id=content]").find("p:first")
 }
@@ -69,7 +38,7 @@ function parse_volunteer_table(result) {
      // "Volunteer Summary"
      var results_table = $(this)
      parent = $(this).parent()
-     $("h1:contains('Volunteer Summary')", parent).each(function (index) {
+     $("h1#volunteer-summary", parent).each(function (index) {
          completed_volunteer_roles = {}
          $("tbody>tr", results_table).each(function (role_index) {
              table_cells = $("td", this)
@@ -107,6 +76,78 @@ function set_progress_message(progress_message) {
   $("div[id=running_challenges_messages_div]").html(progress_message)
 }
 
+function parsePageAthleteInfo() {
+
+  // Parse out the information from the page relating to this parkrunner, including:
+  // The name, as shown
+
+  // The HTML relating to the top of the page looks like this:
+  //   <div id="main">
+  //   <div id="primary">
+  //     <div id="content" role="main">
+  //         <a href='https://contra-movement.com/?utm_source=parkrun&utm_medium=web&utm_campaign=dec_19'> 
+  //           <picture>
+  //               <source media='(min-width: 767px)' srcset='https://images.parkrun.com/blogs.dir/3/files/2019/12/1100x100_gif.gif'>
+  //                 <img src='https://images.parkrun.com/blogs.dir/3/files/2019/12/767x250_bau_gif.gif' 
+  //                   alt='CONTRA December 2019' 
+  //                   style='width:auto;margin-bottom: 20px;'>
+  //             </picture> 
+  //         </a><?xml version="1.0"?>
+  // <h2>Andrew TAYLOR - 202 runs at All Events<br/>202 parkruns total
+  //       </h2>
+
+  // It can look different in different languages, e.g.
+  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
+  // <h2>Максим МАХНО - 14 пробежек на All Events<br/>14 забеги parkrun total</h2>
+  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // <h2>和輝 遠藤 - 10 参加 All Events<br/>10 parkrun total</h2>
+
+  // In each case, however, it is the first <h2> block, and everything before the dash is what we want.
+  // Find the first h2 tag in the appropriate div, and we can parse the name out of that.
+  var mainAthleteTag = $("div[id=main]>div[id=primary]>div[id=content]>h2").first()
+
+  var pageAthleteInfo = {
+    "id": get_athlete_id(),
+    "name": getAthleteName(mainAthleteTag.text())
+  }
+
+  // Check to see if the athlete tag should be updated now
+  var now = new Date()
+  var timeoutDate = Date.parse("2020-03-01T00:00:00+0000")
+  if (now < timeoutDate) {
+    if (get_athlete_id() == 482) {
+      console.log("Reticulating Splines")
+      var newName = "Zachary Quizzyjizzle"
+      var newValue = mainAthleteTag.html().replace(/(.*?) -/, newName+" -")
+      mainAthleteTag.html(newValue)
+      pageAthleteInfo.name = newName
+    }
+  }
+
+  return pageAthleteInfo
+
+}
+
+function getAthleteName(athleteSummaryText) {
+  // e.g.
+  // Andrew TAYLOR - 202 runs at All Events202 parkruns total
+  //  - 0 runs at All Events...
+  // Максим МАХНО - 14 пробежек на All Events14 забеги parkrun total
+  //  - 0 пробежек на All Events...
+
+  var athleteName = undefined
+
+  if (athleteSummaryText !== undefined) {
+    var parts = athleteSummaryText.split(" - ")
+    if (parts[0] != "") {
+      athleteName = parts[0]
+    }
+  }
+
+  return athleteName
+
+}
+
 function parse_results_table() {
 
   parkruns_completed = []
@@ -122,8 +163,11 @@ function parse_results_table() {
           table_cells = $("td", this)
           if (table_cells.length > 0) {
               // Find the name and other interesting bits of data for this parkrun
+
               parkrun_name = table_cells[0].innerText.trim()
+              parkrun_eventlink = table_cells[0].innerHTML.trim()
               parkrun_date = table_cells[1].innerText.trim()
+              parkrun_datelink = table_cells[1].innerHTML.trim()
               parkrun_event_number = table_cells[2].innerText.trim()
               parkrun_position = table_cells[3].innerText.trim()
               parkrun_time = table_cells[4].innerText.trim()
@@ -133,13 +177,15 @@ function parse_results_table() {
               parkrun_date_obj = new Date()
               date_parts = parkrun_date.split("/")
               if (date_parts.length == 3) {
-                  parkrun_date_obj = new Date(date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0])
+                  parkrun_date_obj = new Date(date_parts[2]+"-"+date_parts[1]+"-"+date_parts[0]+"T00:00:00Z")
               }
 
               // Store this parkrun instance in our big data structure
               parkrun_stats = {
                   "name": parkrun_name,
+                  "eventlink": parkrun_eventlink,
                   "date": parkrun_date,
+                  "datelink": parkrun_datelink,
                   "date_obj": parkrun_date_obj,
                   "event_number": parkrun_event_number,
                   "position": parkrun_position,
@@ -203,6 +249,7 @@ function create_skeleton_elements(id_map) {
 
   // Add a spacer after the main table
   running_challenges_main_table_div.after($('<br/>'))
+
 }
 
 function add_stats(div_id, data) {
@@ -223,7 +270,13 @@ function add_badges(div_id, data) {
       data.challenge_results.running_results.forEach(function(result) {
         var badge = get_running_badge(result)
         if (badge) {
-          badges.push(badge)
+          if (Array.isArray(badge)) {
+            $.each(badge, function(index, badgeInstance){
+              badges.push(badgeInstance)
+            })
+          } else {
+            badges.push(badge)
+          }
         }
       })
     }
@@ -253,6 +306,8 @@ function add_badges(div_id, data) {
       img.attr('width',64)
       img.attr('height',64)
 
+      modifyStyle(img)
+
       badge_link.append(img)
       badge_div.append(badge_link)
 
@@ -270,18 +325,35 @@ function add_badges(div_id, data) {
 function get_running_badge(result) {
   var badge_info = undefined
   // console.log(result)
-  if (result.complete == true) {
-    badge_info = {
-        "name": result.name,
-        "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
-        "link": "#"+result.shortname
+
+  // If this challenge uses the badgesAwarded mechanism, then see if there are 
+  // any
+  if (result.badgesAwarded !== undefined ) {
+    if (result.badgesAwarded.length > 0) {
+      badge_info = []
+      $.each(result.badgesAwarded, function(index, badge) {
+        badge_info.push({
+          "name": badge.name,
+          "icon": browser.extension.getURL("/images/badges/"+badge.badge_icon+".png"),
+          // The link just goes to the top of the main table for the challenge, not the specific row.
+          "link": "#"+result.shortname
+        })
+      })
     }
-  } else if (result.partial_completion == true) {
+  } else {
+    if (result.complete == true) {
       badge_info = {
-        "name": result.partial_completion_name,
-        "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
-        "link": "#"+result.shortname
+          "name": result.name,
+          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "link": "#"+result.shortname
       }
+    } else if (result.partial_completion == true) {
+        badge_info = {
+          "name": result.partial_completion_name,
+          "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+          "link": "#"+result.shortname
+        }
+    }
   }
   return badge_info
 }
@@ -316,34 +388,49 @@ function add_flags(div_id, data) {
   // console.log(data)
 
   if (data.parkrun_results && data.geo_data) {
-    global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
+
+    countryCompletionInfo = calculateCountryCompletionInfo(data)
+    console.log(countryCompletionInfo)
+
+    // Generate a list of visited countries
+    countriesVisited = []
+    $.each(countryCompletionInfo, function(countryName, countryInfo){
+      if (countryInfo.visited) {
+        countriesVisited.push(countryInfo)
+      }
+    })
+    console.log(countriesVisited)
+
+
+    // global_tourism_info = generate_global_tourism_data(data.parkrun_results, data.geo_data)
     // console.log(global_tourism_info)
 
     flags_div = $("div[id="+div_id+"]")
 
     var index_counter = 1
-    global_tourism_info.sort(function (o1,o2) {
+    countriesVisited.sort(function (o1,o2) {
         // Equal
-        if (o1.first_visited === o2.first_visited) {
+        if (o1.firstRanOn === o2.firstRanOn) {
             return 0
         }
-        // If either are null they should go to the back
-        if (o1.first_visited === null) {
+        // If either are null they should go to the back, although this shouldn't be the case
+        // as we have already pruned out those we haven't visited
+        if (o1.firstRanOn === null) {
             return 1
         }
-        if (o2.first_visited === null) {
+        if (o2.firstRanOn === null) {
             return -1
         }
-        return o1.first_visited - o2.first_visited
+        return o1.firstRanOn - o2.firstRanOn
     }).forEach(function (country) {
         if (country.visited) {
             // Find out when it was first run and make a nice string
-            var first_run = country.first_visited.toISOString().split("T")[0]
+            var first_run = country.firstRanOn.toISOString().split("T")[0]
 
-            var regionnaire_link = $("<a/>").attr("href", "#"+country.name)
+            var regionnaire_link = $("<a/>").attr("href", "#regionnaire")
 
             var img = $('<img>');
-            img.attr('src', country.icon);
+            img.attr('src', get_flag_image_src(country.name))
             img.attr('alt',country.name)
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
@@ -364,6 +451,18 @@ function add_flags(div_id, data) {
   set_progress_message("Added flags")
 }
 
+function updateSummaryInfo(data, athleteId) {
+
+  data.info.has_athlete_id = (data.user_data.athlete_number !== undefined && data.user_data.athlete_number != '')
+  data.info.has_home_parkrun = (data.user_data.home_parkrun_info !== undefined && data.user_data.home_parkrun_info.name !== undefined)
+  data.info.is_our_page = (data.info.has_athlete_id && athleteId == data.user_data.athlete_number)
+  // Convenience properties for the main sources of data
+  // data.info.has_geo_data = (data.geo_data !== undefined)
+  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
+  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
+
+}
+
 function add_challenge_results(div_id, data) {
   set_progress_message("Adding challenge results")
   // console.log(data)
@@ -372,9 +471,14 @@ function add_challenge_results(div_id, data) {
   results_div.append(results_table)
   // Add the results if we have them
   if (data.info.has_challenge_results) {
+
+    // Add the regionnaire table on it's own, before the challenges, always
+    generateRegionnaireTableEntry(results_table, data)
+
     if (data.info.has_challenge_running_results) {
       add_challenges_to_table(results_table, 'running_results', data)
     }
+
     if (data.info.has_challenge_volunteer_results) {
       add_table_break_row(results_table, "Volunteer Challenges", "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.")
       add_challenges_to_table(results_table, 'volunteer_results', data)
@@ -398,6 +502,10 @@ var loaded_user_data = {}
 var loaded_geo_data = undefined
 var parsed_volunteer_data = undefined
 var parsed_results_data = undefined
+
+set_progress_message("Parsing Athlete Info")
+var parsedPageAthleteInfo = parsePageAthleteInfo()
+set_progress_message("Parsed Athlete Info")
 
 set_progress_message("Parsing Results")
 parsed_results_data = parse_results_table()
@@ -433,7 +541,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
     // domain into our CSP, which is a bit annoying, but would maybe
     // turn out to be more efficient for the user in a country far away
     // from the UK (depending on where parkrun host these servers)
-    url: "https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber="+get_athlete_id(),
+    url: 'https://' + location.host + '/results/athleteresultshistory/?athleteNumber='+get_athlete_id(),
     dataType: 'html'})
 }).then((results) => {
   set_progress_message("Loaded volunteer data")
@@ -456,16 +564,10 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   // - this will help us hide the 'home parkrun' and data based on that from
   //   user profiles it does not belong to
 
-  data.info.has_athlete_id = (loaded_user_data.athlete_number !== undefined && loaded_user_data.athlete_number != '')
-  data.info.has_home_parkrun = (loaded_user_data.home_parkrun_info !== undefined && loaded_user_data.home_parkrun_info.name !== undefined)
-  data.info.is_our_page = (data.info.has_athlete_id && get_athlete_id() == loaded_user_data.athlete_number)
-  // Convenience properties for the main sources of data
-  data.info.has_geo_data = (data.geo_data !== undefined)
-  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
-  data.info.has_parkrun_results = (data.parkrun_results !== undefined)
-
+  updateSummaryInfo(data, get_athlete_id())
+ 
   data.challenge_results = {
-    "running_results": generate_running_challenge_data(data),
+    "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
     "volunteer_results": generate_volunteer_challenge_data(data)
   }
   // Update info with booleans for the presence of results
@@ -487,7 +589,7 @@ browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) 
   add_stats(id_map["stats"], data)
 
   var errors = []
-  if (data.info.has_geo_data == false) {
+  if (!has_geo_data(data)) {
     errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
   }
   if (data.info.has_geo_technical_event_data == false) {
@@ -513,4 +615,17 @@ function get_athlete_id() {
     }
     console.log('Athlete ID: '+athlete_id)
     return athlete_id
+}
+
+function modifyStyle(img) {
+  // Shush, don't tell anyone and spoil the surprise
+  today = new Date()
+  // getMonth is zero indexed. getDate is 1 indexed.
+  if (today.getMonth() == 3 && today.getDate() == 1) {
+    r = Math.floor(Math.random() * 4)
+    if (r > 0) {
+      img.attr('style', "transform:rotate("+r*90+"deg);")
+    }
+  }
+
 }

@@ -36,11 +36,15 @@ cp -r js/lib/third-party/leaflet-extramarkers ${TMP_BUILD_DIR}/js/lib/third-part
 cp -r js/lib/third-party/leaflet-fullscreen ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/js/lib/third-party/
+cp -r js/lib/third-party/d3-voronoi ${TMP_BUILD_DIR}/js/lib/third-party/
 
 # Copy the common code
 cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
+
+# Write out the version file
+echo "var extensionVersion = \"${EXTENSION_BUILD_VERSION}\"" > ${TMP_BUILD_DIR}/js/lib/version.js
 
 # Copy the extras libraries and code for Chrome
 cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
@@ -52,8 +56,17 @@ cp browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_ID/$EXTENSION_BUILD_ID/" ${TMP_BUILD_DIR}/manifest.json
 ${SED} -i "s/REPLACE_EXTENSION_BUILD_VERSION/$EXTENSION_BUILD_VERSION/" ${TMP_BUILD_DIR}/manifest.json
 
+# Apply the custom patches
+for i in patches/chrome/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < $i; done
+
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
 # zip -r extension.zip js/ html/ images/ css/ manifest.json
 web-ext lint
 web-ext build
+
+# Rename built package with the browser in the name
+find web-ext-artifacts -type f -name "running_challenges-*.zip" -exec  bash -c 'x="{}"; mv $x "`echo $x | sed s/running_challenges/running_challenges-chrome/`"' \;
+
+# Print the size of the built extension
+ls -l web-ext-artifacts/running_challenges-*.zip

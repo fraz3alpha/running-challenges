@@ -1,0 +1,18 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dummy-app.js",
+  "scripts": {
+    "test": "mocha",
+    "test-with-coverage": "nyc --reporter=html --reporter=text mocha"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^16.1.0",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "rewire": "^4.0.1"
+  }
+}

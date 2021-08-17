@@ -9,8 +9,8 @@ javascript_libs:
   - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
   - third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
   - leaflet-slidemenu/leaflet-sidemenu.js
-  - data/geo.js
-  - data/special-events.js
+  - data/geo-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
+  - data/special-events-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
 javascript_onload:
   - file: map.js
     function: draw_map('mapid')
@@ -23,6 +23,14 @@ css_libs:
   - leaflet-slidemenu/leaflet-sidemenu.css
   - map.css
 ---
+
+The following map lists the special events over the 2019/20 Christmas/New Year period.
+
+This data was collated on 2019-12-19, by which time all events should have submitted their
+intended start times (if they are doing the extra events). Please bear in mind this data may
+still change, so please check the appropriate parkrun's webpage for confirmation before making the trip.
+
+Happy festive parkrunning!
 
 <div id="mapid"></div>
 <br/>
@@ -38,8 +46,8 @@ css_libs:
 
 - If you are interested in doing the double this New Year's Day, head over to the
 [Rikki Prince](https://twitter.com/rikkiprince)'s amazing
-[Double Finder Tool](http://tailrun.uk/nyd/2019/) to see which ones you might be
-able to do.
+[Double Finder Tool](https://tailrun.uk/nyd/2020/) to see which ones 
+you might be able to do in 2020.
 - If you are on the lookout for filling in a spot on your Wilson Index, head over
 to Mark Pinney's [Challenge Chaser](http://www.challenge-chaser.com/map).
 - And of course, for all things tourism related, check out
