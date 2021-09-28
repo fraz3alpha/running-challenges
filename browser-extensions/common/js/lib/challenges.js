@@ -1530,7 +1530,7 @@ function challenge_start_letters(data, params) {
                 // Add the first on that we haven't already added
                 $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
                   // Only add it, and break out of the loop, if it is new
-                  if (!(event.name in o.nearest_qualifying_events)) {
+                  if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
                     o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
                     // Break out
                     return false
