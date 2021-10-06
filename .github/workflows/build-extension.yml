@@ -109,6 +109,13 @@ jobs:
       - name: Install test framework dependencies
         run: npm install
 
+      - name: Upload test screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.browser }}-screenshot
+          path: browser-extensions/common/js/out-docker-*.png
+
+
   # This stage will run once the extensions have been built, and should only run if they were successful.
   # Assuming they are successful, we will push them somewhere they can be used.
 
