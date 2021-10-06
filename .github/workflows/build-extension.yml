@@ -95,7 +95,7 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v2
         with:
-          path: extension-binaries
+          path: browser-extensions/common/js/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
