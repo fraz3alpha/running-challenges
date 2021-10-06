@@ -86,10 +86,10 @@ jobs:
     #   selenium-chrome:
     #     image: selenium/standalone-chrome
     #     ports: 4444:4444
-    # defaults:
-    #   run:
-    #     shell: bash
-    #     working-directory: browser-extensions/common/js
+    defaults:
+      run:
+        shell: bash
+        working-directory: browser-extensions/common/js
 
     steps:
       - name: Download all built extension packages
