@@ -82,7 +82,7 @@ jobs:
      # We can no specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
       selenium-firefox:
         image: selenium/standalone-firefox
-        ports: 4445:4444
+        # ports: 4445:4444
     #   selenium-chrome:
     #     image: selenium/standalone-chrome
     #     ports: 4444:4444
