@@ -80,7 +80,7 @@ jobs:
       - test-javascript-libraries
     strategy:
       matrix:
-        browser: ["chrome"]
+        browser: ["chrome", "firefox"]
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
       selenium:
@@ -108,6 +108,10 @@ jobs:
 
       - name: Install test framework dependencies
         run: npm install
+
+      - name: Run selenium test for ${{ matrix.browser }}
+        run: |
+          node selenium-docker-${{ matrix.browser }}.js
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
