@@ -78,8 +78,8 @@ jobs:
     needs: 
       - build-extension
       - test-javascript-libraries
-    services:
-      # We can no specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
+    # services:
+    #  # We can no specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
     #   selenium-firefox:
     #     image: selenium/standalone-firefox
     #     ports: 4445:4444
