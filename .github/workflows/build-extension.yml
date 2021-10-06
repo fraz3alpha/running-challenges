@@ -78,14 +78,13 @@ jobs:
     needs: 
       - build-extension
       - test-javascript-libraries
+    strategy:
+      matrix:
+        browser: ["chrome"]
     services:
-     # We can no specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
-      selenium-firefox:
-        image: selenium/standalone-firefox
-        ports: 
-          - 4445:4444
-      selenium-chrome:
-        image: selenium/standalone-chrome
+     # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
+      selenium:
+        image: selenium/standalone-${{ matrix.browser }}
         ports: 
           - 4444:4444
     defaults:
