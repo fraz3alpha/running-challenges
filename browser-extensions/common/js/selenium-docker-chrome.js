@@ -40,7 +40,11 @@ let opts = new chrome.Options();
         // say "Additional badges provided by Running Challenges" when everything has worked
         let div = await driver.findElement(By.id("running_challenges_messages_div"))
         // Give it 10 seconds to say that
-        await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000);
+        await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000).catch(
+            (err) => {
+                console.error(err);
+                }
+            );
 
         console.log(await div.getText())
 
