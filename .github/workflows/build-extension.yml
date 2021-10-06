@@ -111,7 +111,11 @@ jobs:
 
       - name: Run selenium test for ${{ matrix.browser }}
         run: |
+          echo ${EXTENSION_PATH}
+          ls -lh ${EXTENSION_PATH}
           node selenium-docker-${{ matrix.browser }}.js
+        env:
+          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package.zip
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
