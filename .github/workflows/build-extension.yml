@@ -80,7 +80,8 @@ jobs:
       - test-javascript-libraries
     strategy:
       matrix:
-        browser: ["chrome", "firefox"]
+        # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
+        browser: ["chrome"]
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
       selenium:
@@ -115,7 +116,7 @@ jobs:
           ls -lh ${EXTENSION_PATH}
           node selenium-docker-${{ matrix.browser }}.js
         env:
-          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package.zip
+          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/running_challenges-*.zip
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
