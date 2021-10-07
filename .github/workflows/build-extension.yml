@@ -94,6 +94,12 @@ jobs:
         working-directory: browser-extensions/common/js
 
     steps:
+
+      # Checks out a copy of the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Get previously built packages
       - name: Download all built extension packages
         uses: actions/download-artifact@v2
         with:
