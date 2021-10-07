@@ -18,7 +18,7 @@
   "content_scripts": [
     {
       "matches": [
-          "*://www.parkrun.org.uk/results/athleteeventresultshistory/*",
+          "*://www.parkrun.org.uk/parkrunner/*",
           "*://www.parkrun.com.au/results/athleteeventresultshistory/*",
           "*://www.parkrun.co.nz/results/athleteeventresultshistory/*",
           "*://www.parkrun.ca/results/athleteeventresultshistory/*",
@@ -97,7 +97,7 @@
   },
   {
     "matches": [
-        "*://www.parkrun.org.uk/*/results/athletehistory/*",
+        "*://www.parkrun.org.uk/parkrunner/*",
         "*://www.parkrun.com.au/*/results/athletehistory/*",
         "*://www.parkrun.co.nz/*/results/athletehistory/*",
         "*://www.parkrun.ca/*/results/athletehistory/*",
