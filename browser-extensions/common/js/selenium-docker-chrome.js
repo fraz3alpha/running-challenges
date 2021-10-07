@@ -17,10 +17,13 @@ let opts = new chrome.Options();
     // From https://stackoverflow.com/questions/14249506/how-can-i-wait-in-node-js-javascript-l-need-to-pause-for-a-period-of-time
     const delay = s => new Promise(resolve => setTimeout(resolve, s*1000))
 
+    const extensionZip = process.env.EXTENSION_ZIP
+    console.log("Loading extension zip from ${extensionZip}")
 
     // Chrome seems to want us to load the extension into memory before passing it to the options
     // From https://stackoverflow.com/questions/51182142/add-an-unpacked-extension-from-file-selenium-node-js/56088051
-    opts.addExtensions(encodeExt('C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'))
+    // opts.addExtensions(encodeExt('C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'))
+    opts.addExtensions(encodeExt(extensionZip))
 
     let driver = new Builder()
         .usingServer("http://localhost:4444/wd/hub")

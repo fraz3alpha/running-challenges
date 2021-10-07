@@ -114,9 +114,12 @@ jobs:
         run: |
           echo ${EXTENSION_PATH}
           ls -lh ${EXTENSION_PATH}
+          # Find the extension zip in the path supplied
+          export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
+          echo "Extension found at ${EXTENSION_ZIP}"
           node selenium-docker-${{ matrix.browser }}.js
         env:
-          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/running_challenges-*.zip
+          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
