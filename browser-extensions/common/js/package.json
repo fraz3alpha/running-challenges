@@ -5,7 +5,8 @@
   "main": "dummy-app.js",
   "scripts": {
     "test": "mocha",
-    "test-with-coverage": "nyc --reporter=html --reporter=text mocha"
+    "test-with-coverage": "nyc --reporter=html --reporter=text mocha",
+    "test-selenium": "mocha test-selenium/selenium-docker-chrome.js"
   },
   "author": "",
   "license": "MIT",
