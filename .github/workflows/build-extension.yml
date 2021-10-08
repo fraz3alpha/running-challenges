@@ -131,8 +131,8 @@ jobs:
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.browser }}-screenshot
-          path: browser-extensions/common/js/out-docker-*.png
+          name: ${{ matrix.browser }}-screenshots
+          path: browser-extensions/common/js/screenshots/
 
 
   # This stage will run once the extensions have been built, and should only run if they were successful.

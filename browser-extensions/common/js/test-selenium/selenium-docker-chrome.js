@@ -19,8 +19,8 @@ var buildDriver = function(caps) {
   
     // Chrome seems to want us to load the extension into memory before passing it to the options
     // From https://stackoverflow.com/questions/51182142/add-an-unpacked-extension-from-file-selenium-node-js/56088051
-    opts.addExtensions(encodeExt('C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'))
-    // opts.addExtensions(encodeExt(extensionZip))
+    // opts.addExtensions(encodeExt('C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'))
+    opts.addExtensions(encodeExt(extensionZip))
 
     return new Builder()
     .usingServer("http://localhost:4444/wd/hub")
@@ -48,12 +48,30 @@ describe("extension", () => {
 
         // this.currentTest has a title, and a parent suite object, which itself might have a parent etc...
         // We should create a path heirachy and put the screenshots in the right place to match up with the test
+
+        let testPath = []
+        let parentSuite = this.currentTest.parent
+        while (parentSuite !== undefined && parentSuite.title != "") {
+            testPath.push(parentSuite.title.toLowerCase().replace(/[^a-z0-9]/g,'_'))
+            parentSuite = parentSuite.parent
+        }
+        // We need to use ... to splat the array into a set of strings
+        let screenshotPath = path.join("screenshots",...testPath.reverse())
+        console.log(screenshotPath)
+
+        // Create directory if required
+        if (!fs.existsSync(screenshotPath)){
+            fs.mkdirSync(screenshotPath, { recursive: true });
+        }
+
         console.log(this.currentTest.parent.title)
         let screenshotName = "screenshot-"+this.currentTest.title.toLowerCase().replace(/[^a-z0-9]/g,'_')+".png";
 
+        let screenshotFileName = path.join(screenshotPath, screenshotName)
+
         return driver.takeScreenshot().then(
             function(image, err) {
-                require('fs').writeFile(screenshotName, image, 'base64', function(err) {
+                require('fs').writeFile(screenshotFileName, image, 'base64', function(err) {
                     console.log(err);
                 });
             }
@@ -83,26 +101,26 @@ describe("extension", () => {
 
     });
 
-    // describe("parkrun.com.de", function() {
+    describe("parkrun.com.de", function() {
 
-    //     describe("athleteeventresultshistory - the main page", function() {
-    //         this.timeout(30000);
+        describe("athleteeventresultshistory - the main page", function() {
+            this.timeout(30000);
 
-    //         // Ensure that the main page on the UK site works
-    //         it("should load the extension and modify results/athleteeventresultshistory", async () => {
-    //             // Load the parkrun page
-    //             await driver.get("https://www.parkrun.com.de/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
-    //             // Give us a moment the ensure the extension has loaded before continuing
-    //             await driver.sleep(1000);
+            // Ensure that the main page on the UK site works
+            it("should load the extension and modify results/athleteeventresultshistory", async () => {
+                // Load the parkrun page
+                await driver.get("https://www.parkrun.com.de/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
+                // Give us a moment the ensure the extension has loaded before continuing
+                await driver.sleep(1000);
 
-    //             let div = await driver.findElement(By.id("running_challenges_messages_div"))
-    //             // Give it 10 seconds to say that
-    //             await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000)
+                let div = await driver.findElement(By.id("running_challenges_messages_div"))
+                // Give it 10 seconds to say that
+                await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000)
 
-    //         });
+            });
         
-    //     });
+        });
 
-    // });
+    });
 
 });
