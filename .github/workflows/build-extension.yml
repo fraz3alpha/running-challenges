@@ -133,7 +133,7 @@ jobs:
         with:
           name: ${{ matrix.browser }}-screenshots
           path: browser-extensions/common/js/screenshots/
-        if: always
+        if: always()
 
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
