@@ -73,7 +73,7 @@ jobs:
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
 
   integration-test:
-    name: Run integration tests e.g. Selenium
+    name: Selenium
     runs-on: ubuntu-latest
     needs: 
       - build-extension
@@ -81,12 +81,16 @@ jobs:
     strategy:
       matrix:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
-        browser: ["chrome", "firefox"]
+        include:
+          - browser: "chrome"
+            selenium-image: selenium/standalone-chrome:latest
+          - browser: "firefox"
+            selenium-image: selenium/standalone-firefox:latest
       fail-fast: false
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
       selenium:
-        image: selenium/standalone-${{ matrix.browser }}
+        image: ${{ matrix.selenium-image }}
         ports: 
           - 4444:4444
     defaults:
