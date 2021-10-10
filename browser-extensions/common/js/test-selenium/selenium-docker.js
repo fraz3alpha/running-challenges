@@ -29,8 +29,15 @@ const parkrunnerAndyTaylor = "1309364";
 const extensionZip = process.env.EXTENSION_ZIP
 const extensionBrowser = process.env.EXTENSION_BROWSER ? process.env.EXTENSION_BROWSER : "chrome"
 const seleniumPort = process.env.SELENIUM_PORT ? process.env.SELENIUM_PORT : "4444"
+// Default to running all countries, but if if we just want to run some, set the names in a comma separate list here.
+const countryFilter = process.env.COUNTRY_FILTER
 
-console.log("Running tests against "+extensionBrowser+" for "+extensionZip)
+var websiteFilter = undefined
+if (countryFilter !== undefined && countryFilter.length >0) {
+    websiteFilter = countryFilter.split(",")
+}
+
+console.log("Running tests against "+extensionBrowser+" (port "+seleniumPort+") for "+extensionZip)
 
 var getBrowserOptions = function(browser) {
     switch(browser) {
@@ -146,40 +153,121 @@ const testOrder = [
     "main",
     "other"
 ]
-var parkrunWebsites = [
-    {
-        "name": "parkrun.org.uk",
-        'hostname': "https://www.parkrun.org.uk",
-        "pages": {
-            "main": "/results/athleteeventresultshistory/?athleteNumber=REPLACE_ATHLETE_NUMBER&eventNumber=0"
-        }
+
+var parkrunWebsites = {
+    "defaultPages": {
+        "main": "/results/athleteeventresultshistory/?athleteNumber=REPLACE_ATHLETE_NUMBER&eventNumber=0"
     },
-    {
-        "name": "parkrun.com.de",
-        'hostname': "https://www.parkrun.com.de",
-        "pages": {
-            "main": "/results/athleteeventresultshistory/?athleteNumber=REPLACE_ATHLETE_NUMBER&eventNumber=0"
-        }
-    },
-    {
-        "name": "parkrun.co.nz",
-        'hostname': "https://www.parkrun.co.nz",
-        "pages": {
-            "main": "/results/athleteeventresultshistory/?athleteNumber=REPLACE_ATHLETE_NUMBER&eventNumber=0"
+    "sites": [
+        {
+            "name": "parkrun.org.uk",
+            "hostname": "https://www.parkrun.org.uk",
+            "pages": {
+                "other": "something" // Example, doesn't do anything at the moment
+            }
+        },
+        {
+            "name": "parkrun.com.au",
+            "hostname": "https://www.parkrun.com.au"
+        },
+        {
+            "name": "parkrun.co.nz",
+            "hostname": "https://www.parkrun.co.nz"
+        },
+        {
+            "name": "parkrun.ca",
+            "hostname": "https://www.parkrun.ca"
+        },
+        {
+            "name": "parkrun.ie",
+            "hostname": "https://www.parkrun.ie"
+        },
+        {
+            "name": "parkrun.co.za",
+            "hostname": "https://www.parkrun.co.za"
+        },
+        {
+            "name": "parkrun.us",
+            "hostname": "https://www.parkrun.us"
+        },
+        {
+            "name": "parkrun.sg",
+            "hostname": "https://www.parkrun.sg"
+        },
+        {
+            "name": "parkrun.pl",
+            "hostname": "https://www.parkrun.pl"
+        },
+        {
+            "name": "parkrun.it",
+            "hostname": "https://www.parkrun.it"
+        },
+        {
+            "name": "parkrun.dk",
+            "hostname": "https://www.parkrun.dk"
+        },
+        {
+            "name": "parkrun.se",
+            "hostname": "https://www.parkrun.se"
+        },
+        {
+            "name": "parkrun.fi",
+            "hostname": "https://www.parkrun.fi"
+        },
+        {
+            "name": "parkrun.fr",
+            "hostname": "https://www.parkrun.fr"
+        },
+        {
+            "name": "parkrun.no",
+            "hostname": "https://www.parkrun.no"
+        },
+        {
+            "name": "parkrun.com.de",
+            "hostname": "https://www.parkrun.com.de"
+        },
+        {
+            "name": "parkrun.ru",
+            "hostname": "https://www.parkrun.ru"
+        },
+        {
+            "name": "parkrun.my",
+            "hostname": "https://www.parkrun.my"
+        },
+        {
+            "name": "parkrun.jp",
+            "hostname": "https://www.parkrun.jp"
+        },
+        {
+            "name": "parkrun.co.nl",
+            "hostname": "https://www.parkrun.co.nl"
+        },
+    ]
+}
+
+parkrunWebsites.sites.forEach(function(website) {
+    if (websiteFilter !== undefined) {
+        if (!(websiteFilter.includes(website.name))) {
+            // Skip this one then
+            console.log("Skipping "+website.name+" it is not in "+websiteFilter)
+            return;
         }
     }
-]
-
-parkrunWebsites.forEach(function(website) {
     var thisWebsiteTestSuite = Mocha.Suite.create(testSuite, website.name)
     testOrder.forEach(function(testName) {
-        if (website.pages[testName] !== undefined) {
+        // Pick up the page from the default config, unless it has been overridden.
+        var testDefinition = parkrunWebsites.defaultPages[testName]
+        if (website.pages !== undefined && testName in website.pages) {
+            testDefinition = website.pages[testName]
+        }
+
+        if (testDefinition !== undefined) {
             if (testName == "main") {
                 thisWebsiteTestSuite.addTest(new Mocha.Test(testName, async function() {
                     // Set the timeout for this test to 30 seconds
                     this.timeout(30000);
                     // Load the parkrun page
-                    const url = website.hostname + website.pages[testName].replace("REPLACE_ATHLETE_NUMBER", parkrunnerAndyTaylor)
+                    const url = website.hostname + testDefinition.replace("REPLACE_ATHLETE_NUMBER", parkrunnerAndyTaylor)
                     console.log("Loading "+url)
                     // await driver.get("https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
                     await driver.get(url);
