@@ -38,12 +38,12 @@ function parse_volunteer_table(result) {
      // "Volunteer Summary"
      var results_table = $(this)
      parent = $(this).parent()
-     $("h1#volunteer-summary", parent).each(function (index) {
+     $("h3#volunteer-summary", parent).each(function (index) {
          completed_volunteer_roles = {}
          $("tbody>tr", results_table).each(function (role_index) {
              table_cells = $("td", this)
-             volunteer_role = table_cells[1].innerText
-             volunteer_role_quantity = table_cells[2].innerText
+             volunteer_role = table_cells[0].innerText.replace(/^\s+|\s+$/g, '');
+             volunteer_role_quantity = table_cells[1].innerText
 
              // Try and translate from whatever language it is in
              normalised_volunteer_role = get_normalised_volunteer_role(volunteer_role)
@@ -610,9 +610,13 @@ function get_athlete_id() {
     // Very basic method to get only the parameter we care about
     var page_parameters = window.location.search
     var athlete_id = undefined
-    if (page_parameters.includes('athleteNumber=')) {
+
+    if (window.location.pathname.startsWith('/parkrunner')) {
+        athlete_id = window.location.pathname.match('parkrunner\/([0-9]+)\/all')[1]
+    } else if (page_parameters.includes('athleteNumber=')) {
         athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
     }
+
     console.log('Athlete ID: '+athlete_id)
     return athlete_id
 }
