@@ -97,9 +97,9 @@ function parsePageAthleteInfo() {
   //       </h2>
 
   // It can look different in different languages, e.g.
-  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
+  // https://www.parkrun.ru/parkrunner/5481082/all/
   // <h2>Максим МАХНО - 14 пробежек на All Events<br/>14 забеги parkrun total</h2>
-  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // https://www.parkrun.jp/parkrunner/6460713/all/
   // <h2>和輝 遠藤 - 10 参加 All Events<br/>10 parkrun total</h2>
 
   // In each case, however, it is the first <h2> block, and everything before the dash is what we want.

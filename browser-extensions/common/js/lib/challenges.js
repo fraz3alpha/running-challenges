@@ -1283,11 +1283,11 @@ function challenge_name_badge(data, params) {
   // This works for English speaking countries, and we might be able to manage a bit of Russian, 
   // but we are broken for Japanese Kanji names :(
   // Some samples
-  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
-  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // https://www.parkrun.ru/parkrunner/5481082/all/
+  // https://www.parkrun.jp/parkrunner/6460713/all/
   //
   // PS-H, which has a hyphen is his surname:
-  // https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0
+  // https://www.parkrun.org.uk/parkrunner/1674/all/
 
   // Find the data we are interested in
   parkrun_results = data.parkrun_results

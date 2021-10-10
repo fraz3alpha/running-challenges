@@ -53,7 +53,7 @@
           "js/lib/i18n.js",
           "js/lib/challenges.js",
           "js/lib/challenges_ui.js",
-          "js/content-scripts/content-script-athleteeventresultshistory.js"
+          "js/content-scripts/content-script-parkrunner.js"
       ],
       "css": [
         "css/third-party/leaflet/leaflet.css",

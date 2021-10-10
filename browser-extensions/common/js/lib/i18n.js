@@ -163,7 +163,7 @@ var domains = {
         // Danish pages
         // http://www.parkrun.dk/amagerstrandpark/results/athletehistory/?athleteNumber=3287153
         // http://www.parkrun.dk/results/athleteresultshistory/?athleteNumber=3287153
-        // http://www.parkrun.dk/results/athleteeventresultshistory/?athleteNumber=3287153&eventNumber=0
+        // https://www.parkrun.dk/parkrunner/3287153/all/
         "table_all_results": "Alle resultater",
         "link_view_stats_for_all_parkruns": "Se tal for alle parkruns løbet af denne løber",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Se tal for alle parkruns løbet af denne løber",
@@ -201,7 +201,7 @@ var domains = {
         // Swedish pages
         // http://www.parkrun.se/orebro/results/athletehistory/?athleteNumber=3899897
         // http://www.parkrun.se/results/athleteresultshistory/?athleteNumber=3899897
-        // http://www.parkrun.se/results/athleteeventresultshistory/?athleteNumber=3899897&eventNumber=0
+        // https://www.parkrun.se/parkrunner/3899897/all/
         "table_all_results": "Alla resultat",
         "link_view_stats_for_all_parkruns": "Se statistik för alla parkruns av denna löpare",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Se statistik för alla parkruns av denna löpare",
@@ -239,14 +239,14 @@ var domains = {
         // Finnish pages
         // http://www.parkrun.fi/tampere/results/athletehistory/?athleteNumber=4064283
         // http://www.parkrun.fi/results/athleteresultshistory/?athleteNumber=4064283
-        // http://www.parkrun.fi/results/athleteeventresultshistory/?athleteNumber=4064283&eventNumber=0
+        // https://www.parkrun.fi/parkrunner/4064283/all/
         // It is all in English
     },
     "www.parkrun.fr": {
         // French pages
         // http://www.parkrun.fr/boisdeboulogne/results/athletehistory/?athleteNumber=422364
         // http://www.parkrun.fr/results/athleteresultshistory/?athleteNumber=422364
-        // http://www.parkrun.fr/results/athleteeventresultshistory/?athleteNumber=2769739&eventNumber=0
+        // https://www.parkrun.fr/parkrunner/2769739/all/
         "table_all_results": "Toutes les participations",
         "link_view_stats_for_all_parkruns": "Consulter les stats de cet athlète tous parkruns confondus",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Consulter les stats de cet athlète tous parkruns confondus",
@@ -285,7 +285,7 @@ var domains = {
         // German pages
         // http://www.parkrun.com.de/georgengarten/results/athletehistory/?athleteNumber=4099000
         // http://www.parkrun.com.de/results/athleteresultshistory/?athleteNumber=4099000
-        // http://www.parkrun.com.de/results/athleteeventresultshistory/?athleteNumber=4099000&eventNumber=0
+        // https://www.parkrun.com.de/parkrunner/4099000/all/
         "table_all_results": "Alle Ergebnisse",
         "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
@@ -324,7 +324,7 @@ var domains = {
         // Norweigen pages
         // http://www.parkrun.no/toyen/results/athletehistory/?athleteNumber=4370177
         // http://www.parkrun.no/results/athleteresultshistory/?athleteNumber=4370177
-        // http://www.parkrun.no/results/athleteeventresultshistory/?athleteNumber=4370177&eventNumber=0
+        // https://www.parkrun.no/parkrunner/4370177/all/
         // It's all in English
         // Volunteer roles are in ENGLISH
     },
@@ -332,7 +332,7 @@ var domains = {
         // Russian pages
         // http://www.parkrun.ru/bitsa/results/athletehistory/?athleteNumber=1551222
         // http://www.parkrun.ru/results/athleteresultshistory/?athleteNumber=1551222
-        // http://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=1551222&eventNumber=0
+        // https://www.parkrun.ru/parkrunner/1551222/all/
         // Randomly partly in English
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Показать статистику этого спортсмена по всем забегам",
         "table_all_results": "Все результаты",
@@ -374,7 +374,7 @@ var domains = {
         // I wonder if this is just new-website teething problems, or an
         // intentional action
         // http://www.parkrun.my/results/athleteresultshistory/?athleteNumber=4493261
-        // http://www.parkrun.my/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
+        // https://www.parkrun.my/parkrunner/4493261/all/
         // It's all in English, so all links should work as-is
         // Volunteer roles are in ENGLISH
     },
@@ -382,7 +382,7 @@ var domains = {
         // Japan pages
         // http://www.parkrun.jp/futakotamagawa/results/athletehistory/?athleteNumber=4493261
         // http://www.parkrun.jp/results/athleteresultshistory/?athleteNumber=4493261
-        // http://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=4493261&eventNumber=0
+        // https://www.parkrun.jp/parkrunner/4493261/all/
         // It's all in Japanese, nothing will work without translations!
         "table_all_results": "すべての結果",
         "link_view_stats_for_all_parkruns": "この登録者のすべてのparkrunの記録を見る。",

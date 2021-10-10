@@ -49,7 +49,7 @@ I'll have a P please Bob - cue everyone heading off to [Penistone parkrun](https
 ## Updated Japanese and Polish translations
 
 When we added support for [parkrun.jp](https://www.parkrun.jp/) no events had been run yet, and we didn't know any
-of the volunteer translations! Now, thanks to [William Steffancin (A4782624)](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=4782624&eventNumber=0) we have example translations for most of the roles in Japan.
+of the volunteer translations! Now, thanks to [William Steffancin (A4782624)](https://www.parkrun.org.uk/parkrunner/4782624/all/) we have example translations for most of the roles in Japan.
 
 Meanwhile, in Poland, parkrun HQ updated most (all?) of the volunteer roles names, probably to be more technically
 correct (the best kind of correct). Many thanks to [@sebuish](https://github.com/sebiush) who has provided us with 
