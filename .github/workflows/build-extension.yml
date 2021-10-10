@@ -81,7 +81,8 @@ jobs:
     strategy:
       matrix:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
-        browser: ["chrome"]
+        browser: ["chrome", "firefox"]
+      fail-fast: false
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
       selenium:
