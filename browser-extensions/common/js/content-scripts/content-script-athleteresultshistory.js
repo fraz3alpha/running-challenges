@@ -19,7 +19,7 @@ function get_athlete_id() {
 
 
 var athlete_id = get_athlete_id()
-if (athlete_id != null) {
+if (athlete_id !== undefined) {
     url = 'https://' + location.host + "/parkrunner/" + athlete_id +'/all'
 
     if (url != null) {
