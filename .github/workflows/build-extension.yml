@@ -127,6 +127,8 @@ jobs:
           npm run test-selenium
         env:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
+          EXTENSION_BROWSER: ${{ matrix.browser }}
+          SELENIUM_PORT: 4444
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2

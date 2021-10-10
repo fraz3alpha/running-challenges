@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "test-with-coverage": "nyc --reporter=html --reporter=text mocha",
-    "test-selenium": "mocha test-selenium/selenium-docker-chrome.js"
+    "test-selenium": "node test-selenium/selenium-docker.js"
   },
   "author": "",
   "license": "MIT",
