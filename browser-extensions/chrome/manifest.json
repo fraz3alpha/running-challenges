@@ -37,7 +37,8 @@
           "*://www.parkrun.ru/parkrunner/*",
           "*://www.parkrun.my/parkrunner/*",
           "*://www.parkrun.jp/parkrunner/*",
-          "*://www.parkrun.co.nl/parkrunner/*"
+          "*://www.parkrun.co.nl/parkrunner/*",
+          "*://www.parkrun.co.at/parkrunner/*"
       ],
       "js": [
           "js/lib/version.js",
@@ -85,7 +86,8 @@
         "*://www.parkrun.ru/results/athleteresultshistory/*",
         "*://www.parkrun.my/results/athleteresultshistory/*",
         "*://www.parkrun.jp/results/athleteresultshistory/*",
-        "*://www.parkrun.co.nl/results/athleteresultshistory/*"
+        "*://www.parkrun.co.nl/results/athleteresultshistory/*",
+        "*://www.parkrun.co.at/results/athleteresultshistory/*"
     ],
     "js": [
         "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
@@ -116,7 +118,8 @@
         "*://www.parkrun.ru/*/athletehistory/*",
         "*://www.parkrun.my/*/results/athletehistory/*",
         "*://www.parkrun.jp/*/results/athletehistory/*",
-        "*://www.parkrun.co.nl/*/results/athletehistory/*"
+        "*://www.parkrun.co.nl/*/results/athletehistory/*",
+        "*://www.parkrun.co.at/*/results/athletehistory/*"
     ],
     "js": [
         "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
