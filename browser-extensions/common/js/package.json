@@ -5,7 +5,8 @@
   "main": "dummy-app.js",
   "scripts": {
     "test": "mocha",
-    "test-with-coverage": "nyc --reporter=html --reporter=text mocha"
+    "test-with-coverage": "nyc --reporter=html --reporter=text mocha",
+    "test-selenium": "node test-selenium/selenium-docker.js"
   },
   "author": "",
   "license": "MIT",
@@ -14,5 +15,8 @@
     "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "rewire": "^4.0.1"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.0.0-beta.3"
   }
 }
