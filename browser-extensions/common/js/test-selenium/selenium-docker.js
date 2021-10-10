@@ -156,7 +156,7 @@ const testOrder = [
 
 var parkrunWebsites = {
     "defaultPages": {
-        "main": "/results/athleteeventresultshistory/?athleteNumber=REPLACE_ATHLETE_NUMBER&eventNumber=0"
+        "main": "/parkrunner/REPLACE_ATHLETE_NUMBER/all/"
     },
     "sites": [
         {
