@@ -452,7 +452,43 @@ var domains = {
             "Parkeerregelaar": "Car Park Marshal",
             "Routecontroleur": "Event Day Course Check"
         }
-    }
+    },
+    "parkrun.com.at": {
+        // Using German translation
+        "table_all_results": "Alle Ergebnisse",
+        "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
+        // Volunteer roles are in GERMAN (A4029732)
+        "text_volunteer_role_map": {
+            "Ausrüstung Lagerung und Lieferung": "Equipment Storage and Delivery",
+            "Kommunikation": "Communications Person",
+            "Helfer Koordinator": "Volunteer Co-ordinator",
+            "Veranstaltung Aufbau": "Pre-event Setup",
+            "Einweiser für Erstläufer": "First Timers Briefing",
+            "Zeichensprache Unterstützung": "Sign Language Support",
+            "Streckenposten": "Marshal",
+            "Schlussbegleitung": "Tail Walker",
+            "Veranstaltungsleiter": "Run Director",
+            "Führungs-Fahrrad": "Lead Bike",
+            "Tempoläufer": "Pacer (5k only)",
+            "Begleiter für Sehbehinderte": "VI Guide",
+            "Fotograf": "Photographer",
+            "Zeitnehmer": "Timekeeper",
+            // "Backup Timer": "Backup Timer",
+            "Leiter Einlaufgasse": "Funnel Manager",
+            "Platzierungskarten Ausgabe": "Finish Tokens",
+            "Helfer Platzierungskarten Ausgabe": "Finish Token Support",
+            "Barcode Einleser": "Barcode Scanning",
+            "Nummern-Kontrolleur": "Number Checker",
+            "Veranstaltung Abbau": "Post-event Close Down",
+            "Ergebnis Auswerter": "Results Processor",
+            "Platzierungskarten Verwaltung": "Token Sorting",
+            "Berichterstattung": "Run Report Writer",
+            "andere Aufgaben": "Other",
+            "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
+            "Parkplatzeinweisung": "Car Park Marshal"
+        }
+    },
 }
 
 function get_localised_value(param, domain=location.host) {

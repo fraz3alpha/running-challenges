@@ -990,6 +990,7 @@ function get_flag_image_src(country) {
   var flag_map = {
       "New Zealand": "nz",
       "Australia": "au",
+      "Austria": "at",
       "Canada": "ca",
       "Denmark": "dk",
       "Finland": "fi",

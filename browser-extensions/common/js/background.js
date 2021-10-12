@@ -96,6 +96,7 @@ function getCountryNameFromId(id) {
   // Sub-countries are assigned a number with a prefix of their main country site code.
   var countryMap = {
     "3": "Australia",
+    "4": "Austria",
     "14": "Canada",
     "23": "Denmark",
     "30": "Finland",
