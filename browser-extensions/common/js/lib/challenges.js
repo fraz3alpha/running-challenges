@@ -990,6 +990,7 @@ function get_flag_image_src(country) {
   var flag_map = {
       "New Zealand": "nz",
       "Australia": "au",
+      "Austria": "at",
       "Canada": "ca",
       "Denmark": "dk",
       "Finland": "fi",
@@ -1283,11 +1284,11 @@ function challenge_name_badge(data, params) {
   // This works for English speaking countries, and we might be able to manage a bit of Russian, 
   // but we are broken for Japanese Kanji names :(
   // Some samples
-  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
-  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // https://www.parkrun.ru/parkrunner/5481082/all/
+  // https://www.parkrun.jp/parkrunner/6460713/all/
   //
   // PS-H, which has a hyphen is his surname:
-  // https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1674&eventNumber=0
+  // https://www.parkrun.org.uk/parkrunner/1674/all/
 
   // Find the data we are interested in
   parkrun_results = data.parkrun_results
@@ -1530,7 +1531,7 @@ function challenge_start_letters(data, params) {
                 // Add the first on that we haven't already added
                 $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
                   // Only add it, and break out of the loop, if it is new
-                  if (!(event.name in o.nearest_qualifying_events)) {
+                  if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
                     o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
                     // Break out
                     return false

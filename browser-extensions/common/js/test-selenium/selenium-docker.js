@@ -269,7 +269,7 @@ parkrunWebsites.sites.forEach(function(website) {
                     // Load the parkrun page
                     const url = website.hostname + testDefinition.replace("REPLACE_ATHLETE_NUMBER", parkrunnerAndyTaylor)
                     console.log("Loading "+url)
-                    // await driver.get("https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
+                    // await driver.get("https://www.parkrun.org.uk/parkrunner/"+parkrunnerAndyTaylor+"/all/");
                     await driver.get(url);
                     // Give us a moment the ensure the extension has loaded before continuing
                     await driver.sleep(1000);
@@ -287,7 +287,7 @@ parkrunWebsites.sites.forEach(function(website) {
             //         // Load the parkrun page
             //         const url = website.hostname + website.pages[testName].replace("REPLACE_ATHLETE_NUMBER", parkrunnerAndyTaylor)
             //         console.log("Loading "+url)
-            //         // await driver.get("https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
+            //         // await driver.get("https://www.parkrun.org.uk/parkrunner/"+parkrunnerAndyTaylor+"/all/");
             //         await driver.get(url);
             //         // Give us a moment the ensure the extension has loaded before continuing
             //         await driver.sleep(1000);
@@ -369,7 +369,7 @@ process.on("exit", (code) => {
 //             // Ensure that the main page on the UK site works
 //             it("should load the extension and modify results/athleteeventresultshistory", async () => {
 //                 // Load the parkrun page
-//                 await driver.get("https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
+//                 await driver.get("https://www.parkrun.org.uk/parkrunner/"+parkrunnerAndyTaylor+"/all/");
 //                 // Give us a moment the ensure the extension has loaded before continuing
 //                 await driver.sleep(1000);
 
@@ -391,7 +391,7 @@ process.on("exit", (code) => {
 //             // Ensure that the main page on the UK site works
 //             it("should load the extension and modify results/athleteeventresultshistory", async () => {
 //                 // Load the parkrun page
-//                 await driver.get("https://www.parkrun.com.de/results/athleteeventresultshistory/?athleteNumber="+parkrunnerAndyTaylor+"&eventNumber=0");
+//                 await driver.get("https://www.parkrun.com.de/parkrunner/"+parkrunnerAndyTaylor+"/all/");
 //                 // Give us a moment the ensure the extension has loaded before continuing
 //                 await driver.sleep(1000);
 

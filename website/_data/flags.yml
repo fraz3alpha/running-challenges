@@ -5,6 +5,9 @@ flags:
   - shortname: au
     name: Australia
 
+  - shortname: at
+    name: Austria    
+
   - shortname: ca
     name: Canada
 

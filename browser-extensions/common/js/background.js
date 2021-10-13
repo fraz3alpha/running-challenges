@@ -51,7 +51,7 @@ browser.browserAction.onClicked.addListener(function(tab) {
             }
 
             console.log("local_url for this user is: " + local_url)
-            results_url = "https://" + local_url + "/"+get_localised_value("url_athleteeventresultshistory", local_url)+"?athleteNumber="+items.athlete_number+"&eventNumber=0"
+            results_url = "https://" + local_url + "/parkrunner/" + items.athlete_number + "/all"
             browser.tabs.create({ url: results_url });
         }
 
@@ -96,6 +96,7 @@ function getCountryNameFromId(id) {
   // Sub-countries are assigned a number with a prefix of their main country site code.
   var countryMap = {
     "3": "Australia",
+    "4": "Austria",
     "14": "Canada",
     "23": "Denmark",
     "30": "Finland",
