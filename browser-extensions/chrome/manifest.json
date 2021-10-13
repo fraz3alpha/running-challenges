@@ -38,7 +38,7 @@
           "*://www.parkrun.my/parkrunner/*/all/",
           "*://www.parkrun.jp/parkrunner/*/all/",
           "*://www.parkrun.co.nl/parkrunner/*/all/",
-          "*://www.parkrun.co.at/parkrunner/*/all/",
+          "*://www.parkrun.co.at/parkrunner/*/all/"
       ],
       "js": [
           "js/lib/version.js",
