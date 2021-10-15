@@ -93,6 +93,8 @@ jobs:
         image: ${{ matrix.selenium-image }}
         ports: 
           - 4444:4444
+        volumes:
+          - /dev/shm:/dev/shm
     defaults:
       run:
         shell: bash
@@ -128,13 +130,13 @@ jobs:
           # Find the extension zip in the path supplied
           export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
           echo "Extension found at ${EXTENSION_ZIP}"
-          echo "Running selenium-docker-${{ matrix.browser }}.js : $(ls -lh selenium-docker-${{ matrix.browser }}.js)"
+          echo "Running selenium-docker.js against ${{ matrix.browser }}"
           npm run test-selenium
         env:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
           EXTENSION_BROWSER: ${{ matrix.browser }}
           SELENIUM_PORT: 4444
-          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+          # COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2

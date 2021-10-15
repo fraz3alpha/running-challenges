@@ -286,7 +286,7 @@ var domains = {
         // http://www.parkrun.com.de/georgengarten/results/athletehistory/?athleteNumber=4099000
         // http://www.parkrun.com.de/results/athleteresultshistory/?athleteNumber=4099000
         // https://www.parkrun.com.de/parkrunner/4099000/all/
-        "table_all_results": "Alle Ergebnisse",
+        "table_all_results": "Alle Ergebnisse bei",
         "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
         // Volunteer roles are in GERMAN (A4029732)
@@ -419,7 +419,7 @@ var domains = {
             "コース状況確認係": "Event Day Course Check"
         }
     },
-    "parkrun.co.nl": {
+    "www.parkrun.co.nl": {
         "table_all_results": "Alle resultaten",
         "link_view_stats_for_all_parkruns": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
@@ -453,9 +453,9 @@ var domains = {
             "Routecontroleur": "Event Day Course Check"
         }
     },
-    "parkrun.com.at": {
+    "www.parkrun.co.at": {
         // Using German translation
-        "table_all_results": "Alle Ergebnisse",
+        "table_all_results": "Alle Ergebnisse bei",
         "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
         // Volunteer roles are in GERMAN (A4029732)
