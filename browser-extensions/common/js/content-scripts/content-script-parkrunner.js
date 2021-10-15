@@ -21,7 +21,7 @@ function get_table(id, caption) {
             return false
         }
         // Only include this table if the caption is correct
-        return table_captions[0].innerText == caption
+        return table_captions[0].innerText.replace('–', '').trim() == caption
     })
 }
 
