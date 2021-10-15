@@ -93,6 +93,8 @@ jobs:
         image: ${{ matrix.selenium-image }}
         ports: 
           - 4444:4444
+        volumes:
+          - /dev/shm:/dev/shm
     defaults:
       run:
         shell: bash
