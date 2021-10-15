@@ -107,7 +107,9 @@ testSuite.beforeAll(function(done) {
 
 // Free up the driver at the end
 testSuite.afterAll(async function() { 
-    driver.quit()
+    // Wait half a second before tearing everything down
+    await driver.sleep(500);
+    driver.quit();
 });
 
 // After each test, take a screenshot
