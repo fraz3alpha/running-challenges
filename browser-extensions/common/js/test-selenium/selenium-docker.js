@@ -247,6 +247,10 @@ var parkrunWebsites = {
             "name": "parkrun.co.nl",
             "hostname": "https://www.parkrun.co.nl"
         },
+        {
+            "name": "parkrun.co.at",
+            "hostname": "https://www.parkrun.co.at"
+        },
     ]
 }
 
