@@ -435,7 +435,11 @@ function add_flags(div_id, data) {
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
             img.attr('height',48)
-            img.attr('style', 'padding-left:6px; padding-right:6px')
+            // We need some padding so that the flags don't run into each other.
+            // This used to be 6px left and right, but that was not only huge, but squashed the flags
+            // for some reason, perhaps there was inherited top and bottom padding that disappeared
+            // at some point. So now lets make it 2px all round
+            img.attr('style', 'padding-left:2px; padding-right:2px; padding-bottom:2px; padding-top:2px')
 
             regionnaire_link.append(img)
             flags_div.append(regionnaire_link)
