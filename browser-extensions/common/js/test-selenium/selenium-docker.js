@@ -104,7 +104,7 @@ testSuite.beforeAll(function(done) {
     driver = buildDriver(extensionBrowser);
     // Lets change the size of the window
     // Apparently it changed, correct syntax is https://stackoverflow.com/questions/23225604/how-do-i-resize-a-webdriverjs-browser-window
-    driver.manage().window().setRect({width: 1920, height: 1080});
+    driver.manage().window().setRect({width: 1200, height: 2000});
     done();
 });
 
