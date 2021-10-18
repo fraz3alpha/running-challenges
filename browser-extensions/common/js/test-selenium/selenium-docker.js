@@ -53,7 +53,7 @@ var getBrowserOptions = function(browser) {
 
 // Create the driver, which needs to load the extension and make a connection to 
 // the appropriate Selenium port (Which will be running in a container)
-var buildDriver = function(browser, caps) {
+var buildDriver = function(browser) {
 
     const encodeExt = file => {
         const stream = fs.readFileSync(path.resolve(file));
@@ -101,7 +101,10 @@ var buildDriver = function(browser, caps) {
 testSuite.beforeAll(function(done) {
     console.log("Creating browser driver")
     // No specific capabililties are passed in this time.
-    driver = buildDriver(extensionBrowser, {});
+    driver = buildDriver(extensionBrowser);
+    // Lets change the size of the window
+    // Apparently it changed, correct syntax is https://stackoverflow.com/questions/23225604/how-do-i-resize-a-webdriverjs-browser-window
+    driver.manage().window().setRect({width: 1200, height: 2000});
     done();
 });
 
