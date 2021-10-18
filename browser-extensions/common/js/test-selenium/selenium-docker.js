@@ -103,7 +103,7 @@ testSuite.beforeAll(function(done) {
     // No specific capabililties are passed in this time.
     driver = buildDriver(extensionBrowser);
     // Lets change the size of the window
-    driver.manage().window().setSize(new Dimension(1920, 1080));
+    driver.manage().window().setSize(1920, 1080);
     done();
 });
 
