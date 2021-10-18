@@ -53,7 +53,7 @@ var getBrowserOptions = function(browser) {
 
 // Create the driver, which needs to load the extension and make a connection to 
 // the appropriate Selenium port (Which will be running in a container)
-var buildDriver = function(browser, caps) {
+var buildDriver = function(browser) {
 
     const encodeExt = file => {
         const stream = fs.readFileSync(path.resolve(file));
@@ -101,7 +101,9 @@ var buildDriver = function(browser, caps) {
 testSuite.beforeAll(function(done) {
     console.log("Creating browser driver")
     // No specific capabililties are passed in this time.
-    driver = buildDriver(extensionBrowser, {});
+    driver = buildDriver(extensionBrowser);
+    // Lets change the size of the window
+    driver.manage().window().setSize(new Dimension(1920, 1080));
     done();
 });
 
