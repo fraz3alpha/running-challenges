@@ -88,8 +88,8 @@ jobs:
         include:
           - browser: "chrome"
             selenium-image: selenium/standalone-chrome:latest
-          # - browser: "firefox"
-          #   selenium-image: selenium/standalone-firefox:latest
+          - browser: "firefox"
+            selenium-image: selenium/standalone-firefox:latest
       fail-fast: false
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
