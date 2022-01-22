@@ -99,11 +99,11 @@ var buildDriver = function(browser) {
     if (browser == "firefox"){
         // Example firefox loading code taken from https://github.com/SeleniumHQ/selenium/blob/ad11a61cebbb276f3d3156bded2e566ec41d6696/javascript/node/selenium-webdriver/test/firefox_test.js#L223-L238
         // If we are using Firefox, now we have to install our addon
-        let id = await driver.installAddon(extensionZip);
+        driver.installAddon(extensionZip);
         // Give the extension a moment to load
         driver.sleep(1000);
     }
-    
+
     return driver
 
   };
