@@ -54,7 +54,10 @@ jobs:
           RELEASE_DATA=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/latest")
           echo ${RELEASE_DATA}
 
-          echo "which jq: $(which jq)"
+          # Get the asset id for the binary for this browser
+          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".assets | .[] | select(.name|startswith('running_challenges-${{ matrix.browser }}-')) | .id")
+
+          echo "ASSET_ID: ${ASSET_ID}"
 
         # with:
         #   version: latest
