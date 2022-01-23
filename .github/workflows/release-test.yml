@@ -51,7 +51,7 @@ jobs:
           API_URL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}"
 
           # Find the latest release
-          RELEASE_DATA=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/${INPUT_VERSION}")
+          RELEASE_DATA=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/latest")
           echo ${RELEASE_DATA}
 
         # with:
