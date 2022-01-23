@@ -1,0 +1,86 @@
+name: Release Test
+
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency
+concurrency: release-test
+
+# Run this workflow on a regular schedule to check things are still working,
+# and after every release is published.
+on: 
+  release:
+    types: [published]
+  schedule:
+    # Run every Sunday at 1pm (once a week will be fine, and lets avoid the busy Saturday rush)
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 13 * * 0'
+  workflow_dispatch:
+    # Allow it to be run manually - useful for testing?
+
+jobs:
+
+  test-release:
+    name: Test Release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - browser: "chrome"
+            selenium-image: selenium/standalone-chrome:latest
+      fail-fast: false
+    services:
+     # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
+      selenium:
+        image: ${{ matrix.selenium-image }}
+        ports: 
+          - 4444:4444
+        volumes:
+          - /dev/shm:/dev/shm
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+
+      # Checks out a copy of the repository so that we have our test code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Fetch the release artifacts
+      - name:
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          version: latest
+          file: "running_challenges-${{ matrix.browser }}*.zip"
+          target: "browser-extensions/common/js/extension-binaries/"
+
+      - name: Show built extension packages
+        run: ls -lR extension-binaries
+
+      - name: Configure node v12
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Install test framework dependencies
+        run: npm install
+
+      - name: Run selenium test for ${{ matrix.browser }}
+        run: |
+          echo ${EXTENSION_PATH}
+          ls -lh ${EXTENSION_PATH}
+          # Find the extension zip in the path supplied
+          export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
+          echo "Extension found at ${EXTENSION_ZIP}"
+          echo "Running selenium-docker.js against ${{ matrix.browser }}"
+          npm run test-selenium
+        env:
+          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
+          EXTENSION_BROWSER: ${{ matrix.browser }}
+          SELENIUM_PORT: 4444
+          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+
+      - name: Upload test screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.browser }}-screenshots
+          path: browser-extensions/common/js/screenshots/
+        if: always()
