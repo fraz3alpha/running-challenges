@@ -25,6 +25,8 @@ jobs:
         include:
           - browser: "chrome"
             selenium-image: selenium/standalone-chrome:latest
+          - browser: "firefox"
+            selenium-image: selenium/standalone-firefox:latest
       fail-fast: false
     services:
      # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
@@ -47,6 +49,10 @@ jobs:
       # Fetch the release artifacts
       - name:
         run: |
+
+          # Create the target install directory
+          mkdir -p extension-binaries
+
           # Attempt to download the extension binary from the latest published release
           API_URL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}"
 
@@ -55,17 +61,28 @@ jobs:
           echo ${RELEASE_DATA}
 
           # Get the asset id for the binary for this browser
-          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".assets | .[] | select(.name|startswith(\"running_challenges-${{ matrix.browser }}-\")) | .id")
+          ASSET=$(echo "$RELEASE_DATA" | jq -r ".assets | .[] | select(.name|startswith(\"running_challenges-${{ matrix.browser }}-\"))")
 
-          echo "ASSET_ID: ${ASSET_ID}"
+          echo "ASSET: ${ASSET}"
+
+          if [[ -z "$ASSET" ]]; then
+            echo "Could not find asset"
+            exit 1
+          fi
+
+          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".id")
+          ASSET_NAME=$(echo "$RELEASE_DATA" | jq -r ".name")
+
+          # Download the file
+          curl -L -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/assets/${ASSET_ID} -o extension-binaries/${ASSET_NAME}"
 
         # with:
         #   version: latest
         #   file: "running_challenges-${{ matrix.browser }}*.zip"
         #   target: "browser-extensions/common/js/extension-binaries/"
 
-      # - name: Show built extension packages
-      #   run: ls -lR extension-binaries
+      - name: Show built extension packages
+        run: ls -lR extension-binaries
 
       # - name: Configure node v12
       #   uses: actions/setup-node@v2
