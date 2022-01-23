@@ -46,41 +46,48 @@ jobs:
 
       # Fetch the release artifacts
       - name:
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          version: latest
-          file: "running_challenges-${{ matrix.browser }}*.zip"
-          target: "browser-extensions/common/js/extension-binaries/"
-
-      - name: Show built extension packages
-        run: ls -lR extension-binaries
-
-      - name: Configure node v12
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-
-      - name: Install test framework dependencies
-        run: npm install
-
-      - name: Run selenium test for ${{ matrix.browser }}
         run: |
-          echo ${EXTENSION_PATH}
-          ls -lh ${EXTENSION_PATH}
-          # Find the extension zip in the path supplied
-          export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
-          echo "Extension found at ${EXTENSION_ZIP}"
-          echo "Running selenium-docker.js against ${{ matrix.browser }}"
-          npm run test-selenium
-        env:
-          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
-          EXTENSION_BROWSER: ${{ matrix.browser }}
-          SELENIUM_PORT: 4444
-          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+          # Attempt to download the extension binary from the latest published release
+          API_URL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}"
 
-      - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.browser }}-screenshots
-          path: browser-extensions/common/js/screenshots/
-        if: always()
+          # Find the latest release
+          RELEASE_DATA=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/${INPUT_VERSION}")
+          echo ${RELEASE_DATA}
+
+        # with:
+        #   version: latest
+        #   file: "running_challenges-${{ matrix.browser }}*.zip"
+        #   target: "browser-extensions/common/js/extension-binaries/"
+
+      # - name: Show built extension packages
+      #   run: ls -lR extension-binaries
+
+      # - name: Configure node v12
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '12'
+
+      # - name: Install test framework dependencies
+      #   run: npm install
+
+      # - name: Run selenium test for ${{ matrix.browser }}
+      #   run: |
+      #     echo ${EXTENSION_PATH}
+      #     ls -lh ${EXTENSION_PATH}
+      #     # Find the extension zip in the path supplied
+      #     export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
+      #     echo "Extension found at ${EXTENSION_ZIP}"
+      #     echo "Running selenium-docker.js against ${{ matrix.browser }}"
+      #     npm run test-selenium
+      #   env:
+      #     EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
+      #     EXTENSION_BROWSER: ${{ matrix.browser }}
+      #     SELENIUM_PORT: 4444
+      #     COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+
+      # - name: Upload test screenshots
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ matrix.browser }}-screenshots
+      #     path: browser-extensions/common/js/screenshots/
+      #   if: always()
