@@ -75,7 +75,11 @@ jobs:
           ASSET_NAME=$(echo "$RELEASE_DATA" | jq -r ".name")
 
           # Download the file
-          curl -L -H "Accept: application/octet-stream" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "${ASSET_URL} -o extension-binaries/${ASSET_NAME}"
+          curl -L \
+          -H "Accept: application/octet-stream" \
+          -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          "${ASSET_URL}" \
+          -o "extension-binaries/${ASSET_NAME}"
 
         # with:
         #   version: latest
