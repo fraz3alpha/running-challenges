@@ -33,7 +33,7 @@ jobs:
       selenium:
         image: ${{ matrix.selenium-image }}
         ports: 
-          - 4444:4444
+          - 4444
         volumes:
           - /dev/shm:/dev/shm
     defaults:
@@ -104,7 +104,7 @@ jobs:
           npm run test-selenium
         env:
           EXTENSION_BROWSER: ${{ matrix.browser }}
-          SELENIUM_PORT: 4444
+          SELENIUM_PORT: ${{ job.services.selenium.ports[4444] }}
           COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
 
       # - name: Upload test screenshots
