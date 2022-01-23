@@ -79,6 +79,8 @@ jobs:
           "${ASSET_URL}" \
           -o "extension-binaries/${ASSET_NAME}"
 
+          ls -l extension-binaries/
+
         # with:
         #   version: latest
         #   file: "running_challenges-${{ matrix.browser }}*.zip"
