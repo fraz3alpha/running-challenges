@@ -54,6 +54,8 @@ jobs:
           RELEASE_DATA=$(curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' "$API_URL/releases/latest")
           echo ${RELEASE_DATA}
 
+          echo "which jq: $(which jq)""
+
         # with:
         #   version: latest
         #   file: "running_challenges-${{ matrix.browser }}*.zip"
