@@ -83,7 +83,7 @@ jobs:
           ls -l extension-binaries/
 
           # Set a variable containing the filename
-          echo "::set-output name=extension_filename::$ASSET_NAME"
+          echo "::set-output name=extension_filename::`pwd`/extension-binaries/${ASSET_NAME}"
 
       - name: Configure node v12
         uses: actions/setup-node@v2
