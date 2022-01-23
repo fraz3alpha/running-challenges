@@ -47,7 +47,8 @@ jobs:
         uses: actions/checkout@v2
 
       # Fetch the release artifacts
-      - name:
+      - name: Fetch release artifacts
+        id: fetch_artifacts
         run: |
 
           # Create the target install directory
@@ -70,9 +71,9 @@ jobs:
             exit 1
           fi
 
-          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".id")
-          ASSET_URL=$(echo "$RELEASE_DATA" | jq -r ".url")
-          ASSET_NAME=$(echo "$RELEASE_DATA" | jq -r ".name")
+          ASSET_ID=$(echo "$ASSET" | jq -r ".id")
+          ASSET_URL=$(echo "$ASSET" | jq -r ".url")
+          ASSET_NAME=$(echo "$ASSET" | jq -r ".name")
 
           # Download the file, it doesn't need auth
           curl -L \
@@ -81,36 +82,28 @@ jobs:
 
           ls -l extension-binaries/
 
-        # with:
-        #   version: latest
-        #   file: "running_challenges-${{ matrix.browser }}*.zip"
-        #   target: "browser-extensions/common/js/extension-binaries/"
+          # Set a variable containing the filename
+          echo "::set-output name=extension_filename::$ASSET_NAME"
 
-      - name: Show built extension packages
-        run: ls -lR extension-binaries
+      - name: Configure node v12
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
 
-      # - name: Configure node v12
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '12'
+      - name: Install test framework dependencies
+        run: npm install
 
-      # - name: Install test framework dependencies
-      #   run: npm install
-
-      # - name: Run selenium test for ${{ matrix.browser }}
-      #   run: |
-      #     echo ${EXTENSION_PATH}
-      #     ls -lh ${EXTENSION_PATH}
-      #     # Find the extension zip in the path supplied
-      #     export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
-      #     echo "Extension found at ${EXTENSION_ZIP}"
-      #     echo "Running selenium-docker.js against ${{ matrix.browser }}"
-      #     npm run test-selenium
-      #   env:
-      #     EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
-      #     EXTENSION_BROWSER: ${{ matrix.browser }}
-      #     SELENIUM_PORT: 4444
-      #     COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+      - name: Run selenium test for ${{ matrix.browser }}
+        run: |
+          export EXTENSION_ZIP=${{ steps.fetch_artifacts.extension_filename }}
+          ls -l ${EXTENSION_ZIP}
+          echo "Extension found at ${EXTENSION_ZIP}"
+          echo "Running selenium-docker.js against ${{ matrix.browser }}"
+          npm run test-selenium
+        env:
+          EXTENSION_BROWSER: ${{ matrix.browser }}
+          SELENIUM_PORT: 4444
+          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
 
       # - name: Upload test screenshots
       #   uses: actions/upload-artifact@v2
