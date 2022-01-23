@@ -78,6 +78,7 @@ jobs:
 
           # Download the file, it doesn't need auth
           curl -L \
+          -H "Accept: application/octet-stream" \
           "${ASSET_URL}" \
           -o "extension-binaries/${ASSET_NAME}"
 
