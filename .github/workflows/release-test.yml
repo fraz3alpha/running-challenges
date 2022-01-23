@@ -95,7 +95,7 @@ jobs:
 
       - name: Run selenium test for ${{ matrix.browser }}
         run: |
-          export EXTENSION_ZIP=${{ steps.fetch_artifacts.extension_filename }}
+          export EXTENSION_ZIP="${{ steps.fetch_artifacts.outputs.extension_filename }}"
           ls -l ${EXTENSION_ZIP}
           echo "Extension found at ${EXTENSION_ZIP}"
           echo "Running selenium-docker.js against ${{ matrix.browser }}"
