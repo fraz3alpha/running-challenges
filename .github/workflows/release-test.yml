@@ -55,7 +55,7 @@ jobs:
           echo ${RELEASE_DATA}
 
           # Get the asset id for the binary for this browser
-          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".assets | .[] | select(.name|startswith('running_challenges-${{ matrix.browser }}-')) | .id")
+          ASSET_ID=$(echo "$RELEASE_DATA" | jq -r ".assets | .[] | select(.name|startswith(\"running_challenges-${{ matrix.browser }}-\")) | .id")
 
           echo "ASSET_ID: ${ASSET_ID}"
 
