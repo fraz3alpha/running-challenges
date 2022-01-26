@@ -53,80 +53,218 @@ var getBrowserOptions = function(browser) {
 
 // Create the driver, which needs to load the extension and make a connection to 
 // the appropriate Selenium port (Which will be running in a container)
-var buildDriver = function(browser) {
+// var buildDriver = async function(browser) {
+
+//     const encodeExt = file => {
+//         const stream = fs.readFileSync(path.resolve(file));
+//         return Buffer.from(stream).toString('base64');
+//       };
+
+//     // The path to the extension zip should be set in this environment variable,
+//     // Or you could hardcode it, like 'C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'
+    
+//     console.log("Loading extension zip from "+extensionZip)
+  
+//     let opts = getBrowserOptions(browser);
+
+//     // Chrome seems to want us to load the extension into memory before passing it to the options
+//     // From https://stackoverflow.com/questions/51182142/add-an-unpacked-extension-from-file-selenium-node-js/56088051
+//     // Firefox wants it as a path, which we shall use as the default
+//     switch(browser) {
+//         // Chrome needs to be encoded
+//         case "chrome":
+//             opts.addExtensions(encodeExt(extensionZip));
+//             break;
+//         // Nothing else seems to want to be encoded
+//         // case "firefox":
+//         default:
+//             // opts.addExtensions(extensionZip); // I doubt this works for anything
+//             break;
+//     }
+    
+//     let builder = new Builder()
+//     .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
+//     .forBrowser(browser)
+
+//     // Apply the appropriate options
+//     switch(browser) {
+//         case "chrome":
+//             builder.setChromeOptions(opts);
+//             break;
+//         case "firefox":
+//             builder.setFirefoxOptions(opts);
+//             break;
+//     }
+//     console.log("bulding driver for "+browser)
+//     let driver = builder.build();
+//     console.log("Driver="+driver)
+//     if (browser == "firefox"){
+//         console.log("Running Firefox specific add-on loading code, installing it from "+extensionZip)
+//         // Example firefox loading code taken from https://github.com/SeleniumHQ/selenium/blob/ad11a61cebbb276f3d3156bded2e566ec41d6696/javascript/node/selenium-webdriver/test/firefox_test.js#L223-L238
+//         // If we are using Firefox, now we have to install our addon, but somehow resolve the promise so it actually gets installed
+//         let addonId = await driver.installAddon(extensionZip, true);
+//         console.log("Addon installed with id = "+addonId)
+//         // Give the extension a moment to load
+//         await driver.sleep(1000);
+//         console.log("Done waiting")
+//         done();
+//     }
+
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//           a = 1;
+//           resolve();
+//         }, 200);
+//       });
+
+//   };
+
+// This works for Firefox!
+// testSuite.beforeAll(async () => {
+//     // const firefoxExt = path.resolve(__dirname, '..', '..', 'extension', 'firefox.xpi');
+//     driver = new Builder()
+//     .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
+//     .forBrowser('firefox')
+//     .build();
+//     let firefoxDriver = new firefox.Driver(driver.getSession(), driver.getExecutor()).installAddon(extensionZip, true);
+//     console.log(firefoxDriver);
+// });
+
+// This has worked on both Firefox and Chrome at least once on Andy's laptop
+testSuite.beforeAll(async () => {
 
     const encodeExt = file => {
         const stream = fs.readFileSync(path.resolve(file));
         return Buffer.from(stream).toString('base64');
       };
 
-    // The path to the extension zip should be set in this environment variable,
-    // Or you could hardcode it, like 'C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'
-    
-    console.log("Loading extension zip from "+extensionZip)
-  
-    let opts = getBrowserOptions(browser);
+    let opts = undefined
+    let driverPromise = undefined
 
-    // Chrome seems to want us to load the extension into memory before passing it to the options
-    // From https://stackoverflow.com/questions/51182142/add-an-unpacked-extension-from-file-selenium-node-js/56088051
-    // Firefox wants it as a path, which we shall use as the default
-    switch(browser) {
-        // Chrome needs to be encoded
-        case "chrome":
-            opts.addExtensions(encodeExt(extensionZip));
-            break;
-        // Nothing else seems to want to be encoded
-        // case "firefox":
-        default:
-            // opts.addExtensions(extensionZip); // I doubt this works for anything
-            break;
-    }
-    
-    let builder = new Builder()
-    .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
-    .forBrowser(browser)
-
-    // Apply the appropriate options
-    switch(browser) {
-        case "chrome":
-            builder.setChromeOptions(opts);
-            break;
+    switch(extensionBrowser) {
         case "firefox":
-            builder.setFirefoxOptions(opts);
+
+            opts = new firefox.Options()
+
+            driver = new Builder()
+            .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
+            .forBrowser('firefox')
+            .setFirefoxOptions(opts)
+            .build();
+
+            driverPromise = new firefox.Driver(driver.getSession(), driver.getExecutor()).installAddon(extensionZip, true);
+            break;
+        case "chrome": 
+
+            opts = new chrome.Options()
+            opts.addExtensions(encodeExt(extensionZip));
+
+            driver = new Builder()
+            .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
+            .forBrowser('chrome')
+            .setChromeOptions(opts)
+            .build();
+
+            driverPromise = new chrome.Driver(driver.getSession(), driver.getExecutor());
             break;
     }
-    let driver = builder.build();
-    if (browser == "firefox"){
-        // Example firefox loading code taken from https://github.com/SeleniumHQ/selenium/blob/ad11a61cebbb276f3d3156bded2e566ec41d6696/javascript/node/selenium-webdriver/test/firefox_test.js#L223-L238
-        // If we are using Firefox, now we have to install our addon
-        driver.installAddon(extensionZip);
-        // Give the extension a moment to load
-        driver.sleep(1000);
-    }
 
-    return driver
+    console.log(driverPromise)
 
-  };
-
-testSuite.beforeAll(function(done) {
-    console.log("Creating browser driver")
-    // No specific capabililties are passed in this time.
-    driver = buildDriver(extensionBrowser);
-    // Lets change the size of the window
-    // Apparently it changed, correct syntax is https://stackoverflow.com/questions/23225604/how-do-i-resize-a-webdriverjs-browser-window
-    driver.manage().window().setRect({width: 1200, height: 2000});
-    done();
+    // const firefoxExt = path.resolve(__dirname, '..', '..', 'extension', 'firefox.xpi');
 });
+
+
+// testSuite.beforeAll(async function(done) {
+//     // Give the framework 10s to get set up
+//     this.timeout(10000);
+//     console.log("Creating browser driver")
+//     // No specific capabililties are passed in this time.
+//     // driver = buildDriver(extensionBrowser);
+
+//     const encodeExt = file => {
+//         const stream = fs.readFileSync(path.resolve(file));
+//         return Buffer.from(stream).toString('base64');
+//       };
+
+//     // The path to the extension zip should be set in this environment variable,
+//     // Or you could hardcode it, like 'C:\\Users\\andre\\Downloads\\running_challenges-chrome-1.1.4.26.zip'
+    
+//     console.log("Loading extension zip from "+extensionZip)
+  
+//     let opts = getBrowserOptions(extensionBrowser);
+
+//     // Chrome seems to want us to load the extension into memory before passing it to the options
+//     // From https://stackoverflow.com/questions/51182142/add-an-unpacked-extension-from-file-selenium-node-js/56088051
+//     // Firefox wants it as a path, which we shall use as the default
+//     switch(extensionBrowser) {
+//         // Chrome needs to be encoded
+//         case "chrome":
+//             opts.addExtensions(encodeExt(extensionZip));
+//             break;
+//         // Nothing else seems to want to be encoded
+//         // case "firefox":
+//         default:
+//             // opts.addExtensions(extensionZip); // I doubt this works for anything
+//             break;
+//     }
+    
+//     let builder = new Builder()
+//     .usingServer("http://localhost:"+seleniumPort+"/wd/hub")
+//     .forBrowser(extensionBrowser)
+
+//     // Apply the appropriate options
+//     switch(extensionBrowser) {
+//         case "chrome":
+//             builder.setChromeOptions(opts);
+//             break;
+//         case "firefox":
+//             builder.setFirefoxOptions(opts);
+//             break;
+//     }
+//     console.log("bulding driver for "+extensionBrowser)
+//     let driver = builder.build();
+//     console.log("Driver="+driver)
+//     // Set the browser size
+//     driver.manage().window().setRect({width: 1200, height: 2000});
+
+//     // Try and load the firefox extension
+//     if (extensionBrowser == "firefox"){
+//         console.log("Running Firefox specific add-on loading code, installing it from "+extensionZip)
+//         // Example firefox loading code taken from https://github.com/SeleniumHQ/selenium/blob/ad11a61cebbb276f3d3156bded2e566ec41d6696/javascript/node/selenium-webdriver/test/firefox_test.js#L223-L238
+//         // If we are using Firefox, now we have to install our addon, but somehow resolve the promise so it actually gets installed
+//         let addonId = await driver.installAddon(extensionZip, true);
+//         console.log("Addon installed with id = "+addonId)
+//         // Give the extension a moment to load
+//         await driver.sleep(1000);
+//         console.log("Done waiting")
+//     }
+
+
+//     // Lets change the size of the window
+//     // Apparently it changed, correct syntax is https://stackoverflow.com/questions/23225604/how-do-i-resize-a-webdriverjs-browser-window
+//     done();
+// });
 
 // Free up the driver at the end
 testSuite.afterAll(async function() { 
-    // Wait half a second before tearing everything down
-    await driver.sleep(500);
-    driver.quit();
+    if (driver === undefined) {
+        console.log("No Selenium driver, skipping actons for afterAll");
+        return;
+    }
+    // Wait half a second before tearing everything down 
+    if (driver !== undefined) {
+        await driver.sleep(500);
+        driver.quit();
+    }
 });
 
 // After each test, take a screenshot
 testSuite.afterEach(async function() {
+    if (driver === undefined) {
+        console.log("No Selenium driver, skipping actons for afterEach");
+        return;
+    }
     // console.log(this);
 
     // this.currentTest has a title, and a parent suite object, which itself might have a parent etc...
