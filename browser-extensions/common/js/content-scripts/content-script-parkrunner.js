@@ -21,7 +21,7 @@ function get_table(id, caption) {
             return false
         }
         // Only include this table if the caption is correct
-        return table_captions[0].innerText == caption
+        return table_captions[0].innerText.replace('–', '').trim() == caption
     })
 }
 
@@ -38,12 +38,12 @@ function parse_volunteer_table(result) {
      // "Volunteer Summary"
      var results_table = $(this)
      parent = $(this).parent()
-     $("h1#volunteer-summary", parent).each(function (index) {
+     $("h3#volunteer-summary", parent).each(function (index) {
          completed_volunteer_roles = {}
          $("tbody>tr", results_table).each(function (role_index) {
              table_cells = $("td", this)
-             volunteer_role = table_cells[1].innerText
-             volunteer_role_quantity = table_cells[2].innerText
+             volunteer_role = table_cells[0].innerText.replace(/^\s+|\s+$/g, '');
+             volunteer_role_quantity = table_cells[1].innerText
 
              // Try and translate from whatever language it is in
              normalised_volunteer_role = get_normalised_volunteer_role(volunteer_role)
@@ -97,9 +97,9 @@ function parsePageAthleteInfo() {
   //       </h2>
 
   // It can look different in different languages, e.g.
-  // https://www.parkrun.ru/results/athleteeventresultshistory/?athleteNumber=5481082&eventNumber=0
+  // https://www.parkrun.ru/parkrunner/5481082/all/
   // <h2>Максим МАХНО - 14 пробежек на All Events<br/>14 забеги parkrun total</h2>
-  // https://www.parkrun.jp/results/athleteeventresultshistory/?athleteNumber=6460713&eventNumber=0
+  // https://www.parkrun.jp/parkrunner/6460713/all/
   // <h2>和輝 遠藤 - 10 参加 All Events<br/>10 parkrun total</h2>
 
   // In each case, however, it is the first <h2> block, and everything before the dash is what we want.
@@ -435,7 +435,11 @@ function add_flags(div_id, data) {
             img.attr('title',country.name+": "+first_run)
             img.attr('width',48)
             img.attr('height',48)
-            img.attr('style', 'padding-left:6px; padding-right:6px')
+            // We need some padding so that the flags don't run into each other.
+            // This used to be 6px left and right, but that was not only huge, but squashed the flags
+            // for some reason, perhaps there was inherited top and bottom padding that disappeared
+            // at some point. So now lets make it 2px all round
+            img.attr('style', 'padding-left:2px; padding-right:2px; padding-bottom:2px; padding-top:2px')
 
             regionnaire_link.append(img)
             flags_div.append(regionnaire_link)
@@ -610,9 +614,13 @@ function get_athlete_id() {
     // Very basic method to get only the parameter we care about
     var page_parameters = window.location.search
     var athlete_id = undefined
-    if (page_parameters.includes('athleteNumber=')) {
+
+    if (window.location.pathname.startsWith('/parkrunner')) {
+        athlete_id = window.location.pathname.match('parkrunner\/([0-9]+)\/all')[1]
+    } else if (page_parameters.includes('athleteNumber=')) {
         athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
     }
+
     console.log('Athlete ID: '+athlete_id)
     return athlete_id
 }

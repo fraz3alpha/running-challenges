@@ -24,7 +24,7 @@ of the Cowell Club Challenge (100 parkrun events), so we were wasting 20+ table 
 first 20 events.
 3. It's easy to add a new or different milestones.
 
-A picture describes it best, so here's a screenshot from [a parkrunner](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=1309364&eventNumber=0) who has got their 'Cow' (Half Cowell), but hasn't yet reached the lofty heights of the Cowell Club.
+A picture describes it best, so here's a screenshot from [a parkrunner](https://www.parkrun.org.uk/parkrunner/1309364/all/) who has got their 'Cow' (Half Cowell), but hasn't yet reached the lofty heights of the Cowell Club.
 
 ![Running Challenges Tourism Challenge Table]({{ site.baseurl }}/img/posts/tourism-challenge-table.png "Running challenges table for the Tourism Challenge with incomplete badges"){: .center-image .image-border}
 
@@ -35,7 +35,7 @@ of the badge at the start of that row.
 
 The eagle-eyed among you may have noticed that there is another badge available beyond the Cowell Club at 100 events. 
 This is for joining the Freyne club for which you need to have visited 250 different events! Like the Cowell Club, this 
-was named by the parkrun tourist community by the first person to reach the milestone, [Paul FREYNE](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=5227&eventNumber=0).
+was named by the parkrun tourist community by the first person to reach the milestone, [Paul FREYNE](https://www.parkrun.org.uk/parkrunner/5227/all/).
 
 Here is a larger version of the new badge. We've taken to calling it the *Freyne Train* :)
 
@@ -43,7 +43,7 @@ Here is a larger version of the new badge. We've taken to calling it the *Freyne
 
 ### Only 250 different events? Hasn't someone already got to 500?
 
-As of right now, the only person to achieve 500 different events appears to be ... [Paul FREYNE](https://www.parkrun.org.uk/results/athleteeventresultshistory/?athleteNumber=5227&eventNumber=0), he of the aforementioned 250 club fame.
+As of right now, the only person to achieve 500 different events appears to be ... [Paul FREYNE](https://www.parkrun.org.uk/parkrunner/5227/all/), he of the aforementioned 250 club fame.
 This is a feat that only a handful of people are ever likely to achieve, and to make a badge for it now seems excessive.
 If you've got the time, disposable income, and determination to get to that milestone, the personal satisfaction of 
 reaching that mark will have to be enough for now.

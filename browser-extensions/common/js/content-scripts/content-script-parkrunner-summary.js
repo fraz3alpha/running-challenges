@@ -8,17 +8,19 @@ function get_athlete_id() {
     var athlete_id = undefined
 
     if (window.location.pathname.startsWith('/parkrunner')) {
-        athlete_id = window.location.pathname.match('parkrunner\/([0-9]+)\/all')[1]
+        athlete_id = window.location.pathname.match('parkrunner\/([0-9]+)\/')[1]
     } else if (page_parameters.includes('athleteNumber=')) {
         athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
     }
 
+    console.log('Athlete ID: '+athlete_id)
     return athlete_id
 }
 
+
 var athlete_id = get_athlete_id()
 if (athlete_id !== undefined) {
-    url = 'https://' + location.host + "/parkrunner/" + athlete_id +'/all'
+    url = 'https://' + location.host + "/parkrunner/" + athlete_id + '/all'
 
     if (url != null) {
         var challenge_link = $("<a/>").attr("href", url)
