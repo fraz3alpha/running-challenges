@@ -1300,8 +1300,7 @@ function challenge_name_badge(data, params) {
   }
 
   var o = create_data_object(params, "runner")
-  // No map yet
-  o.has_map = false
+  o.has_map = true
 
   // Find the initial letters from the athlete information passed through.
   var pageAthleteInfo = params.data
