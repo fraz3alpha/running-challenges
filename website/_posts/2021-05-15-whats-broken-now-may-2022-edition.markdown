@@ -10,7 +10,7 @@ There's always something broken, but where are things at now?
 
 ## Which parkrun websites currently work?
 
-The English language parkrun websites seem to work, ones that are shown in the local language still don't - for example Finland works, because the site is in English, but Austria doesn't as it's German/Austrian German. I think we put a fix in for this, but possibly never released it
+The English language parkrun websites seem to work, ones that are shown in the local language still don't - for example Finland works, because the site is in English, but Austria doesn't as it's German/Austrian German. I think we put a fix in for this, but possibly never released it. 
 
 ## Which browsers does the extension currently work on?
 
