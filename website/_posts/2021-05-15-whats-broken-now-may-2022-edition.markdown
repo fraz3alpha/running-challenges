@@ -36,9 +36,9 @@ For the technical among you - Andy has been trying to get some automated tests r
 
 - If you set your home parkrun in the extension you can still only select from the 5k events. We've had a few people ask about not being able to find  their local junior parkrun on the list. Also, some challenges do pick up junior parkruns, but not all. We've never had time yet to go back and rewrite the extension to intentionally include junior parkruns. 
 - The Compass Club badge only looks for the compass points in English. We've had some parkrunners outside the UK trying to collect this badge (Milano Nord etc...), but the badge was never intended to be translateable. The badge simply picks up certain strings of letters (even the "west" in "Lowestoft); it's not really looking for the compass points. We have no plans to change this.
-- As parkrun has been going for so long now some countries have come and gone, as have individual parkruns, and indeed the names of some parkruns have changed. As the extension works on the **current data** displayed on the parkrun website, it is only ever going to pick up the current state of affairs, so this might lead to things like:
-  - Missing country badges if you've gone to only one parkrun in a country, but now that one has shutdown (e.g. Crissy Fields in the USA) - and we can't find it on the map.
-  - Missing parkrun initial letters if the parkrun you did has sinced changed its name (the extension has no knowledge of previous names)
+- parkrun has been going for so long now that some countries have come and gone, as have individual parkruns, and indeed the names of some parkruns have changed. The extension works on the **current data** displayed on the parkrun website, so it is only ever going to pick up the current state of affairs. This might cause things like:
+  - Missing country badges if you've gone to only one parkrun in a country, but now that one has shutdown (e.g. Crissy Fields in the USA), so it's no longer available on the map.
+  - Missing parkrun initial letters if the parkrun you did has sinced changed its name (the extension has no knowledge of previous names or that a name has changed). 
 
 ## Surely the new team member can do Javascript now?
 
