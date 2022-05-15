@@ -14,7 +14,7 @@ The English language parkrun websites seem to work, ones that are shown in the l
 
 ## Which browsers does the extension currently work on?
 
-It seems to be Chrome and Edge at the moment. As you may be aware from previous posts, Firefox on Android was supported, but then Mozilla yanked support for any mobile extensions other than a select few. Unfortunately, while we weren't looking, it seems that Firefox on a Desktop browser is no longer working because a reviewer went through and retrospectively rejected every single version we have ever released. So, it's not available on Firefox at all any more! We think that is desktop rejection is fixable though - it's just that the review comment says we've done something we aren't allowed to do, but to the best of our knowledge we haven't done that, sooo... I guess we just resubmit it at some point in the future and ask for clarification?
+It seems to be Chrome and Edge at the moment. As you may be aware from previous posts, Firefox on Android was supported, but then Mozilla yanked support for any mobile extensions other than a select few. Unfortunately, while we weren't looking, it seems that Firefox on a Desktop browser is no longer working because a reviewer went through and retrospectively rejected every single version we have ever released. So, it's not available on Firefox at all any more! We think that is desktop rejection is fixable though - the review comment says we've done something we aren't allowed to do, but to the best of our knowledge we haven't done that, sooo... I guess we just resubmit it at some point in the future and ask for clarification?
 
 Here are the extension store links:
 
