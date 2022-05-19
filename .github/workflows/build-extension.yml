@@ -87,7 +87,7 @@ jobs:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
         include:
           - browser: "chrome"
-            selenium-image: selenium/standalone-chrome:latest
+            selenium-image: selenium/standalone-chrome:101.0
           # - browser: "firefox"
           #   selenium-image: selenium/standalone-firefox:latest
       fail-fast: false
