@@ -1,0 +1,20 @@
+services:
+  selenium:
+    image: selenium/standalone-chrome:101.0
+    ports: 
+      - 4444:4444
+    volumes:
+      - /dev/shm:/dev/shm
+    links:
+      - nginx:parkrun.org.uk
+  nginx:
+    image: nginx:1.20
+    ports:
+      - 80:80
+    volumes:
+      - ./mock-parkrun-sites/parkrun.org.uk/:/usr/share/nginx/html/
+  # ubuntu:
+  #   image: ubuntu:latest
+  #   links:
+  #     - nginx:parkrun.org.uk
+  #   command: sleep infinity

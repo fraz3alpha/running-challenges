@@ -91,14 +91,14 @@ jobs:
           # - browser: "firefox"
           #   selenium-image: selenium/standalone-firefox:latest
       fail-fast: false
-    services:
-     # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
-      selenium:
-        image: ${{ matrix.selenium-image }}
-        ports: 
-          - 4444:4444
-        volumes:
-          - /dev/shm:/dev/shm
+    # services:
+    #  # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
+    #   selenium:
+    #     image: ${{ matrix.selenium-image }}
+    #     ports: 
+    #       - 4444:4444
+    #     volumes:
+    #       - /dev/shm:/dev/shm
     defaults:
       run:
         shell: bash
@@ -129,6 +129,9 @@ jobs:
 
       - name: Run selenium test for ${{ matrix.browser }}
         run: |
+          echo "Starting up docker compose services"
+          docker-compose up -d
+
           echo ${EXTENSION_PATH}
           ls -lh ${EXTENSION_PATH}
           # Find the extension zip in the path supplied
@@ -136,11 +139,14 @@ jobs:
           echo "Extension found at ${EXTENSION_ZIP}"
           echo "Running selenium-docker.js against ${{ matrix.browser }}"
           npm run test-selenium
+
+          # Stop the docker containers
+          docker-compose down
         env:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
           EXTENSION_BROWSER: ${{ matrix.browser }}
           SELENIUM_PORT: 4444
-          # COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
