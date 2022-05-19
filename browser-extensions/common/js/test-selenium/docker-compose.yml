@@ -6,15 +6,15 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     links:
-      - nginx:parkrun.org.uk
+      - nginx:www.parkrun.org.uk
   nginx:
     image: nginx:1.20
     ports:
       - 80:80
     volumes:
       - ./mock-parkrun-sites/parkrun.org.uk/:/usr/share/nginx/html/
-  # ubuntu:
-  #   image: ubuntu:latest
-  #   links:
-  #     - nginx:parkrun.org.uk
-  #   command: sleep infinity
+  ubuntu:
+    image: ubuntu:latest
+    links:
+      - nginx:www.parkrun.org.uk
+    command: sleep infinity
