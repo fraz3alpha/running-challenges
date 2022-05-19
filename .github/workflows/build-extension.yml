@@ -130,7 +130,7 @@ jobs:
       - name: Run selenium test for ${{ matrix.browser }}
         run: |
           echo "Starting up docker compose services"
-          docker-compose up -d
+          docker-compose -f test-selenium/docker-compose.yml up -d
 
           echo ${EXTENSION_PATH}
           ls -lh ${EXTENSION_PATH}
@@ -141,7 +141,7 @@ jobs:
           npm run test-selenium
 
           # Stop the docker containers
-          docker-compose down
+          docker-compose -f test-selenium/docker-compose.yml down
         env:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
           EXTENSION_BROWSER: ${{ matrix.browser }}
