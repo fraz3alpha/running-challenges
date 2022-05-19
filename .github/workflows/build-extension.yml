@@ -132,6 +132,12 @@ jobs:
           echo "Starting up docker compose services"
           docker-compose -f test-selenium/docker-compose.yml up -d
 
+          # Wait for things to have started up
+          sleep 30
+
+          # Curl our nginx server just to check things are working
+          curl http://www.parkrun.org.uk/parkrunner/1309364/all/
+
           echo ${EXTENSION_PATH}
           ls -lh ${EXTENSION_PATH}
           # Find the extension zip in the path supplied
