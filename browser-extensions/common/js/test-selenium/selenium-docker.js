@@ -167,7 +167,7 @@ var parkrunWebsites = {
     "sites": [
         {
             "name": "parkrun.org.uk",
-            "hostname": "http://www.parkrun.org.uk",
+            "hostname": "https://www.parkrun.org.uk",
             "pages": {
                 "other": "something" // Example, doesn't do anything at the moment
             }
