@@ -129,6 +129,12 @@ jobs:
 
       - name: Run selenium test for ${{ matrix.browser }}
         run: |
+
+          echo "Creating a certificate"
+          cd test-selenium/mock-parkrun-sites/nginx/cert/
+          bash generate.sh
+          cd -
+
           echo "Starting up docker compose services"
           docker-compose -f test-selenium/docker-compose.yml up -d
 
@@ -136,7 +142,7 @@ jobs:
           sleep 30
 
           # Curl our nginx server just to check things are working
-          # curl http://www.parkrun.org.uk/parkrunner/1309364/all/
+          # curl -k http://www.parkrun.org.uk/parkrunner/1309364/all/
 
           echo ${EXTENSION_PATH}
           ls -lh ${EXTENSION_PATH}
@@ -152,7 +158,7 @@ jobs:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
           EXTENSION_BROWSER: ${{ matrix.browser }}
           SELENIUM_PORT: 4444
-          COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
+          COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de # Just a couple to begin with, until it is working!
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2

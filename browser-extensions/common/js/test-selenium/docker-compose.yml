@@ -11,8 +11,11 @@ services:
     image: nginx:1.20
     ports:
       - 80:80
+      - 443:443
     volumes:
-      - ./mock-parkrun-sites/parkrun.org.uk/:/usr/share/nginx/html/
+      - ./mock-parkrun-sites/sites/:/usr/share/nginx/html/
+      - ./mock-parkrun-sites/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./mock-parkrun-sites/nginx/cert/:/etc/nginx/cert/
   ubuntu:
     image: ubuntu:latest
     links:
