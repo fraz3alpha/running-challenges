@@ -30,6 +30,8 @@ global.window = window;
 global.document = document;
 
 const $ = global.jQuery = require('../../../../js/lib/third-party/jquery/jquery-3.3.1.js');
+// It needs to be set globally, as per this solution: https://stackoverflow.com/a/57292683
+global.$ = $
 
 var rewire = require('rewire')
 var challenges = rewire('../lib/challenges.js')
