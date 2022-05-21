@@ -11,7 +11,7 @@
 // "Communications Person"
 // "Volunteer Co-ordinator"
 // "Pre-event Setup"
-// "First Timers Briefing"
+// "First Timers Welcome"
 // "Sign Language Support"
 // "Marshal"
 // "Tail Walker"
@@ -30,7 +30,7 @@
 // "Post-event Close Down"
 // "Results Processor"
 // "Token Sorting"
-// "Run Report Writer"
+// "Report Writer"
 // "Other"
 // Warm Up (Juniors)
 //
@@ -53,7 +53,7 @@ var domains = {
             "Communications Person": "Communications Person",
             "Volunteer Co-ordinator": "Volunteer Co-ordinator",
             "Pre-event Setup": "Pre-event Setup",
-            "First Timers Briefing": "First Timers Briefing",
+            "First Timers Welcome": "First Timers Welcome",
             "Sign Language Support": "Sign Language Support",
             "Marshal": "Marshal",
             "Tail Walker": "Tail Walker",
@@ -72,7 +72,7 @@ var domains = {
             "Post-event Close Down": "Post-event Close Down",
             "Results Processor": "Results Processor",
             "Token Sorting": "Token Sorting",
-            "Run Report Writer": "Run Report Writer",
+            "Report Writer": "Report Writer",
             "Other": "Other",
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
             "Car Park Marshal": "Car Park Marshal",
@@ -93,7 +93,7 @@ var domains = {
             "Komunikacja i promocja": "Communications Person",
             "Koordynator woluntariuszy": "Volunteer Co-ordinator",
             "Ustawienie elementów trasy": "Pre-event Setup",
-            "Instruktor nowych uczestników": "First Timers Briefing",
+            "Instruktor nowych uczestników": "First Timers Welcome",
             "Tłumacz języka migowego": "Sign Language Support",
             "Ubezpieczanie trasy": "Marshal",
             "Zamykanie stawki": "Tail Walker",
@@ -112,7 +112,7 @@ var domains = {
             "Zbieranie elementów z trasy": "Post-event Close Down",
             "Wprowadzanie wyników": "Results Processor",
             "Sortowanie tokenów": "Token Sorting",
-            "Przygotowanie raportu z biegu": "Run Report Writer",
+            "Przygotowanie raportu z biegu": "Report Writer",
             "Inne": "Other",
             "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)",
             "Koordynator parkingu": "Car Park Marshal",
@@ -132,7 +132,7 @@ var domains = {
             "Addetto comunicazioni": "Communications Person",
             "Coordinatore volontari": "Volunteer Co-ordinator",
             "Preparazione evento": "Pre-event Setup",
-            "Briefing nuovi partecipanti": "First Timers Briefing",
+            "Briefing nuovi partecipanti": "First Timers Welcome",
             "Interprete lingua dei segni": "Sign Language Support",
             "Marshal": "Marshal",
             "Camminatore di coda": "Tail Walker",
@@ -151,7 +151,7 @@ var domains = {
             "Chiusura evento": "Post-event Close Down",
             "Elaboratore risultati": "Results Processor",
             "Sistemazione token": "Token Sorting",
-            "Addetto report finale": "Run Report Writer",
+            "Addetto report finale": "Report Writer",
             "Altro": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
             "Addetto parcheggio": "Car Park Marshal",
@@ -172,7 +172,7 @@ var domains = {
             "Kommunikation": "Communications Person",
             "Hjælperkoordinering": "Volunteer Co-ordinator",
             "Skiltning": "Pre-event Setup",
-            "Vejledning": "First Timers Briefing",
+            "Vejledning": "First Timers Welcome",
             "Tegnsprogs tolk": "Sign Language Support",
             "Officials": "Marshal",
             "Gående bagtrop": "Tail Walker",
@@ -191,7 +191,7 @@ var domains = {
             "Opstilling": "Post-event Close Down",
             "Administration": "Results Processor",
             "Talonopsamling": "Token Sorting",
-            "Journalist": "Run Report Writer",
+            "Journalist": "Report Writer",
             "Andet": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
             "Parkeringsvagt": "Car Park Marshal"
@@ -210,7 +210,7 @@ var domains = {
             "Kommunikationsansvarig": "Communications Person",
             "Volöntäransvarig": "Volunteer Co-ordinator",
             "Ansvarig för att sätta upp banan": "Pre-event Setup",
-            "Informationsansvarig för förstagångslöpare": "First Timers Briefing",
+            "Informationsansvarig för förstagångslöpare": "First Timers Welcome",
             "Teckenspråk assistent": "Sign Language Support",
             "Funktionär": "Marshal",
             "Sista gångare": "Tail Walker",
@@ -229,7 +229,7 @@ var domains = {
             "Ansvarig för att ta ner banan": "Post-event Close Down",
             "Resultatsansvarig": "Results Processor",
             "Pollettsorterare": "Token Sorting",
-            "Journalist": "Run Report Writer",
+            "Journalist": "Report Writer",
             "Övrigt": "Other",
             "Ledare för uppvärmning": "Warm Up Leader (junior events only)",
             "Parkeringsvakt": "Car Park Marshal"
@@ -256,7 +256,7 @@ var domains = {
             "Responsable communication": "Communications Person",
             "Coordinateur des bénévoles": "Volunteer Co-ordinator",
             "Balisage du parcours": "Pre-event Setup",
-            "Briefing des nouveaux participants": "First Timers Briefing",
+            "Briefing des nouveaux participants": "First Timers Welcome",
             "Assistance langage des signes": "Sign Language Support",
             "Aiguilleur": "Marshal",
             "Fermeur marcheur": "Tail Walker",
@@ -275,7 +275,7 @@ var domains = {
             "Débalisage du parcours": "Post-event Close Down",
             "Mise en ligne des participations": "Results Processor",
             "Classement des jetons": "Token Sorting",
-            "Rédacteur du compte-rendu": "Run Report Writer",
+            "Rédacteur du compte-rendu": "Report Writer",
             "Autre": "Other",
             "Leader d'échauffement": "Warm Up Leader (junior events only)",
             "Aiguilleur parking": "Car Park Marshal"
@@ -295,7 +295,7 @@ var domains = {
             "Kommunikation": "Communications Person",
             "Helfer Koordinator": "Volunteer Co-ordinator",
             "Veranstaltung Aufbau": "Pre-event Setup",
-            "Einweiser für Erstläufer": "First Timers Briefing",
+            "Einweiser für Erstläufer": "First Timers Welcome",
             "Zeichensprache Unterstützung": "Sign Language Support",
             "Streckenposten": "Marshal",
             "Schlussbegleitung": "Tail Walker",
@@ -314,7 +314,7 @@ var domains = {
             "Veranstaltung Abbau": "Post-event Close Down",
             "Ergebnis Auswerter": "Results Processor",
             "Platzierungskarten Verwaltung": "Token Sorting",
-            "Berichterstattung": "Run Report Writer",
+            "Berichterstattung": "Report Writer",
             "andere Aufgaben": "Other",
             "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
             "Parkplatzeinweisung": "Car Park Marshal"
@@ -342,7 +342,7 @@ var domains = {
             "Связи с общественностью": "Communications Person",
             "Координация волонтёров": "Volunteer Co-ordinator",
             "Подготовка забега": "Pre-event Setup",
-            "Инструктаж новых бегунов": "First Timers Briefing",
+            "Инструктаж новых бегунов": "First Timers Welcome",
             "Сурдопереводчик": "Sign Language Support",
             "Маршал": "Marshal",
             "Замыкающий": "Tail Walker",
@@ -361,7 +361,7 @@ var domains = {
             "Закрытие забега": "Post-event Close Down",
             "Обработка результатов": "Results Processor",
             "Сортировка карточек": "Token Sorting",
-            "Составление отчёта": "Run Report Writer",
+            "Составление отчёта": "Report Writer",
             "Разное": "Other",
             "Проведение разминки": "Warm Up Leader (junior events only)",
             "Координатор парковки": "Car Park Marshal"
@@ -403,13 +403,13 @@ var domains = {
             "イベント後片付け係": "Post-event Close Down",
             "フィニッシュ・トークン配布係": "Finish Tokens",
             "着順確認係": "Number Checker",
-            "初参加者への説明係": "First Timers Briefing",
+            "初参加者への説明係": "First Timers Welcome",
             "フィニッシュ後サポート係": "Funnel Manager",
             "先導バイク": "Lead Bike",
             "フィニッシュ・トークン係補助": "Finish Token Support",
             "最後尾確認係": "Tail Walker",
             "ボランティア・コーディネーター": "Volunteer Co-ordinator",
-            "レポート作成係": "Run Report Writer",
+            "レポート作成係": "Report Writer",
             "ペースメーカー": "Pacer (5k only)",
             "Do Not Translate": "Backup Timer",
             "VIガイド": "VI Guide",
@@ -439,13 +439,13 @@ var domains = {
             "Afbouw evenement": "Post-event Close Down",
             "Uitdeler tokens": "Finish Tokens",
             "Controle nummers": "Number Checker",
-            "Briefing nieuwe lopers": "First Timers Briefing",
+            "Briefing nieuwe lopers": "First Timers Welcome",
             "Fuikregelaar": "Funnel Manager",
             "Kopfietser": "Lead Bike",
             "Assistent tokens": "Finish Token Support",
             "Sluitloper": "Tail Walker",
             "Coördinator vrijwilligers": "Volunteer Co-ordinator",
-            "Loopverslag": "Run Report Writer",
+            "Loopverslag": "Report Writer",
             "Pacer": "Pacer (5k only)",
             "Buddy slechtziende loper": "VI Guide",
             "Gebarentolk": "Sign Language Support",
@@ -464,7 +464,7 @@ var domains = {
             "Kommunikation": "Communications Person",
             "Helfer Koordinator": "Volunteer Co-ordinator",
             "Veranstaltung Aufbau": "Pre-event Setup",
-            "Einweiser für Erstläufer": "First Timers Briefing",
+            "Einweiser für Erstläufer": "First Timers Welcome",
             "Zeichensprache Unterstützung": "Sign Language Support",
             "Streckenposten": "Marshal",
             "Schlussbegleitung": "Tail Walker",
@@ -483,7 +483,7 @@ var domains = {
             "Veranstaltung Abbau": "Post-event Close Down",
             "Ergebnis Auswerter": "Results Processor",
             "Platzierungskarten Verwaltung": "Token Sorting",
-            "Berichterstattung": "Run Report Writer",
+            "Berichterstattung": "Report Writer",
             "andere Aufgaben": "Other",
             "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
             "Parkplatzeinweisung": "Car Park Marshal"
