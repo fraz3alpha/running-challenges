@@ -112,8 +112,8 @@ volunteer:
     name: Car Park Marshal
     description: Keep everyone safe and organised in the car park
 
-  - shortname: first-timers-briefing
-    name: First Timers Briefing
+  - shortname: first-timers-welcome
+    name: First Timers Welcome
     description: Make sure that runners new to parkrun know how it all works (and to not take the tokens home, or duck the funnel!), and give everyone new to your event the lay of the land - and how many laps it is.
 
   - shortname: warm-up-leader
@@ -184,9 +184,9 @@ volunteer:
     name: Token Sorting
     description: Relax and achieve zen by sorting the tokens
 
-  - shortname: run-report-writer
-    name: Run Report Writer
-    description: Spread the word about how good your last event was by writing up the run report
+  - shortname: report-writer
+    name: Report Writer
+    description: Spread the word about how good your last event was by writing up the report
 
   - shortname: other
     name: Other
