@@ -1,22 +1,13 @@
-name: Website Builder
+name: Staging Website Builder
 
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency
-concurrency: website-build
+concurrency: staging-website-build
 
-# Run this workflow every time a new commit pushed to your repository,
-# and periodically, to pick up any other updates that may have occurred - 
-# e.g. in the data repository.
-# Bear in mind that if there are no pushed to this repository in 3 months, then this action gets disabled,
-# and that stops the scheduled runs, but also the ones triggered by pushes, so it might not be ideal to 
-# have these both in the same action, if that's an option
+# Run this workflow every time a new commit is pushed to any branch apart from the production one (master)
 on: 
   push:
     branches:
-      - master
-  schedule:
-    # Run daily at 1pm
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 13 * * *'
+      - '!master'
   workflow_dispatch:
     # Allow it to be run manually - useful for testing?
 
@@ -59,7 +50,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           jekyll_src: 'website'
           jekyll_env: production
-          # For now, lets make it push to the main repository, and see if that works,
-          # we can dev dev builds working later
-          target_branch: gh-pages
-          # build_only: true # Delegate pushing of the built site the subsquent step so that we can direct which repo it goes to
+          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
+          target_branch: gh-pages-staging
+          target_path: ${{ GITHUB_REF_NAME }}
+          keep_history: true
