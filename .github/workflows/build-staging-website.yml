@@ -44,6 +44,11 @@ jobs:
           bash ./build/website/copy-assets.sh
         shell: bash
 
+      - name: List available repo branches
+        run: |
+          git branch -r 
+        shell: bash
+
       # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
       # on 2021-01-31
       # https://github.com/marketplace/actions/jekyll-actions
