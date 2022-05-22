@@ -68,6 +68,7 @@ jobs:
           path: gh-pages-staging
 
       - name: Reconcile branches
+        id: reconcile-branches
         run: |
           git ls-remote --heads | awk '{print $2}' | awk -F 'refs/heads/' '{print $2}' | sort > running-challenges-branches.txt
           echo "All branches: $(cat running-challenges-branches.txt)"
@@ -86,13 +87,18 @@ jobs:
           # done < ../prune-branches.txAdd the very useful text filet
         shell: bash
 
-      # ...and then use the action as you would normally do, but providing the path to the repo
-      - name: Remove directores, commit and push
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'Removing orphaned branches'
-          remove: "-r ${{ env.BRANCHES_TO_PRUNE }}"
-          cwd: './gh-pages-staging/'
+      - name: Print branches to delete
+        run: |
+          echo "{{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
+        shell: bash
+
+      # # ...and then use the action as you would normally do, but providing the path to the repo
+      # - name: Remove directores, commit and push
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     message: 'Removing orphaned branches'
+      #     remove: "-r ${{ env.BRANCHES_TO_PRUNE }}"
+      #     cwd: './gh-pages-staging/'
 
       
 
