@@ -46,9 +46,7 @@ jobs:
 
       - name: List available repo branches
         run: |
-          git branch -rav
-          git ls-remote
-          git ls-remote --heads
+          git ls-remote --heads | awk -F '{print $2}' | awk -F 'refs/heads/' '{print $2}'
         shell: bash
 
       # # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
