@@ -5,6 +5,9 @@ flags:
   - shortname: au
     name: Australia
 
+  - shortname: at
+    name: Austria    
+
   - shortname: ca
     name: Canada
 
@@ -26,14 +29,20 @@ flags:
   - shortname: it
     name: Italy
 
+  - shortname: jp
+    name: Japan
+
   - shortname: my
     name: Malaysia
 
-  - shortname: "no"
-    name: Norway
+  - shortname: nl
+    name: Netherlands
 
   - shortname: nz
     name: New Zealand
+
+  - shortname: "no"
+    name: Norway
 
   - shortname: pl
     name: Poland

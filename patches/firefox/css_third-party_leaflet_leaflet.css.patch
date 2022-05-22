@@ -1,0 +1,26 @@
+--- css/third-party/leaflet/leaflet.css	2019-01-03 17:53:43.000000000 +0000
++++ css/third-party/leaflet/leaflet.css.patched.bak	2018-12-17 18:20:25.000000000 +0000
+@@ -343,12 +343,12 @@
+ 	border-radius: 5px;
+ 	}
+ .leaflet-control-layers-toggle {
+-	background-image: url('images/layers.png');
++	background-image: url('moz-extension://__MSG_@@extension_id__/css/third-party/leaflet/images/layers.png');
+ 	width: 36px;
+ 	height: 36px;
+ 	}
+ .leaflet-retina .leaflet-control-layers-toggle {
+-	background-image: url('images/layers-2x.png');
++	background-image: url('moz-extension://__MSG_@@extension_id__/css/third-party/leaflet/images/layers-2x.png');
+ 	background-size: 26px 26px;
+ 	}
+ .leaflet-touch .leaflet-control-layers-toggle {
+@@ -389,7 +389,7 @@
+ 
+ /* Default icon URLs */
+ .leaflet-default-icon-path {
+-	background-image: url('images/marker-icon.png');
++	background-image: url('moz-extension://__MSG_@@extension_id__/css/third-party/leaflet/images/marker-icon.png');
+ 	}
+ 
+ 

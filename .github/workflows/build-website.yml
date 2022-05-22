@@ -1,0 +1,62 @@
+name: Website Builder
+
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency
+concurrency: website-build
+
+# Run this workflow every time a new commit pushed to your repository,
+# and periodically, to pick up any other updates that may have occurred - 
+# e.g. in the data repository
+on: 
+  push:
+    branches:
+      - master
+  schedule:
+    # Run daily at 1pm
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 13 * * *'
+  workflow_dispatch:
+    # Allow it to be run manually - useful for testing?
+
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  website-builder:
+    # Name the Job
+    name: Build the website from this repository
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      # Use GitHub Actions' cache to shorten build times and decrease load on servers
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      # Prepare the website directory
+      - name: Copy dependencies to Website directory
+        run: |
+          echo `pwd`
+          bash ./build/website/copy-assets.sh
+        shell: bash
+
+      # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
+      # on 2021-01-31
+      # https://github.com/marketplace/actions/jekyll-actions
+      - name: Build the Jekyll site
+        uses:  helaili/jekyll-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          jekyll_src: 'website'
+          jekyll_env: production
+          # For now, lets make it push to the main repository, and see if that works,
+          # we can dev dev builds working later
+          target_branch: gh-pages
+          # build_only: true # Delegate pushing of the built site the subsquent step so that we can direct which repo it goes to

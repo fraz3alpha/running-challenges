@@ -10,6 +10,10 @@ runner:
     name: Cowell Club
     description: Run at 100+ different parkrun locations anywhere in the world. Named after the first parkrunners to complete it. A quarter cowell is available at 25, half at 50, and three-quarter at 75.
 
+  - shortname: freyne-club
+    name: Freyne Club
+    description: Run at 250+ different parkrun locations anywhere in the world. Named after the first parkrunner to complete it.
+
   - shortname: alphabeteer
     name: Alphabeteer
     description: Run at parkrun locations starting with each letter of the English alphabet (except X).
@@ -46,6 +50,10 @@ runner:
     name: Bushy Pilgrimage
     description: Run at Bushy parkrun, where it all began.
 
+  - shortname: christmas-day
+    name:  Christmas Day
+    description: Run a parkrun on the 25th of December.
+
   - shortname: nyd-double
     name:  NYD Double
     description: Run two parkruns on one New Year's Day.
@@ -54,9 +62,17 @@ runner:
     name: Groundhog Day
     description: Finish with the same time at the same parkrun location on two consecutive parkruns.
 
-  - shortname: regionnaire
-    name: Regionnaire
-    description: Run all the parkrun locations in a geographical region.
+  # - shortname: regionnaire
+  #   name: Regionnaire
+  #   description: Run all the parkrun locations in a geographical region.
+
+  - shortname: all-weather-runner
+    name: All Weather Runner
+    description: Run in each month of the year.
+
+  - shortname: name-badge
+    name: Name Badge
+    description: Spell out your registered name with parkruns.
 
   - shortname: obsessive-bronze
     name: Bronze Level Obsessive
@@ -84,9 +100,17 @@ volunteer:
     name: Volunteer Co-ordinator
     description: Ensure the roster is packed full of friendly-folk ready to cheer everyone on and run a great event
 
+  - shortname: event-day-course-check
+    name: Event Day Course Check
+    description: Scout out the course on the day of the run to check for any problems.
+
   - shortname: setup
     name: Pre-event Setup
     description: Be the early bird and get to parkrun early and ensure that everything is ready for everyone else when they stroll up at 8:45
+
+  - shortname: car-park-marshal
+    name: Car Park Marshal
+    description: Keep everyone safe and organised in the car park
 
   - shortname: first-timers-briefing
     name: First Timers Briefing
