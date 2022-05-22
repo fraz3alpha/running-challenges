@@ -77,7 +77,7 @@ jobs:
           # Find the lines only in the gh-pages branches file (note files must be sorted for comm to work)
           echo "$(comm -23 gh-pages-branches.txt running-challenges-branches.txt)" > prune-branches.txt
           echo "Built branches to delete: $(cat prune-branches.txt)"
-          echo "::set-output name=BRANCHES_TO_PRUNE::$(cat prune-branches.txt)"
+          echo "::set-output name=BRANCHES_TO_PRUNE::'$(cat prune-branches.txt)'"
           # cd gh-pages-staging
           # while read orphaned_branch; do
           #   echo "Removing orphaned brach: ${orphaned_branch}"
