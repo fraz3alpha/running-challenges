@@ -6,8 +6,11 @@ concurrency: staging-website-build
 # Run this workflow every time a new commit is pushed to any branch apart from the production one (master)
 on: 
   push:
-    branches:
-      - '!master'
+    branches-ignore:
+      - master
+      - gh-pages
+      - gh-pages-staging
+
   workflow_dispatch:
     # Allow it to be run manually - useful for testing?
 
