@@ -79,6 +79,8 @@ jobs:
           cd gh-pages-staging
           while read orphaned_branch; do
             echo "Removing orphaned brach: ${orphaned_branch}"
+            git config user.name
+            git config user.email
             git rm -r "${orphaned_branch}"
           done < ../prune-branches.txt
         shell: bash
