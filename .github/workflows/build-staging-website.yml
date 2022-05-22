@@ -52,7 +52,7 @@ jobs:
           jekyll_env: production
           # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
           target_branch: gh-pages-staging
-          target_path: $GITHUB_REF_NAME
+          target_path: "$GITHUB_REF_NAME"
           keep_history: true
 
       # Then we need to prune any directories that don't match to currently active branches
