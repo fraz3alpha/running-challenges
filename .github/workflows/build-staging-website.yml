@@ -89,7 +89,7 @@ jobs:
 
       - name: Print branches to delete
         run: |
-          echo "{{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
+          echo "${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
         shell: bash
 
       # # ...and then use the action as you would normally do, but providing the path to the repo
