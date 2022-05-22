@@ -92,13 +92,13 @@ jobs:
           echo "${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
         shell: bash
 
-      # # ...and then use the action as you would normally do, but providing the path to the repo
-      # - name: Remove directores, commit and push
-      #   uses: EndBug/add-and-commit@v9
-      #   with:
-      #     message: 'Removing orphaned branches'
-      #     remove: "-r ${{ env.BRANCHES_TO_PRUNE }}"
-      #     cwd: './gh-pages-staging/'
+      # ...and then use the action as you would normally do, but providing the path to the repo
+      - name: Remove directores, commit and push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Removing orphaned branches'
+          remove: "-r ${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
+          cwd: './gh-pages-staging/'
 
       
 
