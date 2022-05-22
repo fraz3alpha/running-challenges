@@ -74,7 +74,7 @@ jobs:
 
       - name: List all the current branch builds
         run: |
-          find gh-pages-staging -mindepth 1 -maxdepth 1 -type d
+          find gh-pages-staging -mindepth 1 -maxdepth 1 -type d | grep -v '.git'
         shell: bash
 
       
