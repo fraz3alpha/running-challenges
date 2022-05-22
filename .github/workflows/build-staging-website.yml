@@ -65,4 +65,18 @@ jobs:
 
       # Then we need to prune any directories that don't match to currently active branches
 
+      # Get the latest copy of the repo 
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages-staging
+          path: gh-pages-staging
+
+      - name: List all the current branch builds
+        run: |
+          find gh-pages-staging -mindepth 1 -maxdepth 1 -type d
+        shell: bash
+
+      
+
       # Then we need to sync the contents to another repository so they appear on the staging site
