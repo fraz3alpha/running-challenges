@@ -41,10 +41,6 @@ jobs:
           bash ./build/website/copy-assets.sh
         shell: bash
 
-      - name: Show branch information
-        run: |
-          echo "Building branch ${{ github.ref_name }} (whih in an envvar is ${{ env.GITHUB_REF_NAME}}"
-
       # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
       # on 2021-01-31
       # https://github.com/marketplace/actions/jekyll-actions
@@ -56,7 +52,7 @@ jobs:
           jekyll_env: production
           # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
           target_branch: gh-pages-staging
-          target_path: ${{ env.GITHUB_REF_NAME }}
+          target_path: ${{ github.ref_name }}
           keep_history: true
 
       # Then we need to prune any directories that don't match to currently active branches
