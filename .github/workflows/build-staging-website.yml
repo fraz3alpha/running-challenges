@@ -77,7 +77,10 @@ jobs:
           comm -23 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
           echo "Built branches to delete: $(cat prune-branches.txt)"
           cd gh-pages-staging
-          cat ../prune-branches.txt | xargs --no-run-if-empty git rm -r 
+          while read orphaned_branch; do
+            echo "Removing orphaned brach: ${orphaned_branch}"
+            git rm -r "${orphaned_branch}"
+          done < ../prune-branches.txt
         shell: bash
 
       
