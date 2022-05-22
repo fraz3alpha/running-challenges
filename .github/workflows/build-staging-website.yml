@@ -44,11 +44,6 @@ jobs:
           bash ./build/website/copy-assets.sh
         shell: bash
 
-      - name: List available repo branches
-        run: |
-          git ls-remote --heads | awk '{print $2}' | awk -F 'refs/heads/' '{print $2}'
-        shell: bash
-
       # # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
       # # on 2021-01-31
       # # https://github.com/marketplace/actions/jekyll-actions
@@ -72,9 +67,15 @@ jobs:
           ref: gh-pages-staging
           path: gh-pages-staging
 
-      - name: List all the current branch builds
+      - name: Reconcile branches
         run: |
-          find gh-pages-staging -mindepth 1 -maxdepth 1 -type d | grep -v '.git'
+          git ls-remote --heads | awk '{print $2}' | awk -F 'refs/heads/' '{print $2}' | sort > running-challenges-branches.txt
+          echo "All branches: $(cat running-challenges-branches.txt)"
+          find gh-pages-staging -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort | grep -v '.git' > gh-pages-branches.txt
+          echo "Built branches: $(cat gh-pages-branches.txt)"
+          # Find the lines only in the gh-pages branches file (note files must be sorted for comm to work)
+          comm -13 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
+          echo "Built branches to delete: $(cat prune-branches.txt)"
         shell: bash
 
       
