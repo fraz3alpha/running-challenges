@@ -41,10 +41,14 @@ jobs:
           bash ./build/website/copy-assets.sh
         shell: bash
 
+      - name: Show branch information
+        run: |
+          echo "Building branch ${{ github.ref_name }} (whih in an envvar is ${{ env.GITHUB_REF_NAME}}"
+
       # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
       # on 2021-01-31
       # https://github.com/marketplace/actions/jekyll-actions
-      - name: Build the Jekyll site
+      - name: Build the Jekyll site for branch ${{ github.ref_name }}
         uses:  helaili/jekyll-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
