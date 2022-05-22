@@ -74,7 +74,7 @@ jobs:
           find gh-pages-staging -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort | grep -v '.git' > gh-pages-branches.txt
           echo "Built branches: $(cat gh-pages-branches.txt)"
           # Find the lines only in the gh-pages branches file (note files must be sorted for comm to work)
-          comm -13 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
+          comm -23 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
           echo "Built branches to delete: $(cat prune-branches.txt)"
         shell: bash
 
