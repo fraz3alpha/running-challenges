@@ -49,19 +49,19 @@ jobs:
           cat website/_config.yml
         shell: bash
 
-      # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
-      # on 2021-01-31
-      # https://github.com/marketplace/actions/jekyll-actions
-      - name: Build the Jekyll site for branch ${{ github.ref_name }}
-        uses:  helaili/jekyll-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          jekyll_src: 'website'
-          jekyll_env: production
-          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
-          target_branch: gh-pages-staging
-          target_path: ${{ github.ref_name }}
-          keep_history: true
+      # # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
+      # # on 2021-01-31
+      # # https://github.com/marketplace/actions/jekyll-actions
+      # - name: Build the Jekyll site for branch ${{ github.ref_name }}
+      #   uses:  helaili/jekyll-action@v2
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     jekyll_src: 'website'
+      #     jekyll_env: production
+      #     # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
+      #     target_branch: gh-pages-staging
+      #     target_path: ${{ github.ref_name }}
+      #     keep_history: true
 
       # Then we need to prune any directories that don't match to currently active branches
 
@@ -110,12 +110,7 @@ jobs:
 
       # Then we need to sync the contents to another repository so they appear on the staging site
       - name: Push staging site to the staging site repo
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
-        with:
-          source-directory: 'gh-pages-staging'
-          destination-github-username: 'fraz3alpha'
-          destination-repository-name: 'running-challenges-staging'
-          user-email: andrewtaylor2@gmail.com
-          target-branch: gh-pages
+        run: |
+          git remote add staging-https https://${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}@github.com/fraz3alpha/running-challenges-staging.git
+          git push -f staging-https gh-pages-staging:gh-pages
+        working-directory: gh-pages-staging
