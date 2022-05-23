@@ -65,7 +65,8 @@ jobs:
 
       # Then we need to prune any directories that don't match to currently active branches
 
-      # Get the latest copy of the repo 
+      # Get the latest copy of the repo
+      # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
         uses: actions/checkout@v2
         with:
@@ -113,8 +114,5 @@ jobs:
       - name: Push staging site to the staging site repo
         run: |
           git remote add staging-https https://${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}@github.com/fraz3alpha/running-challenges-staging.git
-          git remote -v
-          git config user.name fraz3alpha
-          git config user.email andrewtaylor2@gmail.com
           git push -f staging-https gh-pages-staging:gh-pages
         working-directory: gh-pages-staging
