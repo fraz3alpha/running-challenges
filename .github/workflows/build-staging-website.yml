@@ -71,6 +71,7 @@ jobs:
         with:
           ref: gh-pages-staging
           path: gh-pages-staging
+          token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
 
       - name: Reconcile branches
         id: reconcile-branches
