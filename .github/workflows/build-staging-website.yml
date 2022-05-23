@@ -84,7 +84,8 @@ jobs:
           # Find the lines only in the gh-pages branches file (note files must be sorted for comm to work)
           comm -23 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
           echo "Built branches to delete: $(cat prune-branches.txt | tr '\n' ' ')"
-          echo "::set-output name=BRANCHES_TO_PRUNE::'$(cat prune-branches.txt | tr '\n' ' ')'"
+          # Attempt to strip trailing spaces with xargs, which is a hack the internet seems to know about
+          echo "::set-output name=BRANCHES_TO_PRUNE::'$(cat prune-branches.txt | tr '\n' ' ' | xargs)'"
 
         shell: bash
 
