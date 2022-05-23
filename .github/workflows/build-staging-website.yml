@@ -91,11 +91,20 @@ jobs:
           echo "${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
         shell: bash
 
+      - name: Create file containing available branches
+        run: |
+          echo "<html><head><title>Available branch builds</title></head><body>" > index.html
+          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % echo "<a href=\"%\">%</a><br>\n" >> index.html
+          echo "</body></html>" >> index.html
+        shell: bash
+        working-directory: gh-pages-staging
+
       # ...and then use the action as you would normally do, but providing the path to the repo
       - name: Remove directores, commit and push
         uses: EndBug/add-and-commit@v9
         with:
           message: 'Removing orphaned branches'
+          add: "index.html"
           remove: "-r ${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
           cwd: './gh-pages-staging/'
 
