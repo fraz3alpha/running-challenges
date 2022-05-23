@@ -49,19 +49,19 @@ jobs:
           cat website/_config.yml
         shell: bash
 
-      # # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
-      # # on 2021-01-31
-      # # https://github.com/marketplace/actions/jekyll-actions
-      # - name: Build the Jekyll site for branch ${{ github.ref_name }}
-      #   uses:  helaili/jekyll-action@v2
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     jekyll_src: 'website'
-      #     jekyll_env: production
-      #     # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
-      #     target_branch: gh-pages-staging
-      #     target_path: ${{ github.ref_name }}
-      #     keep_history: true
+      # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
+      # on 2021-01-31
+      # https://github.com/marketplace/actions/jekyll-actions
+      - name: Build the Jekyll site for branch ${{ github.ref_name }}
+        uses:  helaili/jekyll-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          jekyll_src: 'website'
+          jekyll_env: production
+          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
+          target_branch: gh-pages-staging
+          target_path: ${{ github.ref_name }}
+          keep_history: true
 
       # Then we need to prune any directories that don't match to currently active branches
 
