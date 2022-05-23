@@ -109,3 +109,13 @@ jobs:
           cwd: './gh-pages-staging/'
 
       # Then we need to sync the contents to another repository so they appear on the staging site
+      - name: Push staging site to the staging site repo
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
+        with:
+          source-directory: 'gh-pages-staging'
+          destination-github-username: 'fraz3alpha'
+          destination-repository-name: 'running-challenges-staging'
+          user-email: andrewtaylor2@gmail.com
+          target-branch: gh-pages
