@@ -51,7 +51,7 @@ jobs:
         uses: limjh16/jekyll-action-ts@v2
         with:
           enable_cache: true
-          jekyll_src: webite
+          jekyll_src: website
 
       # Then we need to prune any directories that don't match to currently active branches
 
