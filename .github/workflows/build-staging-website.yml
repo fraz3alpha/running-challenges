@@ -102,6 +102,14 @@ jobs:
           ls -l gh-pages-staging/
           du -sh gh-pages-staging/*
 
+          git config user.name fraz3alpha
+          git config user.email andrewtaylor2@gmail.com
+
+          cd gh-pages-staging
+          git status
+          git log
+
+
         shell: bash
 
       # # Then we need to sync the contents to another repository so they appear on the staging site
