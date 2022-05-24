@@ -96,6 +96,10 @@ jobs:
           ls -l gh-pages-staging/
           du -sh gh-pages-staging/*
 
+          # Delete the .git directory, and try and get it to forget it was ever a git repo
+          echo "Deleting .git directory"
+          rm -fr gh-pages-staging/.git
+
         shell: bash
 
       - name: Deploy
