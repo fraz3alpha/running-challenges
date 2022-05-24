@@ -52,16 +52,7 @@ jobs:
       # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
       # on 2021-01-31
       # https://github.com/marketplace/actions/jekyll-actions
-      - name: Build the Jekyll site for branch ${{ github.ref_name }}
-        uses:  helaili/jekyll-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          jekyll_src: 'website'
-          jekyll_env: production
-          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
-          target_branch: gh-pages-staging
-          target_path: ${{ github.ref_name }}
-          keep_history: true
+
 
       # Then we need to prune any directories that don't match to currently active branches
 
@@ -74,6 +65,16 @@ jobs:
           path: gh-pages-staging
           token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
 
+      - name: Build the Jekyll site for branch ${{ github.ref_name }}
+        uses:  helaili/jekyll-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          jekyll_src: 'website'
+          jekyll_env: production
+          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
+          target_path: gh-pages-staging/${{ github.ref_name }}
+          build_only: true
+
       - name: Reconcile branches
         id: reconcile-branches
         run: |
@@ -84,36 +85,28 @@ jobs:
           # Find the lines only in the gh-pages branches file (note files must be sorted for comm to work)
           comm -23 gh-pages-branches.txt running-challenges-branches.txt > prune-branches.txt
           echo "Built branches to delete: $(cat prune-branches.txt | tr '\n' ' ')"
-          # Attempt to strip trailing spaces with xargs, which is a hack the internet seems to know about
-          echo "::set-output name=BRANCHES_TO_PRUNE::'$(cat prune-branches.txt | tr '\n' ' ' | xargs)'"
+
+          echo "Contents before"
+          ls -l gh-pages-staging/
+          du -sh gh-pages-staging/*
+
+          # Delete those directories from the repo
+          cat prune-branches.txt | xargs -I % --no-run-if-empty -n1 rm -r "gh-pages-staging/%"
+
+          # Create an index page of all the built branches
+          echo "<html><head><title>Available branch builds</title></head><body>" > gh-pages-staging/index.html
+          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % echo "<a href=\"%\">%</a><br>" >> gh-pages-staging/index.html
+          echo "</body></html>" >> gh-pages-staging/index.html
+
+          echo "Contents after"
+          ls -l gh-pages-staging/
+          du -sh gh-pages-staging/*
 
         shell: bash
 
-      - name: Print branches to delete
-        run: |
-          echo "${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
-        shell: bash
-
-      - name: Create file containing available branches
-        run: |
-          echo "<html><head><title>Available branch builds</title></head><body>" > index.html
-          comm -12 ../gh-pages-branches.txt ../running-challenges-branches.txt | xargs -I % echo "<a href=\"%\">%</a><br>" >> index.html
-          echo "</body></html>" >> index.html
-        shell: bash
-        working-directory: gh-pages-staging
-
-      # ...and then use the action as you would normally do, but providing the path to the repo
-      - name: Remove directores, commit and push
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'Removing orphaned branches'
-          add: "index.html"
-          remove: "-r ${{ steps.reconcile-branches.outputs.BRANCHES_TO_PRUNE }}"
-          cwd: './gh-pages-staging/'
-
-      # Then we need to sync the contents to another repository so they appear on the staging site
-      - name: Push staging site to the staging site repo
-        run: |
-          git remote add staging-https https://${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}@github.com/fraz3alpha/running-challenges-staging.git
-          git push -f staging-https gh-pages-staging:gh-pages
-        working-directory: gh-pages-staging
+      # # Then we need to sync the contents to another repository so they appear on the staging site
+      # - name: Push staging site to the staging site repo
+      #   run: |
+      #     git remote add staging-https https://${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}@github.com/fraz3alpha/running-challenges-staging.git
+      #     git push -f staging-https gh-pages-staging:gh-pages
+      #   working-directory: gh-pages-staging
