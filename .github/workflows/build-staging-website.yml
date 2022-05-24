@@ -105,7 +105,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
+          personal_token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
           external_repository: fraz3alpha/running-challenges-staging
           publish_branch: gh-pages
           publish_dir: gh-pages-staging
