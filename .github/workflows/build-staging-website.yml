@@ -25,18 +25,16 @@ jobs:
 
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
-      - name: Checkout code
+      - name: 📂 Checkout code
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
-      # Use GitHub Actions' cache to shorten build times and decrease load on servers
-      - uses: actions/cache@v2
+      - name: 💎 setup ruby
+        uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+          ruby-version: 2.6 # can change this to 2.7 or whatever version you prefer
+
       # Prepare the website directory
       - name: Copy dependencies to Website directory
         run: |
@@ -49,10 +47,11 @@ jobs:
           cat website/_config.yml
         shell: bash
 
-      # Standard usage of the plugin as described on https://jekyllrb.com/docs/continuous-integration/github-actions/
-      # on 2021-01-31
-      # https://github.com/marketplace/actions/jekyll-actions
-
+      - name: 🔨 install dependencies & build site
+        uses: limjh16/jekyll-action-ts@v2
+        with:
+          enable_cache: true
+          jekyll_src: webite
 
       # Then we need to prune any directories that don't match to currently active branches
 
@@ -64,16 +63,6 @@ jobs:
           ref: gh-pages-staging
           path: gh-pages-staging
           token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
-
-      - name: Build the Jekyll site for branch ${{ github.ref_name }}
-        uses:  helaili/jekyll-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          jekyll_src: 'website'
-          jekyll_env: production
-          # Lets try pushing it to a staging branch, and then using another action to sync the staging repository with this branch
-          target_path: gh-pages-staging/${{ github.ref_name }}
-          build_only: true
 
       - name: Reconcile branches
         id: reconcile-branches
@@ -92,6 +81,11 @@ jobs:
 
           # Delete those directories from the repo
           cat prune-branches.txt | xargs -I % --no-run-if-empty -n1 rm -r "gh-pages-staging/%"
+
+          # Delete the branch directory in the target
+          rm -r gh-pages-staging/${{ github.ref_name }} || true
+          # Copy the new built site in
+          cp -a _site gh-pages-staging/${{ github.ref_name }}
 
           # Create an index page of all the built branches
           echo "<html><head><title>Available branch builds</title></head><body>" > gh-pages-staging/index.html
