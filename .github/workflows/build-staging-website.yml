@@ -96,15 +96,15 @@ jobs:
           ls -l gh-pages-staging/
           du -sh gh-pages-staging/*
 
-          git config user.name fraz3alpha
-          git config user.email andrewtaylor2@gmail.com
-
-          cd gh-pages-staging
-          git status
-          git log
-
-
         shell: bash
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
+          external_repository: fraz3alpha/running-challenges-staging
+          publish_branch: gh-pages
+          publish_dir: gh-pages-staging
 
       # # Then we need to sync the contents to another repository so they appear on the staging site
       # - name: Push staging site to the staging site repo
