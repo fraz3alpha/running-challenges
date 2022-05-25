@@ -1153,7 +1153,7 @@ function add_stats_table(div, data) {
       }
       row.append($('<td/>').html(display_name))
       if (stat_info.url !== undefined) {
-        row.append($('<td/>').append($('<a/>', {href: stat_info.url, text: stat_info.value, target: "_blank", title: stat_info.help })))
+        row.append($('<td/>').append($('<a/>', {href: stat_info.url, text: stat_info.value, target: "_blank", title: stat_info.help, rel: "noopener"})))
       } else {
         row.append($('<td/>').html(stat_value))
       }
@@ -1167,7 +1167,7 @@ function add_stats_table(div, data) {
   // if there is no athlete_id or home parkrun set
   if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
     var options_message_container = $('<div/>')
-    options_link = $('<a/>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').text('options.')
+    options_link = $('<a/>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').attr("rel", "noopener").text('options.')
     options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
     options_message_container.append(options_link)
     div.append($('<br/>'))
