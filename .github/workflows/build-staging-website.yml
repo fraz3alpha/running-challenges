@@ -89,7 +89,7 @@ jobs:
 
           # Create an index page of all the built branches
           echo "<html><head><title>Available branch builds</title></head><body>" > gh-pages-staging/index.html
-          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % echo "<a href=\"%\">%</a><br>" >> gh-pages-staging/index.html
+          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % bash -c 'echo "Adding %" && echo "<a href=\"%\">%</a><br>" >> gh-pages-staging/index.html'
           echo "</body></html>" >> gh-pages-staging/index.html
 
           echo "Contents after"
