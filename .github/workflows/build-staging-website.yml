@@ -58,9 +58,10 @@ jobs:
       # Get the latest copy of the repo
       # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          ref: gh-pages-staging
+          repository: fraz3alpha/running-challenges-staging
+          ref: gh-pages
           path: gh-pages-staging
           token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
 
@@ -89,8 +90,9 @@ jobs:
 
           # Create an index page of all the built branches
           echo "<html><head><title>Available branch builds</title></head><body>" > gh-pages-staging/index.html
-          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % echo "<a href=\"%\">%</a><br>" >> gh-pages-staging/index.html
+          comm -12 gh-pages-branches.txt running-challenges-branches.txt | xargs -I % bash -c 'echo "Adding %" && echo "<a href=\"%\">%</a><br>" >> gh-pages-staging/index.html'
           echo "</body></html>" >> gh-pages-staging/index.html
+          cat gh-pages-staging/index.html
 
           echo "Contents after"
           ls -l gh-pages-staging/
