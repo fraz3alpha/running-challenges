@@ -60,6 +60,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
+          repository: fraz3alpha/running-challenges-staging
           ref: gh-pages-staging
           path: gh-pages-staging
           token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
