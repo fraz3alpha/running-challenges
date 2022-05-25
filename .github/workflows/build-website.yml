@@ -13,10 +13,6 @@ on:
   push:
     branches:
       - master
-  schedule:
-    # Run daily at 1pm
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 13 * * *'
   workflow_dispatch:
     # Allow it to be run manually - useful for testing?
 
