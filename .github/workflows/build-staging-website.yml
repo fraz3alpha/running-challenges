@@ -58,7 +58,7 @@ jobs:
       # Get the latest copy of the repo
       # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: gh-pages-staging
           path: gh-pages-staging
