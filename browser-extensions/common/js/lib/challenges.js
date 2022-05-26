@@ -13,7 +13,7 @@ volunteer_roles_map = [
     {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
     {"shortname": "setup", "name": "Pre-event Setup"},
     {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
-    {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+    {"shortname": "first-timers-welcome", "name": "First Timers Welcome"},
     {"shortname": "sign-language", "name": "Sign Language Support"},
     {"shortname": "marshal", "name": "Marshal"},
     {"shortname": "tail-walker", "name": "Tail Walker"},
@@ -30,7 +30,7 @@ volunteer_roles_map = [
     {"shortname": "close-down", "name": "Post-event Close Down"},
     {"shortname": "results-processing", "name": "Results Processor"},
     {"shortname": "token-sorting", "name": "Token Sorting"},
-    {"shortname": "run-report-writer", "name": "Run Report Writer"},
+    {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
     {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
 ]
