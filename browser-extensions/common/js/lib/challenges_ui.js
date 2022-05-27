@@ -337,8 +337,20 @@ function createVoronoiMapPrototype() {
       var filtered_points = []
       var layer_data = this._data
       var completed_events = {}
+
+      homeParkrun = undefined
+      if (user_data) {
+        homeParkrun = user_data.home_parkrun_info
+      }
+      geoData = layer_data.geo_data
+
+      eventsByDistance = computeDistanceToParkrunsFromEvent(geoData, homeParkrun)
+
       $.each(layer_data.parkrun_results, function(index, parkrun_event) {
         completed_events[parkrun_event.name] = true
+
+        // Calculate distance from home parkrun
+
       })
       
       $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
@@ -352,7 +364,19 @@ function createVoronoiMapPrototype() {
           event_info.circleColour = "black"
           event_info.circleColourLine = "gray"
           if (completed_events[event_info.name] == true) {
-            event_info.fill = "green"
+
+            if( event_info.name == homeParkrun.name) {
+               event_info.fill = 'gold'
+            }
+            else if(eventsByDistance[event_info.name] < 33) {
+                event_info.fill = "red"
+            }
+            else if(eventsByDistance[event_info.name] < 45) {
+                 event_info.fill = "orange"
+            } else {
+                 event_info.fill = "blue"
+            }
+
             event_info.circleColour = "#006000"
           }
           filtered_points.push(event_info)
@@ -395,6 +419,14 @@ function createVoronoiMapPrototype() {
 
       var zoomScaleOptions = zoomLevelToScaleOptions(vmap.getZoom())
       console.log(zoomScaleOptions)
+
+      var circle33 = document.createElement("circle")
+      circle33.setAttribute("cx", 5)
+      circle33.setAttribute("cy", 5)
+      circle33.setAttribute("r", 1000)
+      circle33.setAttribute("stroke", 'black')
+      circle33.setAttribute("stroke-width", "1")
+      //item_circle.setAttribute("fill", '')
 
       $.each(voronoi_polygons, function(index, cell) {
 

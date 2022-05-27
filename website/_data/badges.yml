@@ -188,6 +188,10 @@ volunteer:
     name: Run Report Writer
     description: Spread the word about how good your last event was by writing up the run report
 
+  - shortname: record-breaker
+    name: Record Breaker
+    description: Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.
+
   - shortname: other
     name: Other
     description: Some parkruns have other roles that don't fit into the regular categories above, this role is a catch all that can be anything from carpark-management to human-clothes-hook!
