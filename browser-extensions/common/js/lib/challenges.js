@@ -254,7 +254,26 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
       "shortname": "record-breaker",
       "name": "Record Breaker",
       "collapsible": true,
-      "help": "Run all the parkrun events within 33km, 45km, and 78km of your home parkrun."}))
+      "help": "Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.",
+      "stages": [
+        {
+          "distance_km": 33,
+          "name": "33",
+          "badge_icon": "runner-record-breaker-33"
+        },
+        {
+          "distance_km": 45,
+          "name": "45",
+          "badge_icon": "runner-record-breaker-45"
+        },
+        {
+          "distance_km": 78,
+          "name": "78",
+          "badge_icon": "runner-record-breaker-78"
+        }
+      ]
+    
+    }))
   } else {
     console.log("Unable to process record breaker challenge")
   }
@@ -305,6 +324,7 @@ function challenge_record_breaker(data, params) {
 
   var o = create_data_object(params, "runner")
   o.has_map = true
+  o.map_type = 'voronoi'
 
   // Sort the possible parkruns by distance (like we do to calculate the NENDY, and furthest away)
   // returns a list of event names
@@ -1308,6 +1328,7 @@ function create_data_object(params, category) {
         "all_qualifying_events": {},
         // Whether this challenge has something you can map
         "has_map": false,
+        "map_type": "standard",
         // Where the reference home parkrun is, if available
         "home_parkrun": undefined
     }
