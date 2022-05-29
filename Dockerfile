@@ -1,7 +1,7 @@
 # docker build -t rc:latest .
 # docker run -v `pwd`:/rc rc:latest
 
-FROM node:lts-jessie
+FROM node:12-buster
 
 RUN npm -g config set user root
 RUN npm install --global web-ext

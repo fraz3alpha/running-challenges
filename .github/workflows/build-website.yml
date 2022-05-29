@@ -5,15 +5,14 @@ concurrency: website-build
 
 # Run this workflow every time a new commit pushed to your repository,
 # and periodically, to pick up any other updates that may have occurred - 
-# e.g. in the data repository
+# e.g. in the data repository.
+# Bear in mind that if there are no pushed to this repository in 3 months, then this action gets disabled,
+# and that stops the scheduled runs, but also the ones triggered by pushes, so it might not be ideal to 
+# have these both in the same action, if that's an option
 on: 
   push:
     branches:
       - master
-  schedule:
-    # Run daily at 1pm
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 13 * * *'
   workflow_dispatch:
     # Allow it to be run manually - useful for testing?
 

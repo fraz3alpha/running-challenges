@@ -13,7 +13,7 @@ volunteer_roles_map = [
     {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
     {"shortname": "setup", "name": "Pre-event Setup"},
     {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
-    {"shortname": "first-timers-briefing", "name": "First Timers Briefing"},
+    {"shortname": "first-timers-welcome", "name": "First Timers Welcome"},
     {"shortname": "sign-language", "name": "Sign Language Support"},
     {"shortname": "marshal", "name": "Marshal"},
     {"shortname": "tail-walker", "name": "Tail Walker"},
@@ -30,7 +30,7 @@ volunteer_roles_map = [
     {"shortname": "close-down", "name": "Post-event Close Down"},
     {"shortname": "results-processing", "name": "Results Processor"},
     {"shortname": "token-sorting", "name": "Token Sorting"},
-    {"shortname": "run-report-writer", "name": "Run Report Writer"},
+    {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
     {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
 ]
@@ -588,6 +588,8 @@ function generate_stat_tourist_quotient(parkrun_results) {
 // Maximum number of consecutive different parkrun events
 function generate_stat_longest_tourism_streak(parkrun_results) {
   var t_streak = 0
+  var t_date = 0
+  var t_last = ""
   let event_streak = []
 
   parkrun_results.forEach(function (parkrun_event, index) {
@@ -614,13 +616,17 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
     // Add the new parkrun in - it will be unique in the list as we removed the
     // existing entries in the list above.
     event_streak.push(parkrun_event.name)
-    t_streak = Math.max(t_streak, event_streak.length)
+    if (event_streak.length >= t_streak) {
+	  t_date = parkrun_event.datelink
+      t_last = parkrun_event.eventlink
+      t_streak = event_streak.length
+    }
 
   })
   return {
     "display_name": "Longest tourism streak",
     "help": "The highest number of consecutive different events attended.",
-    "value": t_streak + " parkruns"
+    "value": t_streak + " parkruns (achieved " + t_last + " " + t_date + ")"
   }
 }
 
@@ -1300,8 +1306,7 @@ function challenge_name_badge(data, params) {
   }
 
   var o = create_data_object(params, "runner")
-  // No map yet
-  o.has_map = false
+  o.has_map = true
 
   // Find the initial letters from the athlete information passed through.
   var pageAthleteInfo = params.data
@@ -1420,6 +1425,60 @@ function challenge_name_badge(data, params) {
       }
 
     })
+	
+    // Group and sort the qualifying events
+    grouped_events = {}
+    sorted_grouped_events = {}
+    if (geo_data) {
+      grouped_events = group_global_events_by_initial_letter(geo_data)
+      if (home_parkrun) {
+        sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, home_parkrun)
+      }
+    }
+	
+	console.log("number of subparts:" + o.subparts.length)
+    // Add in all the missing ones
+    for (i=0; i< o.subparts.length; i++) {
+		console.log(o.subparts_detail[i])
+		if (o.subparts_detail[i].info == "-") {
+
+            // if (grouped_events !== undefined) {
+            // Add those events for this letter
+            if (o.subparts[i] in grouped_events) {
+              $.each(grouped_events[o.subparts[i]], function (index, event) {
+                // Don't add them if they are already there
+                if (!(event.name in o.all_qualifying_events)) {
+                  details = get_parkrun_event_details(data, event.name)
+                  if (has_lat_lon(details)) {
+                    o.all_qualifying_events[event.name] = details
+					console.log(event.name)
+                  }
+                }
+              })
+            }
+            // }
+
+            // If this is our page (i.e. the athlete id in our profile matches
+            // that of this page), then we can try and work out which are closest
+            if (is_our_page(data)) {
+              // console.log(sorted_grouped_events)
+              // if (sorted_grouped_events !== undefined) {
+              if (o.subparts[i] in sorted_grouped_events) {
+                // Add the first on that we haven't already added
+                $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
+                  // Only add it, and break out of the loop, if it is new
+                  if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
+                    o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
+                    // Break out
+                    return false
+                  }
+                })
+              }
+            }
+            // }
+        }
+    }
+	
   }
 
   return update_data_object(o)
