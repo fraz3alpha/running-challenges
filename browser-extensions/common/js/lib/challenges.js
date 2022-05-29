@@ -585,6 +585,34 @@ function generate_stat_tourist_quotient(parkrun_results) {
   }
 }
 
+// A percentage showing how many of the events you have run only once,
+function generate_stat_oro_quotient(parkrun_results) {
+  var duplicate_run = 0
+  var event_attended = {}
+  var duplicate_event = {}
+
+  parkrun_results.forEach(function (parkrun_event) {
+    if (!(parkrun_event.name in event_attended)) {
+      event_attended[parkrun_event.name] = true
+    }
+   else {
+	duplicate_run++ //counts the duplicate runs (i.e. it doesn't count the first run).
+	duplicate_event[parkrun_event.name] = true //therefore we need to count the number of events that has been run more than once to add to the above.
+	}
+  })
+
+  var duplicate_count = parkrun_results.length - (duplicate_run + Object.keys(duplicate_event).length)
+  if (parkrun_results.length > 0) {
+    oro_quotient =  (100 * duplicate_count / parkrun_results.length).toFixed(2) + "% (" + duplicate_count + " events)"
+  }
+
+  return {
+    "display_name": "Only-run-once Quotient",
+    "help": "The percentage of parkrun events attended that you have only attended once.",
+    "value": oro_quotient
+  }
+}
+
 // Maximum number of consecutive different parkrun events
 function generate_stat_longest_tourism_streak(parkrun_results) {
   var t_streak = 0
@@ -958,6 +986,7 @@ function generate_stats(data) {
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
     stats['tourist_quotient'] = generate_stat_tourist_quotient(data.parkrun_results)
+    stats['oro_quotient'] = generate_stat_oro_quotient(data.parkrun_results)
     stats['tourism_streak'] = generate_stat_longest_tourism_streak(data.parkrun_results)
   }
 
