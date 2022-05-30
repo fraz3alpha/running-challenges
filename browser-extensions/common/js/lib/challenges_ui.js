@@ -1372,7 +1372,7 @@ function generate_standard_table_entry(challenge, table, data) {
     challenge.subparts_detail.forEach(function (subpart_detail) {
         var subpart_row = $('<tr></tr>')
         if (subpart_detail["badge"] !== undefined) {
-          console.log("Adding a badge to the table - "+subpart_detail["badge"])
+          console.log("Adding a badge to the table - "+JSON.stringify(subpart_detail["badge"]))
           subpart_row.append($('<td></td>').append(get_challenge_icon(subpart_detail["badge"], 24, 24)))
         } else {
           subpart_row.append($('<td></td>').text("-"))

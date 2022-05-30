@@ -259,17 +259,20 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
         {
           "distance_km": 33,
           "name": "33",
-          "badge_icon": "runner-record-breaker-33"
+          "badge_icon": "runner-record-breaker-33",
+          "events": {}
         },
         {
           "distance_km": 45,
           "name": "45",
-          "badge_icon": "runner-record-breaker-45"
+          "badge_icon": "runner-record-breaker-45",
+          "events": {}
         },
         {
           "distance_km": 78,
           "name": "78",
-          "badge_icon": "runner-record-breaker-78"
+          "badge_icon": "runner-record-breaker-78",
+          "events": {}
         }
       ]
     
@@ -278,40 +281,16 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
     console.log("Unable to process record breaker challenge")
   }
 
+  console.log(JSON.stringify(challenge_data))
+
   return challenge_data
 }
 
 function challenge_record_breaker(data, params) {
 
-  // Static parameters for this challenge
-  // The distances for silver, gold, platinum
-  awards = {
-    "red": {
-      "distance": 33,
-      "events": {},
-      "description": "33km record breaker",
-      "partialBadgeIcon": "runner-record-breaker-1"
-    },
-    "white": {
-      "distance": 45,
-      "events": {},
-      "description": "45km record breaker",
-      "partialBadgeIcon": "runner-record-breaker-2"
-    },
-    "blue": {
-      "distance": 78,
-      "events": {},
-      "description": "78km record breaker"
-      // To top one doesn't need a specia badgeIcon
-    }
-  }
-
-  // Order the challenges by distance (could be a static list, but lets be flexible)
-  awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
-    return a.distance - b.distance
-  })
-
-  console.log(awardsInOrderOfDistance)
+  // The definition of the different distances is described in the parameters
+  // passed to this function
+  var awards = params.stages
 
   // Find the data we are interested in
   parkrunResults = data.parkrun_results
@@ -338,23 +317,69 @@ function challenge_record_breaker(data, params) {
     return eventsByDistance[a] - eventsByDistance[b]
   })
 
-  // Associate the event with the smallest distance
+  // Order the challenges by distance (could be a static list, but lets be flexible)
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+    return a.distance_km - b.distance_km
+  })
+  console.log(awardsInOrderOfDistance)
+
+  // Associate each event with the smallest distance
   $.each(sortedEvents, function(idx, eventName){
 
-    eventDistance = eventsByDistance[eventName]
-    eventDistanceAward = getDistanceAward(eventDistance, awards, awardsInOrderOfDistance)
+    var eventDistance = eventsByDistance[eventName]
+    var eventDistanceAward = undefined
+
+    for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
+      distanceAward = awardsInOrderOfDistance[idx]
+      if (eventDistance <= awards[distanceAward].distance_km) {
+        // Mark that we've found the tightest fitting award, and return it
+        eventDistanceAward = distanceAward
+        break
+      }
+    }
+
     if (eventDistanceAward !== undefined) {
+      awards[eventDistanceAward].events[eventName] = {
+        "distance": eventDistance
+      }
+    }
+  })
+
+  console.log(awards)
+
+  // Iterate through each award, starting with the smallest distance, and then going through
+  // each event in distance order
+  
+  // Keep track of whether all events have been completed up to this point
+  var allPreviousCompleted = true
+  var currentBadge = undefined
+
+  var mostRecentAward = undefined
+
+  console.log(awardsInOrderOfDistance)
+  $.each(awardsInOrderOfDistance, function(idx, award) {
+
+    console.log(idx + " " + award)
+
+    var award_info = awards[award]
+    mostRecentAward = award_info
+
+    console.log("Processing "+award+" with details "+JSON.stringify(award_info))
+
+    $.each(award_info.events, function(eventName, event_data){
+
       // Find out when we first ran this event, if we have.
       runEvent = hasRunEvent(parkrunResults, eventName)
       hasRun = (runEvent !== undefined)
 
-      awards[eventDistanceAward].events[eventName] = {
-        "distance": eventDistance,
-        "completed": hasRun
+      if (!hasRun) {
+        allPreviousCompleted = false
       }
+
+      console.log(award_info.events[eventName])
+      award_info.events[eventName]["completed"] = hasRun
       // Add the event as a sub-part
       o.subparts.push(eventName)
-
 
       parkunEventDetails = get_parkrun_event_details(data, eventName)
       o.all_qualifying_events[eventName] = parkunEventDetails
@@ -363,7 +388,7 @@ function challenge_record_breaker(data, params) {
         // Add the completed event
         o.subparts_completed_count += 1
         o.subparts_detail.push({
-          "name": eventDistance.toFixed(1) + "km",
+          "name": awards[award].events[eventName].distance.toFixed(1) + "km",
           "date": runEvent.date,
           "info": runEvent.date,
           "subpart": eventName
@@ -373,57 +398,92 @@ function challenge_record_breaker(data, params) {
       } else {
         // Add a stub event, which is incomplete
         o.subparts_detail.push({
-          "name": eventDistance.toFixed(1) + "km",
+          "name": awards[award].events[eventName].distance.toFixed(1) + "km",
           "subpart": eventName
         })
 
       }
 
-      // Create placeholders for each contributing result
-
-
-    }
-  })
-
-  // Keep track if the previous stages have been completed. We start with true as that
-  // means the first one is eligible
-  allPreviousCompleted = true
-
-  // Compute some totals and completion summary
-  $.each(awardsInOrderOfDistance, function(idx, awardName){
-    // Find the total number events for this award
-    awards[awardName]["eventsCount"] = Object.keys(awards[awardName].events).length
-    // Count the number of events we have completed for this award
-    eventsCompletedCount = 0
-    $.each(awards[awardName].events, function(eventName, eventInfo){
-      if (eventInfo.completed) {
-        eventsCompletedCount++
-      }
     })
-    awards[awardName]["eventsCompletedCount"] = eventsCompletedCount
-    completed = awards[awardName]["eventsCompletedCount"] == awards[awardName]["eventsCount"]
-    // We mark if this sub-task has been completed, but we don't mark the challenge as being so
-    // unless all the inner ones have too.
-    awards[awardName]["completed"] = completed
-    if (allPreviousCompleted && completed) {
-      o.partial_completion = true
-      o.partial_completion_name = awards[awardName].description
-      o.partial_completion_badge_icon = awards[awardName].partialBadgeIcon
-    } else {
-      // Break out of the cycle so that no further outer rings are marked as completed
-      allPreviousCompleted = false
+
+    // Add the subpart badge to the last entry in the table
+    // Find out if this is the last one in the list
+    // We can use this to add the badge for this subpart to the table
+    if (mostRecentAward !== undefined) {
+      //console.log("Adding badge to the last entry: " + JSON.stringify(o.subparts_detail))
+      o.subparts_detail[o.subparts_detail.length-1].badge = {
+        "name": award_info.name,
+        "badge_icon": award_info.badge_icon
+      }
     }
+
+    if (allPreviousCompleted) {
+      // Then this award is (also) complete, and it overwrites any previous awards
+      console.log("Awarding badge for partial completion of record breaker badge " + JSON.stringify(award_info))
+      o.partial_completion = true
+      o.partial_completion_name = award_info.name
+      o.partial_completion_badge_icon = award_info.badge_icon
+    } else {
+      console.log("Failed to get record breaker badge for "+JSON.stringify(award_info))
+    }
+
+    // Set the badge icon to the last badge in the set
+    o.badge_icon = award_info.badge_icon
 
   })
 
-  // If everything has been completed, then we are!
+  if (currentBadge !== undefined) {
+    o.badgesAwarded = currentBadge
+    console.log("Current record breaker badge is "+JSON.stringify(currentBadge))
+  }
+
+  // If we have still completed everything, then we can say this challenge is complete
   if (allPreviousCompleted) {
     o.complete = true
   }
 
-  console.log(awards)
+  // Return an object representing this challenge
+  return update_data_object(o)
 
-  return o
+  // // Keep track if the previous stages have been completed. We start with true as that
+  // // means the first one is eligible
+  // allPreviousCompleted = true
+
+  // // Compute some totals and completion summary
+  // $.each(awardsInOrderOfDistance, function(idx, awardName){
+  //   // Find the total number events for this award
+  //   awards[awardName]["eventsCount"] = Object.keys(awards[awardName].events).length
+  //   // Count the number of events we have completed for this award
+  //   eventsCompletedCount = 0
+  //   $.each(awards[awardName].events, function(eventName, eventInfo){
+  //     if (eventInfo.completed) {
+  //       eventsCompletedCount++
+  //     }
+  //   })
+  //   awards[awardName]["eventsCompletedCount"] = eventsCompletedCount
+  //   completed = awards[awardName]["eventsCompletedCount"] == awards[awardName]["eventsCount"]
+  //   // We mark if this sub-task has been completed, but we don't mark the challenge as being so
+  //   // unless all the inner ones have too.
+  //   awards[awardName]["completed"] = completed
+  //   if (allPreviousCompleted && completed) {
+  //     o.partial_completion = true
+  //     o.partial_completion_name = awards[awardName].description
+  //     o.partial_completion_badge_icon = awards[awardName].partialBadgeIcon
+  //   } else {
+  //     // Break out of the cycle so that no further outer rings are marked as completed
+  //     allPreviousCompleted = false
+  //   }
+
+  // })
+
+  // // If everything has been completed, then we are!
+  // if (allPreviousCompleted) {
+  //   o.complete = true
+  // }
+
+  // console.log(awards)
+
+  // return o
 }
 
 function hasRunEvent(parkrunResults, eventName) {
@@ -438,7 +498,15 @@ function hasRunEvent(parkrunResults, eventName) {
   return runEvent
 }
 
-function getDistanceAward(eventDistance, distanceAwards, awardsInOrderOfDistance) {
+function getDistanceAward(eventDistance, distanceAwards) {
+
+  // Order the challenges by distance (could be a static list, but lets be flexible)
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+    return a.distance - b.distance
+  })
+
+  console.log(awardsInOrderOfDistance)
+
   award = undefined
   for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
     distanceAward = awardsInOrderOfDistance[idx]
