@@ -249,34 +249,38 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
 
   if (data.parkrun_results && data.geo_data && data.info.has_home_parkrun) {
     // We can't compute it for other people
-    // if (data.parkrun_results && data.geo_data && data.info.has_home_parkrun && data.info.is_our_page) {
-    challenge_data.push(challenge_record_breaker(data, {
-      "shortname": "record-breaker",
-      "name": "Record Breaker",
-      "collapsible": true,
-      "help": "Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.",
-      "stages": [
-        {
-          "distance_km": 33,
-          "name": "33",
-          "badge_icon": "runner-record-breaker-33",
-          "events": {}
-        },
-        {
-          "distance_km": 45,
-          "name": "45",
-          "badge_icon": "runner-record-breaker-45",
-          "events": {}
-        },
-        {
-          "distance_km": 78,
-          "name": "78",
-          "badge_icon": "runner-record-breaker-78",
-          "events": {}
-        }
-      ]
-    
-    }))
+    if (data.info.is_our_page) {
+      // if (data.parkrun_results && data.geo_data && data.info.has_home_parkrun && data.info.is_our_page) {
+      challenge_data.push(challenge_record_breaker(data, {
+        "shortname": "record-breaker",
+        "name": "Record Breaker",
+        "collapsible": true,
+        "help": "Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.",
+        "stages": [
+          {
+            "distance_km": 33,
+            "name": "33",
+            "badge_icon": "runner-record-breaker-33",
+            "events": {}
+          },
+          {
+            "distance_km": 45,
+            "name": "45",
+            "badge_icon": "runner-record-breaker-45",
+            "events": {}
+          },
+          {
+            "distance_km": 78,
+            "name": "78",
+            "badge_icon": "runner-record-breaker-78",
+            "events": {}
+          }
+        ]
+      
+      }))
+    } else {
+      console.log("Cannot determine record breaker challenge for other people")
+    }
   } else {
     console.log("Unable to process record breaker challenge")
   }
