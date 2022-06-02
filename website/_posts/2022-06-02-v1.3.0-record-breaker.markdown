@@ -12,6 +12,8 @@ A new challenge!...
 
 We have a new Record Breaker challenge, support for more parkrun websites after the changes last year, and a few other tweaks
 
+Big thanks to [Russell Boyatt](https://github.com/rboyatt) and [@JazzyJ87](https://github.com/JazzyJ87) who provided many of the changes in this release and are the main reason we have been able to do this update!
+
 ### New challenge: the Record Breaker badge
 
 ![Name Badge challenge badge]({{ site.baseurl }}/img/badges/runner-record-breaker-78.png "Name Badge challenge badge"){: .center-image .image-border}
@@ -33,9 +35,13 @@ e.g.
 
 > Longest tourism streak | 17 parkruns (achieved Itchen Valley Country 29/02/2020)
 
+Thanks to [@JazzyJ87](https://github.com/JazzyJ87) for contributing the code for this update
+
 ### Add Name Badge map
 
-I think it was just forgotten about before, but the Name Badge challenge now has a map
+I think it was just forgotten about before, but the Name Badge challenge now has a map.
+
+Thanks again to [@JazzyJ87](https://github.com/JazzyJ87) who [added this](https://github.com/fraz3alpha/running-challenges/pull/336) as well
 
 ## Bug fixes
 
@@ -46,6 +52,12 @@ We think we've fixed all the non-English parkrun websites, which previously didn
 ### Skip proceessing profiles with no runs
 
 It seems the parkrun website now renders a page differently if the parkrunner hasn't conpleted any runs, so rather than throw an error we print a nice message
+
+### Volunteer role name updates
+
+As part of the move away from "runs", the parkrun website changed the names of a couple of the volunteer roles to reflect this, such as "Run Report Writer" just dropping the "Run" and becoming "Report Writer". This broke these volunteer stats and badges, so we had to re-name these. It seems like the non-English versions were already OK (perhaps because they had thought about this before a new country was started), but if any of those look like they aren't working, let us know
+
+Thanks to [Russell Boyatt](https://github.com/rboyatt) who [contributed this fix](https://github.com/fraz3alpha/running-challenges/pull/334)
 
 ## Firefox
 
