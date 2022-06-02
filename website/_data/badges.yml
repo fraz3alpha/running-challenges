@@ -86,6 +86,10 @@ runner:
     name: Gold Level Obsessive
     description:  Run 50+ parkruns in one calendar year.
 
+  - shortname: record-breaker
+    name: Record Breaker
+    description: Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.
+
 volunteer:
 
   - shortname: equipment-storage
@@ -187,10 +191,6 @@ volunteer:
   - shortname: run-report-writer
     name: Run Report Writer
     description: Spread the word about how good your last event was by writing up the run report
-
-  - shortname: record-breaker
-    name: Record Breaker
-    description: Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.
 
   - shortname: other
     name: Other
