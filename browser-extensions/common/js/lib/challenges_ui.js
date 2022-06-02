@@ -839,6 +839,10 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
     var user_data = data.user_data
     var geo_data = data.geo_data
     var events = data.geo_data.data.events
+    var parkrun_results = data.parkrun_results
+
+    var reference_parkrun_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
+    var reference_parkrun = geoData.data.events[reference_parkrun_name]
 
     var completed_events = {}
 
@@ -846,12 +850,7 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
       completed_events[parkrun_event.name] = true
     })
 
-    homeParkrun = undefined
-    if (user_data) {
-      homeParkrun = user_data.home_parkrun_info
-    }
-
-    eventsByDistance = computeDistanceToParkrunsFromEvent(geo_data, homeParkrun)
+    eventsByDistance = computeDistanceToParkrunsFromEvent(geo_data, reference_parkrun)
 
     $.each(events, function(event_name, event_info) {
       if (event_has_valid_location(event_info) && event_has_started(event_info)) {
@@ -870,7 +869,7 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
         event_info.circleColourLine = "gray"
         if(eventsByDistance[event_info.name] < 78) {
           // Events you have completed
-          if(event_info.name == homeParkrun.name) {
+          if(event_info.name == reference_parkrun_name) {
             event_info.fill = 'gold'
           } else if(eventsByDistance[event_info.name] < 33) {
             event_info.fill = "red"

@@ -247,10 +247,7 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
   //     "help": "Run all the parkrun locations in a geographical region."}))
   // }
 
-  if (data.parkrun_results && data.geo_data && data.info.has_home_parkrun) {
-    // We can't compute it for other people
-    if (data.info.is_our_page) {
-      // if (data.parkrun_results && data.geo_data && data.info.has_home_parkrun && data.info.is_our_page) {
+  if (data.parkrun_results && data.geo_data) {
       challenge_data.push(challenge_record_breaker(data, {
         "shortname": "record-breaker",
         "name": "Record Breaker",
@@ -278,9 +275,6 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
         ]
       
       }))
-    } else {
-      console.log("Cannot determine record breaker challenge for other people")
-    }
   } else {
     console.log("Unable to process record breaker challenge")
   }
@@ -300,10 +294,9 @@ function challenge_record_breaker(data, params) {
   parkrunResults = data.parkrun_results
   geoData = data.geo_data
   user_data = data.user_data
-  homeParkrun = undefined
-  if (user_data) {
-    homeParkrun = user_data.home_parkrun_info
-  }
+
+  var reference_parkrun_name = calculate_average_parkrun_event_name(parkrunResults, geoData)
+  var reference_parkrun = geoData.data.events[reference_parkrun_name]
 
   var o = create_data_object(params, "runner")
   o.has_map = true
@@ -314,7 +307,7 @@ function challenge_record_breaker(data, params) {
   // orderedEventsByDistance = orderParkrunEventsByDistance
 
   // Find how far it is to each event
-  eventsByDistance = computeDistanceToParkrunsFromEvent(geoData, homeParkrun)
+  eventsByDistance = computeDistanceToParkrunsFromEvent(geoData, reference_parkrun)
 
   // Sort the list of events by distance
   var sortedEvents = Object.keys(eventsByDistance).sort(function(a, b) {
@@ -1096,15 +1089,34 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 // Which is the closest parkrun to your average parkrun location?
 function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   // Calculate average parkrun for user
-  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
-  var average_parkrun_event_name = undefined
-  var average_parkrun_event_distance = undefined
 
   var average_parkrun_stat_info = {
     "display_name": "Average parkrun event",
     "help": "The nearest parkrun event to your average parkrun location.",
     "value": "None"
   }
+
+  var average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
+
+  if (average_parkrun_event_name !== undefined) {
+
+    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
+    
+    average_parkrun_stat_info = {
+      "display_name": "Average parkrun event",
+      "help": "The nearest parkrun event to your average parkrun location.",
+      "value": average_parkrun_event_name,
+      "url": url_link
+    }
+  }
+  return average_parkrun_stat_info
+}
+
+function calculate_average_parkrun_event_name(parkrun_results, geo_data) {
+
+  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
+  var average_parkrun_event_name = undefined
+  var average_parkrun_event_distance = undefined
 
   if (average_parkrun_location !== undefined) {
 
@@ -1120,16 +1132,10 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
       }
     })
 
-    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
-    
-    average_parkrun_stat_info = {
-      "display_name": "Average parkrun event",
-      "help": "The nearest parkrun event to your average parkrun location.",
-      "value": average_parkrun_event_name,
-      "url": url_link
-    }
   }
-  return average_parkrun_stat_info
+
+  return average_parkrun_event_name
+
 }
 
 // Furthest parkrun you have run away from your home parkrun
