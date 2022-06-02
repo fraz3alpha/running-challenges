@@ -1,0 +1,62 @@
+---
+layout: post
+title:  "Record Breaker Challenge (v1.3.0)"
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+A new challenge!...
+
+## New!
+
+We have a new Record Breaker challenge, support for more parkrun websites after the changes last year, and a few other tweaks
+
+### New challenge: the Record Breaker badge
+
+![Name Badge challenge badge]({{ site.baseurl }}/img/badges/runner-record-breaker-78.png "Name Badge challenge badge"){: .center-image .image-border}
+
+This badge is awarded for running all the parkruns withing 33km, 45km, and 78km from your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of records.
+
+We had originally coded this up by using your configured home parkrun event as the centre - but this would mean the challenge (and badge) would only be visible to you. However, as we [collaborated on this](https://github.com/fraz3alpha/running-challenges/pull/203#issuecomment-1141483334) with [Russell Boyatt](https://github.com/rboyatt), he made the very good point we could use the average parkrun location (which we already calculate), and then it would be possible to calculate it for anyone - a very good idea!
+
+We also use the voronoi map style to show the events for this challenge, which could - if there are enough parkruns nearby - end up with a pleasing archery target of coloured sections. Or, not, as the case may be (Andy's average parkrun is currently on the south coast of England in Worthing, so it's a lop-sided affair where colours bleed into the channel!)
+
+
+![Record Breaker badge]({{ site.baseurl }}/img/posts/record-breaker-map.png "Record Breaker badge"){: .center-image .image-border}
+
+### Longest tourism streak stat update
+
+The Longest tourism streak statistic now tells you when it ran to, so you can go look at it in your results, which we hope is useful
+
+e.g.
+
+> Longest tourism streak | 17 parkruns (achieved Itchen Valley Country 29/02/2020)
+
+### Add Name Badge map
+
+I think it was just forgotten about before, but the Name Badge challenge now has a map
+
+## Bug fixes
+
+### Non-English parkrun Websites
+
+We think we've fixed all the non-English parkrun websites, which previously didn't work after things were re-jigged in the great website updates of late 2021.
+
+### Skip proceessing profiles with no runs
+
+It seems the parkrun website now renders a page differently if the parkrunner hasn't conpleted any runs, so rather than throw an error we print a nice message
+
+## Firefox
+
+We are going to attempt to re-submit the extension to the Mozilla Add-Ons store, we've no idea if it will pass their checks and we don't understand the reasoning for it being rejected before, but we'll see if we can get any more information out of them
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon. Typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below. :
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
