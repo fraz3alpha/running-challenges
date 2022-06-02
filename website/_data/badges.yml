@@ -190,7 +190,7 @@ volunteer:
 
   - shortname: record-breaker
     name: Record Breaker
-    description: Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.
+    description: Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.
 
   - shortname: other
     name: Other
