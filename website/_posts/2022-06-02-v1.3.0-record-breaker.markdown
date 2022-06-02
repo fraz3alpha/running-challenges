@@ -10,7 +10,7 @@ A new challenge!...
 
 ## New!
 
-We have a new Record Breaker challenge, support for more parkrun websites after the changes last year, and a few other tweaks
+We have a new Record Breaker challenge, support for more parkrun websites after parkrun HQ's changes to the website last year, and a few other tweaks.
 
 Big thanks to [Russell Boyatt](https://github.com/rboyatt) and [@JazzyJ87](https://github.com/JazzyJ87) who provided many of the changes in this release and are the main reason we have been able to do this update!
 
@@ -18,57 +18,57 @@ Big thanks to [Russell Boyatt](https://github.com/rboyatt) and [@JazzyJ87](https
 
 ![Name Badge challenge badge]({{ site.baseurl }}/img/badges/runner-record-breaker-78.png "Name Badge challenge badge"){: .center-image .image-border}
 
-This badge is awarded for running all the parkruns withing 33km, 45km, and 78km from your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of records.
+This badge is awarded for running all of the parkruns within 33km, 45km, and 78km of your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of vinyl records.
 
-We had originally coded this up by using your configured home parkrun event as the centre - but this would mean the challenge (and badge) would only be visible to you. However, as we [collaborated on this](https://github.com/fraz3alpha/running-challenges/pull/203#issuecomment-1141483334) with [Russell Boyatt](https://github.com/rboyatt), he made the very good point we could use the average parkrun location (which we already calculate), and then it would be possible to calculate it for anyone - a very good idea!
+We had originally coded this up by using the home parkrun that you've set in the extension as the centre of the record. But this would mean that only you could see that you have completed the challenge (and badge). However, as we [collaborated on this](https://github.com/fraz3alpha/running-challenges/pull/203#issuecomment-1141483334) with [Russell Boyatt](https://github.com/rboyatt), he made the very good point we could use the average parkrun location (which we already calculate), and then it would be possible for you to visit anyone's parkrun page and see if they have a Record Breaker badge (without you having to know and set their home parkrun in the extension).
 
-We also use the voronoi map style to show the events for this challenge, which could - if there are enough parkruns nearby - end up with a pleasing archery target of coloured sections. Or, not, as the case may be (Andy's average parkrun is currently on the south coast of England in Worthing, so it's a lop-sided affair where colours bleed into the channel!)
+We also use the voronoi map style to show the events for this challenge. This can, if there are enough parkruns nearby, end up with a pleasing archery target of coloured sections. Or, not, as the case may be: Andy's average parkrun is currently on the south coast of England in Worthing, so it's a lop-sided affair where colours bleed into the channel!
 
 
 ![Record Breaker badge]({{ site.baseurl }}/img/posts/record-breaker-map.png "Record Breaker badge"){: .center-image .image-border}
 
 ### Longest tourism streak stat update
 
-The Longest tourism streak statistic now tells you when it ran to, so you can go look at it in your results, which we hope is useful
+The _Longest tourism streak_ statistic now tells you which parkrun and which date it ends at, which we hope is useful.
 
 e.g.
 
 > Longest tourism streak | 17 parkruns (achieved Itchen Valley Country 29/02/2020)
 
-Thanks to [@JazzyJ87](https://github.com/JazzyJ87) for contributing the code for this update
+Thanks to [@JazzyJ87](https://github.com/JazzyJ87) for contributing the code for this update.
 
 ### Add Name Badge map
 
-I think it was just forgotten about before, but the Name Badge challenge now has a map.
+I think we just forgot to do it before, but the Name Badge challenge now has a map.
 
-Thanks again to [@JazzyJ87](https://github.com/JazzyJ87) who [added this](https://github.com/fraz3alpha/running-challenges/pull/336) as well
+Thanks again to [@JazzyJ87](https://github.com/JazzyJ87) who [added this](https://github.com/fraz3alpha/running-challenges/pull/336) as well.
 
 ## Bug fixes
 
 ### Non-English parkrun Websites
 
-We think we've fixed all the non-English parkrun websites, which previously didn't work after things were re-jigged in the great website updates of late 2021.
+We think we've fixed all the non-English parkrun websites. After parkrun HQ's great website updates of late 2021, we fixed the English-language websites but not all the non-English websites. They should now all work.
 
 ### Skip proceessing profiles with no runs
 
-It seems the parkrun website now renders a page differently if the parkrunner hasn't conpleted any runs, so rather than throw an error we print a nice message
+It seems the parkrun website now displays a page differently if the parkrunner hasn't completed any runs. This caused the extension to display an error. Rather than displaying an error, we now print a nice message.
 
 ### Volunteer role name updates
 
-As part of the move away from "runs", the parkrun website changed the names of a couple of the volunteer roles to reflect this, such as "Run Report Writer" just dropping the "Run" and becoming "Report Writer". This broke these volunteer stats and badges, so we had to re-name these. It seems like the non-English versions were already OK (perhaps because they had thought about this before a new country was started), but if any of those look like they aren't working, let us know
+The parkrun website changed the names of a couple of the volunteer roles to reflect the move away from focusing on "runs". For example, "Run Report Writer" became "Report Writer". This broke these volunteer stats and badges so that it looked like you hadn't ever done those roles when you had, at least on the English websites. We've now fixed this so that the extension looks for the new volunteer role names. It seems that the non-English volunteer role names were already OK (perhaps because they had thought about this before a new country was started), but if any of those look like they aren't working, let us know.
 
-Thanks to [Russell Boyatt](https://github.com/rboyatt) who [contributed this fix](https://github.com/fraz3alpha/running-challenges/pull/334)
+Thanks to [Russell Boyatt](https://github.com/rboyatt) who [contributed this fix](https://github.com/fraz3alpha/running-challenges/pull/334).
 
 ## Firefox
 
-We are going to attempt to re-submit the extension to the Mozilla Add-Ons store, we've no idea if it will pass their checks and we don't understand the reasoning for it being rejected before, but we'll see if we can get any more information out of them
+We are going to attempt to re-submit the extension to the Mozilla Add-Ons store so that it works on Firefox again. We've no idea if it will pass their checks and we don't understand the reasoning for it being rejected before, but we'll see if we can get any more information out of them.
 
 ## How do I get all of this great stuff?
 
 If you have already installed the extension it should update soon. Typically we
-have found it takes a few days for Chrome and Firefox to auto-update, but it should
+have found it takes a few days to auto-update, but it should
 do so eventually.  If you haven't yet joined the fun you can get it from one of
-the links below. :
+the links below (the Firefox version will only be available if the store stops rejecting our submission...):
 
 [![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
 {: style="text-align: center;"}
