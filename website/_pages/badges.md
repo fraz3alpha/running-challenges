@@ -36,7 +36,7 @@ Also, as a special extra something for those dedicated volunteers you can gain s
 
 {% for entry in site.data.badges.runner %}
   <div style="clear:left" markdown="1">
-  ![{{ entry.name }}]({{ site.baseurl }}/img/badges/runner-{{ entry.shortname }}.png){: .badge-list-item}
+  ![{{ entry.name }}]({{ site.baseurl }}/img/badges/{% if entry.badge_name %}{{entry.badge_name}}{% else %}runner-{{ entry.shortname }}{% endif %}.png){: .badge-list-item}
   **{{ entry.name }}** - {{ entry.description }}
   </div>
 {% endfor %}
