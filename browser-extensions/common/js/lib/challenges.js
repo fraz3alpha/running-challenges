@@ -302,6 +302,11 @@ function challenge_record_breaker(data, params) {
   o.has_map = true
   o.map_type = 'voronoi'
 
+  if (reference_parkrun_name === undefined || reference_parkrun === undefined) {
+    // We don't have enough data for this, so skip it
+    return o
+  }
+
   // Sort the possible parkruns by distance (like we do to calculate the NENDY, and furthest away)
   // returns a list of event names
   // orderedEventsByDistance = orderParkrunEventsByDistance
