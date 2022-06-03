@@ -252,7 +252,7 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
         "shortname": "record-breaker",
         "name": "Record Breaker",
         "collapsible": true,
-        "help": "Run all the parkrun events within 33km, 45km, and 78km of your home parkrun.",
+        "help": "Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.",
         "stages": [
           {
             "distance_km": 33,
