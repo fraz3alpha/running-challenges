@@ -48,6 +48,7 @@ jobs:
         shell: bash
 
       # Install some dependencies to try and fix Ruby randomly crashing
+      # Taken from https://github.com/sass/sassc-ruby/issues/146#issuecomment-771042986
       - name: Install some dependencies for Ruby
         run: |
           set -x \
