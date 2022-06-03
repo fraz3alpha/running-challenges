@@ -51,8 +51,8 @@ jobs:
       - name: Install some dependencies for Ruby
         run: |
           set -x \
-          && apt update \
-          && apt install -y --no-install-recommends \
+          && sudo apt update \
+          && sudo apt install -y --no-install-recommends \
           libffi-dev
         shell: bash
 
