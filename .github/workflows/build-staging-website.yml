@@ -47,6 +47,15 @@ jobs:
           cat website/_config.yml
         shell: bash
 
+      # Install some dependencies to try and fix Ruby randomly crashing
+      - name: Install some dependencies for Ruby
+        run: |
+          set -x \
+          && apt update \
+          && apt install -y --no-install-recommends \
+          libffi-dev
+        shell: bash
+
       - name: 🔨 install dependencies & build site
         uses: limjh16/jekyll-action-ts@v2
         with:
