@@ -29,7 +29,7 @@ const { document } = window;
 global.window = window;
 global.document = document;
 
-const $ = global.jQuery = require('../../../../js/lib/third-party/jquery/jquery-3.6.0.js');
+const $ = global.jQuery = require('../../../../../js/lib/third-party/jquery/jquery-3.6.0.js');
 // It needs to be set globally, as per this solution: https://stackoverflow.com/a/57292683
 global.$ = $
 
