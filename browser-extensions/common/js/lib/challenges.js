@@ -791,6 +791,58 @@ function generate_stat_wilson_index(parkrun_results) {
   }
 }
 
+// The maximum contiguous series of parkrun event numbers you have attended
+// (at any event), regardless of starting position.
+function generate_stat_floating_wilson_index(parkrun_results) {
+  var w_streak = 0
+  var w_from = 0
+  var w_to = 0
+  var j = 0
+  let S = new Set()
+
+  // Hash all the array elements
+    parkrun_results.forEach(function (parkrun_event) {
+		S.add(parseInt(parkrun_event.event_number))
+  })
+ 
+    // check each possible sequence from
+    // the start then update optimal length
+    parkrun_results.forEach(function (parkrun_event) {
+     
+        // if current element is the starting
+        // element of a sequence
+		console.log("checking " + parkrun_event.event_number)
+        if (!S.has(parkrun_event.event_number - 1))
+        {
+			console.log("start of sequence:" + parkrun_event.event_number)
+            // Then check for next elements
+            // in the sequence
+            j = parseInt(parkrun_event.event_number)
+			console.log("does set have j = "+j+". "+S.has(j))
+            while (S.has(j))
+			{
+				j = j + 1
+			}
+			
+			console.log("end of sequence:" + j)
+ 
+            // update optimal length if
+            // this length is more
+			if (w_streak <= j - parkrun_event.event_number)
+			{
+				w_streak = j - parkrun_event.event_number
+				w_from = parkrun_event.event_number
+				w_to = j - 1 
+			}
+        }
+    })  
+  return {
+    "display_name": "floating wilson-index",
+    "help": "The maximum contiguous series of parkrun event numbers you have attended (at any event), regardless of starting position.",
+    "value": w_streak+" ("+w_from+" to "+w_to+")"
+  }
+}
+
 // What date was this athlete's first run
 function generate_stat_parkrun_birthday(parkrun_results) {
   var birthday = "-"
@@ -1262,6 +1314,7 @@ function generate_stats(data) {
     stats['runs_this_year'] = generate_stat_runs_this_year(data.parkrun_results)
     stats['p_index'] = generate_stat_p_index(data.parkrun_results)
     stats['wilson_index'] = generate_stat_wilson_index(data.parkrun_results)
+    stats['floating wilson_index'] = generate_stat_floating_wilson_index(data.parkrun_results)
     stats['parkrun_birthday'] = generate_stat_parkrun_birthday(data.parkrun_results)
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
