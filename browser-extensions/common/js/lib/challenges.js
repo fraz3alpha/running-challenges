@@ -811,21 +811,16 @@ function generate_stat_floating_wilson_index(parkrun_results) {
      
         // if current element is the starting
         // element of a sequence
-		console.log("checking " + parkrun_event.event_number)
         if (!S.has(parkrun_event.event_number - 1))
         {
-			console.log("start of sequence:" + parkrun_event.event_number)
             // Then check for next elements
             // in the sequence
             j = parseInt(parkrun_event.event_number)
-			console.log("does set have j = "+j+". "+S.has(j))
             while (S.has(j))
 			{
 				j = j + 1
 			}
-			
-			console.log("end of sequence:" + j)
- 
+			 
             // update optimal length if
             // this length is more
 			if (w_streak <= j - parkrun_event.event_number)
