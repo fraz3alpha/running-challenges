@@ -16,7 +16,7 @@ Big thanks to [Russell Boyatt](https://github.com/rboyatt) and [@JazzyJ87](https
 
 ### New challenge: the Record Breaker badge
 
-![Name Badge challenge badge]({{ site.baseurl }}/img/badges/runner-record-breaker-78.png "Name Badge challenge badge"){: .center-image .image-border}
+![Record Breaker challenge badge]({{ site.baseurl }}/img/badges/runner-record-breaker-78.png "Record Breaker challenge badge"){: .center-image .image-border}
 
 This badge is awarded for running all of the parkruns within 33km, 45km, and 78km of your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of vinyl records.
 
