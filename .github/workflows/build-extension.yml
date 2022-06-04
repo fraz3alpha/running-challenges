@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js
+        working-directory: browser-extensions/common/js/tests
 
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
@@ -102,7 +102,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js
+        working-directory: browser-extensions/common/js/tests
 
     steps:
 
