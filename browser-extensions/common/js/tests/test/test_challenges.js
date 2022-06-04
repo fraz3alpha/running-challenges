@@ -34,7 +34,7 @@ const $ = global.jQuery = require('../../../../../js/lib/third-party/jquery/jque
 global.$ = $
 
 var rewire = require('rewire')
-var challenges = rewire('../lib/challenges.js')
+var challenges = rewire('../../lib/challenges.js')
 
 var assert = require('assert');
 
