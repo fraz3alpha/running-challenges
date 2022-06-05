@@ -26,10 +26,11 @@ While we weren't looking, parkrun HQ appear to have rolled out a change to rever
 
 This showed up as various stats and challenges showing incorrect data, for example the number of years parkrunning ending up being zero, or the tourist events being listed in reverse order.
 
+Now we explicitly order the events by date, so we should be good whatever order they come out in.
+
 ### Firefox deprecated a getURL() method
 
 Not a huge issue, and not one with a user-facing impact, but it floods the error log with messages and also comes up during the addon submission process, so we've switched to the replacement method to get it a bit cleaner
-
 
 ## How do I get all of this great stuff?
 
