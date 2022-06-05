@@ -1441,3 +1441,56 @@ function add_stats_table(div, data) {
   div.append('<br/>Hover over the stats for a more detailed description')
 
 }
+
+function isChallengeHidden(challengeShortname, userData) {
+  var isHidden = false
+  console.log("userData: "+userData)
+  if (userData !== undefined) {
+    if (userData["challengeMetadata"] !== undefined && challengeShortname in userData["challengeMetadata"]) {
+      if ("hidden" in userData.challengeMetadata[challengeShortname]) {
+        isHidden = userData.challengeMetadata[challengeShortname].hidden
+      }
+    }
+  }
+  return isHidden
+}
+
+function saveHiddenPreference(challengeName, isHidden) {
+  console.log("Challenge: "+challengeName+", Is Hidden: "+isHidden)
+
+  browser.storage.local.get({
+    challengeMetadata: {}
+  }).then((items) => {
+    // Items contains the whole object, of which the key we asked for is a sub-item
+    console.log(items)
+
+    // If the challenge already exists in the object, then set the hidden property
+    if (challengeName in items.challengeMetadata) {
+      items.challengeMetadata[challengeName]["hidden"] = isHidden
+    // Else, add a metadata object for this challenge and initialise it
+    } else {
+      var challengeMetadata = {
+        "hidden": isHidden
+      }
+      items.challengeMetadata[challengeName] = challengeMetadata
+    }
+    console.log(items.challengeMetadata)
+
+    // Save the information back into the local storage
+    browser.storage.local.set(items)
+  })
+
+}
+
+function toggleVisibilityOfChallenge(challengeShortname) {
+  var challengeBodyId = "challenge_tbody_content_"+challengeShortname
+  // console.log(challengeBodyId)
+  var challengeBodyElement = $("tbody[id="+challengeBodyId+"]")
+  // console.log(challengeBodyElement)
+  var isCurrentlyHidden = challengeBodyElement.is(":hidden")
+  // console.log("isCurrentlyHidden: "+isCurrentlyHidden)
+  // Save the preference to retain the fact it is hidden next time
+  saveHiddenPreference(challengeShortname, !isCurrentlyHidden)
+  // Toggle the visibility of the challenge now
+  challengeBodyElement.toggle()
+}
