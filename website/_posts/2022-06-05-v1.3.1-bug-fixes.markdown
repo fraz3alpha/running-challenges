@@ -6,7 +6,17 @@ categories:
   - firefox-addon
   - release
 ---
-Something broke since yesterday!
+Something broke since yesterday! Ooh, and a new feature
+
+## New Feature
+
+### Persist hiding challenge data
+
+You have always been able to hide a challenge on a page by clicking the badge icon in the challenge header row, but it did not persist, so would be back visible again if you refreshed the page - well, no longer!
+
+![Persisted collapsed challenges]({{ site.baseurl }}/img/posts/persist-collapsed-challenges.png "Persisted collapsed challenges"){: .center-image .image-border}
+
+This also means that if you hide a challenge on one page, it will now be hidden on all parkrunner pages, so if you aren't interested in certain ones, or you think they take up too much space and can't be bothered to scroll past them, you can hide them and just show the ones you have an interest in
 
 ## Bug fixes
 
