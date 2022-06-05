@@ -198,13 +198,19 @@ function parse_results_table() {
       });
   });
 
-  // Return the results in reverse chronological order, which is the natural
+  // Return the results in chronological order, which is the natural
   // way to process it, as the older parkruns will be hit first when iterating
   // over the list
 
-  // TODO: This should be ordered by date, rather than assuming the order. We've had at least one report of this
-  // causing issues, but I haven't yet recreated any other ordering other than the default
-  return parkruns_completed.reverse()
+  // The returned array should be ordered by date, oldest first, rather than assuming the order. We've had several reports of this
+  // causing issues, but at the time it appeared not to be consistent and some profiles were in one order, and others in the reverse.
+  var parkruns_completed_sorted = parkruns_completed.sort(function(a,b){
+    return a.date_obj - b.date_obj
+  })
+
+  console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+
+  return parkruns_completed_sorted
 }
 
 
