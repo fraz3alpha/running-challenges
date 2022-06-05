@@ -1,0 +1,32 @@
+---
+layout: post
+title:  "Bug fixes for results ordering (v1.3.1)"
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+Something broke since yesterday!
+
+## Bug fixes
+
+### Sort parsed events into chronological order
+
+While we weren't looking, parkrun HQ appear to have rolled out a change to reverse the order of the events listed on the parkrunner page. Initially this was newest first, but now it appears to be oldest first. This would be fine if it was consistent, but it appears that it hasn't been for the past week or so. We presume that as web caches expire it switches between the old and new ordering, and it's finally got to more and more of us.
+
+This showed up as various stats and challenges showing incorrect data, for example the number of years parkrunning ending up being zero, or the tourist events being listed in reverse order.
+
+### Firefox deprecated a getURL() method
+
+Not a huge issue, and not one with a user-facing impact, but it floods the error log with messages and also comes up during the addon submission process, so we've switched to the replacement method to get it a bit cleaner
+
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below (the Firefox version will only be available if the store stops rejecting our submission...):
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
