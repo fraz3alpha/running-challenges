@@ -198,13 +198,19 @@ function parse_results_table() {
       });
   });
 
-  // Return the results in reverse chronological order, which is the natural
+  // Return the results in chronological order, which is the natural
   // way to process it, as the older parkruns will be hit first when iterating
   // over the list
 
-  // TODO: This should be ordered by date, rather than assuming the order. We've had at least one report of this
-  // causing issues, but I haven't yet recreated any other ordering other than the default
-  return parkruns_completed.reverse()
+  // The returned array should be ordered by date, oldest first, rather than assuming the order. We've had several reports of this
+  // causing issues, but at the time it appeared not to be consistent and some profiles were in one order, and others in the reverse.
+  var parkruns_completed_sorted = parkruns_completed.sort(function(a,b){
+    return a.date_obj - b.date_obj
+  })
+
+  console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+
+  return parkruns_completed_sorted
 }
 
 
@@ -337,7 +343,7 @@ function get_running_badge(result) {
       $.each(result.badgesAwarded, function(index, badge) {
         badge_info.push({
           "name": badge.name,
-          "icon": browser.extension.getURL("/images/badges/"+badge.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+badge.badge_icon+".png"),
           // The link just goes to the top of the main table for the challenge, not the specific row.
           "link": "#"+result.shortname
         })
@@ -347,13 +353,13 @@ function get_running_badge(result) {
     if (result.complete == true) {
       badge_info = {
           "name": result.name,
-          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname
       }
     } else if (result.partial_completion == true) {
         badge_info = {
           "name": result.partial_completion_name,
-          "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
           "link": "#"+result.shortname
         }
     }
@@ -369,17 +375,17 @@ function get_volunteer_badge(result) {
   if (result.complete == true) {
       badge_info = {
           "name": result.name,
-          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname
       }
       if (result.subparts_completed_count >= 25){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
           badge_info.name += " (25+ times)"
       } else if (result.subparts_completed_count >= 10){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
           badge_info.name += " (10+ times)"
       } else if (result.subparts_completed_count >= 5){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
           badge_info.name += " (5+ times)"
       }
   }
@@ -525,7 +531,7 @@ function create_page() {
   set_progress_message("Parsed Results")
 
   set_progress_message("Loading saved data")
-  browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) => {
+  browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]).then((items) => {
     set_progress_message("Loaded saved data")
     loaded_user_data = items
     // console.log("Here is the stored items, fetched with a promise:")
