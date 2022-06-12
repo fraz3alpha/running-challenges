@@ -247,7 +247,302 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
   //     "help": "Run all the parkrun locations in a geographical region."}))
   // }
 
+  if (data.parkrun_results && data.geo_data) {
+      challenge_data.push(challenge_record_breaker(data, {
+        "shortname": "record-breaker",
+        "name": "Record Breaker",
+        "collapsible": true,
+        "help": "Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.",
+        "stages": [
+          {
+            "distance_km": 33,
+            "name": "33",
+            "badge_icon": "runner-record-breaker-33",
+            "events": {}
+          },
+          {
+            "distance_km": 45,
+            "name": "45",
+            "badge_icon": "runner-record-breaker-45",
+            "events": {}
+          },
+          {
+            "distance_km": 78,
+            "name": "78",
+            "badge_icon": "runner-record-breaker-78",
+            "events": {}
+          }
+        ]
+      
+      }))
+  } else {
+    console.log("Unable to process record breaker challenge")
+  }
+
+  console.log(JSON.stringify(challenge_data))
+
   return challenge_data
+}
+
+function challenge_record_breaker(data, params) {
+
+  // The definition of the different distances is described in the parameters
+  // passed to this function
+  var awards = params.stages
+
+  // Find the data we are interested in
+  parkrunResults = data.parkrun_results
+  geoData = data.geo_data
+  user_data = data.user_data
+
+  var reference_parkrun_name = calculate_average_parkrun_event_name(parkrunResults, geoData)
+  var reference_parkrun = geoData.data.events[reference_parkrun_name]
+
+  var o = create_data_object(params, "runner")
+  o.has_map = true
+  o.map_type = 'voronoi'
+
+  if (reference_parkrun_name === undefined || reference_parkrun === undefined) {
+    // We don't have enough data for this, so skip it
+    return o
+  }
+
+  // Sort the possible parkruns by distance (like we do to calculate the NENDY, and furthest away)
+  // returns a list of event names
+  // orderedEventsByDistance = orderParkrunEventsByDistance
+
+  // Find how far it is to each event
+  eventsByDistance = computeDistanceToParkrunsFromEvent(geoData, reference_parkrun)
+
+  // Sort the list of events by distance
+  var sortedEvents = Object.keys(eventsByDistance).sort(function(a, b) {
+    return eventsByDistance[a] - eventsByDistance[b]
+  })
+
+  // Order the challenges by distance (could be a static list, but lets be flexible)
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+    return a.distance_km - b.distance_km
+  })
+  console.log(awardsInOrderOfDistance)
+
+  // Associate each event with the smallest distance
+  $.each(sortedEvents, function(idx, eventName){
+
+    var eventDistance = eventsByDistance[eventName]
+    var eventDistanceAward = undefined
+
+    for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
+      distanceAward = awardsInOrderOfDistance[idx]
+      if (eventDistance <= awards[distanceAward].distance_km) {
+        // Mark that we've found the tightest fitting award, and return it
+        eventDistanceAward = distanceAward
+        break
+      }
+    }
+
+    if (eventDistanceAward !== undefined) {
+      awards[eventDistanceAward].events[eventName] = {
+        "distance": eventDistance
+      }
+    }
+  })
+
+  console.log(awards)
+
+  // Iterate through each award, starting with the smallest distance, and then going through
+  // each event in distance order
+  
+  // Keep track of whether all events have been completed up to this point
+  var allPreviousCompleted = true
+  var currentBadge = undefined
+
+  var mostRecentAward = undefined
+
+  console.log(awardsInOrderOfDistance)
+  $.each(awardsInOrderOfDistance, function(idx, award) {
+
+    console.log(idx + " " + award)
+
+    var award_info = awards[award]
+    mostRecentAward = award_info
+
+    console.log("Processing "+award+" with details "+JSON.stringify(award_info))
+
+    $.each(award_info.events, function(eventName, event_data){
+
+      // Find out when we first ran this event, if we have.
+      runEvent = hasRunEvent(parkrunResults, eventName)
+      hasRun = (runEvent !== undefined)
+
+      if (!hasRun) {
+        allPreviousCompleted = false
+      }
+
+      console.log(award_info.events[eventName])
+      award_info.events[eventName]["completed"] = hasRun
+      // Add the event as a sub-part
+      o.subparts.push(eventName)
+
+      parkunEventDetails = get_parkrun_event_details(data, eventName)
+      o.all_qualifying_events[eventName] = parkunEventDetails
+
+      if (hasRun) {
+        // Add the completed event
+        o.subparts_completed_count += 1
+        o.subparts_detail.push({
+          "name": awards[award].events[eventName].distance.toFixed(1) + "km",
+          "date": runEvent.date,
+          "info": runEvent.date,
+          "subpart": eventName
+        })
+        o.completed_qualifying_events[eventName] = parkunEventDetails
+
+      } else {
+        // Add a stub event, which is incomplete
+        o.subparts_detail.push({
+          "name": awards[award].events[eventName].distance.toFixed(1) + "km",
+          "subpart": eventName
+        })
+
+      }
+
+    })
+
+    // Add the subpart badge to the last entry in the table
+    // Find out if this is the last one in the list
+    // We can use this to add the badge for this subpart to the table
+    if (mostRecentAward !== undefined) {
+      //console.log("Adding badge to the last entry: " + JSON.stringify(o.subparts_detail))
+      o.subparts_detail[o.subparts_detail.length-1].badge = {
+        "name": award_info.name,
+        "badge_icon": award_info.badge_icon
+      }
+    }
+
+    if (allPreviousCompleted) {
+      // Then this award is (also) complete, and it overwrites any previous awards
+      console.log("Awarding badge for partial completion of record breaker badge " + JSON.stringify(award_info))
+      o.partial_completion = true
+      o.partial_completion_name = award_info.name
+      o.partial_completion_badge_icon = award_info.badge_icon
+    } else {
+      console.log("Failed to get record breaker badge for "+JSON.stringify(award_info))
+    }
+
+    // Set the badge icon to the last badge in the set
+    o.badge_icon = award_info.badge_icon
+
+  })
+
+  if (currentBadge !== undefined) {
+    o.badgesAwarded = currentBadge
+    console.log("Current record breaker badge is "+JSON.stringify(currentBadge))
+  }
+
+  // If we have still completed everything, then we can say this challenge is complete
+  if (allPreviousCompleted) {
+    o.complete = true
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
+
+  // // Keep track if the previous stages have been completed. We start with true as that
+  // // means the first one is eligible
+  // allPreviousCompleted = true
+
+  // // Compute some totals and completion summary
+  // $.each(awardsInOrderOfDistance, function(idx, awardName){
+  //   // Find the total number events for this award
+  //   awards[awardName]["eventsCount"] = Object.keys(awards[awardName].events).length
+  //   // Count the number of events we have completed for this award
+  //   eventsCompletedCount = 0
+  //   $.each(awards[awardName].events, function(eventName, eventInfo){
+  //     if (eventInfo.completed) {
+  //       eventsCompletedCount++
+  //     }
+  //   })
+  //   awards[awardName]["eventsCompletedCount"] = eventsCompletedCount
+  //   completed = awards[awardName]["eventsCompletedCount"] == awards[awardName]["eventsCount"]
+  //   // We mark if this sub-task has been completed, but we don't mark the challenge as being so
+  //   // unless all the inner ones have too.
+  //   awards[awardName]["completed"] = completed
+  //   if (allPreviousCompleted && completed) {
+  //     o.partial_completion = true
+  //     o.partial_completion_name = awards[awardName].description
+  //     o.partial_completion_badge_icon = awards[awardName].partialBadgeIcon
+  //   } else {
+  //     // Break out of the cycle so that no further outer rings are marked as completed
+  //     allPreviousCompleted = false
+  //   }
+
+  // })
+
+  // // If everything has been completed, then we are!
+  // if (allPreviousCompleted) {
+  //   o.complete = true
+  // }
+
+  // console.log(awards)
+
+  // return o
+}
+
+function hasRunEvent(parkrunResults, eventName) {
+  runEvent = undefined
+  for (idx=0; idx<parkrunResults.length; idx++) {
+    parkrunResult = parkrunResults[idx]
+    if (parkrunResult.name == eventName) {
+      runEvent = parkrunResult
+      break
+    }
+  }
+  return runEvent
+}
+
+function getDistanceAward(eventDistance, distanceAwards) {
+
+  // Order the challenges by distance (could be a static list, but lets be flexible)
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+    return a.distance - b.distance
+  })
+
+  console.log(awardsInOrderOfDistance)
+
+  award = undefined
+  for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
+    distanceAward = awardsInOrderOfDistance[idx]
+    if (eventDistance <= distanceAwards[distanceAward].distance) {
+      // Mark that we've found the tightest fitting award, and return it
+      award = distanceAward
+      break
+    }
+  }
+  return award
+}
+
+function orderParkrunEventsByDistance(eventDistances) {
+
+  // Sort the list of events by distance
+  var sortedEvents = Object.keys(event_distances).sort(function(a, b) {
+    return event_distances[a] - event_distances[b]
+  })
+
+  return sortedEvents
+
+}
+// Calculate how far away every parkrun is from the supplied event
+function computeDistanceToParkrunsFromEvent(geo_data, fromEvent) {
+  var eventDistances = {}
+
+  $.each(geo_data.data.events, function (event_name, event_info) {
+    // Filter on live events, or if we don't know, include it anyway
+    if ((event_info.status == 'Live' || event_info.status == 'unknown') && event_info.lat && event_info.lon) {
+      eventDistances[event_name] = calculate_great_circle_distance(event_info, fromEvent)
+    }
+  })
+
+  return eventDistances
 }
 
 function generate_volunteer_challenge_data(data) {
@@ -827,15 +1122,34 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 // Which is the closest parkrun to your average parkrun location?
 function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   // Calculate average parkrun for user
-  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
-  var average_parkrun_event_name = undefined
-  var average_parkrun_event_distance = undefined
 
   var average_parkrun_stat_info = {
     "display_name": "Average parkrun event",
     "help": "The nearest parkrun event to your average parkrun location.",
     "value": "None"
   }
+
+  var average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
+
+  if (average_parkrun_event_name !== undefined) {
+
+    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
+    
+    average_parkrun_stat_info = {
+      "display_name": "Average parkrun event",
+      "help": "The nearest parkrun event to your average parkrun location.",
+      "value": average_parkrun_event_name,
+      "url": url_link
+    }
+  }
+  return average_parkrun_stat_info
+}
+
+function calculate_average_parkrun_event_name(parkrun_results, geo_data) {
+
+  var average_parkrun_location = calculate_average_parkrun_location(parkrun_results, geo_data)
+  var average_parkrun_event_name = undefined
+  var average_parkrun_event_distance = undefined
 
   if (average_parkrun_location !== undefined) {
 
@@ -851,16 +1165,10 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
       }
     })
 
-    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
-    
-    average_parkrun_stat_info = {
-      "display_name": "Average parkrun event",
-      "help": "The nearest parkrun event to your average parkrun location.",
-      "value": average_parkrun_event_name,
-      "url": url_link
-    }
   }
-  return average_parkrun_stat_info
+
+  return average_parkrun_event_name
+
 }
 
 // Furthest parkrun you have run away from your home parkrun
@@ -1052,10 +1360,10 @@ function get_flag_image_src(country) {
       "World": "world"
   }
 
-  var flag_src = browser.extension.getURL("/images/flags/flag-unknown.png")
+  var flag_src = browser.runtime.getURL("/images/flags/flag-unknown.png")
 
   if (country in flag_map) {
-    flag_src = browser.extension.getURL("/images/flags/"+flag_map[country]+".png")
+    flag_src = browser.runtime.getURL("/images/flags/"+flag_map[country]+".png")
   }
 
   return flag_src
@@ -1132,6 +1440,7 @@ function create_data_object(params, category) {
         "all_qualifying_events": {},
         // Whether this challenge has something you can map
         "has_map": false,
+        "map_type": "standard",
         // Where the reference home parkrun is, if available
         "home_parkrun": undefined
     }

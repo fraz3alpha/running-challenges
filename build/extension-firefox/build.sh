@@ -38,8 +38,8 @@ cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/js/lib/third-par
 cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/d3-voronoi ${TMP_BUILD_DIR}/js/lib/third-party/
 
-# Copy the common code
-cp -r browser-extensions/common/js ${TMP_BUILD_DIR}/
+# Copy the common code, but don't include the tests
+rsync -av browser-extensions/common/js ${TMP_BUILD_DIR} --exclude tests 
 cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
 cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 

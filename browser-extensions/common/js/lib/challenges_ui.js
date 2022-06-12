@@ -37,8 +37,8 @@ function generate_challenge_table() {
     table.append($('<caption></caption>').text('Challenges'))
 
     // Add a set of links on the top row
-    help_link = $('<a></a>').attr("href", browser.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
-    options_link = $('<a></a>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    help_link = $('<a></a>').attr("href", browser.runtime.getURL("/html/help.html")).attr("target", '_blank').text('help')
+    options_link = $('<a></a>').attr("href", browser.runtime.getURL("/html/options.html")).attr("target", '_blank').text('options')
     website_link = $('<a></a>').attr("href", "https://running-challenges.co.uk").attr("target", '_blank').text('website')
     help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
     help_td.append(website_link)
@@ -97,8 +97,13 @@ function get_tbody_header(challenge) {
     return $('<tbody></tbody>').attr('id', get_tbody_header_id(challenge))
 }
 
-function get_tbody_content(challenge) {
-    return $('<tbody></tbody>').attr('id', get_tbody_content_id(challenge))
+function get_tbody_content(challenge, userData) {
+  var content = $('<tbody></tbody>').attr('id', get_tbody_content_id(challenge))
+  // Find out whether this should be hidden by default when we initially draw the page
+  if (isChallengeHidden(challenge.shortname, userData)) {
+    content.hide()
+  }
+  return content
 }
 
 function get_tbody_header_id(challenge) {
@@ -111,7 +116,7 @@ function get_tbody_content_id(challenge) {
 
 function get_flag_icon(country, height, width) {
     var flag_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    flag_img.attr('src', browser.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
+    flag_img.attr('src', browser.runtime.getURL("/images/flags/png/"+country.flag_icon+".png"));
     // badge_img.attr('alt', challenge.name)
     // badge_img.attr('title', challenge.name)
     flag_img.attr('height', height)
@@ -125,7 +130,7 @@ function get_challenge_icon(challenge, height, width) {
     var badge_img = undefined
     if (challenge.badge_icon !== undefined) {
       badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-      badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
+      badge_img.attr('src', browser.runtime.getURL("/images/badges/"+challenge.badge_icon+".png"));
       badge_img.attr('alt', challenge.name)
       badge_img.attr('title', challenge.name)
       badge_img.attr('height', height)
@@ -137,11 +142,12 @@ function get_challenge_icon(challenge, height, width) {
 function get_challenge_header_row(challenge, data) {
 
     var main_row = $('<tr></tr>')
+    var challengeShortname = challenge.shortname
 
     var badge_img = get_challenge_icon(challenge, 24, 24)
     if (badge_img !== undefined) {
       badge_img.click(function(){
-          $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
+        toggleVisibilityOfChallenge(challengeShortname)
       });
     } else {
       badge_img = ''
@@ -185,7 +191,7 @@ function get_challenge_header_row(challenge, data) {
       }
     }
     if (challenge.complete) {
-        main_row.append($('<img/>').attr('src', browser.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
+        main_row.append($('<img/>').attr('src', browser.runtime.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
     }
 
     return main_row
@@ -200,7 +206,7 @@ function generateRegionnaireTableEntry(table, data) {
   }
 
   var challenge_tbody_header = get_tbody_header(challenge)
-  var challenge_tbody_detail = get_tbody_content(challenge)
+  var challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
 
   // Create the header row and add it to the tbody that exists to hold
   // the title row
@@ -278,9 +284,12 @@ function createVoronoiMapPrototype() {
   // http://usabilityetc.com/2016/06/how-to-create-leaflet-plugins/ has proved useful
   L.VoronoiLayer = L.Layer.extend({
 
-    initialize: function(data) {
+    initialize: function(data, cellRenderer) {
       console.log('Voronoi Layer - initialize()')
       this._data = data
+      // We may have been passed a custom cell renderer
+      console.log(cellRenderer)
+      this._cellRenderer = cellRenderer
     },
 
     onAdd: function(map) {
@@ -334,32 +343,7 @@ function createVoronoiMapPrototype() {
       this_container.setAttribute('height', size.y);
       this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
 
-      var filtered_points = []
-      var layer_data = this._data
-      var completed_events = {}
-      $.each(layer_data.parkrun_results, function(index, parkrun_event) {
-        completed_events[parkrun_event.name] = true
-      })
-      
-      $.each(layer_data.geo_data.data.events, function(event_name, event_info) {
-        if (event_has_valid_location(event_info) && event_has_started(event_info)) {
-          lat_lon = [+event_info.lat, +event_info.lon]
-          // Add the point to the array
-          var point = vmap.latLngToLayerPoint(lat_lon);
-          event_info.x = point.x
-          event_info.y = point.y
-          event_info.fill = "none"
-          event_info.circleColour = "black"
-          event_info.circleColourLine = "gray"
-          if (completed_events[event_info.name] == true) {
-            event_info.fill = "green"
-            event_info.circleColour = "#006000"
-          }
-          filtered_points.push(event_info)
-          // }
-        }
-
-      })
+      var filtered_points = this._cellRenderer(vmap, this._data)
 
       var voronoi = d3.voronoi()
         .x(function(d) { return d.x; })
@@ -435,7 +419,7 @@ function createVoronoiMapPrototype() {
         item_path.setAttribute("stroke", "gray")
         item_path.setAttribute("stroke-width", zoomScaleOptions.pathLineWidth)
         item_path.setAttribute("fill", filtered_points[index].fill)
-        item_path.setAttribute("fill-opacity", "0.5")
+        item_path.setAttribute("fill-opacity", filtered_points[index].opacity)
 
         // Add the parkrun event and the path object to a holding object - the path goes first so
         // that the parkrun event marker is drawn on top afterwards
@@ -458,8 +442,8 @@ function createVoronoiMapPrototype() {
     }
   });
 
-  L.voronoiLayer = function(options) {
-    return new L.VoronoiLayer(options)
+  L.voronoiLayer = function(data, cellRenderer) {
+    return new L.VoronoiLayer(data, cellRenderer)
   }
 
 }
@@ -503,7 +487,40 @@ function drawRegionnaireMap(divId, data) {
 
   // Add the Voronoi layer
 
-  var voronoi_layer = L.voronoiLayer(data)
+  var regionnaireCellRenderer = function(vmap, data) {
+
+    var events = data.geo_data.data.events
+    var completed_events = {}
+
+    $.each(data.parkrun_results, function(index, parkrun_event) {
+      completed_events[parkrun_event.name] = true
+    })
+
+    var filtered_points = []
+    $.each(events, function(event_name, event_info) {
+      if (event_has_valid_location(event_info) && event_has_started(event_info)) {
+        lat_lon = [+event_info.lat, +event_info.lon]
+        // Add the point to the array
+        var point = vmap.latLngToLayerPoint(lat_lon);
+        event_info.x = point.x
+        event_info.y = point.y
+        event_info.fill = "none"
+        event_info.opacity = 0.5
+        event_info.circleColour = "black"
+        event_info.circleColourLine = "gray"
+        if (completed_events[event_info.name] == true) {
+          event_info.fill = "green"
+          event_info.circleColour = "#006000"
+        }
+        filtered_points.push(event_info)
+        // }
+      }
+    })
+    return filtered_points
+  }
+
+  console.log("Creating voronoi map with cell renderer = "+regionnaireCellRenderer)
+  var voronoi_layer = L.voronoiLayer(data, regionnaireCellRenderer)
   voronoi_layer.addTo(r_map)
 
   // Icons
@@ -746,12 +763,265 @@ function create_challenge_map(map_id, challenge_data, data) {
 
   console.log(challenge_data)
 
+  if (challenge_data.map_type == "standard") {
+    create_challenge_map_standard(map_id, challenge_data, data)
+  } else if (challenge_data.map_type == "voronoi") {
+    create_challenge_map_voronoi(map_id, challenge_data, data)
+  } else {
+    console.log("Unknown map type: "+challenge_data.map_type)
+  }
+
+}
+
+function create_challenge_map_voronoi(divId, challenge_data, data) {
+
+  // Get a summary of the completion data
+  var countryCompletionInfo = calculateCountryCompletionInfo(data)
+
+  var map_element_id = "challenge_map_"+challenge_data.shortname
+
+  $('div[id^="challenge_map_"]').each(function() {
+    $(this).empty().hide()
+  })
+  // Make this map element visible
+  var map_element = $('div[id="'+map_element_id+'"]').first()
+  map_element.show()
+  map_element.height(400)
+
+  // See if there are any existing maps, and remove them all
+  $.each(challenge_maps, function (id, map_data) {
+    map_data.map.remove()
+  })
+  // Remove all references
+  challenge_maps = {}
+
+  // Default to centring on Winchester
+  var map_centre_lat_lon = [51.0632, -1.308]
+  if (data.info.is_our_page && data.info.has_home_parkrun) {
+    var home_parkrun_info = data.user_data.home_parkrun_info
+    if (event_has_valid_location(home_parkrun_info)) {
+      map_centre_lat_lon = [+home_parkrun_info.lat, +home_parkrun_info.lon]
+    }
+  }
+
+  console.log("Centre: "+map_centre_lat_lon)
+
+  console.log("Creating prototype")
+  // Creating the Voronoi Map prototype on the L. object.
+  // I don't think we need to do this again, and we have already done it with the regionnaire map stuff
+  // createVoronoiMapPrototype();
+
+  console.log("Initialising the challenge voronoi map container for id="+map_element_id)
+  var r_map = L.map(map_element_id).setView(map_centre_lat_lon, 2);
+
+  // Add the new map to our set of maps for future reference
+  challenge_maps[map_element_id] = {
+    "map": r_map,
+    "div_id": map_element_id
+  }
+
+  // Allow it to be fullscreen
+  r_map.addControl(new L.Control.Fullscreen());
+
+  var map_data = {
+      map: r_map,
+      countryCompletionInfo: countryCompletionInfo,
+      layers: {
+        subregions: [],
+        events: []
+      }
+  }
+
+  // Set the openstreetmap tiles
+  var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  })
+  tilelayer_openstreetmap.addTo(r_map)
+
+  // Add the Voronoi layer
+  var cellRenderer = function(vmap, data) {
+
+    var filtered_points = []
+    var user_data = data.user_data
+    var geo_data = data.geo_data
+    var events = data.geo_data.data.events
+    var parkrun_results = data.parkrun_results
+
+    var reference_parkrun_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
+    var reference_parkrun = geoData.data.events[reference_parkrun_name]
+
+    var completed_events = {}
+
+    $.each(data.parkrun_results, function(index, parkrun_event) {
+      completed_events[parkrun_event.name] = true
+    })
+
+    eventsByDistance = computeDistanceToParkrunsFromEvent(geo_data, reference_parkrun)
+
+    $.each(events, function(event_name, event_info) {
+      if (event_has_valid_location(event_info) && event_has_started(event_info)) {
+        lat_lon = [+event_info.lat, +event_info.lon]
+        // Add the point to the array
+        var point = vmap.latLngToLayerPoint(lat_lon);
+        event_info.x = point.x
+        event_info.y = point.y
+        if(eventsByDistance[event_info.name] < 78) {
+          event_info.fill = "none"
+        } else {
+          event_info.fill = "gray"
+        }
+        event_info.opacity = 0.5
+        event_info.circleColour = "black"
+        event_info.circleColourLine = "gray"
+        if(eventsByDistance[event_info.name] < 78) {
+          // Events you have completed
+          if(event_info.name == reference_parkrun_name) {
+            event_info.fill = 'gold'
+          } else if(eventsByDistance[event_info.name] < 33) {
+            event_info.fill = "red"
+          } else if(eventsByDistance[event_info.name] < 45) {
+            event_info.fill = "orange"
+          } else if(eventsByDistance[event_info.name] < 78) {
+            event_info.fill = "blue"
+          }
+          if (completed_events[event_info.name] == true) {
+            event_info.opacity = 0.5
+          } else {
+            event_info.opacity = 0.1
+          }
+          event_info.circleColour = "#006000"
+        }
+        filtered_points.push(event_info)
+        // }
+      }
+
+    })
+
+    return filtered_points
+  }
+
+  console.log("Creating voronoi map with cell renderer = "+cellRenderer)
+  var voronoi_layer = L.voronoiLayer(data, cellRenderer)
+  voronoi_layer.addTo(r_map)
+
+  // // Icons
+  // var FlagIcon = L.Icon.extend({
+  //     options: {
+  //         shadowUrl: undefined,
+  //         iconSize:     [40, 40],
+  //         // Centre the icon by default
+  //         iconAnchor:   [20, 20]
+  //     }
+  // });
+
+  // // Iterate through the top level countries
+  // // We are using our pre-scanned list here, so that we can take advantage of
+  // // having removed 'world', and perhaps adjusted any sub-countries (Namibia,
+  // // Swaziland spring to mind)
+
+  // map_data.layers.country_markers = new L.featureGroup();
+
+  // var flag_icon_anchor_centred = [20,20]
+  // var flag_icon_anchor_with_pie = [40,20]
+
+  // // Iterate over all the countries we know about
+  // $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
+
+  //   // We have the total number of events and complete events in the following
+  //   var countryChildEventsCount = countryCompletionInfo[countryName].childActiveEventsCount
+  //   var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
+
+  //   // Only bother displaying this country if it has any events
+  //   if (countryChildEventsCount > 0) {
+  //     if (event_has_valid_location(countryInfo)) {
+
+  //       // Get the location of the country mid-point, according to parkrun
+  //       var lat_lon = [+countryInfo.lat, +countryInfo.lon]
+  //       // Get the current regions id for later use by the on click callback function
+  //       var countryId = countryInfo.id
+
+  //       // If we haven't run any events, we omit the pie chart, so centre the
+  //       // flag, else we shuffle it off to the left a bit so the combo is centred
+  //       var flag_anchor = flag_icon_anchor_centred
+  //       if (countryChildEventsCompletedCount > 0) {
+  //         flag_anchor = flag_icon_anchor_with_pie
+  //       }
+
+  //       // Top level countries have a flag
+  //       var marker = L.marker(lat_lon, {
+  //         icon: new FlagIcon({
+  //           iconUrl: get_flag_image_src(countryName),
+  //           iconAnchor: flag_anchor
+  //         })
+  //       })
+  //       // Add a tooltip showing the name of the country and a summary of the
+  //       // completion numbers
+  //       var marker_tooltip_text = countryName + ' ' + countryChildEventsCompletedCount + '/' + countryChildEventsCount
+  //       var marker_tooltip_options = {
+  //         offset: [0, -16],
+  //         direction: 'top'
+  //       }
+  //       marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+  //       marker.on('click', function() {
+  //         // Instead of showing the events, lets just move the map to show the country
+  //         // showCountryEvents(map_data, data, countryId, 0)
+  //         zoomMapToCountryExtents(map_data, data, countryId)
+  //       })
+  //       marker.addTo(map_data.layers.country_markers);
+
+  //       // Only add the pie chart if we have completed any events at all
+  //       if (countryChildEventsCompletedCount > 0) {
+  //         var pie_marker = L.piechartMarker(lat_lon, {
+  //           radius: 16,
+  //           data: [
+  //             {
+  //               name: 'Run',
+  //               value: countryChildEventsCompletedCount,
+  //               style: {
+  //                 fillStyle: 'rgba(0,140,57,.95)',
+  //                 strokeStyle: 'rgba(0,0,0,.75)',
+  //                 lineWidth: 1
+  //               }
+  //             },
+  //             {
+  //               name: 'Not Run',
+  //               value: (countryChildEventsCount - countryChildEventsCompletedCount),
+  //               style: {
+  //                 fillStyle: 'rgba(0,0,0,.15)',
+  //                 strokeStyle: 'rgba(0,0,0,.75)',
+  //                 lineWidth: 1
+  //               }
+  //             }
+  //           ],
+  //           // Budge the pie chart over to the right a bit, so that the flag+chart are
+  //           // mostly centred on the original point, and not wildly off to one side
+  //           iconAnchor: [-4, 16]
+  //         })
+  //         // Add the same tooltips and on click actions as for the flag
+  //         pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
+  //         pie_marker.on('click', function() {
+  //           // showCountryEvents(map_data, data, countryId, 0)
+  //           zoomMapToCountryExtents(map_data, data, countryId)
+  //         })
+  //         pie_marker.addTo(map_data.layers.country_markers);
+  //       }
+
+  //     }
+  //   }
+
+  // })
+
+  // map_data.layers.country_markers.addTo(map_data.map)
+}
+
+function create_challenge_map_standard(map_id, challenge_data, data) {
+
   var home_parkrun_marker_colour = 'purple'
 
   // Create empty vector for each layer
   // var home_parkrun = new L.featureGroup()
   var events_complete = new L.featureGroup();
-  // var events_complete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-green.png")})
+  // var events_complete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-green.png")})
   var events_complete_icon = L.ExtraMarkers.icon({
     markerColor: 'green-light',
     shape: 'circle'
@@ -761,7 +1031,7 @@ function create_challenge_map(map_id, challenge_data, data) {
     shape: 'circle'
   });
   var events_nearest_incomplete = new L.featureGroup();
-  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-orange.png")})
+  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-orange.png")})
   var events_nearest_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'yellow',
     shape: 'penta'
@@ -771,7 +1041,7 @@ function create_challenge_map(map_id, challenge_data, data) {
     shape: 'penta'
   });
   var events_incomplete = new L.featureGroup();
-  // var events_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-red.png")})
+  // var events_incomplete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-red.png")})
   var events_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'cyan',
     shape: 'square'
@@ -1089,7 +1359,7 @@ function drawRegionnaireDataTable(table, data) {
 function generate_standard_table_entry(challenge, table, data) {
 
     var challenge_tbody_header = get_tbody_header(challenge)
-    var challenge_tbody_detail = get_tbody_content(challenge)
+    var challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
 
     // Create the header row and add it to the tbody that exists to hold
     // the title row
@@ -1098,6 +1368,7 @@ function generate_standard_table_entry(challenge, table, data) {
 
     // Create a row to hold a map, and hide it
     if (challenge.has_map === true) {
+      console.log("Creating map for " + challenge.shortname)
       var map_row = $("<tr/>").append($('<td colspan="4"><div id="challenge_map_'+challenge.shortname+'" style="height:400; width:400"></div></td>'))
       challenge_tbody_detail.append(map_row)
     }
@@ -1106,7 +1377,7 @@ function generate_standard_table_entry(challenge, table, data) {
     challenge.subparts_detail.forEach(function (subpart_detail) {
         var subpart_row = $('<tr></tr>')
         if (subpart_detail["badge"] !== undefined) {
-          console.log("Adding a badge to the table - "+subpart_detail["badge"])
+          console.log("Adding a badge to the table - "+JSON.stringify(subpart_detail["badge"]))
           subpart_row.append($('<td></td>').append(get_challenge_icon(subpart_detail["badge"], 24, 24)))
         } else {
           subpart_row.append($('<td></td>').text("-"))
@@ -1167,7 +1438,7 @@ function add_stats_table(div, data) {
   // if there is no athlete_id or home parkrun set
   if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
     var options_message_container = $('<div/>')
-    options_link = $('<a/>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').attr("rel", "noopener noreferrer").text('options.')
+    options_link = $('<a/>').attr("href", browser.runtime.getURL("/html/options.html")).attr("target", '_blank').attr("rel", "noopener noreferrer").text('options.')
     options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
     options_message_container.append(options_link)
     div.append($('<br/>'))
@@ -1175,4 +1446,58 @@ function add_stats_table(div, data) {
   }
   div.append('<br/>Hover over the stats for a more detailed description')
 
+}
+
+function isChallengeHidden(challengeShortname, userData) {
+  var isHidden = false
+  console.log("userData: "+JSON.stringify(userData))
+  if (userData !== undefined) {
+    if (userData["challengeMetadata"] !== undefined && challengeShortname in userData["challengeMetadata"]) {
+      if ("hidden" in userData.challengeMetadata[challengeShortname]) {
+        isHidden = userData.challengeMetadata[challengeShortname].hidden
+        console.log("isChallengeHidden found existing saved state: "+isHidden)
+      }
+    }
+  }
+  return isHidden
+}
+
+function saveHiddenPreference(challengeName, isHidden) {
+  console.log("Challenge: "+challengeName+", Is Hidden: "+isHidden)
+
+  browser.storage.local.get({
+    challengeMetadata: {}
+  }).then((items) => {
+    // Items contains the whole object, of which the key we asked for is a sub-item
+    console.log(items)
+
+    // If the challenge already exists in the object, then set the hidden property
+    if (challengeName in items.challengeMetadata) {
+      items.challengeMetadata[challengeName]["hidden"] = isHidden
+    // Else, add a metadata object for this challenge and initialise it
+    } else {
+      var challengeMetadata = {
+        "hidden": isHidden
+      }
+      items.challengeMetadata[challengeName] = challengeMetadata
+    }
+    console.log(items.challengeMetadata)
+
+    // Save the information back into the local storage
+    browser.storage.local.set(items)
+  })
+
+}
+
+function toggleVisibilityOfChallenge(challengeShortname) {
+  var challengeBodyId = "challenge_tbody_content_"+challengeShortname
+  // console.log(challengeBodyId)
+  var challengeBodyElement = $("tbody[id="+challengeBodyId+"]")
+  // console.log(challengeBodyElement)
+  var isCurrentlyHidden = challengeBodyElement.is(":hidden")
+  // console.log("isCurrentlyHidden: "+isCurrentlyHidden)
+  // Save the preference to retain the fact it is hidden next time
+  saveHiddenPreference(challengeShortname, !isCurrentlyHidden)
+  // Toggle the visibility of the challenge now
+  challengeBodyElement.toggle()
 }

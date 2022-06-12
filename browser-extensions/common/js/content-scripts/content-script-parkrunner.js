@@ -198,10 +198,19 @@ function parse_results_table() {
       });
   });
 
-  // Return the results in reverse chronological order, which is the natural
+  // Return the results in chronological order, which is the natural
   // way to process it, as the older parkruns will be hit first when iterating
   // over the list
-  return parkruns_completed.reverse()
+
+  // The returned array should be ordered by date, oldest first, rather than assuming the order. We've had several reports of this
+  // causing issues, but at the time it appeared not to be consistent and some profiles were in one order, and others in the reverse.
+  var parkruns_completed_sorted = parkruns_completed.sort(function(a,b){
+    return a.date_obj - b.date_obj
+  })
+
+  console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+
+  return parkruns_completed_sorted
 }
 
 
@@ -334,7 +343,7 @@ function get_running_badge(result) {
       $.each(result.badgesAwarded, function(index, badge) {
         badge_info.push({
           "name": badge.name,
-          "icon": browser.extension.getURL("/images/badges/"+badge.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+badge.badge_icon+".png"),
           // The link just goes to the top of the main table for the challenge, not the specific row.
           "link": "#"+result.shortname
         })
@@ -344,13 +353,13 @@ function get_running_badge(result) {
     if (result.complete == true) {
       badge_info = {
           "name": result.name,
-          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname
       }
     } else if (result.partial_completion == true) {
         badge_info = {
           "name": result.partial_completion_name,
-          "icon": browser.extension.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
           "link": "#"+result.shortname
         }
     }
@@ -366,17 +375,17 @@ function get_volunteer_badge(result) {
   if (result.complete == true) {
       badge_info = {
           "name": result.name,
-          "icon": browser.extension.getURL("/images/badges/"+result.badge_icon+".png"),
+          "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname
       }
       if (result.subparts_completed_count >= 25){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
           badge_info.name += " (25+ times)"
       } else if (result.subparts_completed_count >= 10){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-2-stars.png")
           badge_info.name += " (10+ times)"
       } else if (result.subparts_completed_count >= 5){
-          badge_info.icon = browser.extension.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
+          badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-1-star.png")
           badge_info.name += " (5+ times)"
       }
   }
@@ -491,124 +500,132 @@ function add_challenge_results(div_id, data) {
   set_progress_message("Added challenge results")
 }
 
-// What all our container divs are called
-var id_map = {
-  "messages": "running_challenges_messages_div",
-  "badges": "running_challenges_badges_div",
-  "flags": "running_challenges_flags_div",
-  "main": "running_challenges_main_div",
-  "stats": "running_challenges_stats_div"
+function create_page() {
+
+  // What all our container divs are called
+  var id_map = {
+    "messages": "running_challenges_messages_div",
+    "badges": "running_challenges_badges_div",
+    "flags": "running_challenges_flags_div",
+    "main": "running_challenges_main_div",
+    "stats": "running_challenges_stats_div"
+  }
+
+  create_skeleton_elements(id_map)
+
+  var loaded_user_data = {}
+  var loaded_geo_data = undefined
+  var parsed_volunteer_data = undefined
+  var parsed_results_data = undefined
+
+  set_progress_message("Parsing Athlete Info")
+  var parsedPageAthleteInfo = parsePageAthleteInfo()
+  set_progress_message("Parsed Athlete Info")
+
+  set_progress_message("Parsing Results")
+  parsed_results_data = parse_results_table()
+  if (parsed_results_data === undefined || parsed_results_data.length == 0) {
+    set_progress_message("No results detected, no challenge data will be compiled")
+    return
+  }
+  set_progress_message("Parsed Results")
+
+  set_progress_message("Loading saved data")
+  browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]).then((items) => {
+    set_progress_message("Loaded saved data")
+    loaded_user_data = items
+    // console.log("Here is the stored items, fetched with a promise:")
+    // console.log(items)
+
+    // Now lets fetch the geo data
+    set_progress_message("Loading geo data")
+    return browser.runtime.sendMessage({data: "geo"});
+  }).then((results) => {
+    set_progress_message("Loaded geo data")
+    console.log('Loaded geo data was:')
+    console.log(results.geo)
+    // The return packet will normally be valid even if the geo data is not contained
+    // within, so we do some sanity check here
+    if (results.geo && results.geo.data) {
+      loaded_geo_data = results.geo
+    } else {
+      console.log('Geo data rejected')
+    }
+
+    set_progress_message("Loading volunteer data")
+    // Now lets fetch the volunteer information
+    return $.ajax({
+      // If we translate this URL into the local one, not only do we have to
+      // parse the page separately (no big deal), but we need to add every
+      // domain into our CSP, which is a bit annoying, but would maybe
+      // turn out to be more efficient for the user in a country far away
+      // from the UK (depending on where parkrun host these servers)
+      url: 'https://' + location.host + '/parkrunner/'+get_athlete_id(),
+      dataType: 'html'})
+  }).then((results) => {
+    set_progress_message("Loaded volunteer data")
+    // console.log("Here is the volunteer data, fetched with a promise:")
+    // console.log(results)
+    set_progress_message("Parsing volunteer data")
+    parsed_volunteer_data = parse_volunteer_table(results)
+    set_progress_message("All done")
+
+    data = {
+      'parkrun_results': parsed_results_data,
+      'volunteer_data': parsed_volunteer_data,
+      'geo_data': loaded_geo_data,
+      'user_data': loaded_user_data,
+      'info': {}
+    }
+
+    // Now add some supplemental information
+    // Is the page we are looking at the one for the user who has configured the plugin?
+    // - this will help us hide the 'home parkrun' and data based on that from
+    //   user profiles it does not belong to
+
+    updateSummaryInfo(data, get_athlete_id())
+  
+    data.challenge_results = {
+      "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
+      "volunteer_results": generate_volunteer_challenge_data(data)
+    }
+    // Update info with booleans for the presence of results
+    data.info.has_challenge_results = (data.challenge_results !== undefined)
+    data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
+    data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
+    data.info.has_volunteer_data = (data.volunteer_data !== undefined)
+
+    data.stats = generate_stats(data)
+    // Update info with boolean for the presence of stats
+    data.info.has_stats = (data.stats !== undefined)
+
+    console.log(data)
+
+    // Use the acquired data to add all the additional information to the page
+    add_badges(id_map["badges"], data)
+    add_flags(id_map["flags"], data)
+    add_challenge_results(id_map["main"], data)
+    add_stats(id_map["stats"], data)
+
+    var errors = []
+    if (!has_geo_data(data)) {
+      errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
+    }
+    if (data.info.has_geo_technical_event_data == false) {
+      errors.push('! Unable to fetch parkrun event status data: Stats and Challenges, e.g. Regionnaire, may include events that haven\'t started yet !')
+    }
+
+
+    // Add our final status message
+    set_complete_progress_message(errors)
+
+  }).catch(error => {
+    console.log(error)
+    console.error(`An error occurred: ${error}`);
+    set_progress_message(`Error: ${error}`)
+  });
+
 }
-
-create_skeleton_elements(id_map)
-
-var loaded_user_data = {}
-var loaded_geo_data = undefined
-var parsed_volunteer_data = undefined
-var parsed_results_data = undefined
-
-set_progress_message("Parsing Athlete Info")
-var parsedPageAthleteInfo = parsePageAthleteInfo()
-set_progress_message("Parsed Athlete Info")
-
-set_progress_message("Parsing Results")
-parsed_results_data = parse_results_table()
-set_progress_message("Parsed Results")
-
-set_progress_message("Loading saved data")
-browser.storage.local.get(["home_parkrun_info", "athlete_number"]).then((items) => {
-  set_progress_message("Loaded saved data")
-  loaded_user_data = items
-  // console.log("Here is the stored items, fetched with a promise:")
-  // console.log(items)
-
-  // Now lets fetch the geo data
-  set_progress_message("Loading geo data")
-  return browser.runtime.sendMessage({data: "geo"});
-}).then((results) => {
-  set_progress_message("Loaded geo data")
-  console.log('Loaded geo data was:')
-  console.log(results.geo)
-  // The return packet will normally be valid even if the geo data is not contained
-  // within, so we do some sanity check here
-  if (results.geo && results.geo.data) {
-    loaded_geo_data = results.geo
-  } else {
-    console.log('Geo data rejected')
-  }
-
-  set_progress_message("Loading volunteer data")
-  // Now lets fetch the volunteer information
-  return $.ajax({
-    // If we translate this URL into the local one, not only do we have to
-    // parse the page separately (no big deal), but we need to add every
-    // domain into our CSP, which is a bit annoying, but would maybe
-    // turn out to be more efficient for the user in a country far away
-    // from the UK (depending on where parkrun host these servers)
-    url: 'https://' + location.host + '/parkrunner/'+get_athlete_id(),
-    dataType: 'html'})
-}).then((results) => {
-  set_progress_message("Loaded volunteer data")
-  // console.log("Here is the volunteer data, fetched with a promise:")
-  // console.log(results)
-  set_progress_message("Parsing volunteer data")
-  parsed_volunteer_data = parse_volunteer_table(results)
-  set_progress_message("All done")
-
-  data = {
-    'parkrun_results': parsed_results_data,
-    'volunteer_data': parsed_volunteer_data,
-    'geo_data': loaded_geo_data,
-    'user_data': loaded_user_data,
-    'info': {}
-  }
-
-  // Now add some supplemental information
-  // Is the page we are looking at the one for the user who has configured the plugin?
-  // - this will help us hide the 'home parkrun' and data based on that from
-  //   user profiles it does not belong to
-
-  updateSummaryInfo(data, get_athlete_id())
- 
-  data.challenge_results = {
-    "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
-    "volunteer_results": generate_volunteer_challenge_data(data)
-  }
-  // Update info with booleans for the presence of results
-  data.info.has_challenge_results = (data.challenge_results !== undefined)
-  data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
-  data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
-  data.info.has_volunteer_data = (data.volunteer_data !== undefined)
-
-  data.stats = generate_stats(data)
-  // Update info with boolean for the presence of stats
-  data.info.has_stats = (data.stats !== undefined)
-
-  console.log(data)
-
-  // Use the acquired data to add all the additional information to the page
-  add_badges(id_map["badges"], data)
-  add_flags(id_map["flags"], data)
-  add_challenge_results(id_map["main"], data)
-  add_stats(id_map["stats"], data)
-
-  var errors = []
-  if (!has_geo_data(data)) {
-    errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
-  }
-  if (data.info.has_geo_technical_event_data == false) {
-    errors.push('! Unable to fetch parkrun event status data: Stats and Challenges, e.g. Regionnaire, may include events that haven\'t started yet !')
-  }
-
-
-  // Add our final status message
-  set_complete_progress_message(errors)
-
-}).catch(error => {
-  console.log(error)
-  console.error(`An error occurred: ${error}`);
-  set_progress_message(`Error: ${error}`)
-});
 
 function get_athlete_id() {
     // Very basic method to get only the parameter we care about
@@ -637,3 +654,6 @@ function modifyStyle(img) {
   }
 
 }
+
+// Run our code and render the page
+create_page()
