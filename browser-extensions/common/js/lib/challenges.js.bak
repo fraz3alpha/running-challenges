@@ -2280,9 +2280,9 @@ function challenge_stopwatch_bingo(data, params) {
             o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
             o.subparts_detail[subparts_detail_index].subpart = seconds
             o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
-			//console.log(parkrun_event.datelink.match(/href="([^"]*)/)[1])
+			console.log(parkrun_event.datelink.match(/href="([^"]*)/)[1])
 			var href = parkrun_event.datelink.match(/href="([^"]*)/)[1]
-			href = '<a href="'+href+'">'+parkrun_event.time+'</a>'
+			href = '<a href="'+parkrun_event.info+'">'+parkrun_event.time+'</a>'
             o.subparts_detail[subparts_detail_index].info = href
             o.subparts_completed_count += 1
 

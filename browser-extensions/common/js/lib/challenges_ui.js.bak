@@ -1508,7 +1508,7 @@ function generate_stats_table_entry(challenge, table, data) {
 			if(subpart_detail.name != null)
 			{
 				c = '; background-color:#90ee90"'
-			    var eventlink = subpart_detail.info.match(/href="([^"]*)/)[1]
+			    var eventlink = parkrun_event.datelink.match(/href="([^"]*)/)[1]
 			    eventlink = '<a href="'+eventlink+'">'+subpart_detail.subpart+'</a>'
 			}
             var tablecell = $('<td align="center" style="width:6%'+c+'>'+eventlink+'</td>')

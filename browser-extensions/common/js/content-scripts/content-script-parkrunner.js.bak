@@ -610,13 +610,11 @@ function create_page() {
   
     data.challenge_results = {
       "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
-      "stats_results": generate_running_stats_data(data, parsedPageAthleteInfo),
       "volunteer_results": generate_volunteer_challenge_data(data)
     }
     // Update info with booleans for the presence of results
     data.info.has_challenge_results = (data.challenge_results !== undefined)
     data.info.has_challenge_running_results = (data.info.has_challenge_results && data.challenge_results.running_results !== undefined)
-    data.info.has_challenge_stats_results = (data.info.has_challenge_results && data.challenge_results.stats_results !== undefined)
     data.info.has_challenge_volunteer_results = (data.info.has_challenge_results && data.challenge_results.volunteer_results !== undefined)
     data.info.has_volunteer_data = (data.volunteer_data !== undefined)
 
@@ -630,7 +628,6 @@ function create_page() {
     add_badges(id_map["badges"], data)
     add_flags(id_map["flags"], data)
     add_challenge_results(id_map["main"], data)
-    add_stats_results(id_map["stat grid"], data)
     add_stats(id_map["stats"], data)
 
     var errors = []
