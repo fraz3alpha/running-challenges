@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js
+        working-directory: browser-extensions/common/js/tests
 
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
@@ -102,7 +102,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js
+        working-directory: browser-extensions/common/js/tests
 
     steps:
 
@@ -114,7 +114,7 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v2
         with:
-          path: browser-extensions/common/js/extension-binaries
+          path: browser-extensions/common/js/tests/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
@@ -164,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.browser }}-screenshots
-          path: browser-extensions/common/js/screenshots/
+          path: browser-extensions/common/js/tests/screenshots/
         if: always()
 
 

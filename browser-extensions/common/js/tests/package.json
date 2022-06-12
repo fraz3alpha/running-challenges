@@ -1,0 +1,20 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dummy-app.js",
+  "scripts": {
+    "test": "mocha",
+    "test-with-coverage": "nyc --reporter=html --reporter=text mocha",
+    "test-selenium": "node test-selenium/selenium-docker.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "18.x.x",
+    "mocha": "9.x.x",
+    "nyc": "15.x.x",
+    "rewire": "5.x.x",
+    "selenium-webdriver": "^4.0.0"
+  }
+}

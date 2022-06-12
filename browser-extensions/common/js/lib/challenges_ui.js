@@ -37,8 +37,8 @@ function generate_challenge_table() {
     table.append($('<caption></caption>').text('Challenges'))
 
     // Add a set of links on the top row
-    help_link = $('<a></a>').attr("href", browser.extension.getURL("/html/help.html")).attr("target", '_blank').text('help')
-    options_link = $('<a></a>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').text('options')
+    help_link = $('<a></a>').attr("href", browser.runtime.getURL("/html/help.html")).attr("target", '_blank').text('help')
+    options_link = $('<a></a>').attr("href", browser.runtime.getURL("/html/options.html")).attr("target", '_blank').text('options')
     website_link = $('<a></a>').attr("href", "https://running-challenges.co.uk").attr("target", '_blank').text('website')
     help_td = $('<td></td>').attr('colspan', 6).attr('align', 'right')
     help_td.append(website_link)
@@ -97,8 +97,13 @@ function get_tbody_header(challenge) {
     return $('<tbody></tbody>').attr('id', get_tbody_header_id(challenge))
 }
 
-function get_tbody_content(challenge) {
-    return $('<tbody></tbody>').attr('id', get_tbody_content_id(challenge))
+function get_tbody_content(challenge, userData) {
+  var content = $('<tbody></tbody>').attr('id', get_tbody_content_id(challenge))
+  // Find out whether this should be hidden by default when we initially draw the page
+  if (isChallengeHidden(challenge.shortname, userData)) {
+    content.hide()
+  }
+  return content
 }
 
 function get_tbody_header_id(challenge) {
@@ -111,7 +116,7 @@ function get_tbody_content_id(challenge) {
 
 function get_flag_icon(country, height, width) {
     var flag_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-    flag_img.attr('src', browser.extension.getURL("/images/flags/png/"+country.flag_icon+".png"));
+    flag_img.attr('src', browser.runtime.getURL("/images/flags/png/"+country.flag_icon+".png"));
     // badge_img.attr('alt', challenge.name)
     // badge_img.attr('title', challenge.name)
     flag_img.attr('height', height)
@@ -125,7 +130,7 @@ function get_challenge_icon(challenge, height, width) {
     var badge_img = undefined
     if (challenge.badge_icon !== undefined) {
       badge_img = $('<img>'); //Equivalent: $(document.createElement('img'))
-      badge_img.attr('src', browser.extension.getURL("/images/badges/"+challenge.badge_icon+".png"));
+      badge_img.attr('src', browser.runtime.getURL("/images/badges/"+challenge.badge_icon+".png"));
       badge_img.attr('alt', challenge.name)
       badge_img.attr('title', challenge.name)
       badge_img.attr('height', height)
@@ -137,11 +142,12 @@ function get_challenge_icon(challenge, height, width) {
 function get_challenge_header_row(challenge, data) {
 
     var main_row = $('<tr></tr>')
+    var challengeShortname = challenge.shortname
 
     var badge_img = get_challenge_icon(challenge, 24, 24)
     if (badge_img !== undefined) {
       badge_img.click(function(){
-          $("tbody[id=challenge_tbody_content_"+challenge['shortname']+"]").toggle();
+        toggleVisibilityOfChallenge(challengeShortname)
       });
     } else {
       badge_img = ''
@@ -185,7 +191,7 @@ function get_challenge_header_row(challenge, data) {
       }
     }
     if (challenge.complete) {
-        main_row.append($('<img/>').attr('src', browser.extension.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
+        main_row.append($('<img/>').attr('src', browser.runtime.getURL("/images/badges/tick.png")).attr('width',24).attr('height',24))
     }
 
     return main_row
@@ -200,7 +206,7 @@ function generateRegionnaireTableEntry(table, data) {
   }
 
   var challenge_tbody_header = get_tbody_header(challenge)
-  var challenge_tbody_detail = get_tbody_content(challenge)
+  var challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
 
   // Create the header row and add it to the tbody that exists to hold
   // the title row
@@ -1015,7 +1021,7 @@ function create_challenge_map_standard(map_id, challenge_data, data) {
   // Create empty vector for each layer
   // var home_parkrun = new L.featureGroup()
   var events_complete = new L.featureGroup();
-  // var events_complete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-green.png")})
+  // var events_complete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-green.png")})
   var events_complete_icon = L.ExtraMarkers.icon({
     markerColor: 'green-light',
     shape: 'circle'
@@ -1025,7 +1031,7 @@ function create_challenge_map_standard(map_id, challenge_data, data) {
     shape: 'circle'
   });
   var events_nearest_incomplete = new L.featureGroup();
-  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-orange.png")})
+  // var events_nearest_incomplete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-orange.png")})
   var events_nearest_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'yellow',
     shape: 'penta'
@@ -1035,7 +1041,7 @@ function create_challenge_map_standard(map_id, challenge_data, data) {
     shape: 'penta'
   });
   var events_incomplete = new L.featureGroup();
-  // var events_incomplete_icon = new EventsIcon({iconUrl: browser.extension.getURL("/images/maps/markers/leaf-red.png")})
+  // var events_incomplete_icon = new EventsIcon({iconUrl: browser.runtime.getURL("/images/maps/markers/leaf-red.png")})
   var events_incomplete_icon = L.ExtraMarkers.icon({
     markerColor: 'cyan',
     shape: 'square'
@@ -1353,7 +1359,7 @@ function drawRegionnaireDataTable(table, data) {
 function generate_standard_table_entry(challenge, table, data) {
 
     var challenge_tbody_header = get_tbody_header(challenge)
-    var challenge_tbody_detail = get_tbody_content(challenge)
+    var challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
 
     // Create the header row and add it to the tbody that exists to hold
     // the title row
@@ -1432,7 +1438,7 @@ function add_stats_table(div, data) {
   // if there is no athlete_id or home parkrun set
   if (data.info.has_athlete_id == false || data.info.has_home_parkrun == false) {
     var options_message_container = $('<div/>')
-    options_link = $('<a/>').attr("href", browser.extension.getURL("/html/options.html")).attr("target", '_blank').attr("rel", "noopener noreferrer").text('options.')
+    options_link = $('<a/>').attr("href", browser.runtime.getURL("/html/options.html")).attr("target", '_blank').attr("rel", "noopener noreferrer").text('options.')
     options_message_container.append('N.B. More stats and map features are available if you set your home parkrun and athlete id in the ')
     options_message_container.append(options_link)
     div.append($('<br/>'))
@@ -1440,4 +1446,58 @@ function add_stats_table(div, data) {
   }
   div.append('<br/>Hover over the stats for a more detailed description')
 
+}
+
+function isChallengeHidden(challengeShortname, userData) {
+  var isHidden = false
+  console.log("userData: "+JSON.stringify(userData))
+  if (userData !== undefined) {
+    if (userData["challengeMetadata"] !== undefined && challengeShortname in userData["challengeMetadata"]) {
+      if ("hidden" in userData.challengeMetadata[challengeShortname]) {
+        isHidden = userData.challengeMetadata[challengeShortname].hidden
+        console.log("isChallengeHidden found existing saved state: "+isHidden)
+      }
+    }
+  }
+  return isHidden
+}
+
+function saveHiddenPreference(challengeName, isHidden) {
+  console.log("Challenge: "+challengeName+", Is Hidden: "+isHidden)
+
+  browser.storage.local.get({
+    challengeMetadata: {}
+  }).then((items) => {
+    // Items contains the whole object, of which the key we asked for is a sub-item
+    console.log(items)
+
+    // If the challenge already exists in the object, then set the hidden property
+    if (challengeName in items.challengeMetadata) {
+      items.challengeMetadata[challengeName]["hidden"] = isHidden
+    // Else, add a metadata object for this challenge and initialise it
+    } else {
+      var challengeMetadata = {
+        "hidden": isHidden
+      }
+      items.challengeMetadata[challengeName] = challengeMetadata
+    }
+    console.log(items.challengeMetadata)
+
+    // Save the information back into the local storage
+    browser.storage.local.set(items)
+  })
+
+}
+
+function toggleVisibilityOfChallenge(challengeShortname) {
+  var challengeBodyId = "challenge_tbody_content_"+challengeShortname
+  // console.log(challengeBodyId)
+  var challengeBodyElement = $("tbody[id="+challengeBodyId+"]")
+  // console.log(challengeBodyElement)
+  var isCurrentlyHidden = challengeBodyElement.is(":hidden")
+  // console.log("isCurrentlyHidden: "+isCurrentlyHidden)
+  // Save the preference to retain the fact it is hidden next time
+  saveHiddenPreference(challengeShortname, !isCurrentlyHidden)
+  // Toggle the visibility of the challenge now
+  challengeBodyElement.toggle()
 }
