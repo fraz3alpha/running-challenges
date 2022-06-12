@@ -1498,7 +1498,7 @@ function generate_stats_table_entry(challenge, table, data) {
 	{//forEach(function (subpart_detail) {
         var subpart_detail = challenge.subparts_detail[i]
 		var c = "\""
-		var eventlink = ""
+		var eventlink = subpart_detail.subpart
 		if( i % 15 === 0)
 		{
 			var subpart_row = $('<tr></tr>')
