@@ -33,6 +33,7 @@ volunteer_roles_map = [
     {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
     {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+    {"shortname": "parkwalker", "name": "parkwalker"},
 ]
 
 function group_volunteer_data(volunteer_data) {
