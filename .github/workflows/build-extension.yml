@@ -21,10 +21,10 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure node v16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -48,10 +48,10 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure node v16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -71,7 +71,7 @@ jobs:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
       - name: Upload build extension package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-extension-package
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
@@ -108,11 +108,11 @@ jobs:
 
       # Checks out a copy of the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Get previously built packages
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: browser-extensions/common/js/tests/extension-binaries
 
@@ -120,7 +120,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - name: Configure node v16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -161,7 +161,7 @@ jobs:
           COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de # Just a couple to begin with, until it is working!
 
       - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-screenshots
           path: browser-extensions/common/js/tests/screenshots/
@@ -181,7 +181,7 @@ jobs:
 
     steps:
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: extension-binaries
 

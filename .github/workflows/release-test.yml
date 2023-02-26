@@ -42,7 +42,7 @@ jobs:
 
       # Checks out a copy of the repository so that we have our test code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Fetch the release artifacts
       - name:
@@ -56,7 +56,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - name: Configure node v16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -79,7 +79,7 @@ jobs:
           COUNTRY_FILTER: parkrun.org.uk # Just run the UK one to start with, until it is working!
 
       - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-screenshots
           path: browser-extensions/common/js/screenshots/
