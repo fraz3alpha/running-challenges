@@ -21,12 +21,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install test framework dependencies
         run: npm install
@@ -48,12 +48,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install web-ext tooling
         run: npm install -g web-ext
@@ -71,7 +71,7 @@ jobs:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
       - name: Upload build extension package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-extension-package
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
@@ -108,21 +108,21 @@ jobs:
 
       # Checks out a copy of the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Get previously built packages
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: browser-extensions/common/js/tests/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install test framework dependencies
         run: npm install
@@ -161,7 +161,7 @@ jobs:
           COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de # Just a couple to begin with, until it is working!
 
       - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-screenshots
           path: browser-extensions/common/js/tests/screenshots/
@@ -181,7 +181,7 @@ jobs:
 
     steps:
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: extension-binaries
 
@@ -189,7 +189,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - id: get-branch-version-tag
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           script: |
             console.log(context)
@@ -230,7 +230,7 @@ jobs:
  
 
       # - id: get-branch-version-tag
-      #   uses: actions/github-script@v4
+      #   uses: actions/github-script@v6
       #   with:
       #     script: |
       #       var version_tag = ''

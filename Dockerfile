@@ -1,7 +1,7 @@
 # docker build -t rc:latest .
 # docker run -v `pwd`:/rc rc:latest
 
-FROM node:12-buster
+FROM node:16-buster
 
 RUN apt update && apt install -y rsync
 
