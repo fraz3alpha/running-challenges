@@ -189,7 +189,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - id: get-branch-version-tag
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           script: |
             console.log(context)
@@ -230,7 +230,7 @@ jobs:
  
 
       # - id: get-branch-version-tag
-      #   uses: actions/github-script@v4
+      #   uses: actions/github-script@v6
       #   with:
       #     script: |
       #       var version_tag = ''
