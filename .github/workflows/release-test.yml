@@ -55,10 +55,10 @@ jobs:
       - name: Show built extension packages
         run: ls -lR extension-binaries
 
-      - name: Configure node v12
+      - name: Configure node v16
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install test framework dependencies
         run: npm install
