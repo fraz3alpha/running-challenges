@@ -1649,6 +1649,7 @@ function challenge_name_badge(data, params) {
   o.subparts_count = 0
 
   if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
+    pageAthleteInfo.name = pageAthleteInfo.name.replace(/ *\([^)]*\) */g, "").trim();
     for(var i=0; i< pageAthleteInfo.name.length; i++) {
       var letter = pageAthleteInfo.name[i].toLowerCase()
       // console.log(letter)
