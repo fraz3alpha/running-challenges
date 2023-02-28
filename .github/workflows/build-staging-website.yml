@@ -77,6 +77,7 @@ jobs:
       # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
         uses: actions/checkout@v3
+        if: ${{ github.actor != 'dependabot[bot]' }}
         with:
           repository: fraz3alpha/running-challenges-staging
           ref: gh-pages
@@ -85,6 +86,7 @@ jobs:
 
       - name: Reconcile branches
         id: reconcile-branches
+        if: ${{ github.actor != 'dependabot[bot]' }}
         run: |
           git ls-remote --heads | awk '{print $2}' | awk -F 'refs/heads/' '{print $2}' | sort > running-challenges-branches.txt
           echo "All branches: $(cat running-challenges-branches.txt)"
@@ -124,15 +126,9 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.actor != 'dependabot[bot]' }}
         with:
           personal_token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
           external_repository: fraz3alpha/running-challenges-staging
           publish_branch: gh-pages
           publish_dir: gh-pages-staging
-
-      # # Then we need to sync the contents to another repository so they appear on the staging site
-      # - name: Push staging site to the staging site repo
-      #   run: |
-      #     git remote add staging-https https://${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}@github.com/fraz3alpha/running-challenges-staging.git
-      #     git push -f staging-https gh-pages-staging:gh-pages
-      #   working-directory: gh-pages-staging
