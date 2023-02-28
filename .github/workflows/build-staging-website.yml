@@ -37,7 +37,7 @@ jobs:
 
       - name: Sanitise branch name
         shell: bash
-        id: santise-branch-name
+        id: sanitise-branch-name
         run: |
           SANITISED_BRANCH_NAME=$(echo -n ${{ github.ref_name }} | tr "/" "_")
           echo "sanitised branch name: ${SANITISED_BRANCH_NAME}"
