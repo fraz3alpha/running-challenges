@@ -32,7 +32,7 @@ volunteer_roles_map = [
     {"shortname": "token-sorting", "name": "Token Sorting"},
     {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
-    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"]},
 ]
 
 function group_volunteer_data(volunteer_data) {
