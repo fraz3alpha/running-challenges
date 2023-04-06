@@ -9,6 +9,7 @@ services:
       - nginx:www.parkrun.org.uk
       - nginx:www.parkrun.com.de
       - nginx:www.parkrun.pl
+      - nginx:www.parkrun.jp
   nginx:
     image: nginx:1.20
     ports:
