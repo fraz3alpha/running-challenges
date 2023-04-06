@@ -124,7 +124,7 @@ var domains = {
             "Skanując(a)y uczestników": "Barcode Scanning",
             "Sprawdzanie pozycji na mecie": "Number Checker",
             "Zbieranie elementów z trasy": "Post-event Close Down",
-            "Zbierając(a)y oznakowanie": "Post-event Close Down,"
+            "Zbierając(a)y oznakowanie": "Post-event Close Down",
             "Wprowadzanie wyników": "Results Processor",
             "Wprowadzając(a)y wyniki": "Results Processor",
             "Sortowanie tokenów": "Token Sorting",
