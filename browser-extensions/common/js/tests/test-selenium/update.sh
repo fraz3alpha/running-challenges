@@ -6,3 +6,6 @@ curl -H "user-agent: ${USER_AGENT}" https://www.parkrun.org.uk/parkrunner/130936
 
 curl -H "user-agent: ${USER_AGENT}" https://www.parkrun.com.de/parkrunner/1309364/all/ -o "${TARGET_ROOT_DIR}/parkrun.com.de/contents/parkrunner/1309364/all/index.html"
 curl -H "user-agent: ${USER_AGENT}" https://www.parkrun.com.de/parkrunner/1309364/ -o "${TARGET_ROOT_DIR}/parkrun.com.de/contents/parkrunner/1309364/index.html"
+
+curl -H "user-agent: ${USER_AGENT}" https://www.parkrun.pl/parkrunner/1309364/all/ -o "${TARGET_ROOT_DIR}/parkrun.pl/contents/parkrunner/1309364/all/index.html"
+curl -H "user-agent: ${USER_AGENT}" https://www.parkrun.pl/parkrunner/1309364/ -o "${TARGET_ROOT_DIR}/parkrun.pl/contents/parkrunner/1309364/index.html"
