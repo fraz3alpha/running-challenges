@@ -622,7 +622,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}, at ${error.lineNumber}`)
+    set_progress_message(`Error: ${error}. Data is ${data}`)
   });
 
 }
