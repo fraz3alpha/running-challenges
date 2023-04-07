@@ -434,7 +434,8 @@ function get_geo_data(notify_func, freshen=false) {
                          cache[page].last_status = {
                           "success": false,
                           "returnStatus": status,
-                          "error": error
+                          "error": error,
+                          "message": JSON.stringify(arguments) + "" + xhr.responseText
                          }
                          defer.resolve(undefined)
                      }
@@ -558,7 +559,7 @@ function notify_geo_data(f) {
             // console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
             f({
                 'data': cache.data,
-                'updated': cache.updated_at.toString()
+                'updated': cache.updated_at !== undefined ? cache.updated_at.toString() : undefined
             })
         } else {
             f({
