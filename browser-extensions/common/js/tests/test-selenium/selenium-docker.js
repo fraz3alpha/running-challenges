@@ -232,10 +232,10 @@ var parkrunWebsites = {
             "name": "parkrun.com.de",
             "hostname": "https://www.parkrun.com.de"
         },
-        {
-            "name": "parkrun.ru",
-            "hostname": "https://www.parkrun.ru"
-        },
+        // {
+        //     "name": "parkrun.ru",
+        //     "hostname": "https://www.parkrun.ru"
+        // },
         {
             "name": "parkrun.my",
             "hostname": "https://www.parkrun.my"

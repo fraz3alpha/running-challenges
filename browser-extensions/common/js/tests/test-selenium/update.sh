@@ -2,7 +2,8 @@ export USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, li
 export TARGET_ROOT_DIR="`pwd`/mock-parkrun-sites/sites"
 export NGINX_CONF_D_ROOT_DIR="`pwd`/mock-parkrun-sites/nginx/conf.d"
 
-declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.com.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.ru" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
+# Parkrun events in Russia are suspended, add  "parkrun.ru" back when they reappear
+declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.com.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
 declare -a PARKRUNNER_IDS=("1309364" "472")
 
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"

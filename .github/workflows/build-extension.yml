@@ -99,7 +99,7 @@ jobs:
           - "parkrun.fi"
           - "parkrun.fr"
           - "parkrun.no"
-          - "parkrun.ru"
+          # - "parkrun.ru" # Russian events are suspended
           - "parkrun.my"
           - "parkrun.co.nl"
           - "parkrun.co.at"
