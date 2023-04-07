@@ -544,9 +544,10 @@ function create_page() {
     set_progress_message("Loaded geo data")
     console.log('Loaded geo data was:')
     console.log(results.geo)
+    set_progress_message(JSON.stringify(results))
     // The return packet will normally be valid even if the geo data is not contained
     // within, so we do some sanity check here
-    if (results.geo && results.geo.data) {
+    if (results.geo && results.geo.data && results.geo.data.valid) {
       loaded_geo_data = results.geo
     } else {
       console.log('Geo data rejected')
