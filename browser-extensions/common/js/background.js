@@ -465,9 +465,9 @@ function get_geo_data(notify_func, freshen=false) {
                     // See if we have a previous one to fall back on
                     if (cache.events.raw_data === undefined) {
                         // If not, send something back
-                        console.log('No data to go on!')
-                        notify_geo_data(notify_func)
-                        return
+                        console.log('No data to go on, sending back some debug information!')
+                        // notify_geo_data(notify_func)
+                        // return
                     } else {
                         // Else make the best use of what we had previously
                         console.log('Using previously obtained raw data')
