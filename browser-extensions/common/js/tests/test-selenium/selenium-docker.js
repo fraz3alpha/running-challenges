@@ -288,6 +288,8 @@ parkrunWebsites.sites.forEach(function(website) {
                     // Give it 10 seconds to say that
                     await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000)
 
+                    
+
                 }));
             }
             // else if (testName == "xyz") {

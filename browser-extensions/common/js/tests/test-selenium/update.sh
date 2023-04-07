@@ -1,11 +1,44 @@
 export USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 export TARGET_ROOT_DIR="`pwd`/mock-parkrun-sites/sites"
+export NGINX_CONF_D_ROOT_DIR="`pwd`/mock-parkrun-sites/nginx/conf.d"
 
-declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" )
+declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.com.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.ru" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
+declare -a PARKRUNNER_IDS=("1309364" "472")
 
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"
 do
-    mkdir -p "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/1309364/all/"
-    curl -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/1309364/all/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/1309364/all/index.html"
-    curl -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/1309364/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/1309364/index.html"
+
+    for PARKRUNNER_ID in "${PARKRUNNER_IDS[@]}"
+    do
+
+        mkdir -p "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/all/"
+
+        # Do the curls, but with a short sleep, so that we don't make a lot of requests to the servers in a short time
+        curl --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/all/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/all/index.html"
+        sleep 1
+        curl --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/index.html"
+        sleep 1
+
+    done
+
+    # Write out the Nginx configuration file for this server
+    CONF_FILE="${NGINX_CONF_D_ROOT_DIR}/${PARKRUN_HOSTNAME}.conf"
+    echo "Writing out Nginx conf file to ${CONF_FILE}"
+
+    cat > "${CONF_FILE}" << EOL
+server {
+    listen  443 ssl;
+    server_name www.${PARKRUN_HOSTNAME};
+
+    ssl_certificate     /etc/nginx/cert/cert.pem;
+    ssl_certificate_key /etc/nginx/cert/key.pem;
+
+    location / {
+        root /usr/share/nginx/html/${PARKRUN_HOSTNAME}/contents;
+        index index.html;
+    }
+}
+
+EOL
+
 done

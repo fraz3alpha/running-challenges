@@ -158,7 +158,8 @@ jobs:
           EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
           EXTENSION_BROWSER: ${{ matrix.browser }}
           SELENIUM_PORT: 4444
-          COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de,parkrun.pl,parkrun.jp # Just a couple to begin with, until it is working!
+          # We did do just a few to start with, but now lets try doing all of them
+          # COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de,parkrun.pl,parkrun.jp 
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v3
