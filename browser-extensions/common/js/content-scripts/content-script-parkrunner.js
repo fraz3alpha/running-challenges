@@ -550,6 +550,7 @@ function create_page() {
       loaded_geo_data = results.geo
     } else {
       console.log('Geo data rejected')
+      set_progress_message("geo data rejected")
     }
 
     set_progress_message("Loading volunteer data")
