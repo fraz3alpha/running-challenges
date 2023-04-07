@@ -85,6 +85,24 @@ jobs:
     strategy:
       matrix:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
+        country_hostname:
+          - "parkrun.com.au"
+          - "parkrun.co.nz"
+          - "parkrun.ca"
+          - "parkrun.ie"
+          - "parkrun.co.za"
+          - "parkrun.us"
+          - "parkrun.sg"
+          - "parkrun.it"
+          - "parkrun.dk"
+          - "parkrun.se"
+          - "parkrun.fi"
+          - "parkrun.fr"
+          - "parkrun.no"
+          - "parkrun.ru"
+          - "parkrun.my"
+          - "parkrun.co.nl"
+          - "parkrun.co.at"
         include:
           - browser: "chrome"
             selenium-image: selenium/standalone-chrome:101.0
@@ -160,11 +178,13 @@ jobs:
           SELENIUM_PORT: 4444
           # We did do just a few to start with, but now lets try doing all of them
           # COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de,parkrun.pl,parkrun.jp 
+          # Lets do each one in a separate matrix job to speed things along
+          COUNTRY_FILTER: "${{ matrix.country_hostname }}"
 
       - name: Upload test screenshots
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.browser }}-screenshots
+          name: ${{ matrix.browser }}-${{ matrix.country_hostname }}-screenshots
           path: browser-extensions/common/js/tests/screenshots/
         if: always()
 
