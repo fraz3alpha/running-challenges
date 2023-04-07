@@ -75,6 +75,7 @@ var buildDriver = function(browser) {
         case "chrome":
             opts.addExtensions(encodeExt(extensionZip));
             opts.setAcceptInsecureCerts(true);
+            opts.addArguments("--disable-web-security");
             break;
         // Nothing else seems to want to be encoded
         case "firefox":
