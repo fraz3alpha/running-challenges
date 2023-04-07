@@ -41,5 +41,27 @@ services:
   ubuntu:
     image: ubuntu:latest
     links:
+      - nginx:www.parkrun.ca
+      - nginx:www.parkrun.co.at
+      - nginx:www.parkrun.co.nl
+      - nginx:www.parkrun.co.nz
+      - nginx:www.parkrun.co.za
+      - nginx:www.parkrun.com.au
+      - nginx:www.parkrun.com.de
+      - nginx:www.parkrun.dk
+      - nginx:www.parkrun.fi
+      - nginx:www.parkrun.fr
+      - nginx:www.parkrun.ie
+      - nginx:www.parkrun.it
+      - nginx:www.parkrun.jp
+      - nginx:www.parkrun.my
+      - nginx:www.parkrun.no
       - nginx:www.parkrun.org.uk
+      - nginx:www.parkrun.pl
+      - nginx:www.parkrun.ru
+      - nginx:www.parkrun.se
+      - nginx:www.parkrun.sg
+      - nginx:www.parkrun.us
+      - nginx:wiki.parkrun.com
+      - nginx:images.parkrun.com
     command: sleep infinity

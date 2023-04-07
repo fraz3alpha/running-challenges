@@ -73,7 +73,7 @@ function set_complete_progress_message(errors) {
 
 function set_progress_message(progress_message) {
   console.log("Progress: "+progress_message)
-  $("div[id=running_challenges_messages_div]").html(progress_message)
+  $("div[id=running_challenges_messages_div]").html($("div[id=running_challenges_messages_div]").html() + "<br/>" + progress_message)
 }
 
 function parsePageAthleteInfo() {
@@ -622,7 +622,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}`)
+    set_progress_message(`Error: ${error}, at ${error.lineNumber}`)
   });
 
 }
