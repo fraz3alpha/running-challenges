@@ -87,7 +87,7 @@ jobs:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
         country_hostname:
           - "parkrun.com.au"
-          - "parkrun.co.nz"
+          # - "parkrun.co.nz"
           # - "parkrun.ca"
           # - "parkrun.ie"
           # - "parkrun.co.za"

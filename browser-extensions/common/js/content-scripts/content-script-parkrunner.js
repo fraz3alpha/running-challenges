@@ -578,6 +578,8 @@ function create_page() {
       'info': {}
     }
 
+    set_progress_message(JSON.stringify(data))
+
     // Now add some supplemental information
     // Is the page we are looking at the one for the user who has configured the plugin?
     // - this will help us hide the 'home parkrun' and data based on that from
