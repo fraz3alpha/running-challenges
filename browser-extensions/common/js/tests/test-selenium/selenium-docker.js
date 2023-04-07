@@ -285,9 +285,17 @@ parkrunWebsites.sites.forEach(function(website) {
                     await driver.sleep(1000);
 
                     let div = await driver.findElement(By.id("running_challenges_messages_div"))
-                    // Give it 10 seconds to say that
-                    await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000)
 
+                    try {
+                        // Give it 10 seconds to say that
+                        await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000)
+                    } catch (error) {
+
+                        // If this times out, then lets print the contents of the div ...
+                        console.log(div.text)
+                        // ... and then re-throw the error
+                        throw error
+                    }
                     
 
                 }));
