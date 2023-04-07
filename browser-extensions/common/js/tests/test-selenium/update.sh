@@ -6,6 +6,14 @@ export NGINX_CONF_D_ROOT_DIR="`pwd`/mock-parkrun-sites/nginx/conf.d"
 declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.com.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
 declare -a PARKRUNNER_IDS=("1309364" "472")
 
+# Fetch the common files
+mkdir -p "${TARGET_ROOT_DIR}/images.parkrun.com/contents/"
+curl --fail -H "user-agent: ${USER_AGENT}" https://images.parkrun.com/events.json -o "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json"
+sleep 1
+mkdir -p "${TARGET_ROOT_DIR}/wiki.parkrun.com/contents/index.php/"
+curl --fail -H "user-agent: ${USER_AGENT}" https://wiki.parkrun.com/index.php/Technical_Event_Information -o "${TARGET_ROOT_DIR}/wiki.parkrun.com/contents/index.php/Technical_Event_Information"
+sleep 1
+
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"
 do
 

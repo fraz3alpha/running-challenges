@@ -27,6 +27,8 @@ services:
       - nginx:www.parkrun.se
       - nginx:www.parkrun.sg
       - nginx:www.parkrun.us
+      - nginx:wiki.parkrun.com
+      - nginx:images.parkrun.com
   nginx:
     image: nginx:1.20
     ports:
