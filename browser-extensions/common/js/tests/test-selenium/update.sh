@@ -44,6 +44,7 @@ server {
 
     location / {
         root /usr/share/nginx/html/${PARKRUN_HOSTNAME}/contents;
+        add_header X-Running-Challenges mock-server;
         index index.html;
     }
 }
