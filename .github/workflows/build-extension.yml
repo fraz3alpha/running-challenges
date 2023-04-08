@@ -87,22 +87,22 @@ jobs:
         # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
         country_hostname:
           - "parkrun.com.au"
-          # - "parkrun.co.nz"
-          # - "parkrun.ca"
-          # - "parkrun.ie"
-          # - "parkrun.co.za"
-          # - "parkrun.us"
-          # - "parkrun.sg"
-          # - "parkrun.it"
-          # - "parkrun.dk"
-          # - "parkrun.se"
-          # - "parkrun.fi"
-          # - "parkrun.fr"
-          # - "parkrun.no"
-          # # - "parkrun.ru" # Russian events are suspended
-          # - "parkrun.my"
-          # - "parkrun.co.nl"
-          # - "parkrun.co.at"
+          - "parkrun.co.nz"
+          - "parkrun.ca"
+          - "parkrun.ie"
+          - "parkrun.co.za"
+          - "parkrun.us"
+          - "parkrun.sg"
+          - "parkrun.it"
+          - "parkrun.dk"
+          - "parkrun.se"
+          - "parkrun.fi"
+          - "parkrun.fr"
+          - "parkrun.no"
+          # - "parkrun.ru" # Russian events are suspended
+          - "parkrun.my"
+          - "parkrun.co.nl"
+          - "parkrun.co.at"
         include:
           - browser: "chrome"
             selenium-image: selenium/standalone-chrome:101.0
