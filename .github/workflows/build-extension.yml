@@ -155,7 +155,7 @@ jobs:
           cd -
 
           echo "Starting up docker compose services"
-          docker-compose -f test-selenium/docker-compose-gh-actions.yml up -d
+          docker-compose -f test-selenium/docker-compose-gh-actions.yml up --force-recreate -d
 
           # Wait for things to have started up
           sleep 30
