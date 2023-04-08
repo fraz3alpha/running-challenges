@@ -108,7 +108,7 @@ jobs:
             selenium-image: selenium/standalone-chrome:101.0
           # - browser: "firefox"
           #   selenium-image: selenium/standalone-firefox:latest
-      fail-fast: false
+      fail-fast: true
       max-parallel: 1
     # services:
     #  # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
