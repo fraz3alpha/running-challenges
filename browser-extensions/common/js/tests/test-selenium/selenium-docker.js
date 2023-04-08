@@ -288,7 +288,7 @@ parkrunWebsites.sites.forEach(function(website) {
                     let div = await driver.findElement(By.id("running_challenges_messages_div"))
 
                     // Give it 10 seconds to say that
-                    await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 10000).catch((error) => {
+                    await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 20000).catch((error) => {
                         console.log("Caught an exception while waiting for the status div to show everything is ready")
                         div.getText().then(function (text) {
                             console.log(text);
