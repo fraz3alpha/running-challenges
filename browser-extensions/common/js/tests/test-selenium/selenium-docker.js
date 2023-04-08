@@ -275,8 +275,8 @@ parkrunWebsites.sites.forEach(function(website) {
         if (testDefinition !== undefined) {
             if (testName == "main") {
                 thisWebsiteTestSuite.addTest(new Mocha.Test(testName, async function() {
-                    // Set the timeout for this test to 30 seconds
-                    this.timeout(30000);
+                    // Set the timeout for this test to 60 seconds
+                    this.timeout(60000);
                     // Load the parkrun page
                     const url = website.hostname + testDefinition.replace("REPLACE_ATHLETE_NUMBER", parkrunnerAndyTaylor)
                     console.log("Loading "+url)
@@ -287,8 +287,8 @@ parkrunWebsites.sites.forEach(function(website) {
 
                     let div = await driver.findElement(By.id("running_challenges_messages_div"))
 
-                    // Give it 20 seconds to say it is ready. I found 10 seconds was too short.
-                    await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 20000).catch((error) => {
+                    // Give it 45 seconds to say it is ready. I found 10 seconds was too short.
+                    await driver.wait(until.elementTextIs(div, "Additional badges provided by Running Challenges"), 45000).catch((error) => {
                         console.log("Caught an exception while waiting for the status div to show everything is ready")
                         div.getText().then(function (text) {
                             console.log(text);
