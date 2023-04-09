@@ -124,7 +124,7 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v3
         with:
-          path: browser-extensions/common/js/tests/extension-binaries
+          path: browser-extensions/common/js/tests/ui-tests/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
@@ -180,8 +180,8 @@ jobs:
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
           path: |
-            browser-extensions/common/js/tests/playwright-report/
-            browser-extensions/common/js/tests/screenshot.png
+            browser-extensions/common/js/tests/ui-tests/playwright-report/
+            browser-extensions/common/js/tests/ui-tests/screenshot.png
           retention-days: 30
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
