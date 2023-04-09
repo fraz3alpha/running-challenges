@@ -159,10 +159,11 @@ jobs:
 
       - name: Unpack extension
         run: |
+          ls -lR extension-binaries && \
           cd extension-binaries/chrome-extension-package && \ 
           unzip *.zip
 
-      - name: Install dependencies
+      - name: Install Node dependencies
         run: npm ci
 
       - name: Install Playwright Browsers
