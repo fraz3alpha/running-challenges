@@ -112,7 +112,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js/tests/ui-tests
+        working-directory: browser-extensions/common/js/tests/ui-test
 
     steps:
 
@@ -124,7 +124,7 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v3
         with:
-          path: browser-extensions/common/js/tests/ui-tests/extension-binaries
+          path: browser-extensions/common/js/tests/ui-test/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
