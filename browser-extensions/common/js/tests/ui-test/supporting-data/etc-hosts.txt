@@ -1,0 +1,26 @@
+
+# contents of /etc/hosts to make it reference the nginx container we start
+127.0.0.1 www.parkrun.ca
+127.0.0.1 www.parkrun.co.at
+127.0.0.1 www.parkrun.co.nl
+127.0.0.1 www.parkrun.co.nz
+127.0.0.1 www.parkrun.co.za
+127.0.0.1 www.parkrun.com.au
+127.0.0.1 www.parkrun.com.de
+127.0.0.1 www.parkrun.dk
+127.0.0.1 www.parkrun.fi
+127.0.0.1 www.parkrun.fr
+127.0.0.1 www.parkrun.ie
+127.0.0.1 www.parkrun.it
+127.0.0.1 www.parkrun.jp
+127.0.0.1 www.parkrun.my
+127.0.0.1 www.parkrun.no
+127.0.0.1 www.parkrun.org.uk
+127.0.0.1 www.parkrun.pl
+127.0.0.1 www.parkrun.ru
+127.0.0.1 www.parkrun.se
+127.0.0.1 www.parkrun.sg
+127.0.0.1 www.parkrun.us
+127.0.0.1 wiki.parkrun.com
+127.0.0.1 images.parkrun.com
+# end of contents
