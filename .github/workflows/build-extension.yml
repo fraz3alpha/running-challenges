@@ -112,7 +112,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js/tests/ui-test
+        working-directory: browser-extensions/common/js/tests/ui-tests
 
     steps:
 
