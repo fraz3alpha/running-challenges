@@ -183,8 +183,8 @@ jobs:
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
           path: |
-            browser-extensions/common/js/tests/ui-tests/playwright-report/
-            browser-extensions/common/js/tests/ui-tests/screenshot.png
+            browser-extensions/common/js/tests/ui-test/playwright-report/
+            browser-extensions/common/js/tests/ui-test/screenshot.png
           retention-days: 30
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
