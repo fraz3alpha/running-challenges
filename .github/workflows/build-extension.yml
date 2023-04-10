@@ -159,6 +159,7 @@ jobs:
 
       - name: Unpack extension
         run: |
+          set +xe
           ls -lR extension-binaries && \
           cd extension-binaries/chrome-extension-package && \ 
           unzip *.zip
