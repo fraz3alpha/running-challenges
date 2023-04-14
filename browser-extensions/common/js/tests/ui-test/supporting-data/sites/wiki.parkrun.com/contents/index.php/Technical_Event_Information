@@ -355,7 +355,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Alexandra_parkrun,_Moss_Side" title="Alexandra parkrun, Moss Side">Alexandra parkrun, Moss Side</a>
 </td>
-<td>Michael Hoyle
+<td>Michael Hoyle &amp; Michael Harrop
 </td>
 <td>2552
 </td>
@@ -382,17 +382,6 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>3224
 </td>
 <td>AcceptingRegistrations
-</td>
-<td>South Africa
-</td></tr>
-<tr>
-<td><a href="/index.php/Aliwal_North_parkrun" title="Aliwal North parkrun">Aliwal North parkrun</a>
-</td>
-<td>Melanie Nel &amp; Riaan Oelofse
-</td>
-<td>1247
-</td>
-<td>Live
 </td>
 <td>South Africa
 </td></tr>
@@ -916,7 +905,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Australian_Standing_Stones_parkrun" title="Australian Standing Stones parkrun">Australian Standing Stones parkrun</a>
 </td>
-<td>Troy Arandale &amp; Laura Hayden
+<td>Troy Arandale &amp; Katie Randall
 </td>
 <td>3179
 </td>
@@ -2676,7 +2665,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Brandkop_parkrun" title="Brandkop parkrun">Brandkop parkrun</a>
 </td>
-<td>Thane Rodney Ninnemann &amp; Susan Lobb
+<td>Braampie Fiedler
 </td>
 <td>2472
 </td>
@@ -5008,7 +4997,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Cobram_parkrun" title="Cobram parkrun">Cobram parkrun</a>
 </td>
-<td>Gary Smith &amp; Lyn Hewson
+<td>Gary Smith
 </td>
 <td>1468
 </td>
@@ -5151,7 +5140,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Collett_Park_junior_parkrun" title="Collett Park junior parkrun">Collett Park junior parkrun</a>
 </td>
-<td>Amanda King
+<td>Amanda King &amp;  Ian Hosegood
 </td>
 <td>2296
 </td>
@@ -6746,7 +6735,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Durlston_Country_Park_parkrun" title="Durlston Country Park parkrun">Durlston Country Park parkrun</a>
 </td>
-<td>Zodwa Chasokela &amp; Wendy Mansell
+<td>Zodwa Chasokela &amp; Ross Wayne
 </td>
 <td>3030
 </td>
@@ -9030,17 +9019,6 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Live
 </td>
 <td>United Kingdom
-</td></tr>
-<tr>
-<td><a href="/index.php/Grey_Goose_parkrun" title="Grey Goose parkrun">Grey Goose parkrun</a>
-</td>
-<td>Gwyneth Root
-</td>
-<td>1320
-</td>
-<td>Live
-</td>
-<td>South Africa
 </td></tr>
 <tr>
 <td><a href="/index.php/Greytown_Woodside_Trail_parkrun" title="Greytown Woodside Trail parkrun">Greytown Woodside Trail parkrun</a>
@@ -12600,7 +12578,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Lillydale_Lake_parkrun" title="Lillydale Lake parkrun">Lillydale Lake parkrun</a>
 </td>
-<td>Elka Mallon &amp; Paul Brown
+<td>Sally Stepniewski &amp; Elka Mallon
 </td>
 <td>699
 </td>
@@ -13282,7 +13260,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Lytham_Hall_parkrun" title="Lytham Hall parkrun">Lytham Hall parkrun</a>
 </td>
-<td>Kirsten Burnett &amp; Sharon Cooper
+<td>Kirsten Burnett
 </td>
 <td>1359
 </td>
@@ -14697,6 +14675,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Live
 </td>
 <td>Australia
+</td></tr>
+<tr>
+<td><a href="/index.php/Moreletapark_Gemeente_parkrun" title="Moreletapark Gemeente parkrun">Moreletapark Gemeente parkrun</a>
+</td>
+<td>Ruan Engelbrecht &amp; Gerhard Ferreira
+</td>
+<td>3248
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>South Africa
 </td></tr>
 <tr>
 <td><a href="/index.php/Mosman_parkrun" title="Mosman parkrun">Mosman parkrun</a>
@@ -17770,7 +17759,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Peel_parkrun" title="Peel parkrun">Peel parkrun</a>
 </td>
-<td>Susan Glover &amp; Sonia D’Andreta
+<td>Susan Glover &amp; Adrian Marsh
 </td>
 <td>2740
 </td>
@@ -18331,7 +18320,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Pomphrey_Hill_parkrun" title="Pomphrey Hill parkrun">Pomphrey Hill parkrun</a>
 </td>
-<td>William Lee &amp; Adrian Grimshaw
+<td>Adrian Grimshaw &amp; Martyn Poole
 </td>
 <td>701
 </td>
@@ -20168,7 +20157,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/S.S._Koopa_Trail_parkrun" title="S.S. Koopa Trail parkrun">S.S. Koopa Trail parkrun</a>
 </td>
-<td>Deborah Willis &amp; Julie Watts
+<td>Deborah Willis &amp; Elaine Rogers
 </td>
 <td>2796
 </td>
@@ -20597,7 +20586,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Selby_parkrun" title="Selby parkrun">Selby parkrun</a>
 </td>
-<td>Stephanie Hiscott
+<td>Dave Broom &amp; John McAleely
 </td>
 <td>1791
 </td>
@@ -21675,7 +21664,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/St_George_parkrun" title="St George parkrun">St George parkrun</a>
 </td>
-<td>Angela Garner
+<td>John Mullholland
 </td>
 <td>1771
 </td>
@@ -22775,7 +22764,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/The_Meadows_junior_parkrun" title="The Meadows junior parkrun">The Meadows junior parkrun</a>
 </td>
-<td>Peter Smith
+<td>Mhairi Bagnall
 </td>
 <td>92
 </td>
@@ -24546,7 +24535,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Watermeadows_parkrun" title="Watermeadows parkrun">Watermeadows parkrun</a>
 </td>
-<td>Anna Harrington &amp; Brian Keers
+<td>Lorayne MacFarlane &amp; Brian Keers
 </td>
 <td>2106
 </td>
@@ -25842,6 +25831,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Australia
 </td></tr>
 <tr>
+<td><a href="/index.php/Wynyard_Woodland_parkrun" title="Wynyard Woodland parkrun">Wynyard Woodland parkrun</a>
+</td>
+<td>Vicky Fawcett
+</td>
+<td>3249
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>United Kingdom
+</td></tr>
+<tr>
 <td><a href="/index.php/Wyre_Forest_junior_parkrun" title="Wyre Forest junior parkrun">Wyre Forest junior parkrun</a>
 </td>
 <td>Shirley Thomas
@@ -25888,7 +25888,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Yarborough_Leisure_Centre_parkrun" title="Yarborough Leisure Centre parkrun">Yarborough Leisure Centre parkrun</a>
 </td>
-<td>Jen Purnell
+<td>Kate Trollone
 </td>
 <td>3198
 </td>
@@ -26114,12 +26114,12 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <!-- 
 NewPP limit report
 Preprocessor node count: 311/1000000
-Post‐expand include size: 11024/2097152 bytes
+Post‐expand include size: 11061/2097152 bytes
 Template argument size: 4094/2097152 bytes
 Expensive parser function count: 0/100
 -->
 
-<!-- Saved in parser cache with key parkrunwiki:pcache:idhash:462-0!*!0!*!*!*!* and timestamp 20230407153112 -->
+<!-- Saved in parser cache with key parkrunwiki:pcache:idhash:462-0!*!0!*!*!*!* and timestamp 20230414185949 -->
 </div>				<!-- /bodycontent -->
 								<!-- printfooter -->
 				<div class="printfooter">
@@ -26289,7 +26289,7 @@ Expensive parser function count: 0/100
 		<div id="footer">
 							<ul id="footer-info">
 											<li id="footer-info-lastmod"> This page was last modified on 16 December 2019, at 13:44.</li>
-											<li id="footer-info-viewcount">This page has been accessed 1,329,068 times.</li>
+											<li id="footer-info-viewcount">This page has been accessed 1,334,432 times.</li>
 									</ul>
 							<ul id="footer-places">
 											<li id="footer-places-privacy"><a href="/index.php/parkrun_wiki:Privacy_policy" title="parkrun wiki:Privacy policy">Privacy policy</a></li>
@@ -26310,6 +26310,6 @@ Expensive parser function count: 0/100
 mw.loader.load(["mediawiki.user","mediawiki.page.ready","mediawiki.legacy.mwsuggest"], null, true);
 }</script>
 <script src="https://wiki.parkrun.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=vector&amp;*"></script>
-<!-- Served in 2.618 secs. -->
+<!-- Served in 0.132 secs. -->
 	</body>
 </html>
