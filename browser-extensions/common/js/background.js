@@ -73,7 +73,8 @@ var cache = {
         'url': "https://images.parkrun.com/events.json",
         'datatype': 'json',
         'enabled': true,
-        'timeout': 5000
+        'timeout': 5000,
+        'last_status': {}
     },
     'technical_event_information': {
         'raw_data': undefined,
@@ -84,7 +85,8 @@ var cache = {
         'url': "https://wiki.parkrun.com/index.php/Technical_Event_Information",
         'datatype': 'html',
         'enabled': true,
-        'timeout': 5000
+        'timeout': 5000,
+        'last_status': {}
     },
     'data': undefined,
     'updated_at': undefined
@@ -422,10 +424,19 @@ function get_geo_data(notify_func, freshen=false) {
                          // console.log('Fresh fetch of '+cache[page].url)
                          cache[page].raw_data = result
                          cache[page].updated_at = new Date()
+                         cache[page].last_status = {
+                          "success": true
+                         }
                          defer.resolve(result)
                      },
                      error: function (xhr, status, error) {
                          // console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
+                         cache[page].last_status = {
+                          "success": false,
+                          "returnStatus": status,
+                          "error": error,
+                          "message": JSON.stringify(arguments) + "" + xhr.responseText
+                         }
                          defer.resolve(undefined)
                      }
                  })
@@ -455,9 +466,9 @@ function get_geo_data(notify_func, freshen=false) {
                     // See if we have a previous one to fall back on
                     if (cache.events.raw_data === undefined) {
                         // If not, send something back
-                        console.log('No data to go on!')
-                        notify_geo_data(notify_func)
-                        return
+                        console.log('No data to go on, sending back some debug information!')
+                        // notify_geo_data(notify_func)
+                        // return
                     } else {
                         // Else make the best use of what we had previously
                         console.log('Using previously obtained raw data')
@@ -493,17 +504,28 @@ function regenerate_cache_data() {
 function update_cache_data(data_events, data_tee) {
 
   if (data_events === undefined) {
-    cache.data = undefined
+    cache.data = {
+      'valid': false,
+      'data_fetch_status': {
+        'events': cache.events.last_status,
+        'event_info': cache.technical_event_information.last_status
+      }
+    }
     cache.updated_at = undefined
     return cache.data
   }
 
   // Build up our new data
   var data = {
+    'valid': false,
     'regions': {},
     'events': {},
     'countries': {},
-    'event_status': undefined
+    'event_status': undefined,
+    'data_fetch_status': {
+      'events': cache.events.last_status,
+      'event_info': cache.technical_event_information.last_status
+    }
   }
 
   // Replace the complicated events/regions parsing with a single call
@@ -525,6 +547,7 @@ function update_cache_data(data_events, data_tee) {
   // Update the global cache
   cache.data = data
   cache.updated_at = new Date()
+  data.valid = true
 
   return data
 
@@ -536,7 +559,7 @@ function notify_geo_data(f) {
             // console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
             f({
                 'data': cache.data,
-                'updated': cache.updated_at.toString()
+                'updated': cache.updated_at !== undefined ? cache.updated_at.toString() : undefined
             })
         } else {
             f({

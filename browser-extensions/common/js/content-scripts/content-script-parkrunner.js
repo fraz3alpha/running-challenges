@@ -73,6 +73,7 @@ function set_complete_progress_message(errors) {
 
 function set_progress_message(progress_message) {
   console.log("Progress: "+progress_message)
+  // $("div[id=running_challenges_messages_div]").html($("div[id=running_challenges_messages_div]").html() + "<br/>" + progress_message)
   $("div[id=running_challenges_messages_div]").html(progress_message)
 }
 
@@ -544,12 +545,14 @@ function create_page() {
     set_progress_message("Loaded geo data")
     console.log('Loaded geo data was:')
     console.log(results.geo)
+    set_progress_message(JSON.stringify(results))
     // The return packet will normally be valid even if the geo data is not contained
     // within, so we do some sanity check here
-    if (results.geo && results.geo.data) {
+    if (results.geo && results.geo.data && results.geo.data.valid) {
       loaded_geo_data = results.geo
     } else {
       console.log('Geo data rejected')
+      set_progress_message("geo data rejected")
     }
 
     set_progress_message("Loading volunteer data")
@@ -577,6 +580,8 @@ function create_page() {
       'user_data': loaded_user_data,
       'info': {}
     }
+
+    set_progress_message(JSON.stringify(data))
 
     // Now add some supplemental information
     // Is the page we are looking at the one for the user who has configured the plugin?
@@ -622,7 +627,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}`)
+    set_progress_message(`Error: ${error}. Data is ${JSON.stringify(data)}`)
   });
 
 }
