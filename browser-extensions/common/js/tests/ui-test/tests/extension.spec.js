@@ -65,11 +65,11 @@ test('Basic extension load test', async ({ page }) => {
 });
 
 let badgesThatShouldExistMap = {
-  "tourist": [
+  "runner-tourist": [
     "1309364",
     "482"
   ],
-  "name-badge": [
+  "runner-name-badge": [
     "482",
   ]
 }
