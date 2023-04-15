@@ -61,6 +61,56 @@ test('Basic extension load test', async ({ page }) => {
 
 });
 
+let badgesThatShouldExistMap = {
+  "tourist": [
+    "1309364",
+    "482"
+  ],
+  "name-badge": [
+    "482",
+  ]
+}
+
+Object.keys(badgesThatShouldExistMap).forEach(badgeShortname => {
+
+  test(`Check for badge awarded: ${badgeShortname}`, async ({ page }) => {
+
+    for (const parkrunnerId of badgesThatShouldExistMap[badgeShortname]) {
+
+      await page.goto(`https://www.${countryDomain}/parkrunner/${parkrunnerId}/all/`);
+
+      // Wait for the extension to load, and therefore all the badges to be displayed
+      await expect(page.locator("#running_challenges_messages_div")).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
+
+      // Check for the specific badge:
+      await expect(page.locator(`#badge-awarded-${badgeShortname}`)).toBeVisible()
+
+    }
+  
+  });
+
+});
+
+test('Check for specific badges being awarded', async ({ page }) => {
+
+  let badgesThatShouldExistMap = {
+    "tourist": [
+      "1309364",
+      "482"
+    ],
+    "name-badge": [
+      "482",
+    ]
+  }
+
+  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
+
+  let messagesDiv = page.locator("#running_challenges_messages_div")
+
+  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
+
+});
+
 // test('get started link', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
 
