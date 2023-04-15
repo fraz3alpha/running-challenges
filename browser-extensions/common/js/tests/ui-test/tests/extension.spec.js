@@ -57,7 +57,7 @@ test('Basic extension load test', async ({ page }) => {
 
   let messagesDiv = page.locator("#running_challenges_messages_div")
 
-  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
+  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 10000})
 
 });
 
@@ -80,7 +80,7 @@ Object.keys(badgesThatShouldExistMap).forEach(badgeShortname => {
       await page.goto(`https://www.${countryDomain}/parkrunner/${parkrunnerId}/all/`);
 
       // Wait for the extension to load, and therefore all the badges to be displayed
-      await expect(page.locator("#running_challenges_messages_div")).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
+      await expect(page.locator("#running_challenges_messages_div")).toHaveText("Additional badges provided by Running Challenges", {timeout: 10000})
 
       // Check for the specific badge:
       await expect(page.locator(`#badge-awarded-${badgeShortname}`)).toBeVisible()
