@@ -71,6 +71,9 @@ let badgesThatShouldExistMap = {
   ],
   "runner-name-badge": [
     "482",
+  ],
+  "volunteer-warm-up-leader": [
+    "1731148"
   ]
 }
 
