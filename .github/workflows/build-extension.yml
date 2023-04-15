@@ -106,7 +106,7 @@ jobs:
           - "parkrun.sg"
           - "parkrun.us"
           # - "parkrun.ru" # Russian events are suspended
-      fail-fast: false
+      fail-fast: true
       # max-parallel: 1
 
     defaults:
