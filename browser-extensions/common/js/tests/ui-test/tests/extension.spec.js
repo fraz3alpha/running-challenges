@@ -91,26 +91,6 @@ Object.keys(badgesThatShouldExistMap).forEach(badgeShortname => {
 
 });
 
-test('Check for specific badges being awarded', async ({ page }) => {
-
-  let badgesThatShouldExistMap = {
-    "tourist": [
-      "1309364",
-      "482"
-    ],
-    "name-badge": [
-      "482",
-    ]
-  }
-
-  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
-
-  let messagesDiv = page.locator("#running_challenges_messages_div")
-
-  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
-
-});
-
 // test('get started link', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
 
