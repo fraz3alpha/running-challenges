@@ -306,7 +306,8 @@ function add_badges(div_id, data) {
 
   var index_counter = 1
   badges.forEach(function (badge) {
-      var badge_awarded_div = $("div[id=badge-awarded-"+badge.shortname+"]")
+      var badge_awarded_div = $("<span/>")
+      badge_awarded_div.attr("id", "badge-awarded-"+badge.shortname)
       var badge_link = $('<a></a>')
       badge_link.attr('href', badge.link)
 
@@ -382,7 +383,8 @@ function get_volunteer_badge(result) {
       badge_info = {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.shortname
       }
       if (result.subparts_completed_count >= 25){
           badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")

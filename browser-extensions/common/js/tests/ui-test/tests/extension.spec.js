@@ -42,6 +42,9 @@ const test = base.extend({
 // await page.screenshot({ path: 'screenshot.png', fullPage: true });
 
 test('Basic extension load test', async ({ page }) => {
+
+  console.log(`Expecting the extension to have been loaded from ${extensionPath}`)
+
   await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
 
   // Wait 3 seconds, this should be plenty as we are serving all the data locally and there shoudn't be
