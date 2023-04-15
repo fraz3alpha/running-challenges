@@ -384,7 +384,7 @@ function get_volunteer_badge(result) {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
           "link": "#"+result.shortname,
-          "shortname": badge.badge_icon
+          "shortname": result.badge_icon
       }
       if (result.subparts_completed_count >= 25){
           badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
