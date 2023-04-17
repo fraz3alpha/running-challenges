@@ -214,7 +214,8 @@ var domains = {
             "Journalist": "Report Writer",
             "Andet": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
-            "Parkeringsvagt": "Car Park Marshal"
+            "Parkeringsvagt": "Car Park Marshal",
+            "Ruteinspektion på løbsdagen": "Event Day Course Check"
         }
     },
     "www.parkrun.se": {
