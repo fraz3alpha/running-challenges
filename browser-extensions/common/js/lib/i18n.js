@@ -101,7 +101,7 @@ var domains = {
             "Rozstawiając(a)y oznakowanie": "Pre-event Setup",
             "Instruktor nowych uczestników": "First Timers Welcome",
             "Odprawa debiutantów": "First Timers Welcome",
-            "Tłumacz języka migowego": "Sign Language Support",
+            "Tłumacz(ka) języka migowego": "Sign Language Support",
             "Ubezpieczanie trasy": "Marshal",
             "Ubezpieczając(a)y trasę": "Marshal",
             "Zamykanie stawki": "Tail Walker",
@@ -123,7 +123,7 @@ var domains = {
             "Pomocnik wydające(j)go tokeny": "Finish Token Support",
             "Skanowanie uczestników": "Barcode Scanning",
             "Skanując(a)y uczestników": "Barcode Scanning",
-            "Sprawdzanie pozycji na mecie": "Number Checker",
+            "Sprawdzając(a)y pozycje na mecie": "Number Checker",
             "Zbieranie elementów z trasy": "Post-event Close Down",
             "Zbierając(a)y oznakowanie": "Post-event Close Down",
             "Wprowadzanie wyników": "Results Processor",
@@ -133,8 +133,8 @@ var domains = {
             "Przygotowanie raportu z biegu": "Report Writer",
             "Przygotowując(a)y raport": "Report Writer",
             "Inne": "Other",
-            "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)",
-            "Koordynator parkingu": "Car Park Marshal",
+            // "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)", // Not applicable for parkrun in poland
+            "Koordynator(ka) parkingu": "Car Park Marshal",
             "Sprawdzenie trasy przed spotkaniem": "Event Day Course Check",
             "Sprawdzając(a)y trasę": "Event Day Course Check"
         }
@@ -229,12 +229,12 @@ var domains = {
         "text_volunteer_role_map": {
             "Material - förvaring och leverans": "Equipment Storage and Delivery",
             "Kommunikationsansvarig": "Communications Person",
-            "Volöntäransvarig": "Volunteer Co-ordinator",
+            "Volontäransvarig": "Volunteer Co-ordinator",
             "Ansvarig för att sätta upp banan": "Pre-event Setup",
             "Informationsansvarig för förstagångslöpare": "First Timers Welcome",
             "Teckenspråk assistent": "Sign Language Support",
             "Funktionär": "Marshal",
-            "Sista gångare": "Tail Walker",
+            "Sistagångare": "Tail Walker",
             "Loppansvarig": "Run Director",
             "Förcyklist": "Lead Bike",
             "Farthållare": "Pacer (5k only)",
@@ -253,7 +253,8 @@ var domains = {
             "Journalist": "Report Writer",
             "Övrigt": "Other",
             "Ledare för uppvärmning": "Warm Up Leader (junior events only)",
-            "Parkeringsvakt": "Car Park Marshal"
+            "Parkeringsvakt": "Car Park Marshal",
+            "Bankontroll på eventdagen": "Event Day Course Check"
         }
     },
     "www.parkrun.fi": {
@@ -425,7 +426,7 @@ var domains = {
             "イベント後片付け係": "Post-event Close Down",
             "着順トークン配布係": "Finish Tokens",
             "着順確認係": "Number Checker",
-            "初参加者への説明係": "First Timers Welcome",
+            "初参加者歓迎係": "First Timers Welcome",
             "フィニッシュ後サポート係": "Funnel Manager",
             "先導バイク": "Lead Bike",
             "着順トークン配布補助係": "Finish Token Support",
@@ -502,13 +503,13 @@ var domains = {
             "Zielmarkenausgabe": "Finish Tokens",
             "Zielmarken Unterstützung": "Finish Token Support",
             "Barcode einlesen": "Barcode Scanning",
-            "Nummern-Kontrolleur": "Number Checker",
+            "andere Aufgaben": "Number Checker",
             "Ausrüstung Abbau": "Post-event Close Down",
             "Ergebnisauswertung": "Results Processor",
             "Zielmarkenverwaltung": "Token Sorting",
             "Berichterstattung": "Report Writer",
             "andere Aufgaben": "Other",
-            "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
+            // "Aufwärmgymnastik": "Warm Up Leader (junior events only)", // Not applicable for parkruns in Austria (it actually says Germany)
             "Parkplatzeinweisung": "Car Park Marshal",
             "Streckenprüfung am parkrun-Tag": "Event Day Course Check"
         }
