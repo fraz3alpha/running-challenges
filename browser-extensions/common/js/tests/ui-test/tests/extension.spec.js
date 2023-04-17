@@ -65,6 +65,7 @@ test('Basic extension load test', async ({ page }) => {
 });
 
 let badgesThatShouldExistMap = {
+  // Running badges
   "runner-tourist": [
     "1309364",
     "482"
@@ -72,8 +73,86 @@ let badgesThatShouldExistMap = {
   "runner-name-badge": [
     "482",
   ],
+  // Volunteer badges
+  "volunteer-barcode-scanning": [
+    "88720"
+  ],
+  "volunteer-car-park-marshal": [
+      "88720"
+  ],
+  "volunteer-close-down": [
+      "88720"
+  ],
+  "volunteer-comms-person": [
+      "88720"
+  ],
+  "volunteer-equipment-storage": [
+      "88720"
+  ],
+  "volunteer-event-day-course-check": [
+      "88720"
+  ],
+  "volunteer-finish-tokens": [
+      "88720"
+  ],
+  "volunteer-first-timers-welcome": [
+      "88720"
+  ],
+  "volunteer-funnel-manager": [
+      "88720"
+  ],
+  "volunteer-lead-bike": [
+  ],
+  "volunteer-manual-entry": [
+      "88720"
+  ],
+  "volunteer-marshal": [
+      "88720"
+  ],
+  "volunteer-other": [
+      "88720"
+  ],
+  "volunteer-pacer": [
+      "88720"
+  ],
+  "volunteer-photographer": [
+      "88720"
+  ],
+  "volunteer-report-writer": [
+      "88720"
+  ],
+  "volunteer-results-processing": [
+      "88720"
+  ],
+  "volunteer-run-director": [
+      "88720"
+  ],
+  "volunteer-setup": [
+      "88720"
+  ],
+  "volunteer-sign-language": [
+      "88720"
+  ],
+  "volunteer-tail-walker": [
+      "88720"
+  ],
+  "volunteer-timer": [
+      "88720"
+  ],
+  "volunteer-token-sorting": [
+      "88720"
+  ],
+  "volunteer-tokens": [
+      "88720"
+  ],
+  "volunteer-vi-guide": [
+      "88720"
+  ],
+  "volunteer-volunteer-coordinator": [
+      "88720"
+  ],
   "volunteer-warm-up-leader": [
-    "1731148"
+      "88720"
   ]
 }
 

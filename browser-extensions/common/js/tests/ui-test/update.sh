@@ -4,7 +4,11 @@ export NGINX_CONF_D_ROOT_DIR="`pwd`/supporting-data/nginx/conf.d"
 
 # Parkrun events in Russia are suspended, add  "parkrun.ru" back when they reappear
 declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
-declare -a PARKRUNNER_IDS=("1309364" "482" "1731148")
+# 1309364: Andy Taylor, me
+# 482: Danny Normal, has done most things, and at one point, all the running badges
+# 88720: Phillip Whettlock, who helped out and has done nearly every volunteer role
+# 2705084: Duncan Booth, who has done lead bike, but hasn't run at all - which causes a bug that will need to be fixed!
+declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084")
 
 # Fetch the common files
 mkdir -p "${TARGET_ROOT_DIR}/images.parkrun.com/contents/"
