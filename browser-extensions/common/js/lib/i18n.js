@@ -281,7 +281,7 @@ var domains = {
             "Assistance langage des signes": "Sign Language Support",
             "Aiguilleur": "Marshal",
             "Fermeur marcheur": "Tail Walker",
-            "Responsable de footing": "Run Director",
+            "Responsable du run": "Run Director",
             "Vélo de tête": "Lead Bike",
             "Lièvre": "Pacer (5k only)",
             "Guide déficient visuel": "VI Guide",
@@ -291,7 +291,7 @@ var domains = {
             "Gestion SAS": "Funnel Manager",
             "Distribution des jetons": "Finish Tokens",
             "Assistant distribution des jetons": "Finish Token Support",
-            "Scan des codes-barres": "Barcode Scanning",
+            "Scannage des codes-barres": "Barcode Scanning",
             "Vérification des jetons": "Number Checker",
             "Débalisage du parcours": "Post-event Close Down",
             "Mise en ligne des participations": "Results Processor",
@@ -299,7 +299,8 @@ var domains = {
             "Rédacteur du compte-rendu": "Report Writer",
             "Autre": "Other",
             "Leader d'échauffement": "Warm Up Leader (junior events only)",
-            "Aiguilleur parking": "Car Park Marshal"
+            "Aiguilleur parking": "Car Park Marshal",
+            "Verification du Parcours - Jour de l'évènement": "Event Day Course Check"
         }
     },
     "www.parkrun.com.de": {
