@@ -75,6 +75,7 @@ var domains = {
             "Report Writer": "Report Writer",
             "Other": "Other",
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
+            "Warm Up Leader": "Warm Up Leader",
             "Car Park Marshal": "Car Park Marshal",
             "Event Day Course Check": "Event Day Course Check"
         }
