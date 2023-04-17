@@ -152,7 +152,7 @@ var domains = {
             "Addetto comunicazioni": "Communications Person",
             "Coordinatore volontari": "Volunteer Co-ordinator",
             "Preparazione evento": "Pre-event Setup",
-            "Briefing nuovi partecipanti": "First Timers Welcome",
+            "Benvenuto ai nuovi partecipanti": "First Timers Welcome",
             "Interprete lingua dei segni": "Sign Language Support",
             "Marshal": "Marshal",
             "Camminatore di coda": "Tail Walker",
