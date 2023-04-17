@@ -142,9 +142,6 @@ let badgesThatShouldExistMap = {
   "volunteer-token-sorting": [
       "88720"
   ],
-  "volunteer-tokens": [
-      "88720"
-  ],
   "volunteer-vi-guide": [
       "88720"
   ],
