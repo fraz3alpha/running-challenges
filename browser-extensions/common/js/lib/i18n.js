@@ -413,7 +413,7 @@ var domains = {
         "text_volunteer_role_map": {
             "ランディレクター": "Run Director",
             "タイム計測係": "Timekeeper",
-            "フィニッシュ・トークン整理係": "Token Sorting",
+            "着順トークン整理係": "Token Sorting",
             "結果集計係": "Results Processor",
             "カメラマン": "Photographer",
             "連絡対応係": "Communications Person",
@@ -423,12 +423,12 @@ var domains = {
             "その他": "Other",
             "バーコード・スキャン係": "Barcode Scanning",
             "イベント後片付け係": "Post-event Close Down",
-            "フィニッシュ・トークン配布係": "Finish Tokens",
+            "着順トークン配布係": "Finish Tokens",
             "着順確認係": "Number Checker",
             "初参加者への説明係": "First Timers Welcome",
             "フィニッシュ後サポート係": "Funnel Manager",
             "先導バイク": "Lead Bike",
-            "フィニッシュ・トークン係補助": "Finish Token Support",
+            "着順トークン配布補助係": "Finish Token Support",
             "最後尾確認係": "Tail Walker",
             "ボランティア・コーディネーター": "Volunteer Co-ordinator",
             "レポート作成係": "Report Writer",
@@ -438,7 +438,8 @@ var domains = {
             "ウォームアップ・リーダー（ジュニアイベントのみ）": "Warm Up Leader (junior events only)",
             "手話サポート": "Sign Language Support",
             "駐車場整理係": "Car Park Marshal",
-            "コース状況確認係": "Event Day Course Check"
+            "コース状況確認係": "Event Day Course Check",
+            "当日コース状況確認係": "Event Day Course Check"
         }
     },
     "www.parkrun.co.nl": {
