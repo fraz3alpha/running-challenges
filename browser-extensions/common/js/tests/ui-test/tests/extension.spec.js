@@ -153,7 +153,23 @@ let badgesThatShouldExistMap = {
   ]
 }
 
+let notApplicableBadgesPerDomain = {
+  "parkrun.co.at": [
+    "volunteer-warm-up-leader"
+  ],
+  "parkrun.pl": [
+    "volunteer-warm-up-leader"
+  ]
+}
+
 Object.keys(badgesThatShouldExistMap).forEach(badgeShortname => {
+
+  if (countryDomain in notApplicableBadgesPerDomain) {
+    if (notApplicableBadgesPerDomain[countryDomain].includes(badgeShortname)) {
+      console.log(`Skipping ${badgeShortname} for ${countryDomain}`)
+      return
+    }
+  }
 
   test(`Check for badge awarded: ${badgeShortname}`, async ({ page }) => {
 
