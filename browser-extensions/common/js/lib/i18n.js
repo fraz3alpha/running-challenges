@@ -503,7 +503,7 @@ var domains = {
             "Zielmarkenausgabe": "Finish Tokens",
             "Zielmarken Unterstützung": "Finish Token Support",
             "Barcode einlesen": "Barcode Scanning",
-            "andere Aufgaben": "Number Checker",
+            "Nummern-Kontrolle": "Number Checker",
             "Ausrüstung Abbau": "Post-event Close Down",
             "Ergebnisauswertung": "Results Processor",
             "Zielmarkenverwaltung": "Token Sorting",
