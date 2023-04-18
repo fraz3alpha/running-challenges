@@ -306,6 +306,8 @@ function add_badges(div_id, data) {
 
   var index_counter = 1
   badges.forEach(function (badge) {
+      var badge_awarded_div = $("<span/>")
+      badge_awarded_div.attr("id", "badge-awarded-"+badge.shortname)
       var badge_link = $('<a></a>')
       badge_link.attr('href', badge.link)
 
@@ -318,8 +320,9 @@ function add_badges(div_id, data) {
 
       modifyStyle(img)
 
+      badge_awarded_div.append(badge_link)
       badge_link.append(img)
-      badge_div.append(badge_link)
+      badge_div.append(badge_awarded_div)
 
       if (index_counter > 0 && index_counter % 8 == 0) {
           badge_div.append($('<br/>'))
@@ -346,7 +349,8 @@ function get_running_badge(result) {
           "name": badge.name,
           "icon": browser.runtime.getURL("/images/badges/"+badge.badge_icon+".png"),
           // The link just goes to the top of the main table for the challenge, not the specific row.
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": badge.badge_icon
         })
       })
     }
@@ -355,13 +359,15 @@ function get_running_badge(result) {
       badge_info = {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.badge_icon
       }
     } else if (result.partial_completion == true) {
         badge_info = {
           "name": result.partial_completion_name,
           "icon": browser.runtime.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.partial_completion_badge_icon
         }
     }
   }
@@ -377,7 +383,8 @@ function get_volunteer_badge(result) {
       badge_info = {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.badge_icon
       }
       if (result.subparts_completed_count >= 25){
           badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")

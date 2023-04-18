@@ -78,6 +78,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Germany
 </td></tr>
 <tr>
+<td><a href="/index.php/Abbey_Park_parkrun" title="Abbey Park parkrun">Abbey Park parkrun</a>
+</td>
+<td>Mark Lambell &amp; Philip Casswell
+</td>
+<td>3240
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>United Kingdom
+</td></tr>
+<tr>
 <td><a href="/index.php/Aberbeeg_parkrun" title="Aberbeeg parkrun">Aberbeeg parkrun</a>
 </td>
 <td>Hayley Edwards
@@ -381,7 +392,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 </td>
 <td>3224
 </td>
-<td>AcceptingRegistrations
+<td>Live
 </td>
 <td>South Africa
 </td></tr>
@@ -707,7 +718,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Armidale_parkrun" title="Armidale parkrun">Armidale parkrun</a>
 </td>
-<td>Tim Dyall
+<td>Siubhan McCaffery &amp; Tim Dyall
 </td>
 <td>588
 </td>
@@ -762,7 +773,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Ashburton_parkrun" title="Ashburton parkrun">Ashburton parkrun</a>
 </td>
-<td>Tasha Atkinson &amp; Mark Mann
+<td>Rob Stenner &amp; Mark Mann
 </td>
 <td>1996
 </td>
@@ -5419,7 +5430,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 </td>
 <td>3251
 </td>
-<td>AcceptingRegistrations
+<td>Live
 </td>
 <td>United States
 </td></tr>
@@ -5980,7 +5991,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 </td>
 <td>3242
 </td>
-<td>AcceptingRegistrations
+<td>Live
 </td>
 <td>Netherlands
 </td></tr>
@@ -6885,6 +6896,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Live
 </td>
 <td>Australia
+</td></tr>
+<tr>
+<td><a href="/index.php/Eastern_Trail_parkrun,_Biddeford" title="Eastern Trail parkrun, Biddeford">Eastern Trail parkrun, Biddeford</a>
+</td>
+<td>Daniel Hammond &amp; Alisha Keezer
+</td>
+<td>3261
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>United States
 </td></tr>
 <tr>
 <td><a href="/index.php/Eastleigh_parkrun" title="Eastleigh parkrun">Eastleigh parkrun</a>
@@ -10325,7 +10347,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 </td>
 <td>3208
 </td>
-<td>AcceptingRegistrations
+<td>Live
 </td>
 <td>South Africa
 </td></tr>
@@ -14402,6 +14424,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>United Kingdom
 </td></tr>
 <tr>
+<td><a href="/index.php/Milton_Country_parkrun" title="Milton Country parkrun">Milton Country parkrun</a>
+</td>
+<td>Helen Syfret-Henry &amp; Gary Cole
+</td>
+<td>128
+</td>
+<td>Live
+</td>
+<td>United Kingdom
+</td></tr>
+<tr>
 <td><a href="/index.php/Milton_Keynes_junior_parkrun" title="Milton Keynes junior parkrun">Milton Keynes junior parkrun</a>
 </td>
 <td>David Lewis
@@ -14789,7 +14822,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <tr>
 <td><a href="/index.php/Mount_Pleasant_parkrun" title="Mount Pleasant parkrun">Mount Pleasant parkrun</a>
 </td>
-<td>Lydia Clarke
+<td>Sharon Turner &amp; Bob Turner
 </td>
 <td>2807
 </td>
@@ -16642,6 +16675,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>2860
 </td>
 <td>Live
+</td>
+<td>Poland
+</td></tr>
+<tr>
+<td><a href="/index.php/Parkrun_B%C5%82onie,_Krotoszyn" title="Parkrun Błonie, Krotoszyn">parkrun Błonie, Krotoszyn</a>
+</td>
+<td>Karolina Kaczmarek &amp; Iwona Sobkowiak
+</td>
+<td>3246
+</td>
+<td>AcceptingRegistrations
 </td>
 <td>Poland
 </td></tr>
@@ -21750,6 +21794,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Netherlands
 </td></tr>
 <tr>
+<td><a href="/index.php/Stadtpark_parkrun" title="Stadtpark parkrun">Stadtpark parkrun</a>
+</td>
+<td>Melanie Joseph &amp; Oliver Gastel
+</td>
+<td>3258
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>Germany
+</td></tr>
+<tr>
 <td><a href="/index.php/Stamford_Park_parkrun" title="Stamford Park parkrun">Stamford Park parkrun</a>
 </td>
 <td>Rebecca Ashton
@@ -25837,7 +25892,7 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 </td>
 <td>3249
 </td>
-<td>AcceptingRegistrations
+<td>Live
 </td>
 <td>United Kingdom
 </td></tr>
@@ -25873,6 +25928,17 @@ mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.
 <td>Live
 </td>
 <td>United Kingdom
+</td></tr>
+<tr>
+<td><a href="/index.php/Yackandandah_Rail_Trail_parkrun" title="Yackandandah Rail Trail parkrun">Yackandandah Rail Trail parkrun</a>
+</td>
+<td>Lisa Smith &amp; Matthew Smith
+</td>
+<td>3241
+</td>
+<td>AcceptingRegistrations
+</td>
+<td>Australia
 </td></tr>
 <tr>
 <td><a href="/index.php/Yamba_parkrun" title="Yamba parkrun">Yamba parkrun</a>
@@ -26119,7 +26185,7 @@ Template argument size: 4094/2097152 bytes
 Expensive parser function count: 0/100
 -->
 
-<!-- Saved in parser cache with key parkrunwiki:pcache:idhash:462-0!*!0!*!*!*!* and timestamp 20230414185949 -->
+<!-- Saved in parser cache with key parkrunwiki:pcache:idhash:462-0!*!0!*!*!*!* and timestamp 20230417195841 -->
 </div>				<!-- /bodycontent -->
 								<!-- printfooter -->
 				<div class="printfooter">
@@ -26289,7 +26355,7 @@ Expensive parser function count: 0/100
 		<div id="footer">
 							<ul id="footer-info">
 											<li id="footer-info-lastmod"> This page was last modified on 16 December 2019, at 13:44.</li>
-											<li id="footer-info-viewcount">This page has been accessed 1,334,432 times.</li>
+											<li id="footer-info-viewcount">This page has been accessed 1,337,377 times.</li>
 									</ul>
 							<ul id="footer-places">
 											<li id="footer-places-privacy"><a href="/index.php/parkrun_wiki:Privacy_policy" title="parkrun wiki:Privacy policy">Privacy policy</a></li>
@@ -26310,6 +26376,6 @@ Expensive parser function count: 0/100
 mw.loader.load(["mediawiki.user","mediawiki.page.ready","mediawiki.legacy.mwsuggest"], null, true);
 }</script>
 <script src="https://wiki.parkrun.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=vector&amp;*"></script>
-<!-- Served in 0.132 secs. -->
+<!-- Served in 2.013 secs. -->
 	</body>
 </html>

@@ -42,6 +42,9 @@ const test = base.extend({
 // await page.screenshot({ path: 'screenshot.png', fullPage: true });
 
 test('Basic extension load test', async ({ page }) => {
+
+  console.log(`Expecting the extension to have been loaded from ${extensionPath}`)
+
   await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
 
   // Wait 3 seconds, this should be plenty as we are serving all the data locally and there shoudn't be
@@ -57,7 +60,132 @@ test('Basic extension load test', async ({ page }) => {
 
   let messagesDiv = page.locator("#running_challenges_messages_div")
 
-  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 2000})
+  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 10000})
+
+});
+
+let badgesThatShouldExistMap = {
+  // Running badges
+  "runner-tourist": [
+    "1309364",
+    "482"
+  ],
+  "runner-name-badge": [
+    "482",
+  ],
+  // Volunteer badges
+  "volunteer-barcode-scanning": [
+    "88720"
+  ],
+  "volunteer-car-park-marshal": [
+      "88720"
+  ],
+  "volunteer-close-down": [
+      "88720"
+  ],
+  "volunteer-comms-person": [
+      "88720"
+  ],
+  "volunteer-equipment-storage": [
+      "88720"
+  ],
+  "volunteer-event-day-course-check": [
+      "88720"
+  ],
+  "volunteer-finish-tokens": [
+      "88720"
+  ],
+  "volunteer-first-timers-welcome": [
+      "88720"
+  ],
+  "volunteer-funnel-manager": [
+      "88720"
+  ],
+  "volunteer-lead-bike": [
+  ],
+  "volunteer-manual-entry": [
+      "88720"
+  ],
+  "volunteer-marshal": [
+      "88720"
+  ],
+  "volunteer-other": [
+      "88720"
+  ],
+  "volunteer-pacer": [
+      "88720"
+  ],
+  "volunteer-photographer": [
+      "88720"
+  ],
+  "volunteer-report-writer": [
+      "88720"
+  ],
+  "volunteer-results-processing": [
+      "88720"
+  ],
+  "volunteer-run-director": [
+      "88720"
+  ],
+  "volunteer-setup": [
+      "88720"
+  ],
+  "volunteer-sign-language": [
+      "88720"
+  ],
+  "volunteer-tail-walker": [
+      "88720"
+  ],
+  "volunteer-timer": [
+      "88720"
+  ],
+  "volunteer-token-sorting": [
+      "88720"
+  ],
+  "volunteer-vi-guide": [
+      "88720"
+  ],
+  "volunteer-volunteer-coordinator": [
+      "88720"
+  ],
+  "volunteer-warm-up-leader": [
+      "88720"
+  ]
+}
+
+let notApplicableBadgesPerDomain = {
+  "parkrun.co.at": [
+    "volunteer-warm-up-leader"
+  ],
+  "parkrun.pl": [
+    "volunteer-warm-up-leader"
+  ]
+}
+
+Object.keys(badgesThatShouldExistMap).forEach(badgeShortname => {
+
+  if (countryDomain in notApplicableBadgesPerDomain) {
+    if (notApplicableBadgesPerDomain[countryDomain].includes(badgeShortname)) {
+      console.log(`Skipping ${badgeShortname} for ${countryDomain}`)
+      return
+    }
+  }
+
+  test(`Check for badge awarded: ${badgeShortname}`, async ({ page }) => {
+
+    for (const parkrunnerId of badgesThatShouldExistMap[badgeShortname]) {
+
+      await page.goto(`https://www.${countryDomain}/parkrunner/${parkrunnerId}/all/`);
+
+      // Wait for the extension to load, and therefore all the badges to be displayed
+      await expect(page.locator("#running_challenges_messages_div")).toHaveText("Additional badges provided by Running Challenges", {timeout: 10000})
+
+      // Check for the specific badge:
+      await expect(page.locator(`#badge-awarded-${badgeShortname}`)).toBeVisible()
+
+    }
+  
+  });
 
 });
 
