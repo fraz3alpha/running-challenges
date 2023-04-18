@@ -1,0 +1,21 @@
+{
+  "name": "running-challenges-chrome-ui-testing",
+  "version": "1.0.0",
+  "description": "Testing the playwright testing framework",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fraz3alpha/playwright-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fraz3alpha/playwright-testing/issues"
+  },
+  "homepage": "https://github.com/fraz3alpha/playwright-testing#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.32.2"
+  }
+}

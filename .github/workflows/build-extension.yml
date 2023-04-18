@@ -21,12 +21,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install test framework dependencies
         run: npm install
@@ -48,12 +48,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install web-ext tooling
         run: npm install -g web-ext
@@ -71,102 +71,121 @@ jobs:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
       - name: Upload build extension package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.browser }}-extension-package
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
 
   integration-test:
-    name: Selenium
+    name: UI Testing
     runs-on: ubuntu-latest
     needs: 
       - build-extension
       - test-javascript-libraries
     strategy:
       matrix:
-        # browser: ["chrome", "firefox"] # We'll get to firefox at some point, lets start with Chrome
-        include:
-          - browser: "chrome"
-            selenium-image: selenium/standalone-chrome:101.0
-          # - browser: "firefox"
-          #   selenium-image: selenium/standalone-firefox:latest
+        country_hostname:
+          - "parkrun.ca"
+          - "parkrun.co.at"
+          - "parkrun.co.nl"
+          - "parkrun.co.nz"
+          - "parkrun.co.za"
+          - "parkrun.com.au"
+          - "parkrun.us"
+          - "parkrun.dk"
+          - "parkrun.fi"
+          - "parkrun.fr"
+          - "parkrun.ie"
+          - "parkrun.it"
+          - "parkrun.jp"
+          - "parkrun.my"
+          - "parkrun.no"
+          - "parkrun.org.uk"
+          - "parkrun.pl"
+          - "parkrun.se"
+          - "parkrun.sg"
+          - "parkrun.us"
+          # - "parkrun.ru" # Russian events are suspended
       fail-fast: false
-    # services:
-    #  # We can choose to not specify the port, and GH Actions will tell us wht the port is if we want - probably wise.
-    #   selenium:
-    #     image: ${{ matrix.selenium-image }}
-    #     ports: 
-    #       - 4444:4444
-    #     volumes:
-    #       - /dev/shm:/dev/shm
+      # max-parallel: 1
+
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js/tests
+        working-directory: browser-extensions/common/js/tests/ui-test
 
     steps:
 
       # Checks out a copy of the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Get previously built packages
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
-          path: browser-extensions/common/js/tests/extension-binaries
+          path: browser-extensions/common/js/tests/ui-test/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
 
-      - name: Configure node v12
-        uses: actions/setup-node@v2
+      - name: Configure node v16
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
-      - name: Install test framework dependencies
-        run: npm install
+      - name: Install Required OS packages
+        run: |
+          sudo apt update && \
+          sudo apt install -y xvfb unzip
 
-      - name: Run selenium test for ${{ matrix.browser }}
+      - name: Start up the supporting nginx services
         run: |
 
           echo "Creating a certificate"
-          cd test-selenium/mock-parkrun-sites/nginx/cert/
+          cd ./supporting-data/nginx/cert/
           bash generate.sh
           cd -
 
           echo "Starting up docker compose services"
-          docker-compose -f test-selenium/docker-compose.yml up -d
+          docker-compose -f "./supporting-data/docker-compose-gh-actions.yml" up --force-recreate -d
 
-          # Wait for things to have started up
-          sleep 30
+          # Give nginx a moment to have fully come up
+          sleep 1
 
-          # Curl our nginx server just to check things are working
-          # curl -k http://www.parkrun.org.uk/parkrunner/1309364/all/
+          # Make the changes to /etc/hosts so that the tests reference the above containers.
+          echo "Append to /etc/hosts to use this nginx"
+          sudo bash -c 'cat ./supporting-data/etc-hosts.txt >> /etc/hosts'
 
-          echo ${EXTENSION_PATH}
-          ls -lh ${EXTENSION_PATH}
-          # Find the extension zip in the path supplied
-          export EXTENSION_ZIP=$(ls ${EXTENSION_PATH}/*.zip | head -n 1)
-          echo "Extension found at ${EXTENSION_ZIP}"
-          echo "Running selenium-docker.js against ${{ matrix.browser }}"
-          npm run test-selenium
+      - name: Unpack extension
+        run: |
+          ls -lR extension-binaries
+          cd extension-binaries/chrome-extension-package
+          unzip *.zip
 
-          # Stop the docker containers
-          docker-compose -f test-selenium/docker-compose.yml down
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: |
+          npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: xvfb-run npx playwright test
         env:
-          EXTENSION_PATH: extension-binaries/${{ matrix.browser }}-extension-package/
-          EXTENSION_BROWSER: ${{ matrix.browser }}
-          SELENIUM_PORT: 4444
-          COUNTRY_FILTER: parkrun.org.uk,parkrun.com.de # Just a couple to begin with, until it is working!
+          COUNTRY_HOSTNAME: "${{ matrix.country_hostname }}"
 
-      - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.browser }}-screenshots
-          path: browser-extensions/common/js/tests/screenshots/
+      - name: list files in root dir
+        run: ls -l
+
+      - uses: actions/upload-artifact@v3
         if: always()
-
+        with:
+          name: ui-tests-chrome-${{ matrix.country_hostname }}
+          path: |
+            browser-extensions/common/js/tests/ui-test/playwright-report/
+            browser-extensions/common/js/tests/ui-test/screenshot.png
+          retention-days: 30
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
   # Assuming they are successful, we will push them somewhere they can be used.
@@ -181,7 +200,7 @@ jobs:
 
     steps:
       - name: Download all built extension packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: extension-binaries
 
@@ -189,7 +208,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - id: get-branch-version-tag
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           script: |
             console.log(context)
@@ -230,7 +249,7 @@ jobs:
  
 
       # - id: get-branch-version-tag
-      #   uses: actions/github-script@v4
+      #   uses: actions/github-script@v6
       #   with:
       #     script: |
       #       var version_tag = ''

@@ -73,6 +73,7 @@ function set_complete_progress_message(errors) {
 
 function set_progress_message(progress_message) {
   console.log("Progress: "+progress_message)
+  // $("div[id=running_challenges_messages_div]").html($("div[id=running_challenges_messages_div]").html() + "<br/>" + progress_message)
   $("div[id=running_challenges_messages_div]").html(progress_message)
 }
 
@@ -305,6 +306,8 @@ function add_badges(div_id, data) {
 
   var index_counter = 1
   badges.forEach(function (badge) {
+      var badge_awarded_div = $("<span/>")
+      badge_awarded_div.attr("id", "badge-awarded-"+badge.shortname)
       var badge_link = $('<a></a>')
       badge_link.attr('href', badge.link)
 
@@ -317,8 +320,9 @@ function add_badges(div_id, data) {
 
       modifyStyle(img)
 
+      badge_awarded_div.append(badge_link)
       badge_link.append(img)
-      badge_div.append(badge_link)
+      badge_div.append(badge_awarded_div)
 
       if (index_counter > 0 && index_counter % 8 == 0) {
           badge_div.append($('<br/>'))
@@ -345,7 +349,8 @@ function get_running_badge(result) {
           "name": badge.name,
           "icon": browser.runtime.getURL("/images/badges/"+badge.badge_icon+".png"),
           // The link just goes to the top of the main table for the challenge, not the specific row.
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": badge.badge_icon
         })
       })
     }
@@ -354,13 +359,15 @@ function get_running_badge(result) {
       badge_info = {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.badge_icon
       }
     } else if (result.partial_completion == true) {
         badge_info = {
           "name": result.partial_completion_name,
           "icon": browser.runtime.getURL("/images/badges/"+result.partial_completion_badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.partial_completion_badge_icon
         }
     }
   }
@@ -376,7 +383,8 @@ function get_volunteer_badge(result) {
       badge_info = {
           "name": result.name,
           "icon": browser.runtime.getURL("/images/badges/"+result.badge_icon+".png"),
-          "link": "#"+result.shortname
+          "link": "#"+result.shortname,
+          "shortname": result.badge_icon
       }
       if (result.subparts_completed_count >= 25){
           badge_info.icon = browser.runtime.getURL("/images/badges/"+result.badge_icon+"-3-stars.png")
@@ -544,12 +552,14 @@ function create_page() {
     set_progress_message("Loaded geo data")
     console.log('Loaded geo data was:')
     console.log(results.geo)
+    set_progress_message(JSON.stringify(results))
     // The return packet will normally be valid even if the geo data is not contained
     // within, so we do some sanity check here
-    if (results.geo && results.geo.data) {
+    if (results.geo && results.geo.data && results.geo.data.valid) {
       loaded_geo_data = results.geo
     } else {
       console.log('Geo data rejected')
+      set_progress_message("geo data rejected")
     }
 
     set_progress_message("Loading volunteer data")
@@ -577,6 +587,8 @@ function create_page() {
       'user_data': loaded_user_data,
       'info': {}
     }
+
+    set_progress_message(JSON.stringify(data))
 
     // Now add some supplemental information
     // Is the page we are looking at the one for the user who has configured the plugin?
@@ -622,7 +634,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}`)
+    set_progress_message(`Error: ${error}. Data is ${JSON.stringify(data)}`)
   });
 
 }

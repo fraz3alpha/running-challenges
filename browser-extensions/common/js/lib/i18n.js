@@ -75,6 +75,7 @@ var domains = {
             "Report Writer": "Report Writer",
             "Other": "Other",
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
+            "Warm Up Leader": "Warm Up Leader",
             "Car Park Marshal": "Car Park Marshal",
             "Event Day Course Check": "Event Day Course Check"
         }
@@ -85,38 +86,57 @@ var domains = {
         // http://www.parkrun.pl/rezultaty/athleteresultshistory/?athleteNumber=546975
         // http://www.parkrun.pl/rezultaty/athleteeventresultshistory/?athleteNumber=546975&eventNumber=0
         // https://www.parkrun.pl/rezultaty/athleteeventresultshistory/?athleteNumber=3859211&eventNumber=0
-        "table_all_results": "Wszystkie rezultaty",
+        //"table_all_results": "Wszystkie rezultaty",
+        "table_all_results": "Ukończone edycje parkrun",
         "link_view_stats_for_all_parkruns": "Zobacz statystyki uczestnika ze wszystkich biegów parkrun",
         "link_view_stats_for_all_parkruns_athleteeventhistory": "Zobacz wyniki tego zawodnika ze wszystkich biegów",
         "text_volunteer_role_map": {
             "Przechowanie sprzętu": "Equipment Storage and Delivery",
+            "Przechowując(a)y wyposażenie": "Equipment Storage and Delivery",
             "Komunikacja i promocja": "Communications Person",
             "Koordynator woluntariuszy": "Volunteer Co-ordinator",
+            "Koordynator wolontariuszy": "Volunteer Co-ordinator",
             "Ustawienie elementów trasy": "Pre-event Setup",
+            "Rozstawienie oznakowań": "Pre-event Setup",
+            "Rozstawiając(a)y oznakowanie": "Pre-event Setup",
             "Instruktor nowych uczestników": "First Timers Welcome",
-            "Tłumacz języka migowego": "Sign Language Support",
+            "Odprawa debiutantów": "First Timers Welcome",
+            "Tłumacz(ka) języka migowego": "Sign Language Support",
             "Ubezpieczanie trasy": "Marshal",
+            "Ubezpieczając(a)y trasę": "Marshal",
             "Zamykanie stawki": "Tail Walker",
+            "Zamykając(a)y stawkę": "Tail Walker",
             "Koordynator spotkania": "Run Director",
+            "Koordynator(ka) spotkania": "Run Director",
             "Rower bezpieczeństwa": "Lead Bike",
             "Wyznaczanie tempa": "Pacer (5k only)",
             "Przewodnik dla słabowidzących": "VI Guide",
             "Fotograf": "Photographer",
             "Pomiar czasu": "Timekeeper",
+            "Mierząc(a)y czas": "Timekeeper",
             "Zapasowy pomiar czasu": "Backup Timer",
+            "Pomiar czasu (dodatkowy)": "Backup Timer",
             "Koordynator tunelu mety": "Funnel Manager",
             "Wręczanie tokenów na mecie": "Finish Tokens",
+            "Wydając(a)y tokeny": "Finish Tokens",
             "Pomoc przy wręczaniu tokenów": "Finish Token Support",
+            "Pomocnik wydające(j)go tokeny": "Finish Token Support",
             "Skanowanie uczestników": "Barcode Scanning",
-            "Sprawdzanie pozycji na mecie": "Number Checker",
+            "Skanując(a)y uczestników": "Barcode Scanning",
+            "Sprawdzając(a)y pozycje na mecie": "Number Checker",
             "Zbieranie elementów z trasy": "Post-event Close Down",
+            "Zbierając(a)y oznakowanie": "Post-event Close Down",
             "Wprowadzanie wyników": "Results Processor",
+            "Wprowadzając(a)y wyniki": "Results Processor",
             "Sortowanie tokenów": "Token Sorting",
+            "Sortując(a)y tokeny": "Token Sorting",
             "Przygotowanie raportu z biegu": "Report Writer",
+            "Przygotowując(a)y raport": "Report Writer",
             "Inne": "Other",
-            "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)",
-            "Koordynator parkingu": "Car Park Marshal",
-            "Sprawdzenie trasy przed spotkaniem": "Event Day Course Check"
+            // "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)", // Not applicable for parkrun in poland
+            "Koordynator(ka) parkingu": "Car Park Marshal",
+            "Sprawdzenie trasy przed spotkaniem": "Event Day Course Check",
+            "Sprawdzając(a)y trasę": "Event Day Course Check"
         }
     },
     "www.parkrun.it": {
@@ -132,7 +152,7 @@ var domains = {
             "Addetto comunicazioni": "Communications Person",
             "Coordinatore volontari": "Volunteer Co-ordinator",
             "Preparazione evento": "Pre-event Setup",
-            "Briefing nuovi partecipanti": "First Timers Welcome",
+            "Benvenuto ai nuovi partecipanti": "First Timers Welcome",
             "Interprete lingua dei segni": "Sign Language Support",
             "Marshal": "Marshal",
             "Camminatore di coda": "Tail Walker",
@@ -194,7 +214,8 @@ var domains = {
             "Journalist": "Report Writer",
             "Andet": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
-            "Parkeringsvagt": "Car Park Marshal"
+            "Parkeringsvagt": "Car Park Marshal",
+            "Ruteinspektion på løbsdagen": "Event Day Course Check"
         }
     },
     "www.parkrun.se": {
@@ -208,12 +229,12 @@ var domains = {
         "text_volunteer_role_map": {
             "Material - förvaring och leverans": "Equipment Storage and Delivery",
             "Kommunikationsansvarig": "Communications Person",
-            "Volöntäransvarig": "Volunteer Co-ordinator",
+            "Volontäransvarig": "Volunteer Co-ordinator",
             "Ansvarig för att sätta upp banan": "Pre-event Setup",
             "Informationsansvarig för förstagångslöpare": "First Timers Welcome",
             "Teckenspråk assistent": "Sign Language Support",
             "Funktionär": "Marshal",
-            "Sista gångare": "Tail Walker",
+            "Sistagångare": "Tail Walker",
             "Loppansvarig": "Run Director",
             "Förcyklist": "Lead Bike",
             "Farthållare": "Pacer (5k only)",
@@ -232,7 +253,8 @@ var domains = {
             "Journalist": "Report Writer",
             "Övrigt": "Other",
             "Ledare för uppvärmning": "Warm Up Leader (junior events only)",
-            "Parkeringsvakt": "Car Park Marshal"
+            "Parkeringsvakt": "Car Park Marshal",
+            "Bankontroll på eventdagen": "Event Day Course Check"
         }
     },
     "www.parkrun.fi": {
@@ -260,7 +282,7 @@ var domains = {
             "Assistance langage des signes": "Sign Language Support",
             "Aiguilleur": "Marshal",
             "Fermeur marcheur": "Tail Walker",
-            "Responsable de footing": "Run Director",
+            "Responsable du run": "Run Director",
             "Vélo de tête": "Lead Bike",
             "Lièvre": "Pacer (5k only)",
             "Guide déficient visuel": "VI Guide",
@@ -270,7 +292,7 @@ var domains = {
             "Gestion SAS": "Funnel Manager",
             "Distribution des jetons": "Finish Tokens",
             "Assistant distribution des jetons": "Finish Token Support",
-            "Scan des codes-barres": "Barcode Scanning",
+            "Scannage des codes-barres": "Barcode Scanning",
             "Vérification des jetons": "Number Checker",
             "Débalisage du parcours": "Post-event Close Down",
             "Mise en ligne des participations": "Results Processor",
@@ -278,7 +300,8 @@ var domains = {
             "Rédacteur du compte-rendu": "Report Writer",
             "Autre": "Other",
             "Leader d'échauffement": "Warm Up Leader (junior events only)",
-            "Aiguilleur parking": "Car Park Marshal"
+            "Aiguilleur parking": "Car Park Marshal",
+            "Verification du Parcours - Jour de l'évènement": "Event Day Course Check"
         }
     },
     "www.parkrun.com.de": {
@@ -391,7 +414,7 @@ var domains = {
         "text_volunteer_role_map": {
             "ランディレクター": "Run Director",
             "タイム計測係": "Timekeeper",
-            "フィニッシュ・トークン整理係": "Token Sorting",
+            "着順トークン整理係": "Token Sorting",
             "結果集計係": "Results Processor",
             "カメラマン": "Photographer",
             "連絡対応係": "Communications Person",
@@ -401,12 +424,12 @@ var domains = {
             "その他": "Other",
             "バーコード・スキャン係": "Barcode Scanning",
             "イベント後片付け係": "Post-event Close Down",
-            "フィニッシュ・トークン配布係": "Finish Tokens",
+            "着順トークン配布係": "Finish Tokens",
             "着順確認係": "Number Checker",
-            "初参加者への説明係": "First Timers Welcome",
+            "初参加者歓迎係": "First Timers Welcome",
             "フィニッシュ後サポート係": "Funnel Manager",
             "先導バイク": "Lead Bike",
-            "フィニッシュ・トークン係補助": "Finish Token Support",
+            "着順トークン配布補助係": "Finish Token Support",
             "最後尾確認係": "Tail Walker",
             "ボランティア・コーディネーター": "Volunteer Co-ordinator",
             "レポート作成係": "Report Writer",
@@ -416,7 +439,8 @@ var domains = {
             "ウォームアップ・リーダー（ジュニアイベントのみ）": "Warm Up Leader (junior events only)",
             "手話サポート": "Sign Language Support",
             "駐車場整理係": "Car Park Marshal",
-            "コース状況確認係": "Event Day Course Check"
+            "コース状況確認係": "Event Day Course Check",
+            "当日コース状況確認係": "Event Day Course Check"
         }
     },
     "www.parkrun.co.nl": {
@@ -462,31 +486,32 @@ var domains = {
         "text_volunteer_role_map": {
             "Ausrüstung Lagerung und Lieferung": "Equipment Storage and Delivery",
             "Kommunikation": "Communications Person",
-            "Helfer Koordinator": "Volunteer Co-ordinator",
-            "Veranstaltung Aufbau": "Pre-event Setup",
-            "Einweiser für Erstläufer": "First Timers Welcome",
-            "Zeichensprache Unterstützung": "Sign Language Support",
+            "Koordination Helfer*innen": "Volunteer Co-ordinator",
+            "Ausrüstung Aufbau": "Pre-event Setup",
+            "Einweisung für Erstläufer*innen": "First Timers Welcome",
+            "Gebärdensprache Unterstützung": "Sign Language Support",
             "Streckenposten": "Marshal",
             "Schlussbegleitung": "Tail Walker",
-            "Veranstaltungsleiter": "Run Director",
+            "Laufleitung": "Run Director",
             "Führungs-Fahrrad": "Lead Bike",
-            "Tempoläufer": "Pacer (5k only)",
-            "Begleiter für Sehbehinderte": "VI Guide",
-            "Fotograf": "Photographer",
+            "Tempoläufer*in": "Pacer (5k only)",
+            "Begleitung für Sehbehinderte": "VI Guide",
+            "Fotos": "Photographer",
             "Zeitnehmer": "Timekeeper",
             // "Backup Timer": "Backup Timer",
-            "Leiter Einlaufgasse": "Funnel Manager",
-            "Platzierungskarten Ausgabe": "Finish Tokens",
-            "Helfer Platzierungskarten Ausgabe": "Finish Token Support",
-            "Barcode Einleser": "Barcode Scanning",
-            "Nummern-Kontrolleur": "Number Checker",
-            "Veranstaltung Abbau": "Post-event Close Down",
-            "Ergebnis Auswerter": "Results Processor",
-            "Platzierungskarten Verwaltung": "Token Sorting",
+            "Leitung Einlaufgasse": "Funnel Manager",
+            "Zielmarkenausgabe": "Finish Tokens",
+            "Zielmarken Unterstützung": "Finish Token Support",
+            "Barcode einlesen": "Barcode Scanning",
+            "Nummern-Kontrolle": "Number Checker",
+            "Ausrüstung Abbau": "Post-event Close Down",
+            "Ergebnisauswertung": "Results Processor",
+            "Zielmarkenverwaltung": "Token Sorting",
             "Berichterstattung": "Report Writer",
             "andere Aufgaben": "Other",
-            "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
-            "Parkplatzeinweisung": "Car Park Marshal"
+            // "Aufwärmgymnastik": "Warm Up Leader (junior events only)", // Not applicable for parkruns in Austria (it actually says Germany)
+            "Parkplatzeinweisung": "Car Park Marshal",
+            "Streckenprüfung am parkrun-Tag": "Event Day Course Check"
         }
     },
 }

@@ -32,7 +32,7 @@ volunteer_roles_map = [
     {"shortname": "token-sorting", "name": "Token Sorting"},
     {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
-    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)"]},
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"]},
 ]
 
 function group_volunteer_data(volunteer_data) {
@@ -1649,6 +1649,7 @@ function challenge_name_badge(data, params) {
   o.subparts_count = 0
 
   if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
+    pageAthleteInfo.name = pageAthleteInfo.name.replace(/ *\([^)]*\) */g, "").trim();
     for(var i=0; i< pageAthleteInfo.name.length; i++) {
       var letter = pageAthleteInfo.name[i].toLowerCase()
       // console.log(letter)
