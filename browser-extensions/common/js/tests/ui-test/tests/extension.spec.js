@@ -150,6 +150,9 @@ let badgesThatShouldExistMap = {
   ],
   "volunteer-warm-up-leader": [
       "88720"
+  ],
+  "volunteer-parkwalker": [
+      "88720"
   ]
 }
 
