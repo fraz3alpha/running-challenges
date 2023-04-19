@@ -36,6 +36,9 @@
 //
 // New for 2018
 // Car Park Marshal
+//
+// New for 2022
+// parkwalker
 var domains = {
     // Default english language options, good for most of the domains
     "default": {
@@ -77,7 +80,8 @@ var domains = {
             "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)",
             "Warm Up Leader": "Warm Up Leader",
             "Car Park Marshal": "Car Park Marshal",
-            "Event Day Course Check": "Event Day Course Check"
+            "Event Day Course Check": "Event Day Course Check",
+            "parkwalker": "parkwalker"
         }
     },
     "www.parkrun.pl": {
@@ -136,7 +140,8 @@ var domains = {
             // "Prowadzący rozgrzewkę": "Warm Up Leader (junior events only)", // Not applicable for parkrun in poland
             "Koordynator(ka) parkingu": "Car Park Marshal",
             "Sprawdzenie trasy przed spotkaniem": "Event Day Course Check",
-            "Sprawdzając(a)y trasę": "Event Day Course Check"
+            "Sprawdzając(a)y trasę": "Event Day Course Check",
+            "parkwalker": "parkwalker"
         }
     },
     "www.parkrun.it": {
@@ -175,7 +180,8 @@ var domains = {
             "Altro": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
             "Addetto parcheggio": "Car Park Marshal",
-            "Controllo percorso nel giorno dell'evento": "Event Day Course Check"
+            "Controllo percorso nel giorno dell'evento": "Event Day Course Check",
+            "passeggiatore": "parkwalker"
         }
 
     },
@@ -215,7 +221,8 @@ var domains = {
             "Andet": "Other",
             // "Warm Up Leader (junior events only)": "Warm Up Leader (junior events only)"
             "Parkeringsvagt": "Car Park Marshal",
-            "Ruteinspektion på løbsdagen": "Event Day Course Check"
+            "Ruteinspektion på løbsdagen": "Event Day Course Check",
+            "parkwalker": "parkwalker"
         }
     },
     "www.parkrun.se": {
@@ -254,7 +261,8 @@ var domains = {
             "Övrigt": "Other",
             "Ledare för uppvärmning": "Warm Up Leader (junior events only)",
             "Parkeringsvakt": "Car Park Marshal",
-            "Bankontroll på eventdagen": "Event Day Course Check"
+            "Bankontroll på eventdagen": "Event Day Course Check",
+            "parkwalker": "parkwalker"
         }
     },
     "www.parkrun.fi": {
@@ -301,7 +309,8 @@ var domains = {
             "Autre": "Other",
             "Leader d'échauffement": "Warm Up Leader (junior events only)",
             "Aiguilleur parking": "Car Park Marshal",
-            "Verification du Parcours - Jour de l'évènement": "Event Day Course Check"
+            "Verification du Parcours - Jour de l'évènement": "Event Day Course Check",
+            "promeneur": "parkwalker"
         }
     },
     "www.parkrun.com.de": {
@@ -340,7 +349,8 @@ var domains = {
             "Berichterstattung": "Report Writer",
             "andere Aufgaben": "Other",
             "Aufwärmgymnastik": "Warm Up Leader (junior events only)",
-            "Parkplatzeinweisung": "Car Park Marshal"
+            "Parkplatzeinweisung": "Car Park Marshal",
+            "parkwanderer": "parkwalker"
         }
     },
     "www.parkrun.no": {
@@ -387,7 +397,8 @@ var domains = {
             "Составление отчёта": "Report Writer",
             "Разное": "Other",
             "Проведение разминки": "Warm Up Leader (junior events only)",
-            "Координатор парковки": "Car Park Marshal"
+            "Координатор парковки": "Car Park Marshal",
+            "парковщик": "parkwalker"
         }
     },
     "www.parkrun.my": {
@@ -440,7 +451,8 @@ var domains = {
             "手話サポート": "Sign Language Support",
             "駐車場整理係": "Car Park Marshal",
             "コース状況確認係": "Event Day Course Check",
-            "当日コース状況確認係": "Event Day Course Check"
+            "当日コース状況確認係": "Event Day Course Check",
+            "パークウォーカー": "parkwalker"
         }
     },
     "www.parkrun.co.nl": {
@@ -474,7 +486,8 @@ var domains = {
             "Buddy slechtziende loper": "VI Guide",
             "Gebarentolk": "Sign Language Support",
             "Parkeerregelaar": "Car Park Marshal",
-            "Routecontroleur": "Event Day Course Check"
+            "Routecontroleur": "Event Day Course Check",
+            "parkwandelaar": "parkwalker"
         }
     },
     "www.parkrun.co.at": {
@@ -511,7 +524,8 @@ var domains = {
             "andere Aufgaben": "Other",
             // "Aufwärmgymnastik": "Warm Up Leader (junior events only)", // Not applicable for parkruns in Austria (it actually says Germany)
             "Parkplatzeinweisung": "Car Park Marshal",
-            "Streckenprüfung am parkrun-Tag": "Event Day Course Check"
+            "Streckenprüfung am parkrun-Tag": "Event Day Course Check",
+            "parkwanderer": "parkwalker"
         }
     },
 }

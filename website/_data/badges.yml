@@ -196,3 +196,7 @@ volunteer:
   - shortname: other
     name: Other
     description: Some parkruns have other roles that don't fit into the regular categories above, this role is a catch all that can be anything from carpark-management to human-clothes-hook!
+    
+  - shortname: parkwalker
+    name: parkwalker
+    description: The parkwalker is a friendly face(s) who provide support and encouragement to walkers at parkrun events   
