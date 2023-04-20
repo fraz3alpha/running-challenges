@@ -16,6 +16,7 @@ volunteer_roles_map = [
     {"shortname": "first-timers-welcome", "name": "First Timers Welcome"},
     {"shortname": "sign-language", "name": "Sign Language Support"},
     {"shortname": "marshal", "name": "Marshal"},
+    {"shortname": "parkwalker", "name": "parkwalker"},
     {"shortname": "tail-walker", "name": "Tail Walker"},
     {"shortname": "run-director", "name": "Run Director"},
     {"shortname": "lead-bike", "name": "Lead Bike"},
@@ -32,8 +33,7 @@ volunteer_roles_map = [
     {"shortname": "token-sorting", "name": "Token Sorting"},
     {"shortname": "report-writer", "name": "Report Writer"},
     {"shortname": "other", "name": "Other"},
-    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"]},
-    {"shortname": "parkwalker", "name": "parkwalker"}
+    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"]}
 ]
 
 function group_volunteer_data(volunteer_data) {
