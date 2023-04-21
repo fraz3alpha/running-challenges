@@ -75,8 +75,8 @@ permalink: /:year/:month/:day/:title:output_ext
 # cd running-challenges/blog
 # docker run --rm --name jekyll -it -p 4000:4000 -v `pwd`:/srv/jekyll -v `pwd`/vendor/bundle:/usr/local/bundle jekyll/jekyll jekyll serve
 
-google_analytics: "UA-115520338-2"
-google_analytics_staging: "UA-115520338-3"
+google_analytics: "G-40C839RGVJ"
+google_analytics_staging: "G-WGW2CKNMMG"
 
 exclude: 
   - vendor
