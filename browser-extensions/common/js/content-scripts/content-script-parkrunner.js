@@ -209,7 +209,9 @@ function parse_results_table() {
     return a.date_obj - b.date_obj
   })
 
-  console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+  if (parkruns_completed_sorted.length > 0) {
+    console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+  }
 
   return parkruns_completed_sorted
 }
