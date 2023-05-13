@@ -141,7 +141,7 @@ function getNextParkrunDate() {
 }
 
 function createParkrunResult(specificData) {
-    parkrunResult = {
+    return {
         name: "Fell Foot",
         eventlink: "<a href\"https://www.parkrun.org.uk/fellfoot/results\">Fell Foot</a>",
         date: "22/11/2014",
@@ -150,13 +150,9 @@ function createParkrunResult(specificData) {
         event_number: "6",
         position: "44",
         time: "26:19",
-        pb: false
+        pb: false,
+        ...specificData
     }
-    // If we have been given a name, find it in the geodata
-    if (specificData.name !== undefined) {
-        parkrunResult.name = specificData.name
-    }
-    return parkrunResult
 }
 
 var geoData = getGeoData()
