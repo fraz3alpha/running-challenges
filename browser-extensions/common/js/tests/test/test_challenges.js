@@ -320,11 +320,122 @@ describe("challenges.js", function() {
                 const parkrunResults = [];
                 it("is expected to be zero", () => {
                     const r = generate_stat_longest_tourism_streak(parkrunResults)
-                    assert.equal(r.value, '0 parkruns (achieved  0)')
+                    assert.strictEqual(r.value, '0 parkruns (achieved  0)')
+                })
+            })
+
+            describe("given one result", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" })
+                ];
+                it("is expected to be one", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "1 parkruns (achieved eventa date1)")
+                })
+            })
+
+            describe("given two identical results", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "A", datelink: "date2", eventlink: "eventa" })
+                ];
+                it("is expected to be the latest one", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "1 parkruns (achieved eventa date2)")
+                })
+            })
+
+            describe("given two different results", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" })
+                ];
+                it("is expected to be two", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "2 parkruns (achieved eventb date2)")
+                })
+            })
+
+            describe("a third result the same as the first", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" }),
+                    createParkrunResult({ name: "A", datelink: "date3", eventlink: "eventa" })
+                ];
+                it("is expected to remove the first event from the streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "2 parkruns (achieved eventa date3)")
+                })
+            })
+
+            describe("a third result the same as the second", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" }),
+                    createParkrunResult({ name: "B", datelink: "date3", eventlink: "eventb" })
+                ];
+                it("is expected to end the streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "2 parkruns (achieved eventb date2)")
+                })
+            })
+
+            describe("a third unique result", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" }),
+                    createParkrunResult({ name: "C", datelink: "date3", eventlink: "eventc" })
+                ];
+                it("is expected to extend the streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "3 parkruns (achieved eventc date3)")
+                })
+            })
+
+            describe("two identical streaks", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" }),
+                    createParkrunResult({ name: "A", datelink: "date3", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date4", eventlink: "eventb" }),
+                ];
+                it("is expected to be the second streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "2 parkruns (achieved eventb date4)")
+                })
+            })
+
+            describe("overlapping streaks (ABC, BCAD, ADCE)", ()=> {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" }),
+                    createParkrunResult({ name: "C", datelink: "date3", eventlink: "eventc" }),
+                    createParkrunResult({ name: "A", datelink: "date4", eventlink: "eventa" }),
+                    createParkrunResult({ name: "D", datelink: "date5", eventlink: "eventd" }),
+                    createParkrunResult({ name: "C", datelink: "date6", eventlink: "eventc" }),
+                    createParkrunResult({ name: "E", datelink: "date7", eventlink: "evente" })
+                ];
+                it("is expected to be the latest, longest streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "4 parkruns (achieved evente date7)")
+                })
+            })
+
+            describe("A long streak followed by a shorter one (ABCD, DC)", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventA" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventB" }),
+                    createParkrunResult({ name: "C", datelink: "date3", eventlink: "eventC" }),
+                    createParkrunResult({ name: "D", datelink: "date4", eventlink: "eventD" }),
+                    createParkrunResult({ name: "C", datelink: "date5", eventlink: "eventC" })
+                ];
+
+                it("is expected to be the longer streak", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "4 parkruns (achieved eventD date4)")
                 })
             })
         })
-
     })
 
     describe("challenges", function() {
