@@ -317,6 +317,18 @@ describe("challenges.js", function() {
 
         })
 
+        describe("generate_stat_longest_tourism_streak", () => {
+            const generate_stat_longest_tourism_streak = challenges.__get__('generate_stat_longest_tourism_streak');
+
+            describe("given no results", () => {
+                const parkrunResults = [];
+                it("is expected to be zero", () => {
+                    const r = generate_stat_longest_tourism_streak(parkrunResults)
+                    assert.equal(r.value, '0 parkruns (achieved  0)')
+                })
+            })
+        })
+
     })
 
     describe("challenges", function() {
