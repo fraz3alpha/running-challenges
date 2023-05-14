@@ -9,7 +9,7 @@ To run the unit tests locally:
 ```sh
 cd browser-extensions/common/js/tests
 npm install
-npm npm run test-with-coverage
+npm run test-with-coverage
 ```
 
 ## Automated browser testing
