@@ -435,7 +435,50 @@ describe("challenges.js", function() {
                     assert.strictEqual(r.value, "4 parkruns: eventA (date1) - eventD (date4)")
                 })
             })
+        })
 
+        describe("generate_stat_current_tourism_streak", () => {
+            const generate_stat_current_tourism_streak = challenges.__get__('generate_stat_current_tourism_streak');
+
+            describe("given no results", () => {
+                const parkrunResults = [];
+                it("is expected to be zero", () => {
+                    const r = generate_stat_current_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "No parkruns: Yet to start (let's go!)")
+                })
+            })
+
+            describe("given one result", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" })
+                ];
+                it("is expected to be one", () => {
+                    const r = generate_stat_current_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "1 parkrun: eventa (date1)")
+                })
+            })
+
+            describe("given two identical results", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "A", datelink: "date2", eventlink: "eventa" })
+                ];
+                it("is expected to be the latest one", () => {
+                    const r = generate_stat_current_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "1 parkrun: eventa (date2)")
+                })
+            })
+
+            describe("given two different results", () => {
+                const parkrunResults = [
+                    createParkrunResult({ name: "A", datelink: "date1", eventlink: "eventa" }),
+                    createParkrunResult({ name: "B", datelink: "date2", eventlink: "eventb" })
+                ];
+                it("is expected to be two", () => {
+                    const r = generate_stat_current_tourism_streak(parkrunResults)
+                    assert.strictEqual(r.value, "2 parkruns: eventa (date1) - eventb (date2)")
+                })
+            })
         })
     })
 
