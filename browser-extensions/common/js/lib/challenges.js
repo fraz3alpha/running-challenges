@@ -886,21 +886,12 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
   const help = "The highest number of consecutive different events attended."
   var longest_start = 0, longest_finish = 0, start_index = 0, finish_index = 0;
 
-  function has_run_event_in_streak(start, finish, event_name) {
-    for (var i = start; i < finish; ++i) {
-      if (parkrun_results[i].name === event_name) {
-        return i
-      }
-    }
-    return null
-  }
-
   function longest_streak() {
     return longest_finish - longest_start + 1
   }
 
   for (; finish_index < parkrun_results.length; finish_index++) {
-    previous_visit = has_run_event_in_streak(start_index, finish_index, parkrun_results[finish_index].name)
+    previous_visit = visit_to_event_in_streak(start_index, finish_index - 1, parkrun_results[finish_index].name, parkrun_results)
 
     if (previous_visit !== null) {
       // If a participant has visited an event multiple times,
@@ -931,17 +922,8 @@ function generate_stat_current_tourism_streak(parkrun_results) {
   var finish_index = parkrun_results.length - 1
   var start_index = finish_index
 
-  function has_run_event_in_streak(start, finish, event_name) {
-    for (var i = start; i <= finish; ++i) {
-      if (parkrun_results[i].name === event_name) {
-        return i
-      }
-    }
-    return null
-  }
-
   for (;start_index > 0; start_index--) {
-    if (has_run_event_in_streak(start_index, finish_index, parkrun_results[start_index - 1].name) !== null) {
+    if (visit_to_event_in_streak(start_index, finish_index, parkrun_results[start_index - 1].name, parkrun_results) !== null) {
       break
     }
   }
@@ -955,6 +937,15 @@ function generate_stat_current_tourism_streak(parkrun_results) {
   }
 
   return { display_name, help, value }
+}
+
+function visit_to_event_in_streak(start, finish, event_name, parkrun_results) {
+  for (var i = start; i <= finish; ++i) {
+    if (parkrun_results[i].name === event_name) {
+      return i
+    }
+  }
+  return null
 }
 
 function generate_stat_runs_this_year(parkrun_results) {
