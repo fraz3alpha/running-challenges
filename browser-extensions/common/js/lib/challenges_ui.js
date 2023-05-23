@@ -1244,8 +1244,8 @@ function event_has_valid_location(event_info) {
   return valid_location
 }
 
-function event_has_started(event_info) {
-  return (event_info.status == 'Live' || event_info.status == 'unknown')
+function event_has_started(_event_info) {
+  return true // TODO - 2023-05-23paj find some other way
 }
 
 function get_parkrun_popup(event_name, event_info, custom_options) {

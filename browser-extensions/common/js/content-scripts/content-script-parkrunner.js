@@ -623,10 +623,6 @@ function create_page() {
     if (!has_geo_data(data)) {
       errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
     }
-    if (data.info.has_geo_technical_event_data == false) {
-      errors.push('! Unable to fetch parkrun event status data: Stats and Challenges, e.g. Regionnaire, may include events that haven\'t started yet !')
-    }
-
 
     // Add our final status message
     set_complete_progress_message(errors)
@@ -634,7 +630,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}. Data is ${JSON.stringify(data)}`)
+    set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`)
   });
 
 }
