@@ -225,8 +225,6 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Only currently active events are included in the map and stats</td>'))
-    challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
     drawRegionnaireDataTable(challenge_tbody_detail, data)
@@ -1242,10 +1240,6 @@ function event_has_valid_location(event_info) {
     }
   }
   return valid_location
-}
-
-function event_has_started(_event_info) {
-  return true // TODO - 2023-05-23paj find some other way
 }
 
 function get_parkrun_popup(event_name, event_info, custom_options) {

@@ -545,6 +545,11 @@ function computeDistanceToParkrunsFromEvent(geo_data, fromEvent) {
   return eventDistances
 }
 
+function event_has_started(_event_info) {
+  return true // TODO - 2023-05-23paj find some other way
+}
+
+
 function generate_volunteer_challenge_data(data) {
 
   var volunteer_challenge_data = []
