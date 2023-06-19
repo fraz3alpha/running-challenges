@@ -537,18 +537,13 @@ function computeDistanceToParkrunsFromEvent(geo_data, fromEvent) {
   var eventDistances = {}
 
   $.each(geo_data.data.events, function (event_name, event_info) {
-    if (event_has_started(event_info) && event_info.lat && event_info.lon) {
+    if (event_info.lat && event_info.lon) {
       eventDistances[event_name] = calculate_great_circle_distance(event_info, fromEvent)
     }
   })
 
   return eventDistances
 }
-
-function event_has_started(_event_info) {
-  return true // TODO - 2023-05-23paj find some other way
-}
-
 
 function generate_volunteer_challenge_data(data) {
 
@@ -1201,7 +1196,7 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   Object.keys(geo_data.data.events).forEach(function(event_name) {
     var event_info = geo_data.data.events[event_name]
     if (!(event_name in events_run)) {
-      if (event_has_started(event_info) && event_info.lat && event_info.lon) {
+      if (event_info.lat && event_info.lon) {
         event_distances[event_name] = calculate_great_circle_distance(event_info, home_parkrun_info)
       }
     }
@@ -1468,13 +1463,11 @@ function group_global_events_by_containing_word(geo_data, words) {
   })
 
   $.each(geo_data.data.events, function (event_name, event_info) {
-    if (event_has_started(event_info)) {
-      $.each(words, function(index, word) {
-        if (event_contains_word(event_name, word)) {
-          events[word].push(event_info)
-        }
-      })
-    }
+    $.each(words, function(index, word) {
+      if (event_contains_word(event_name, word)) {
+        events[word].push(event_info)
+      }
+    })
   })
 
   return events
@@ -1488,15 +1481,13 @@ function group_global_events_by_initial_letter(geo_data) {
   // $.each(geo_data.data.events, function (event_name, event_info) {
   Object.keys(geo_data.data.events).forEach(function(event_name) {
     var event_info = geo_data.data.events[event_name]
-  
-    if (event_has_started(event_info)) {
-      // 'shortname' sorts by URL name, 'name' sorts by actual name
-      event_letter = get_initial_letter(event_info["name"])
-      if (events[event_letter] === undefined) {
-        events[event_letter] = []
-      }
-      events[event_letter].push(event_info)
+
+    // 'shortname' sorts by URL name, 'name' sorts by actual name
+    event_letter = get_initial_letter(event_info["name"])
+    if (events[event_letter] === undefined) {
+      events[event_letter] = []
     }
+    events[event_letter].push(event_info)
   })
 
   return events
@@ -2872,20 +2863,11 @@ function calculateCountryCompletionInfo(data) {
   var countryCompletionInfo = {}
   // Pre-populate information about each country
   $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
-    // Find out how many of the events are active
-    var countryActiveEvents = 0
-    countryInfo['child_event_names'].forEach(function(eventName){
-      var eventInfo = data.geo_data.data.events[eventName]
-      if (event_has_started(eventInfo)) {
-        countryActiveEvents += 1
-      }
-    })
     // Initialise an information object for the country
     countryCompletionInfo[countryName] = {
       "name": countryName,
       "id": countryInfo["id"],
       "childEventsCount": countryInfo['child_event_names'].length,
-      "childActiveEventsCount": countryActiveEvents,
       "childEventsCompleted": [],
       "childEventsCompletedCount": 0,
       "firstRanOn": undefined,
