@@ -479,7 +479,6 @@ function updateSummaryInfo(data, athleteId) {
   data.info.is_our_page = (data.info.has_athlete_id && athleteId == data.user_data.athlete_number)
   // Convenience properties for the main sources of data
   // data.info.has_geo_data = (data.geo_data !== undefined)
-  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
 
 }

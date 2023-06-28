@@ -13,10 +13,6 @@ var buttons = [
     action: "cache-geo-clear"
   },
   {
-    name: "Clear Technical Event Information cache",
-    action: "cache-tei-clear"
-  },
-  {
     name: "Get current cache data",
     action: "cache-get"
   },
@@ -31,14 +27,6 @@ var buttons = [
   {
     name: "Enable fetching geo.xml",
     action: "enable-geo"
-  },
-  {
-    name: "Disable fetching Techincal Event Information",
-    action: "disable-tei"
-  },
-  {
-    name: "Enable fetching Techincal Event Information",
-    action: "enable-tei"
   }
 ]
 
