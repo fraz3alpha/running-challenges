@@ -21,6 +21,5 @@
 127.0.0.1 www.parkrun.se
 127.0.0.1 www.parkrun.sg
 127.0.0.1 www.parkrun.us
-127.0.0.1 wiki.parkrun.com
 127.0.0.1 images.parkrun.com
 # end of contents

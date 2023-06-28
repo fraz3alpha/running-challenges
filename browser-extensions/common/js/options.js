@@ -185,31 +185,18 @@ function update_geo_data_stats() {
     var s_last_update = "-"
     var s_known_regions = "0"
     var s_known_countries = "0"
-    var s_known_events = "0"
     var s_geo_data_bytes = "0"
 
     if (geo_data !== null) {
         s_last_update = geo_data.updated;
         s_known_countries = Object.keys(geo_data.data.countries).length;
         s_known_regions = Object.keys(geo_data.data.regions).length;
-
-        known_events_states = {}
-
-        $.each(geo_data.data.events, function (event_name, event_info) {
-            if (!(event_info.status in known_events_states)) {
-                known_events_states[event_info.status] = 0
-            }
-            known_events_states[event_info.status] += 1
-        })
-
-        s_known_events = JSON.stringify(known_events_states);
         s_geo_data_bytes =  JSON.stringify(geo_data).length;
     }
 
     $('#cached_geo_updated').text(s_last_update)
     $('#cached_geo_regions').text(s_known_regions)
     $('#cached_geo_countries').text(s_known_countries)
-    $('#cached_geo_events').text(s_known_events)
     $('#cached_geo_bytes').text(s_geo_data_bytes)
 
 }
@@ -238,13 +225,7 @@ function update_home_parkrun_dropdown() {
             var select_option = $('<option/>', {
                 value: event_o.name
             })
-            // Add a suffix to indicate if this is a new parkrun
-            if (event_o.status === 'Live') {
-                select_option.text(event_o.name)
-            } else {
-                select_option.text(event_o.name + " ("+event_o.status+")")
-            }
-            // Add it to the options dropdown list
+            select_option.text(event_o.name)
             home_parkrun_select.append(select_option)
         })
 

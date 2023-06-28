@@ -14,9 +14,6 @@ declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084")
 mkdir -p "${TARGET_ROOT_DIR}/images.parkrun.com/contents/"
 curl --fail -H "user-agent: ${USER_AGENT}" https://images.parkrun.com/events.json -o "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json"
 sleep 1
-mkdir -p "${TARGET_ROOT_DIR}/wiki.parkrun.com/contents/index.php/"
-curl --fail -H "user-agent: ${USER_AGENT}" https://wiki.parkrun.com/index.php/Technical_Event_Information -o "${TARGET_ROOT_DIR}/wiki.parkrun.com/contents/index.php/Technical_Event_Information"
-sleep 1
 
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"
 do

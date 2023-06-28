@@ -225,8 +225,6 @@ function generateRegionnaireTableEntry(table, data) {
     var regionnaireMapId = 'regionnaire_map'
     var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
-    var map_row = $("<tr/>").append($('<td colspan="4" align="center">Only currently active events are included in the map and stats</td>'))
-    challenge_tbody_detail.append(map_row)
 
     // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
     drawRegionnaireDataTable(challenge_tbody_detail, data)
@@ -498,7 +496,7 @@ function drawRegionnaireMap(divId, data) {
 
     var filtered_points = []
     $.each(events, function(event_name, event_info) {
-      if (event_has_valid_location(event_info) && event_has_started(event_info)) {
+      if (event_has_valid_location(event_info)) {
         lat_lon = [+event_info.lat, +event_info.lon]
         // Add the point to the array
         var point = vmap.latLngToLayerPoint(lat_lon);
@@ -547,7 +545,7 @@ function drawRegionnaireMap(divId, data) {
   $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
 
     // We have the total number of events and complete events in the following
-    var countryChildEventsCount = countryCompletionInfo[countryName].childActiveEventsCount
+    var countryChildEventsCount = countryCompletionInfo[countryName].childEventsCount
     var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
 
     // Only bother displaying this country if it has any events
@@ -859,7 +857,7 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
     eventsByDistance = computeDistanceToParkrunsFromEvent(geo_data, reference_parkrun)
 
     $.each(events, function(event_name, event_info) {
-      if (event_has_valid_location(event_info) && event_has_started(event_info)) {
+      if (event_has_valid_location(event_info)) {
         lat_lon = [+event_info.lat, +event_info.lon]
         // Add the point to the array
         var point = vmap.latLngToLayerPoint(lat_lon);
@@ -903,115 +901,6 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
   console.log("Creating voronoi map with cell renderer = "+cellRenderer)
   var voronoi_layer = L.voronoiLayer(data, cellRenderer)
   voronoi_layer.addTo(r_map)
-
-  // // Icons
-  // var FlagIcon = L.Icon.extend({
-  //     options: {
-  //         shadowUrl: undefined,
-  //         iconSize:     [40, 40],
-  //         // Centre the icon by default
-  //         iconAnchor:   [20, 20]
-  //     }
-  // });
-
-  // // Iterate through the top level countries
-  // // We are using our pre-scanned list here, so that we can take advantage of
-  // // having removed 'world', and perhaps adjusted any sub-countries (Namibia,
-  // // Swaziland spring to mind)
-
-  // map_data.layers.country_markers = new L.featureGroup();
-
-  // var flag_icon_anchor_centred = [20,20]
-  // var flag_icon_anchor_with_pie = [40,20]
-
-  // // Iterate over all the countries we know about
-  // $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
-
-  //   // We have the total number of events and complete events in the following
-  //   var countryChildEventsCount = countryCompletionInfo[countryName].childActiveEventsCount
-  //   var countryChildEventsCompletedCount = countryCompletionInfo[countryName].childEventsCompletedCount
-
-  //   // Only bother displaying this country if it has any events
-  //   if (countryChildEventsCount > 0) {
-  //     if (event_has_valid_location(countryInfo)) {
-
-  //       // Get the location of the country mid-point, according to parkrun
-  //       var lat_lon = [+countryInfo.lat, +countryInfo.lon]
-  //       // Get the current regions id for later use by the on click callback function
-  //       var countryId = countryInfo.id
-
-  //       // If we haven't run any events, we omit the pie chart, so centre the
-  //       // flag, else we shuffle it off to the left a bit so the combo is centred
-  //       var flag_anchor = flag_icon_anchor_centred
-  //       if (countryChildEventsCompletedCount > 0) {
-  //         flag_anchor = flag_icon_anchor_with_pie
-  //       }
-
-  //       // Top level countries have a flag
-  //       var marker = L.marker(lat_lon, {
-  //         icon: new FlagIcon({
-  //           iconUrl: get_flag_image_src(countryName),
-  //           iconAnchor: flag_anchor
-  //         })
-  //       })
-  //       // Add a tooltip showing the name of the country and a summary of the
-  //       // completion numbers
-  //       var marker_tooltip_text = countryName + ' ' + countryChildEventsCompletedCount + '/' + countryChildEventsCount
-  //       var marker_tooltip_options = {
-  //         offset: [0, -16],
-  //         direction: 'top'
-  //       }
-  //       marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
-  //       marker.on('click', function() {
-  //         // Instead of showing the events, lets just move the map to show the country
-  //         // showCountryEvents(map_data, data, countryId, 0)
-  //         zoomMapToCountryExtents(map_data, data, countryId)
-  //       })
-  //       marker.addTo(map_data.layers.country_markers);
-
-  //       // Only add the pie chart if we have completed any events at all
-  //       if (countryChildEventsCompletedCount > 0) {
-  //         var pie_marker = L.piechartMarker(lat_lon, {
-  //           radius: 16,
-  //           data: [
-  //             {
-  //               name: 'Run',
-  //               value: countryChildEventsCompletedCount,
-  //               style: {
-  //                 fillStyle: 'rgba(0,140,57,.95)',
-  //                 strokeStyle: 'rgba(0,0,0,.75)',
-  //                 lineWidth: 1
-  //               }
-  //             },
-  //             {
-  //               name: 'Not Run',
-  //               value: (countryChildEventsCount - countryChildEventsCompletedCount),
-  //               style: {
-  //                 fillStyle: 'rgba(0,0,0,.15)',
-  //                 strokeStyle: 'rgba(0,0,0,.75)',
-  //                 lineWidth: 1
-  //               }
-  //             }
-  //           ],
-  //           // Budge the pie chart over to the right a bit, so that the flag+chart are
-  //           // mostly centred on the original point, and not wildly off to one side
-  //           iconAnchor: [-4, 16]
-  //         })
-  //         // Add the same tooltips and on click actions as for the flag
-  //         pie_marker.bindTooltip(marker_tooltip_text, marker_tooltip_options)
-  //         pie_marker.on('click', function() {
-  //           // showCountryEvents(map_data, data, countryId, 0)
-  //           zoomMapToCountryExtents(map_data, data, countryId)
-  //         })
-  //         pie_marker.addTo(map_data.layers.country_markers);
-  //       }
-
-  //     }
-  //   }
-
-  // })
-
-  // map_data.layers.country_markers.addTo(map_data.map)
 }
 
 function create_challenge_map_standard(map_id, challenge_data, data) {
@@ -1244,10 +1133,6 @@ function event_has_valid_location(event_info) {
   return valid_location
 }
 
-function event_has_started(event_info) {
-  return (event_info.status == 'Live' || event_info.status == 'unknown')
-}
-
 function get_parkrun_popup(event_name, event_info, custom_options) {
 
   var options = {
@@ -1308,7 +1193,7 @@ function drawRegionnaireDataTable(table, data) {
   var worldEventsCount = 0
   var worldEventsCompletedCount = 0
   $.each(countryCompletionInfo, function(countryName, countryInfo) {
-    worldEventsCount += countryInfo.childActiveEventsCount
+    worldEventsCount += countryInfo.childEventsCount
     worldEventsCompletedCount += countryInfo.childEventsCompletedCount
   })
 
@@ -1327,14 +1212,12 @@ function drawRegionnaireDataTable(table, data) {
   $.each(alphabeticallySortedCountries, function(idx, countryName) {
     var countryInfo = countryCompletionInfo[countryName]
     var countryId = countryInfo["id"]
-    // Only show those countries with active events
-    if (countryInfo.childActiveEventsCount > 0) {
-      // Determine how complete this country is
-      // Find out how many of the events in this country are actually live
-
-      console.log(countryInfo.childActiveEventsCount + " active events for "+countryName)
-      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childActiveEventsCount
-      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childActiveEventsCount
+    // Only show those countries with open events (we have to assume they're active)
+    if (countryInfo.childEventsCount > 0) {
+      // Determine how complete this country is...
+      console.log(`${countryInfo.childEventsCount} events for ${countryName}`)
+      var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childEventsCount
+      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childEventsCount
 
       var row = $("<tr/>")
       var regionnaire_country_class = "regionnaire-country-"+countryId
