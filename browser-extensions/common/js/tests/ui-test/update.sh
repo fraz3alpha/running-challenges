@@ -8,11 +8,15 @@ declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "p
 # 482: Danny Normal, has done most things, and at one point, all the running badges
 # 88720: Phillip Whettlock, who helped out and has done nearly every volunteer role
 # 2705084: Duncan Booth, who has done lead bike, but hasn't run at all - which causes a bug that will need to be fixed!
-declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084")
+# 999999: Jakub WOLSKI, as of 2023-06-29, they have done no parkruns, which we want as a testcase. Given this is so old, it's a fair bet that this profile is not active and probably will never get any events associated with it
+declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084" "999999")
 
 # Fetch the common files
 mkdir -p "${TARGET_ROOT_DIR}/images.parkrun.com/contents/"
-curl --fail -H "user-agent: ${USER_AGENT}" https://images.parkrun.com/events.json -o "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json"
+# Fetch the events JSON file, and output it in a friendly way, in order, so that the diffs are logical
+curl --fail -H "user-agent: ${USER_AGENT}" https://images.parkrun.com/events.json -o "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json.temp" && \
+  cat "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json.temp" | python3 -m json.tool --sort-keys > "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json" && \
+  rm "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json.temp"
 sleep 1
 
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"
