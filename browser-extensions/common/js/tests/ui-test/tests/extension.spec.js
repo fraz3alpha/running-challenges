@@ -80,7 +80,7 @@ test('No results for parkrunner load test', async ({ page }) => {
 
   let messagesDiv = page.locator("#running_challenges_messages_div")
 
-  await expect(messagesDiv).toHaveText("Additional badges provided by Running Challenges", {timeout: 10000})
+  await expect(messagesDiv).toHaveText("No results detected, no challenge data will be compiled", {timeout: 10000})
 
 });
 
