@@ -38,6 +38,10 @@ Without this data you might find that new parkruns pop up and you'll have gaps i
 
 This volunteer role changed from "Warm Up Leader (junior events only)" to "Warm Up Leader", so needed an alias adding - it's now back.
 
+### Fixed error when no the parkrunner hadn't run any events
+
+We've got [Luke Woodward](https://github.com/LukeWoodward) to thank for this fix, after he provided us with the changes required via [#383](https://github.com/fraz3alpha/running-challenges/pull/383). It turned out that if a parkrunner didn't have any results against their name, the extension broke trying to print some debug information - and now it doesn't. Thanks Luke!
+
 ## General Improvements
 
 We added a way to reliably tests all the parkrun sites with a locally saved copy of several parkrunners (mostly Andy, but also some others) against each build of the extension, so hopefully we can make sure that all the volunteer role translations are correct, and we don't lose any badges. It's still a work in progress, but we have something to work from now - and it has already proved its worth while fixing the Polish parkrun site, and some others we found were incorrect!
