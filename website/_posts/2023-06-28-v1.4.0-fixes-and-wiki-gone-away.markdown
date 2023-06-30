@@ -15,6 +15,9 @@ Things change, but we try and keep up (within some period of time, measured in m
 
 The parkwalker role is a relatively new one, but by this point I think it has been around at least 6 months, so we aren't exactly quick off the mark in including this... But now there is a badge for this role.
 
+['sneaker-net'](https://github.com/sneaker-net) first got the ball rolling on this for us via [#364](https://github.com/fraz3alpha/running-challenges/pull/364), thanks!
+
+
 ## Bug fixes
 
 ### Updated the colours of all the high-viz badges
@@ -23,7 +26,9 @@ As the parkwalker role was added we took the opportunity to update all the colou
 
 ### Name Badge fixed
 
-At some point parkrun changed the way the parkrunner name was displayed at the top of the page to suffix it with your parkrun number, e.g. A1309364, which got automatically picked up by this challenge, and made you need to gain an extra A (as you couldn't get any numbers, these were skipped anyway). [Stephen Greenham](https://github.com/solarisfire) fixed this for us via [#370](https://github.com/fraz3alpha/running-challenges/pull/370), thanks!
+At some point parkrun changed the way the parkrunner name was displayed at the top of the page to suffix it with your parkrun number, e.g. A1309364, which got automatically picked up by this challenge, and made you need to gain an extra A (as you couldn't get any numbers, these were skipped anyway).
+
+[Stephen Greenham](https://github.com/solarisfire) fixed this for us via [#370](https://github.com/fraz3alpha/running-challenges/pull/370), thanks!
 
 ### parkrun.pl fixed
 
@@ -33,6 +38,8 @@ A few things seemed to have changed on the Polish site, including the name of th
 
 It seems the wiki is on the way out, and there is less and less there. In our case we relied on a table that was published there which said whether an event was live or not (effectively, had it had at least one event), and we used that to omit events that were on the map, but hadn't started, from anything we calculated. 
 Without this data you might find that new parkruns pop up and you'll have gaps in your explorer map for events that you couldn't have run, or similarly a NENDY of an even that hasn't started. In the grand scheme of keeping things simple, we'll just have to accept this now, and live with it. The wiki page was often flakey anyway, and often was being regenerated which led to frequent error messages popping up, so hopefully now at least it will go back to being pretty stable.
+
+[Pete Johns](https://github.com/johnsyweb) fixed this for us via [#389](https://github.com/fraz3alpha/running-challenges/pull/389), thanks!
 
 ### Warm up Volunteer badge fixed
 
