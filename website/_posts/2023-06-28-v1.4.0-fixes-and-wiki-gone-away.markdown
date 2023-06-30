@@ -34,6 +34,8 @@ A few things seemed to have changed on the Polish site, including the name of th
 It seems the wiki is on the way out, and there is less and less there. In our case we relied on a table that was published there which said whether an event was live or not (effectively, had it had at least one event), and we used that to omit events that were on the map, but hadn't started, from anything we calculated. 
 Without this data you might find that new parkruns pop up and you'll have gaps in your explorer map for events that you couldn't have run, or similarly a NENDY of an even that hasn't started. In the grand scheme of keeping things simple, we'll just have to accept this now, and live with it. The wiki page was often flakey anyway, and often was being regenerated which led to frequent error messages popping up, so hopefully now at least it will go back to being pretty stable.
 
+[Pete Johns](https://github.com/johnsyweb) fixed this for us via [#389](https://github.com/fraz3alpha/running-challenges/pull/389), thanks!
+
 ### Warm up Volunteer badge fixed
 
 This volunteer role changed from "Warm Up Leader (junior events only)" to "Warm Up Leader", so needed an alias adding - it's now back.
