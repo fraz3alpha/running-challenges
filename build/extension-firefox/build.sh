@@ -1,5 +1,9 @@
 #!/bin/bash -xe
 
+if ! type -p web-ext &>/dev/null; then
+    npm install --global web-ext
+fi
+
 # Set up version variables
 source build/version.sh
 # Set up tools variables
