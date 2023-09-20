@@ -9,7 +9,7 @@ declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "p
 # 88720: Phillip Whettlock, who helped out and has done nearly every volunteer role
 # 2705084: Duncan Booth, who has done lead bike, but hasn't run at all - which causes a bug that will need to be fixed!
 # 999999: Jakub WOLSKI, as of 2023-06-29, they have done no parkruns, which we want as a testcase. Given this is so old, it's a fair bet that this profile is not active and probably will never get any events associated with it
-declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084" "999999")
+declare -a PARKRUNNER_IDS=("1309364" "482" "88720" "2705084" "999999" "1731148")
 
 # Fetch the common files
 mkdir -p "${TARGET_ROOT_DIR}/images.parkrun.com/contents/"
