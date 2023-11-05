@@ -354,12 +354,44 @@ var domains = {
         }
     },
     "www.parkrun.no": {
-        // Norweigen pages
+        // Norwegian pages
         // http://www.parkrun.no/toyen/results/athletehistory/?athleteNumber=4370177
         // http://www.parkrun.no/results/athleteresultshistory/?athleteNumber=4370177
         // https://www.parkrun.no/parkrunner/4370177/all/
-        // It's all in English
-        // Volunteer roles are in ENGLISH
+        "table_all_results": "Alle resultater",
+        "link_view_stats_for_all_parkruns": "Se statistikken for alle parkrun for denne deltakeren ",
+        "link_view_stats_for_all_parkruns_athleteeventhistory": "Se statistikken for alle parkrun for denne deltakeren ",
+        // Volunteer roles are in NORWEGIAN
+        "text_volunteer_role_map": {
+            "Utstyrslagring- og levering": "Equipment Storage and Delivery",
+            "Kommunikasjonsansvarlig": "Communications Person",
+            "Frivilligkoordinator": "Volunteer Co-ordinator",
+            "Opprigg": "Pre-event Setup",
+            "Velkomsttale for førstegangsdeltakere": "First Timers Welcome",
+            "Tegnspråkstøtte": "Sign Language Support",
+            "Vakt": "Marshal",
+            "Baktropp": "Tail Walker",
+            "Løpsansvarlig": "Run Director",
+            "Ledesyklist": "Lead Bike",
+            "Fartsholder": "Pacer (5k only)",
+            "Guide for svaksynte": "VI Guide",
+            "Foto": "Photographer",
+            "Tidtaker": "Timekeeper",
+            "Ekstra tidtaker": "Backup Timer",
+            "Målområdeansvarlig": "Funnel Manager",
+            "Brikkeutdeling": "Finish Tokens",
+            "Brikkeutdelingsstøtte": "Finish Token Support",
+            "Strekkodeskanning": "Barcode Scanning",
+            "Nummersjekk": "Number Checker",
+            "Nedrigg": "Post-event Close Down",
+            "Resultatbehandling ": "Results Processor",
+            "Brikkesortering ": "Token Sorting",
+            "Rapportforfatter": "Report Writer",
+            // Warm Up Leader (junior events only)
+            "Annet": "Other",
+            "Parkering": "Car Park Marshal",
+            "parkwalker": "parkwalker"
+        }
     },
     "www.parkrun.ru": {
         // Russian pages
