@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Special Events Map
+title: parkrun Explorer Map
 permalink: /map/
 javascript_libs:
   - third-party/leaflet/leaflet-1.3.1.js
@@ -9,8 +9,8 @@ javascript_libs:
   - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
   - third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
   - leaflet-slidemenu/leaflet-sidemenu.js
-  - data/geo-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
-  - data/special-events-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
+  # - data/geo-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
+  # - data/special-events-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
 javascript_onload:
   - file: map.js
     function: draw_map('mapid')
@@ -24,13 +24,7 @@ css_libs:
   - map.css
 ---
 
-The following map lists the special events over the 2019/20 Christmas/New Year period.
-
-This data was collated on 2019-12-19, by which time all events should have submitted their
-intended start times (if they are doing the extra events). Please bear in mind this data may
-still change, so please check the appropriate parkrun's webpage for confirmation before making the trip.
-
-Happy festive parkrunning!
+The following map replicates the explorer map in the Running Challenges browser extension. At some point the extension will probably stop working, so this is here is a stop-gap. It may also finally provide the map on mobile devices.
 
 <div id="mapid"></div>
 <br/>
@@ -38,18 +32,5 @@ Happy festive parkrunning!
 ### Usage Notes
 
 - Go fullscreen to get the best view, and hide the menu if you like.
-- 5k parkrun events have circular markers, junior parkrun events have square markers.
-- Not all time & event distance (5k/junior) combinations have markers on the map.
+- This only considers 5k events
 - This map works on mobile devices for when you are out and about.
-
-### Other fantastic maps and tools
-
-- If you are interested in doing the double this New Year's Day, head over to the
-[Rikki Prince](https://twitter.com/rikkiprince)'s amazing
-[Double Finder Tool](https://tailrun.uk/nyd/2020/) to see which ones 
-you might be able to do in 2020.
-- If you are on the lookout for filling in a spot on your Wilson Index, head over
-to Mark Pinney's [Challenge Chaser](http://www.challenge-chaser.com/map).
-- And of course, for all things tourism related, check out
-[Tim GP](https://twitter.com/timdp)'s absolutely awesome
-[Tourist Tool](https://touristtool.mybluemix.net/)!
