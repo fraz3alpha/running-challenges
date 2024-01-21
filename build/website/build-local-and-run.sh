@@ -35,6 +35,7 @@ echo "Copying third party Javascript libraries into the assets directory"
 # Copy the required third party libraries from the top level shared project dir
 mkdir -p website/assets/js/lib/third-party/
 cp -r js/lib/third-party/jquery website/assets/js/lib/third-party/
+cp -r js/lib/third-party/d3-voronoi website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-canvasicon website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-extramarkers website/assets/js/lib/third-party/

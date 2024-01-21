@@ -4,14 +4,13 @@ title: parkrun Explorer Map
 permalink: /map/
 javascript_libs:
   - third-party/leaflet/leaflet-1.3.1.js
+  - third-party/jquery/jquery-3.6.0.js
   - third-party/d3-voronoi/d3-voronoi.js
   - third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js
   - third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js
   - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
   - third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
   - leaflet-slidemenu/leaflet-sidemenu.js
-  # - data/geo-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
-  # - data/special-events-REPLACE_WITH_RUNNING_CHALLENGES_COMMIT_HASH.js
 javascript_onload:
   - file: map.js
     function: draw_map('mapid')
