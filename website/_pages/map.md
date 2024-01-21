@@ -4,6 +4,7 @@ title: parkrun Explorer Map
 permalink: /map/
 javascript_libs:
   - third-party/leaflet/leaflet-1.3.1.js
+  - third-party/d3-voronoi/d3-voronoi.js
   - third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js
   - third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js
   - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
