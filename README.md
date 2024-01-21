@@ -14,13 +14,6 @@ alphabet), 'Tourist' (running 20 or more different parkruns), and many more.
 The `/website` folder containers a Jekyll-based website. You can build and serve the website
 locally for testing by running a bash script (Linux and Mac only).
 
-1. Download the git submodule which contains additional Running Challenges data (the build fails without this). From the root of the project:
-  
-    `cd running-challenges-data`
-  
-    `git submodule update --init --recursive`
-  
-    `cd ..`
 1. From the root of the project, run the bash script:
 
     `./build/website/build-local-and-run.sh`
