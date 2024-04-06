@@ -206,12 +206,6 @@
       "chrome_style": true
   },
   "background": {
-    "persistent": true,
-    "scripts": [
-        "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
-        "js/lib/third-party/jquery/jquery-3.6.0.js",
-        "js/lib/i18n.js",
-        "js/background.js"
-    ]
+    "service_worker": "js/service-worker.js"
   }
 }
