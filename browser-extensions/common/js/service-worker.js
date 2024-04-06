@@ -1,0 +1,1 @@
+// This will container the service worker Javascript file
