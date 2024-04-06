@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Running Challenges",
   "description": "Adds challenge progress information to your parkrun athlete results page.",
