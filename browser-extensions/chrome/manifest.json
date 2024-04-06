@@ -184,12 +184,19 @@
   }
   ],
   "web_accessible_resources": [
-      "/images/badges/*.png",
-      "/images/logo/*.png",
-      "/images/maps/markers/*.png",
-      "/images/flags/*.png",
-      "/html/*.html",
-      "/css/*"
+    {
+      "resources": [
+        "/images/badges/*.png",
+        "/images/logo/*.png",
+        "/images/maps/markers/*.png",
+        "/images/flags/*.png",
+        "/html/*.html",
+        "/css/*"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
   ],
   "permissions": [
     "storage"
