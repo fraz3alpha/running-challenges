@@ -736,15 +736,14 @@ function generate_stat_p_index(parkrun_results) {
 
 
 function generate_stat_v_index(volunteer_data) {
-  const display_name = 'v-index'
+  const display_name = "v-index"
   var help = "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4."
-  const volunteer_roles = group_volunteer_data(volunteer_data)
   var qualifying = []
 
-  const descending_tally = Object.keys(volunteer_roles).sort((a, b) => volunteer_roles[b] - volunteer_roles[a])
+  const descending_tally = Object.keys(volunteer_data).sort((a, b) => volunteer_data[b] - volunteer_data[a])
   descending_tally.forEach((role_name, index) => {
-    if (volunteer_roles[role_name] > index) {
-      qualifying.push(`${role_name} (${volunteer_roles[role_name]})`)
+    if (volunteer_data[role_name] > index) {
+      qualifying.push(`${role_name} (${volunteer_data[role_name]})`)
     }
   })
 

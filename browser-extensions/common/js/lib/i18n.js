@@ -548,7 +548,7 @@ function get_localised_default_value(param) {
 }
 
 function get_normalised_volunteer_role(role) {
-    mapped_role = null
+    var mapped_role = null
     $.each(domains, function(domain, mappings) {
         if ("text_volunteer_role_map" in mappings) {
             if (role in mappings.text_volunteer_role_map) {
@@ -560,6 +560,7 @@ function get_normalised_volunteer_role(role) {
     })
     if (mapped_role === null) {
         console.log("I18N: UNKNOWN VOLUNTEER ROLE: "+role)
+        mapped_role = role // allow for parkrun to add new roles
     } else {
         if (role != mapped_role) {
             // console.log("I18N: mapped "+role+" to "+mapped_role)
