@@ -136,8 +136,8 @@ jobs:
 
       - name: Install Required OS packages
         run: |
-          sudo apt update && \
-          sudo apt install -y xvfb unzip
+          sudo apt-get update && \
+          sudo apt-get install -y xvfb unzip
 
       - name: Start up the supporting nginx services
         run: |
