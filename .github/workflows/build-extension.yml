@@ -136,8 +136,8 @@ jobs:
 
       - name: Install Required OS packages
         run: |
-          sudo apt update && \
-          sudo apt install -y xvfb unzip
+          sudo apt-get update && \
+          sudo apt-get install -y xvfb unzip
 
       - name: Start up the supporting nginx services
         run: |
@@ -148,7 +148,7 @@ jobs:
           cd -
 
           echo "Starting up docker compose services"
-          docker-compose -f "./supporting-data/docker-compose-gh-actions.yml" up --force-recreate -d
+          docker compose -f "./supporting-data/docker-compose-gh-actions.yml" up --force-recreate -d
 
           # Give nginx a moment to have fully come up
           sleep 1
