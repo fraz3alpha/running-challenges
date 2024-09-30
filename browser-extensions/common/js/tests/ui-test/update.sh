@@ -2,6 +2,10 @@ export USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, li
 export TARGET_ROOT_DIR="`pwd`/supporting-data/sites"
 export NGINX_CONF_D_ROOT_DIR="`pwd`/supporting-data/nginx/conf.d"
 
+# This script will start getting 405 errors when running curl if we get the AWS "Are you human" check,
+# so we'll keep track of how far we've got
+counter=0
+
 # Parkrun events in Russia are suspended, add  "parkrun.ru" back when they reappear
 declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.lt" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
 # 1309364: Andy Taylor, me
@@ -19,6 +23,9 @@ curl --fail -H "user-agent: ${USER_AGENT}" https://images.parkrun.com/events.jso
   rm "${TARGET_ROOT_DIR}/images.parkrun.com/contents/events.json.temp"
 sleep 1
 
+# Stop on error
+set -e
+
 for PARKRUN_HOSTNAME in "${PARKRUN_HOSTNAMES[@]}"
 do
 
@@ -28,9 +35,13 @@ do
         mkdir -p "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/all/"
 
         # Do the curls, but with a short sleep, so that we don't make a lot of requests to the servers in a short time
-        curl --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/all/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/all/index.html"
+        counter=$((counter+1))
+        echo "Fetching page ${counter}"
+        curl -w "Fetched %{url_effective}\n" --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/all/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/all/index.html"
         sleep 1
-        curl --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/index.html"
+        counter=$((counter+1))
+        echo "Fetching page ${counter}"
+        curl -w "Fetched %{url_effective}\n" --fail -H "user-agent: ${USER_AGENT}" https://www.${PARKRUN_HOSTNAME}/parkrunner/${PARKRUNNER_ID}/ -o "${TARGET_ROOT_DIR}/${PARKRUN_HOSTNAME}/contents/parkrunner/${PARKRUNNER_ID}/index.html"
         sleep 1
 
     done
@@ -55,5 +66,8 @@ server {
 }
 
 EOL
+
+# Do a bit of an extra sleep between countries
+sleep 10
 
 done
