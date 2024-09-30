@@ -3,9 +3,9 @@ export TARGET_ROOT_DIR="`pwd`/supporting-data/sites"
 export NGINX_CONF_D_ROOT_DIR="`pwd`/supporting-data/nginx/conf.d"
 
 # Parkrun events in Russia are suspended, add  "parkrun.ru" back when they reappear
-declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
+declare -a PARKRUN_HOSTNAMES=( "parkrun.org.uk" "parkrun.com.de" "parkrun.pl" "parkrun.jp" "parkrun.us" "parkrun.com.au" "parkrun.co.nz" "parkrun.ca" "parkrun.ie" "parkrun.co.za" "parkrun.us" "parkrun.sg" "parkrun.it" "parkrun.dk" "parkrun.se" "parkrun.fi" "parkrun.fr" "parkrun.lt" "parkrun.no" "parkrun.my" "parkrun.co.nl" "parkrun.co.at" )
 # 1309364: Andy Taylor, me
-# 482: Danny Normal, has done most things, and at one point, all the running badges
+# 482: Danny Norman, has done most things, and at one point, all the running badges
 # 88720: Phillip Whettlock, who helped out and has done nearly every volunteer role
 # 2705084: Duncan Booth, who has done lead bike, but hasn't run at all - which causes a bug that will need to be fixed!
 # 999999: Jakub WOLSKI, as of 2023-06-29, they have done no parkruns, which we want as a testcase. Given this is so old, it's a fair bet that this profile is not active and probably will never get any events associated with it

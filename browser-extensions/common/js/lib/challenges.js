@@ -1314,6 +1314,7 @@ function get_flag_image_src(country) {
       "Ireland": "ie",
       "Italy": "it",
       "Japan": "jp",
+      "Lithuania": "lt",
       "Malaysia": "my",
       "Namibia": "na",
       "Netherlands": "nl",
