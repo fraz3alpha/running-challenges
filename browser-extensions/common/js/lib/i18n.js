@@ -265,7 +265,40 @@ var domains = {
         // http://www.parkrun.fi/tampere/results/athletehistory/?athleteNumber=4064283
         // http://www.parkrun.fi/results/athleteresultshistory/?athleteNumber=4064283
         // https://www.parkrun.fi/parkrunner/4064283/all/
-        // It is all in English
+        // It in Finnish now
+        "table_all_results": "Kaikki tulokset",
+        "link_view_stats_for_all_parkruns": "Näytä tilastot tämän parkrunnerin kaikista tapahtumista",
+        // Volunteer roles are in Latvian
+        "text_volunteer_role_map": {
+            "Tapahtumavastaava": "Run Director",
+            "Ajanottaja": "Timekeeper",
+            "Polettien järjestäjä": "Token Sorting",
+            "Tulosten käsittelijä": "Results Processor",
+            "Kuvaaja": "Photographer",
+            "Tiedotus ja viestintä": "Communications Person",
+            "Liikenteenohjaaja": "Marshal",
+            "Tapahtumapaikan pystyttäminen": "Pre-event Setup",
+            "Tavaran varastointi ja toimitus": "Equipment Storage and Delivery",
+            "Muut": "Other",
+            "Viivakoodin skannaaja": "Barcode Scanning",
+            "Tapahtumapaikan purkaminen": "Post-event Close Down",
+            "Polettien jakaja": "Finish Tokens",
+            "Numeron tarkastaja": "Number Checker",
+            "Ensikertalaisten opastus": "First Timers Welcome",
+            "Maalin järjestäjä": "Funnel Manager",
+            // "": "Lead Bike",
+            "Polettien jakajan avustaja": "Finish Token Support",
+            "Takimmainen": "Tail Walker",
+            "Vapaaehtoisten koordinaattori": "Volunteer Co-ordinator",
+            "Raportin kirjoittaja": "Report Writer",
+            "Jänis": "Pacer (5k only)",
+            "Näkövammaisen avustaja": "VI Guide",
+            "Viittomakielen avustaja": "Sign Language Support",
+            "Alkulämmittelyn vetäjä	": "Warm Up Leader",
+            "Parkkipaikkaohjaaja": "Car Park Marshal",
+            "Reitin tarkastaja": "Event Day Course Check",
+            // "parkwalker": "parkwalker"
+        }
     },
     "www.parkrun.fr": {
         // French pages
