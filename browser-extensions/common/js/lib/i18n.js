@@ -294,7 +294,7 @@ var domains = {
             "Jänis": "Pacer (5k only)",
             "Näkövammaisen avustaja": "VI Guide",
             "Viittomakielen avustaja": "Sign Language Support",
-            "Alkulämmittelyn vetäjä	": "Warm Up Leader",
+            "Alkulämmittelyn vetäjä	": "Warm Up Leader (junior events only)",
             "Parkkipaikkaohjaaja": "Car Park Marshal",
             "Reitin tarkastaja": "Event Day Course Check",
             // "parkwalker": "parkwalker"
