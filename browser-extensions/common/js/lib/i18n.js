@@ -199,7 +199,7 @@ var domains = {
             "Hjælperkoordinering": "Volunteer Co-ordinator",
             "Skiltning": "Pre-event Setup",
             "Vejledning": "First Timers Welcome",
-            "Tegnsprogs tolk": "Sign Language Support",
+            "Tegnsprogstolk": "Sign Language Support",
             "Officials": "Marshal",
             "Gående bagtrop": "Tail Walker",
             "Løbsleder": "Run Director",
@@ -517,6 +517,7 @@ var domains = {
             "Pacer": "Pacer (5k only)",
             "Buddy slechtziende loper": "VI Guide",
             "Gebarentolk": "Sign Language Support",
+            "Warm-up leider": "Warm Up Leader",
             "Parkeerregelaar": "Car Park Marshal",
             "Routecontroleur": "Event Day Course Check",
             "parkwandelaar": "parkwalker"

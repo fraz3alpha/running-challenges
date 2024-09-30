@@ -136,7 +136,8 @@ It is impossible to add a new country until the new website is made live, and th
 - Add the ISO code to the list of flags for the website under the `flags.yml` data file.
 - Get the flag from https://emojipedia.org/twitter/twemoji-2.6/ as described in the flags README.
 - Add the country code and country name to `background.js`
-- Update browser-extensions/common/js/tests/ui-test/update.sh with the new parkrun domain, and run the script to pull in new test files
+- Update `browser-extensions/common/js/tests/ui-test/update.sh` with the new parkrun domain, and run the script to pull in new test files
+- Add the new country to the Github actions test list: `.github/workflows/build-extension.yml`
 
 # Version numbers
 
