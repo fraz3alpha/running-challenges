@@ -71,7 +71,7 @@ jobs:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
       - name: Upload build extension package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.browser }}-extension-package
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
