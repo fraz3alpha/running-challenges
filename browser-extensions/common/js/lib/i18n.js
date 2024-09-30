@@ -361,7 +361,7 @@ var domains = {
             "Opprigg": "Pre-event Setup",
             "Velkomsttale for førstegangsdeltakere": "First Timers Welcome",
             "Tegnspråkstøtte": "Sign Language Support",
-            "Vakt": "Marshal",
+            "Løypevakt": "Marshal",
             "Baktropp": "Tail Walker",
             "Løpsansvarlig": "Run Director",
             "Ledesyklist": "Lead Bike",
@@ -373,16 +373,17 @@ var domains = {
             "Målområdeansvarlig": "Funnel Manager",
             "Brikkeutdeling": "Finish Tokens",
             "Brikkeutdelingsstøtte": "Finish Token Support",
-            "Strekkodeskanning": "Barcode Scanning",
+            "Strekkodeskanner": "Barcode Scanning",
             "Nummersjekk": "Number Checker",
             "Nedrigg": "Post-event Close Down",
-            "Resultatbehandling ": "Results Processor",
-            "Brikkesortering ": "Token Sorting",
+            "Resultatbehandler": "Results Processor",
+            "Brikkesortering": "Token Sorting",
             "Rapportforfatter": "Report Writer",
-            // Warm Up Leader (junior events only)
+            "(brukes ikke i dette parkrun-territoriet)": "Warm Up Leader (junior events only)",
             "Annet": "Other",
-            "Parkering": "Car Park Marshal",
-            "parkwalker": "parkwalker"
+            "Parkeringsplassvakt": "Car Park Marshal",
+            "parkwalker": "parkwalker",
+            "Løypekontroll før start": "Event Day Course Check"
         }
     },
     "www.parkrun.ru": {
