@@ -21,12 +21,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Configure node v16
-        uses: actions/setup-node@v3
+      - name: Configure node v20
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install test framework dependencies
         run: npm install
@@ -48,12 +48,12 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Configure node v16
-        uses: actions/setup-node@v3
+      - name: Configure node v20
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install web-ext tooling
         run: npm install -g web-ext
@@ -71,7 +71,7 @@ jobs:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
       - name: Upload build extension package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.browser }}-extension-package
           path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
@@ -98,13 +98,13 @@ jobs:
           - "parkrun.ie"
           - "parkrun.it"
           - "parkrun.jp"
+          - "parkrun.lt"
           - "parkrun.my"
           - "parkrun.no"
           - "parkrun.org.uk"
           - "parkrun.pl"
           - "parkrun.se"
           - "parkrun.sg"
-          - "parkrun.us"
           # - "parkrun.ru" # Russian events are suspended
       fail-fast: false
       # max-parallel: 1
@@ -118,21 +118,21 @@ jobs:
 
       # Checks out a copy of the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Get previously built packages
       - name: Download all built extension packages
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: browser-extensions/common/js/tests/ui-test/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
 
-      - name: Configure node v16
-        uses: actions/setup-node@v3
+      - name: Configure node v20
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install Required OS packages
         run: |
@@ -178,7 +178,7 @@ jobs:
       - name: list files in root dir
         run: ls -l
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
@@ -200,7 +200,7 @@ jobs:
 
     steps:
       - name: Download all built extension packages
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: extension-binaries
 
@@ -208,7 +208,7 @@ jobs:
         run: ls -lR extension-binaries
 
       - id: get-branch-version-tag
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             console.log(context)
@@ -249,7 +249,7 @@ jobs:
  
 
       # - id: get-branch-version-tag
-      #   uses: actions/github-script@v6
+      #   uses: actions/github-script@v7
       #   with:
       #     script: |
       #       var version_tag = ''

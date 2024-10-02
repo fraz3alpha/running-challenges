@@ -96,6 +96,7 @@ function getCountryNameFromId(id) {
     "42": "Ireland",
     "44": "Italy",
     "46": "Japan",
+    "54": "Lithuania",
     "57": "Malaysia",
     "64": "Netherlands",
     "65": "New Zealand",
