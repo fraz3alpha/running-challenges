@@ -175,7 +175,7 @@ tab in Github and find the release for the [version you tagged](https://github.c
     - In Firefox, go to `about:debugging` and load a temporary add-on
     - In Chrome, go to `chrome://extensions` and load an unpacked extension
 1. Go to the [Chrome webstore](https://chrome.google.com/webstore/developer/dashboard) and upload the new version.
-1. Go to the [Mozilla Add-ons site](https://addons.mozilla.org/en-GB/firefox/) and upload the new version. Make sure to check that it is compatible with Android, this is unchecked by default. Add the release notes when asked.
+1. Go to the [Mozilla Add-ons site](https://addons.mozilla.org/en-GB/firefox/) and upload the new version. Make sure to check that it is compatible with Android, this is unchecked by default. Add the release notes when asked. Note, the Android checkbox doesn't do anything right now, as they don't allow most extensions, but we might as well check the box if they changed their mind some day.
 1. Complete the release by creating a PR to include:
     - Prepare for the next release by updating the version string in `build/version.sh`
       to the next appropriate number (this can always be changed later)

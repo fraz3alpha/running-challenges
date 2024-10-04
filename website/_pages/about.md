@@ -12,15 +12,13 @@ Collect badges and stars when you volunteer in different roles - are you a three
 
 ![Laura's runner page on the parkrun website]({{ site.baseurl }}/img/runner_page.png "Laura's runner page on the parkrun website"){: .center-image .image-border}
 
-Running Challenges is an extension for the Google Chrome or Firefox web browsers -
-if you have an Android device you can even install the Firefox version on that!
+Running Challenges is an extension for the Google Chrome, Firefox, or Edge web browsers.
 It is created and maintained with love by keen parkrunners, [Andy](https://twitter.com/fraz3alpha) and [Laura](https://twitter.com/lauracowen). We just wanted to share the fun with other parkrunners around the world, regardless of whether you volunteer, run, walk, or jog, at your home parkrun or elsewhere.
 
 ## Installing
 
-The extension is installed on your local web browser, either in Chrome or Firefox
-on your PC/Mac. If you are an Android user you can also install it in Firefox
-for Android. It is as easy as clicking 'install' in either the Chrome or Firefox
+The extension is installed on your local web browser, either in Chrome, Firefox or Edge
+on your PC/Mac. It is as easy as clicking 'install' in either the Chrome, Firefox or Edge extension / add-ons
 webstore, but if you need more detailed instructions see the [getting started page](/getstarted)
 for more help.
 
