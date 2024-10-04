@@ -26,9 +26,7 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: 📂 Checkout code
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
+        uses: actions/checkout@v4
 
       - name: 💎 setup ruby
         uses: ruby/setup-ruby@v1
@@ -76,7 +74,7 @@ jobs:
       # Get the latest copy of the repo
       # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ github.actor != 'dependabot[bot]' }}
         with:
           repository: fraz3alpha/running-challenges-staging

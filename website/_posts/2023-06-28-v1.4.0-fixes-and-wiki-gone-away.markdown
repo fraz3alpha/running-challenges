@@ -1,0 +1,65 @@
+---
+layout: post
+title:  "Bug fixes and adapting to the parkrun wiki going away (v1.4.0)"
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+Things change, but we try and keep up (within some period of time, measured in months)
+
+## New Features
+
+### Added parkwalker role badge
+
+The parkwalker role is a relatively new one, but by this point I think it has been around at least 6 months, so we aren't exactly quick off the mark in including this... But now there is a badge for this role.
+
+['sneaker-net'](https://github.com/sneaker-net) first got the ball rolling on this for us via [#364](https://github.com/fraz3alpha/running-challenges/pull/364), thanks!
+
+
+## Bug fixes
+
+### Updated the colours of all the high-viz badges
+
+As the parkwalker role was added we took the opportunity to update all the colours of the high-viz vests to match the current colour scheme. The Run Director bib was at least 2 versions behind!
+
+### Name Badge fixed
+
+At some point parkrun changed the way the parkrunner name was displayed at the top of the page to suffix it with your parkrun number, e.g. A1309364, which got automatically picked up by this challenge, and made you need to gain an extra A (as you couldn't get any numbers, these were skipped anyway).
+
+[Stephen Greenham](https://github.com/solarisfire) fixed this for us via [#370](https://github.com/fraz3alpha/running-challenges/pull/370), thanks!
+
+### parkrun.pl fixed
+
+A few things seemed to have changed on the Polish site, including the name of the results table, and some of the translations. The results table name resulted in a massive fail parsing the page and the extension did not handle this well, the translations were just missing badges.
+
+### Removed the Dependency on the parkrun Wiki
+
+It seems the wiki is on the way out, and there is less and less there. In our case we relied on a table that was published there which said whether an event was live or not (effectively, had it had at least one event), and we used that to omit events that were on the map, but hadn't started, from anything we calculated. 
+Without this data you might find that new parkruns pop up and you'll have gaps in your explorer map for events that you couldn't have run, or similarly a NENDY of an even that hasn't started. In the grand scheme of keeping things simple, we'll just have to accept this now, and live with it. The wiki page was often flakey anyway, and often was being regenerated which led to frequent error messages popping up, so hopefully now at least it will go back to being pretty stable.
+
+[Pete Johns](https://github.com/johnsyweb) fixed this for us via [#389](https://github.com/fraz3alpha/running-challenges/pull/389), thanks!
+
+### Warm up Volunteer badge fixed
+
+This volunteer role changed from "Warm Up Leader (junior events only)" to "Warm Up Leader", so needed an alias adding - it's now back.
+
+### Fixed error when no the parkrunner hadn't run any events
+
+We've got [Luke Woodward](https://github.com/LukeWoodward) to thank for this fix, after he provided us with the changes required via [#383](https://github.com/fraz3alpha/running-challenges/pull/383). It turned out that if a parkrunner didn't have any results against their name, the extension broke trying to print some debug information - and now it doesn't. Thanks Luke!
+
+## General Improvements
+
+We added a way to reliably tests all the parkrun sites with a locally saved copy of several parkrunners (mostly Andy, but also some others) against each build of the extension, so hopefully we can make sure that all the volunteer role translations are correct, and we don't lose any badges. It's still a work in progress, but we have something to work from now - and it has already proved its worth while fixing the Polish parkrun site, and some others we found were incorrect!
+
+
+## How do I get all of this great stuff?
+
+If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven't yet joined the fun you can get it from one of
+the links below (the Firefox version will be likely a little delayed):
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}

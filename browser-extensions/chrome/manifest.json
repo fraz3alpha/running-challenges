@@ -2,10 +2,10 @@
   "manifest_version": 2,
 
   "name": "Running Challenges",
-  "description": "Adds challenge progress information to your parkrun athlete results page.",
+  "description": "Adds challenge progress information to your parkrun results page.",
   "version": "REPLACE_EXTENSION_BUILD_VERSION.REPLACE_EXTENSION_BUILD_ID",
 
-  "content_security_policy": "default-src 'self'; connect-src https://www.parkrun.org.uk https://wiki.parkrun.com https://running-challenges.co.uk https://images.parkrun.com",
+  "content_security_policy": "default-src 'self'; connect-src https://www.parkrun.org.uk https://running-challenges.co.uk https://images.parkrun.com",
 
   "browser_action": {
     "default_icon": "images/logo/logo-128x128.png"
@@ -32,6 +32,7 @@
           "*://www.parkrun.se/parkrunner/*/all/",
           "*://www.parkrun.fi/parkrunner/*/all/",
           "*://www.parkrun.fr/parkrunner/*/all/",
+          "*://www.parkrun.lt/parkrunner/*/all/",
           "*://www.parkrun.no/parkrunner/*/all/",
           "*://www.parkrun.com.de/parkrunner/*/all/",
           "*://www.parkrun.ru/parkrunner/*/all/",
@@ -67,38 +68,6 @@
   },
   {
     "matches": [
-        "*://www.parkrun.org.uk/results/athleteresultshistory/*",
-        "*://www.parkrun.com.au/results/athleteresultshistory/*",
-        "*://www.parkrun.co.nz/results/athleteresultshistory/*",
-        "*://www.parkrun.ca/results/athleteresultshistory/*",
-        "*://www.parkrun.ie/results/athleteresultshistory/*",
-        "*://www.parkrun.co.za/results/athleteresultshistory/*",
-        "*://www.parkrun.us/results/athleteresultshistory/*",
-        "*://www.parkrun.sg/results/athleteresultshistory/*",
-        "*://www.parkrun.pl/results/athleteresultshistory/*",
-        "*://www.parkrun.it/results/athleteresultshistory/*",
-        "*://www.parkrun.dk/results/athleteresultshistory/*",
-        "*://www.parkrun.se/results/athleteresultshistory/*",
-        "*://www.parkrun.fi/results/athleteresultshistory/*",
-        "*://www.parkrun.fr/results/athleteresultshistory/*",
-        "*://www.parkrun.com.de/results/athleteresultshistory/*",
-        "*://www.parkrun.no/results/athleteresultshistory/*",
-        "*://www.parkrun.ru/results/athleteresultshistory/*",
-        "*://www.parkrun.my/results/athleteresultshistory/*",
-        "*://www.parkrun.jp/results/athleteresultshistory/*",
-        "*://www.parkrun.co.nl/results/athleteresultshistory/*",
-        "*://www.parkrun.co.at/results/athleteresultshistory/*"
-    ],
-    "js": [
-        "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
-        "js/lib/third-party/jquery/jquery-3.6.0.js",
-        "js/lib/i18n.js",
-        "js/content-scripts/content-script-athleteresultshistory.js"
-    ],
-    "run_at": "document_end"
-  },
-  {
-    "matches": [
       "*://www.parkrun.org.uk/parkrunner/*/",
       "*://www.parkrun.com.au/parkrunner/*/",
       "*://www.parkrun.co.nz/parkrunner/*/",
@@ -113,6 +82,7 @@
       "*://www.parkrun.se/parkrunner/*/",
       "*://www.parkrun.fi/parkrunner/*/",
       "*://www.parkrun.fr/parkrunner/*/",
+      "*://www.parkrun.lt/parkrunner/*/",
       "*://www.parkrun.no/parkrunner/*/",
       "*://www.parkrun.com.de/parkrunner/*/",
       "*://www.parkrun.ru/parkrunner/*/",
@@ -135,6 +105,7 @@
       "*://www.parkrun.se/parkrunner/*/all/",
       "*://www.parkrun.fi/parkrunner/*/all/",
       "*://www.parkrun.fr/parkrunner/*/all/",
+      "*://www.parkrun.lt/parkrunner/*/all/",
       "*://www.parkrun.no/parkrunner/*/all/",
       "*://www.parkrun.com.de/parkrunner/*/all/",
       "*://www.parkrun.ru/parkrunner/*/all/",
@@ -149,38 +120,6 @@
       "js/content-scripts/content-script-parkrunner-summary.js"
     ],
     "run_at": "document_end"
-  },
-  {
-    "matches": [
-        "*://www.parkrun.org.uk/*/results/athletehistory/*",
-        "*://www.parkrun.com.au/*/results/athletehistory/*",
-        "*://www.parkrun.co.nz/*/results/athletehistory/*",
-        "*://www.parkrun.ca/*/results/athletehistory/*",
-        "*://www.parkrun.ie/*/results/athletehistory/*",
-        "*://www.parkrun.co.za/*/results/athletehistory/*",
-        "*://www.parkrun.us/*/results/athletehistory/*",
-        "*://www.parkrun.sg/*/results/athletehistory/*",
-        "*://www.parkrun.pl/*/athletehistory/*",
-        "*://www.parkrun.it/*/athletehistory/*",
-        "*://www.parkrun.dk/*/athletehistory/*",
-        "*://www.parkrun.se/*/athletehistory/*",
-        "*://www.parkrun.fi/*/athletehistory/*",
-        "*://www.parkrun.fr/*/athletehistory/*",
-        "*://www.parkrun.com.de/*/athletehistory/*",
-        "*://www.parkrun.no/*/athletehistory/*",
-        "*://www.parkrun.ru/*/athletehistory/*",
-        "*://www.parkrun.my/*/results/athletehistory/*",
-        "*://www.parkrun.jp/*/results/athletehistory/*",
-        "*://www.parkrun.co.nl/*/results/athletehistory/*",
-        "*://www.parkrun.co.at/*/results/athletehistory/*"
-    ],
-    "js": [
-        "js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js",
-        "js/lib/third-party/jquery/jquery-3.6.0.js",
-        "js/lib/i18n.js",
-        "js/content-scripts/content-script-athleteeventhistory.js"
-    ],
-    "run_at": "document_end"
   }
   ],
   "web_accessible_resources": [
@@ -192,8 +131,7 @@
       "/css/*"
   ],
   "permissions": [
-    "storage",
-    "https://wiki.parkrun.com/"
+    "storage"
   ],
   "options_ui": {
       "page": "html/options.html",
