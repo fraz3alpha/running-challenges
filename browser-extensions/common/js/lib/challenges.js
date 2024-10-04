@@ -708,61 +708,48 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
   }
 }
 
-// The number of parkruns that satisfy the equation 'p parkruns run at least p times'
-// E.g. you have run 4 different parkruns at least 4 times.
 function generate_stat_p_index(parkrun_results) {
-  var p_index = 0
+  const display_name = 'p-index'
+  var help = "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4."
   var event_attendance_tally = {}
+  var qualifying = []
 
-  parkrun_results.forEach(function (parkrun_event) {
+  parkrun_results.forEach((parkrun_event) => {
     if (!(parkrun_event.name in event_attendance_tally)) {
       event_attendance_tally[parkrun_event.name] = 0
     }
     event_attendance_tally[parkrun_event.name] += 1
   })
-  // Sort events by number of runs descending
-  var event_attendance_sorted = Object.keys(event_attendance_tally).sort(function(a, b) {
-      return event_attendance_tally[b] - event_attendance_tally[a]
-  })
-  // Iterate through the events, and as long as the numbers of times we have
-  // run at the even is greater than the index value, increment the p-index
-  event_attendance_sorted.forEach(function(event_name, index) {
+
+  const event_attendance_sorted = Object.keys(event_attendance_tally).sort((a, b) =>  event_attendance_tally[b] - event_attendance_tally[a])
+
+  event_attendance_sorted.forEach((event_name, index) => {
     if (event_attendance_tally[event_name] > index) {
-      p_index += 1
+      qualifying.push(`${event_name} (${event_attendance_tally[event_name]})`)
     }
   })
-  return {
-    "display_name": "p-index",
-    "help": "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4.",
-    "value": p_index
-  }
+
+  var value = qualifying.length
+  help = `The number of parkrun events completed at least ${value} times. These are ${qualifying.join(", ")}.`
+  return { display_name, help, value }
 }
 
-// The number of volunteer roles which have been performed at least _v_ times.
-// E.g. If you have volunteered in 4 different roles at least 4 times, your v-index
-// is 4.
+
 function generate_stat_v_index(volunteer_data) {
+  const display_name = "v-index"
+  var help = "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4."
+  var qualifying = []
 
-  volunteer_roles = group_volunteer_data(volunteer_data)
-
-  var v_index = 0
-  var descending_tally = Object.keys(volunteer_roles).sort(function(a, b) {
-    return volunteer_roles[b] - volunteer_roles[a]
-  })
-  // Iterate through the roles, and as long as the number of times we have
-  // volunteered in the role is greater than the index value, increment the
-  // v-index
-  descending_tally.forEach(function(role_name, index) {
-    // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
-    if (volunteer_roles[role_name] > index) {
-      v_index += 1
+  const descending_tally = Object.keys(volunteer_data).sort((a, b) => volunteer_data[b] - volunteer_data[a])
+  descending_tally.forEach((role_name, index) => {
+    if (volunteer_data[role_name] > index) {
+      qualifying.push(`${role_name} (${volunteer_data[role_name]})`)
     }
   })
-  return {
-    "display_name": "v-index",
-    "help": "The number of volunteer roles which have been performed at least v times. E.g. If you have volunteered in 4 different roles at least 4 times, your v-index is 4.",
-    "value": v_index
-  }
+
+  var value = qualifying.length
+  help = `The number of volunteer roles completed at least ${value} times. These are ${qualifying.join(", ")}.`
+  return { display_name, help, value }
 }
 
 // The maximum contiguous series of parkrun event numbers you have attended
