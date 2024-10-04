@@ -76,18 +76,6 @@ var cache = {
         'timeout': 5000,
         'last_status': {}
     },
-    'technical_event_information': {
-        'raw_data': undefined,
-        'updated_at': undefined,
-        'last_update_attempt': undefined,
-        'updating': false,
-        'max_age': 3 * 24 * 60 * 60 * 1000,
-        'url': "https://wiki.parkrun.com/index.php/Technical_Event_Information",
-        'datatype': 'html',
-        'enabled': true,
-        'timeout': 5000,
-        'last_status': {}
-    },
     'data': undefined,
     'updated_at': undefined
 }
@@ -108,6 +96,7 @@ function getCountryNameFromId(id) {
     "42": "Ireland",
     "44": "Italy",
     "46": "Japan",
+    "54": "Lithuania",
     "57": "Malaysia",
     "64": "Netherlands",
     "65": "New Zealand",
@@ -143,9 +132,6 @@ function get_cache_summary() {
       'events': {
         'updated_at': cache.events.updated_at
       },
-      'technical_event_information': {
-        'updated_at': cache.technical_event_information.updated_at
-      }
     }
   }
 
@@ -174,7 +160,6 @@ function get_cache_summary() {
 
 function clear_cache() {
   clear_cache_by_name("events")
-  clear_cache_by_name("technical_event_information")
 }
 
 function clear_cache_by_name(name) {
@@ -289,106 +274,6 @@ function addEventToCountryData(data, country_name, event_id, event_name) {
   data.countries[country_name]["child_event_names"].push(event_name)
 }
 
-function parse_tee_data_event_status(data, result) {
-
-  var parseSuccess = false
-
-  if (result !== undefined) {
-
-    // Reset the event status data to a blank map
-    data.event_status = {}
-
-    // console.log("Attempting to load the Technical Event Information into a virtual DOM")
-    // var ownerDocument = document.implementation.createHTMLDocument('virtual');
-    // Load the results into a virtual document, so that it doesn't attempt to load
-    // inline scripts etc...
-    // Solution taken from https://stackoverflow.com/questions/15113910/jquery-parse-html-without-loading-images
-    // referencing https://api.jquery.com/jQuery/ & https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument
-
-    // This ends up with a shed load of errors about:
-    //   Refused to apply inline style because it violates the following Content Security Policy directive: 
-    //   "default-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-0EZqoz+oBhx7gF4nvY2bSqoGyy4zLjNF+SDQXGp/ZrY='), 
-    //   or a nonce ('nonce-...') is required to enable inline execution. Note also that 'style-src' was not explicitly set, 
-    //  so 'default-src' is used as a fallback.
-    // This seems to be because loading the document inlines the styles, which I'd quite happily do away with
-    // if only I knew how to.
-
-    // I have abandoned using the HTML parser directly as it brings too much baggage, instead
-    // we will parse the wiki page as an XML document until we get to the row we are interested
-    // in, and then only parse that as a HTML document - thus skipping all the scripts and other
-    // junk the page loads in elsewhere and it will be as clean as possible.
-    // This does mean we have to do a few odd things to make a valid HTML doc, but it does mean it
-    // throws no security errors anymore, and we still get the data we want.
-
-    console.log("Attempting to load the Technical Event Information into an XML document")
-    var xmlDoc = $.parseXML(result)
-
-    $(xmlDoc).find('div[id=mw-content-text]>table:first').each(function(table_index) {
-      var content_table = $(this)
-      // console.log(content_table)
-
-      content_table.find('tr').each(function(row_index) {
-          // Reconstitute a valid document with a top level tag for the HTML parser
-          var row_html_content = "<tr>"+$(this).html()+"</tr>"
-          // Parse it into a JQuery object
-          var html_row = $(row_html_content)
-          // Find the td elements
-          var content_table_row_cell = $('td', html_row)
-          // Only attempt to parse it if there are enough cells
-          if (content_table_row_cell[0] !== undefined) {
-            if (content_table_row_cell.length >= 5) {
-                var parkrun_info = {
-                    parkrun_name: content_table_row_cell[0].innerText.trim(),
-                    parkrun_event_director: content_table_row_cell[1].innerText.trim(),
-                    parkrun_event_number: content_table_row_cell[2].innerText.trim(),
-                    parkrun_status: content_table_row_cell[3].innerText.trim(),
-                    parkrun_country: content_table_row_cell[4].innerText.trim()
-                }
-                data.event_status[parkrun_info.parkrun_event_number] = parkrun_info
-                // Note that we've parsed at least something successfully.
-                parseSuccess = true
-                // console.log(parkrun_info)
-            }
-          } else {
-            // Don't bother printing that the top row is malformed, it's probably the header,
-            // we'll just flag up if one of the other rows is weird.
-            if (row_index != 0) {
-              console.log("Techincal Event Information table row is malformed on row "+row_index+": "+JSON.stringify(content_table_row_cell))
-            }
-          }
-      })
-    })
-    console.log("Technical Event Information processing complete")
-
-    console.log(Object.keys(data.event_status).length + " event statuses available")
-
-  }
-
-  return parseSuccess
-
-}
-
-function compute_event_status(data) {
-
-  if (data === undefined) {
-    return
-  }
-
-  // Loop through the existing geo_data, and supplement it with the
-  // extra event data we have found if there is a match
-  $.each(data.events, function(event_name, event_info) {
-     if (data.event_status !== undefined && event_info.id in data.event_status) {
-         // console.log('Found state '+live_parkrun_event_data[event_info.id].parkrun_status+" for "+event_name)
-         data.events[event_name].status = data.event_status[event_info.id].parkrun_status
-     } else {
-         data.events[event_name].status = 'unknown'
-     }
-  })
-
-  return
-
-}
-
 function get_geo_data(notify_func, freshen=false) {
     var now = new Date()
 
@@ -396,7 +281,7 @@ function get_geo_data(notify_func, freshen=false) {
     // and construct a parallel ajax call to fetch whichever ones we need
     // this allows for easy extension in the future by adding data sources
     // with not a lot of code changes
-    var data_sources = ['events', 'technical_event_information']
+    var data_sources = ['events']
     var ajax_calls = []
     // Make a not if any deferred ajax calls are created
     var update_needed = false
@@ -458,7 +343,7 @@ function get_geo_data(notify_func, freshen=false) {
         // retrieved data.
         $.when( ajax_calls[0], ajax_calls[1] ).done(
             // 20191117 - data_geo replaced with data_events 
-            function ( data_events, data_tee ) {
+            function ( data_events ) {
 
                 // We absolutely need the events data, without which we can't do
                 // anything.
@@ -478,12 +363,7 @@ function get_geo_data(notify_func, freshen=false) {
                   console.log('Fresh data available')
                 }
 
-                // Check if we have technical event information and fall back if not
-                if (data_tee === undefined) {
-                    data_tee = cache.technical_event_information.raw_data
-                }
-
-                update_cache_data(data_events, data_tee)
+                update_cache_data(data_events)
 
                 notify_geo_data(notify_func)
                 return
@@ -491,24 +371,23 @@ function get_geo_data(notify_func, freshen=false) {
         )
     } else {
         // Just return the cached data
-        console.log('Returning cached data for TEE & Geo Data')
+        console.log('Returning cached data for Geo Data')
         notify_geo_data(notify_func)
     }
 
 }
 
 function regenerate_cache_data() {
-  update_cache_data(cache.events.raw_data, cache.technical_event_information.raw_data)
+  update_cache_data(cache.events.raw_data)
 }
 
-function update_cache_data(data_events, data_tee) {
+function update_cache_data(data_events) {
 
   if (data_events === undefined) {
     cache.data = {
       'valid': false,
       'data_fetch_status': {
-        'events': cache.events.last_status,
-        'event_info': cache.technical_event_information.last_status
+        'events': cache.events.last_status
       }
     }
     cache.updated_at = undefined
@@ -523,26 +402,12 @@ function update_cache_data(data_events, data_tee) {
     'countries': {},
     'event_status': undefined,
     'data_fetch_status': {
-      'events': cache.events.last_status,
-      'event_info': cache.technical_event_information.last_status
+      'events': cache.events.last_status
     }
   }
 
   // Replace the complicated events/regions parsing with a single call
   parse_events(data, data_events)
-
-  // If the technical event information has been obtained, then
-  // lets parse that.
-  var parseResult = parse_tee_data_event_status(data, data_tee)
-  console.log("Techincal Event Information parse result: "+parseResult)
-  // If the page hasn't been fetched, or the file can't be parsed, parseResult will be false.
-  // We should do something with that value, like mark that the page should be fetched again.
-
-  // This could potentially do nothing if no event info is available
-  compute_event_status(data)
-  // console.log(data)
-  // Create the heirachy of events by region
-  // compute_geo_data_heirachy(data)
 
   // Update the global cache
   cache.data = data
@@ -607,10 +472,6 @@ function notify_geo_data(f) {
             clear_cache_by_name("events")
             done = true
             break
-          case "cache-tei-clear":
-            clear_cache_by_name("technical_event_information")
-            done = true
-            break
           case "cache-get":
             if (cache.data) {
               msg = JSON.stringify(cache.data,null,2)
@@ -630,14 +491,6 @@ function notify_geo_data(f) {
             break
           case "disable-geo":
             cache.events.enabled = false
-            done = true
-            break
-          case "enable-tei":
-            cache.technical_event_information.enabled = true
-            done = true
-            break
-          case "disable-tei":
-            cache.technical_event_information.enabled = false
             done = true
             break
         }

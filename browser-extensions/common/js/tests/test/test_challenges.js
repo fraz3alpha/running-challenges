@@ -54,8 +54,7 @@ function getGeoData() {
                 country_name: "UK",
                 id: 1,
                 lat: 51.410992,
-                lon: -0.335791,
-                status: "Live"
+                lon: -0.335791
             },
             "Winchester": {
                 shortname: "winchester",
@@ -64,8 +63,7 @@ function getGeoData() {
                 country_name: "UK",
                 id: 280,
                 lat: 51.069286,
-                lon: -1.310849,
-                status: "Live"
+                lon: -1.310849
             },
             "Fell Foot": {
                 shortname: "fellfoot",
@@ -74,8 +72,7 @@ function getGeoData() {
                 country_name: "UK",
                 id: 1017,
                 lat: 54.274736,
-                lon: -2.952259,
-                status: "Live"
+                lon: -2.952259
             }
         },
         "countries": {
@@ -96,8 +93,6 @@ function getGeoData() {
     return {
         "data": data
     }
-
-    
 }
 
 function filterGeoData(geoData, filters) {

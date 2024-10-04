@@ -3,172 +3,316 @@ var mymap
 
 var special_event_layers = {}
 
-var available_times = []
+function parseParkrunEventsJson(eventsDataJson) {
 
-var time_markers = {
-  "parkrun": [],
-  "junior parkrun": []
-}
+  console.log("parseParkrunEventsJson")
+  console.log(eventsDataJson)
 
-function special_event_on_change(e) {
-  console.log("Something changed")
-  // console.log(e)
+  var parsedEvents = {}
 
-  // Find the current event type we are showing
-  var e = document.getElementById("slidemenu_special_event_type_name");
-  if (e !== null && e !== undefined) {
-    selected_event_type_name = e.options[e.selectedIndex].value;
-    console.log("Trying to add the events for: "+selected_event_type_name)
-  } else {
-    return
-  }
+  $.each(eventsDataJson['events']['features'], function(event_feature_index, event_info) {
+    // Only process the 5k events
+    if (event_info['properties']['seriesid'] == 1){
+      event_id = event_info['id']
+      event_name = event_info['properties']['EventShortName']
+      // country_id = event_info['properties']['countrycode']
+      // event_country_name = country_id_name_map[country_id]
 
-  // Find the appropriate times
-  var events_by_time = {}
-
-  Object.keys(parkrun_data_special_events[selected_event_type_name]['events']).forEach(function(special_event_name) {
-    special_event_info = parkrun_data_special_events[selected_event_type_name]['events'][special_event_name]
-    if (!(special_event_info["time"] in events_by_time)) {
-      events_by_time[special_event_info["time"]] = []
-    }
-    events_by_time[special_event_info["time"]].push(special_event_info)
-  })
-  console.log(events_by_time)
-
-  // if (Object.keys(events_by_time).length == 0) {
-  //   console.log("No events available")
-  //   return
-  // }
-
-  var option_counter = 0
-  var checked_time_options = {}
-  var applicable_parkrun_events = {}
-  var time_to_marker_index_map = {}
-  Object.keys(events_by_time).sort().forEach(function(special_event_time) {
-
-    var this_option_id = "time_select_input_"+option_counter
-    var o = document.getElementById(this_option_id);
-    if (o.checked) {
-      checked_time_options[o.value] = true
-      events_by_time[special_event_time].forEach(function(applicable_parkrun_event) {
-        // console.log(applicable_parkrun_event)
-        applicable_parkrun_events[applicable_parkrun_event['shortname']] = applicable_parkrun_event
-      })
-    }
-    time_to_marker_index_map[special_event_time] = option_counter
-    option_counter += 1
-  })
-
-  console.log(checked_time_options)
-  console.log(applicable_parkrun_events)
-
-  // See whether the user wants 5k or 2k events
-  event_distances = {
-    "parkrun": parkrun_data_geo.events_5k,
-    "junior parkrun": parkrun_data_geo.events_2k
-  }
-  checked_event_distances = {}
-  // Iterate over the two event distances
-  for(var i=0; i<2; i++) {
-    var this_option_id = "distance_select_input_"+i
-    var o = document.getElementById(this_option_id);
-    if (o !== null && o.checked) {
-      if (o.value in event_distances) {
-        checked_event_distances[o.value] = event_distances[o.value]
+      parsedEvents[event_name] = {
+        // All the standard attributes that come from the parkrun data
+        "shortname": event_info['properties']['eventname'],
+        "name": event_info['properties']['EventShortName'],
+        // "country_id": country_id,
+        // "country_name": event_country_name,
+        "id": event_info['id'],
+        "lat": event_info['geometry']['coordinates'][1],
+        "lon": event_info['geometry']['coordinates'][0],
       }
     }
-  }
+  })
 
-  // console.log(event_distances)
-  console.log("Checked event distances")
-  console.log(checked_event_distances)
+  return parsedEvents
+}
 
-  // Look for layers that we have added that we need to remove
-  Object.keys(special_event_layers).forEach(function(special_event_type_name) {
-    Object.keys(special_event_layers[special_event_type_name]).forEach(function(special_event_distance) {
-      Object.keys(special_event_layers[special_event_type_name][special_event_distance]).forEach(function(start_time) {
-        // Remove all of those for the wrong event type
-        if (special_event_type_name != selected_event_type_name) {
-          console.log("Removing layer for the wrong event: " + special_event_type_name)
-          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
-          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
-        // Remove those for the wrong distance
-        } else if (!(special_event_distance in checked_event_distances)) {
-          console.log("Removing layer for the wrong distance: " + special_event_distance)
-          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
-          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
-        // Remove those for the wrong time slot (they will be the right event here)
-        } else if (!(start_time in checked_time_options)) {
-          console.log("Removing layer for the wrong time: " + start_time)
-          mymap.removeLayer(special_event_layers[special_event_type_name][special_event_distance][start_time])
-          delete special_event_layers[special_event_type_name][special_event_distance][start_time]
+function createVoronoiMapPrototype() {
+
+  console.log("Creating Voronoi Map Prototype")
+
+  // http://usabilityetc.com/2016/06/how-to-create-leaflet-plugins/ has proved useful
+  L.VoronoiLayer = L.Layer.extend({
+
+    initialize: function(data, cellRenderer) {
+      console.log('Voronoi Layer - initialize()')
+      this._data = data
+      // We may have been passed a custom cell renderer
+      console.log(cellRenderer)
+      this._cellRenderer = cellRenderer
+    },
+
+    onAdd: function(map) {
+      console.log('Voronoi Layer - onAdd()')
+        // var nw_point = map.latLngToLayerPoint(bounds.getNorthWest())
+        // Store the map
+        this._map = map
+
+        var pane = map.getPane(this.options.pane);
+        this._pane = pane
+
+        map.on('zoomend viewreset moveend', this._update, this);
+        this._update()
+
+        // Force the map to recalculate its size.
+        // When it is first drawn, the remainder of the page hasn't,
+        // so it it is narrower, and subsequent challenges pad it out -
+        // so this makes it correct as soon as it is interacted with.
+        // This unfortunately means it's not right initially, but it 
+        // fixes itself pretty quickly.
+
+        setTimeout(function(){ 
+          console.log("triggering a redraw")
+          map.invalidateSize()
+        }, 1000);
+    },
+
+    onRemove: function(map) {
+      console.log('Voronoi Layer - onRemove()')
+        L.DomUtil.remove(this._container);
+        map.off('zoomend viewreset', this._update, this);
+    },
+
+    _update: function() {
+      console.log('Voronoi Layer - _update()')
+
+      // Empty the current pane
+      L.DomUtil.empty(this._pane)
+
+      // Create a new SVG container, we will add everything to this
+      // before adding it to the DOM.
+      var this_container = L.DomUtil.create("svg", "leaflet-zoom-hide")
+
+      var vmap = this._map
+      var bounds = vmap.getBounds()
+      var top_left = vmap.latLngToLayerPoint(bounds.getNorthWest())
+
+      var size = vmap.getSize()
+
+      this_container.setAttribute('width', size.x);
+      this_container.setAttribute('height', size.y);
+      this_container.setAttribute("style", "margin-left: "+top_left.x + "px; margin-top: "+top_left.y+"px");
+
+      var filtered_points = this._cellRenderer(vmap, this._data)
+
+      var voronoi = d3.voronoi()
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; });
+
+      // As we are using the .polygons() we need to set an extent so that things
+      // don't go wrong at the edges. Ordinarily we should set an extent of
+      // the size of the canvas, but for those cases where the canvas includes
+      // +/-180degrees, we need to crop the diagram there otherwise it goes
+      // weird when the lines expand into the repeated map provided by openstreetmap
+
+      // Find the left and right corners of the world :)
+      map_point_left_edge = vmap.latLngToLayerPoint([90,-180]);
+      map_point_right_edge = vmap.latLngToLayerPoint([-90,180]);
+
+      // Default extents are the edges of the canvas, but if these take it over
+      // the edges of the world according to the calculations above, we box
+      // them in.
+      voronoi_extent_left = [Math.max(top_left.x, map_point_left_edge.x), Math.max(top_left.y, map_point_left_edge.y)]
+      voronoi_extent_right = [Math.min(top_left.x+size.x, map_point_right_edge.x), Math.min(top_left.y+size.y, map_point_right_edge.y)]
+
+      voronoi.extent([voronoi_extent_left, voronoi_extent_right]);
+
+      var voronoi_data = voronoi(filtered_points)
+
+      // For reference:
+      // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
+
+      var cell_group = document.createElement("g")
+      cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
+
+      var voronoi_polygons = voronoi_data.polygons()
+
+      var zoomScaleOptions = zoomLevelToScaleOptions(vmap.getZoom())
+      console.log(zoomScaleOptions)
+
+      $.each(voronoi_polygons, function(index, cell) {
+
+        // If there is no cell data, then keep looping
+        if (cell === undefined) {
+          // console.log("Undefined cell data at index "+index)
+          return true
         }
+
+        // Create an icon to represent the parkrun event
+        var item_circle = document.createElement("circle")
+        
+        item_circle.setAttribute("cx", cell.data.x)
+        item_circle.setAttribute("cy", cell.data.y)
+        item_circle.setAttribute("r", zoomScaleOptions.eventPointRadius)
+        item_circle.setAttribute("stroke", filtered_points[index].circleColourLine)
+        item_circle.setAttribute("stroke-width", "1")
+        item_circle.setAttribute("fill", filtered_points[index].circleColour)
+
+        // If we are zoomed in enough, maybe add some text
+        var item_text = undefined
+        if (zoomScaleOptions.eventNameVisible) {
+          item_text = document.createElement("text")
+          item_text.setAttribute("x", cell.data.x)
+          item_text.setAttribute("y", cell.data.y + zoomScaleOptions.eventPointRadius + 8) // Move the text down below the point, plus some padding
+          item_text.setAttribute("text-anchor", "middle")
+          item_text.setAttribute("font-size", zoomScaleOptions.eventNameTextSize+"px")
+          item_text.setAttribute("font-weight", "bold")
+          item_text.setAttribute("dominant-baseline", "hanging") // Hang the text below
+          item_text.innerText = filtered_points[index].name
+        }
+
+        // Create a shape to represent the voronoi area associated with this parkrun event
+        // It will be filled if the parkrun has been completed
+
+        var item_path = document.createElement("path")
+        item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
+        item_path.setAttribute("stroke", "gray")
+        item_path.setAttribute("stroke-width", zoomScaleOptions.pathLineWidth)
+        item_path.setAttribute("fill", filtered_points[index].fill)
+        item_path.setAttribute("fill-opacity", filtered_points[index].opacity)
+
+        // Add the parkrun event and the path object to a holding object - the path goes first so
+        // that the parkrun event marker is drawn on top afterwards
+        cell_group.appendChild(item_path)
+        cell_group.appendChild(item_circle)
+        if (item_text !== undefined) {
+          cell_group.appendChild(item_text)
+        }
+        
+        // Add this group to the main SVG container
+        this_container.appendChild(cell_group)
+
       })
-    })
-  })
 
-  // If this event is not in the layer cache, create a placeholder
-  if (!(selected_event_type_name in special_event_layers)) {
-    special_event_layers[selected_event_type_name] = {}
-  }
+      // Store the SVG container in the object
+      this._container = this_container
+      // Add the SVG to the map
+      $(this._pane).append($(this_container).prop('outerHTML'))
 
-  Object.keys(checked_event_distances).forEach(function(special_event_distance) {
-
-    // If this distance is not in the layer cache, create a placeholder
-    if (!(special_event_distance in special_event_layers[selected_event_type_name])) {
-      special_event_layers[selected_event_type_name][special_event_distance] = {}
     }
+  });
 
-    Object.keys(events_by_time).forEach(function(start_time) {
-      if (start_time in checked_time_options) {
-        // If it is not in the cache it hasn't been added, so we need to add it
-        if (!(start_time in special_event_layers[selected_event_type_name][special_event_distance])) {
-          // console.log("Adding markers for "+special_event_distance+" events at "+start_time)
-          var newLayer = L.layerGroup()
-
-          // The parkrun geo data for this parkrun/junior parkrun
-          parkrun_distance_event_info = checked_event_distances[special_event_distance]
-
-          events_by_time[start_time].forEach(function(applicableEvent) {
-            if (applicableEvent.shortname in parkrun_distance_event_info) {
-              var e = parkrun_distance_event_info[applicableEvent.shortname]
-              // console.log(e)
-              // Add a marker to the layer
-              var lat_lon = [e.latitude, e.longitude]
-
-              var popup = e.local_name+" @ "+start_time
-              // console.log(popup)
-              var parkrun_distance_marker = time_markers[special_event_distance][time_to_marker_index_map[start_time]]
-              var marker = L.marker(lat_lon, {icon: parkrun_distance_marker}).bindPopup(popup);
-
-              marker.addTo(newLayer)
-            }
-          })
-
-          newLayer.addTo(mymap)
-          special_event_layers[selected_event_type_name][special_event_distance][start_time] = newLayer
-        } else {
-          // console.log("Skipping already cached markers for "+special_event_distance+" events at "+start_time)
-        }
-      } else {
-        // console.log("Skipping markers for "+special_event_distance+"events at "+start_time)
-      }
-    })
-
-  })
-
-  // parkrun_data_geo.events_5k.forEach(function(parkrun_event) {
-  //   // console.log(parkrun_event.name)
-  //   if (parkrun_event.name in applicable_parkrun_events) {
-  //     var lat_lon = [parkrun_event.latitude, parkrun_event.longitude]
-  //     // Default marker for the moment
-  //     var marker = L.marker(lat_lon).addTo(mymap)
-  //   }
-  // })
+  L.voronoiLayer = function(data, cellRenderer) {
+    return new L.VoronoiLayer(data, cellRenderer)
+  }
 
 }
 
+function event_has_valid_location(event_info) {
+  var valid_location = false
+  if (event_info.lat && event_info.lon) {
+    if (event_info.lat != '' && event_info.lon != '') {
+      valid_location = true
+    }
+  }
+  return valid_location
+}
+
+function zoomLevelToScaleOptions(zoomLevel) {
+  options = {
+    "zoomLevel": zoomLevel,
+    "eventNameVisible": false,
+    "eventNameTextSize": 0,
+    "eventPointRadius": 1.5,
+    "pathLineWidth": 1
+  }
+
+  if (zoomLevel >= 8) {
+    options.eventPointRadius = 4
+  }  
+  if (zoomLevel >= 9) {
+    options.eventPointRadius = 6
+  }
+  if (zoomLevel >= 10) {
+    options.eventPointRadius = 8
+
+    // From this point onwards the event name is visible
+    options.eventNameVisible = true
+
+    options.eventNameTextSize = 12
+  }
+  if (zoomLevel >= 11) {
+    
+    options.eventPointRadius = 10
+
+    // We need a small line width generally, but it gets lost
+    // when there are more features on the map, so increase it
+    // when we we have zoomed in a lot
+    pathLineWidth = 2
+  }
+  if (zoomLevel >= 12) {
+    options.eventPointRadius = 12
+  }
+
+  return options
+
+}
+
+function get_voronoi_poly(cell) {
+  var real_edges = []
+  // console.log(cell)
+  // console.log(cell.length)
+  for (var i=0; i<cell.length; i++) {
+    if (cell[i] != null) {
+      var point = cell[i].join(" ")
+      real_edges.push(point)
+    }
+  }
+
+  return real_edges
+}
+
+
+function addVoronoiLayerToMap(map, eventsData) {
+
+  var regionnaireCellRenderer = function(vmap, eventsData) {
+
+    var completed_events = {}
+
+    // $.each(data.parkrun_results, function(index, parkrun_event) {
+    //   completed_events[parkrun_event.name] = true
+    // })
+
+    var filtered_points = []
+    $.each(eventsData, function(event_name, event_info) {
+      if (event_has_valid_location(event_info)) {
+        lat_lon = [+event_info.lat, +event_info.lon]
+        // Add the point to the array
+        var point = vmap.latLngToLayerPoint(lat_lon);
+        event_info.x = point.x
+        event_info.y = point.y
+        event_info.fill = "none"
+        event_info.opacity = 0.5
+        event_info.circleColour = "black"
+        event_info.circleColourLine = "gray"
+        if (completed_events[event_info.name] == true) {
+          event_info.fill = "green"
+          event_info.circleColour = "#006000"
+        }
+        filtered_points.push(event_info)
+        // }
+      }
+    })
+    return filtered_points
+  }
+
+  console.log("Creating voronoi map with cell renderer = "+regionnaireCellRenderer)
+  var voronoi_layer = L.voronoiLayer(eventsData, regionnaireCellRenderer)
+  voronoi_layer.addTo(map)
+
+}
 function draw_map(map_id) {
+
+  // Creating the Voronoi Map prototype on the L. object.
+  createVoronoiMapPrototype();
+
   // Create the map centred on Bushy
   var bushy = [51.410992, -0.335791]
   mymap = L.map(map_id).setView(bushy, 13);
@@ -179,49 +323,57 @@ function draw_map(map_id) {
   })
   tilelayer_openstreetmap.addTo(mymap)
 
-  // Create a set of markers
-  var marker_colours = [
-    'red',
-    'orange-dark',
-    'orange',
-    'yellow',
-    'blue-dark',
-    'cyan',
-    'purple',
-    'violet',
-    'pink',
-    'green-dark',
-    'green'
-  ]
-  // Make round markers for parkrun
-  marker_colours.forEach(function(colour) {
-    time_markers["parkrun"].push(
-      L.ExtraMarkers.icon({
-        markerColor: colour,
-        shape: 'circle'
-      })
-    )
-  })
-  // Make square markers for junior parkrun
-  marker_colours.forEach(function(colour) {
-    time_markers["junior parkrun"].push(
-      L.ExtraMarkers.icon({
-        markerColor: colour,
-        shape: 'square'
-      })
-    )
-  })
-
   // Allow the user to make the map go fullscreen
   mymap.addControl(new L.Control.Fullscreen())
-  mymap.addControl(new L.Control.SideMenu({
-    special_event_data: parkrun_data_special_events,
-    callback: special_event_on_change
-  }))
 
-  console.log(parkrun_data_geo)
-  console.log(parkrun_data_special_events)
+  console.log("Basic map created")
 
-  special_event_on_change()
+  // parkrun Events data
+  var parkrun_events_data = {
+    'raw_data': undefined,
+    'updated_at': undefined,
+    'last_update_attempt': undefined,
+    'updating': false,
+    'max_age': 3 * 24 * 60 * 60 * 1000,
+    'url': "https://images.parkrun.com/events.json",
+    'datatype': 'json',
+    'enabled': true,
+    'timeout': 5000,
+    'last_status': {}
+  }
+
+  // Perform an Asynchronous request to get the events data
+  console.log("Performing Asynchronous request for "+parkrun_events_data.url)
+  $.ajax({
+    url: parkrun_events_data.url,
+    dataType: parkrun_events_data.datatype,
+    timeout: parkrun_events_data.timeout,
+    success: function (result) {
+        console.log('Fresh fetch of '+parkrun_events_data.url)
+        parkrun_events_data.raw_data = result
+        parkrun_events_data.updated_at = new Date()
+        parkrun_events_data.last_status = {
+         "success": true
+        }
+
+        console.log(parkrun_events_data.raw_data)
+        // defer.resolve(result)
+
+        parsed_events_data = parseParkrunEventsJson(parkrun_events_data.raw_data)
+
+        addVoronoiLayerToMap(mymap, parsed_events_data)
+
+    },
+    error: function (xhr, status, error) {
+        console.log("Error fetching "+parkrun_events_data.url+": "+error+" - "+status)
+        parkrun_events_data.last_status = {
+         "success": false,
+         "returnStatus": status,
+         "error": error,
+         "message": JSON.stringify(arguments) + "" + xhr.responseText
+        }
+        // defer.resolve(undefined)
+    }
+  })
 
 }

@@ -209,7 +209,9 @@ function parse_results_table() {
     return a.date_obj - b.date_obj
   })
 
-  console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+  if (parkruns_completed_sorted.length > 0) {
+    console.log("Sorted parkruns, first: " + parkruns_completed_sorted[0].date + " last: "+ parkruns_completed_sorted[parkruns_completed_sorted.length - 1].date)
+  }
 
   return parkruns_completed_sorted
 }
@@ -479,7 +481,6 @@ function updateSummaryInfo(data, athleteId) {
   data.info.is_our_page = (data.info.has_athlete_id && athleteId == data.user_data.athlete_number)
   // Convenience properties for the main sources of data
   // data.info.has_geo_data = (data.geo_data !== undefined)
-  data.info.has_geo_technical_event_data = (data.geo_data !== undefined && (data.geo_data.data.event_status !== undefined))
   data.info.has_parkrun_results = (data.parkrun_results !== undefined)
 
 }
@@ -623,10 +624,6 @@ function create_page() {
     if (!has_geo_data(data)) {
       errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !')
     }
-    if (data.info.has_geo_technical_event_data == false) {
-      errors.push('! Unable to fetch parkrun event status data: Stats and Challenges, e.g. Regionnaire, may include events that haven\'t started yet !')
-    }
-
 
     // Add our final status message
     set_complete_progress_message(errors)
@@ -634,7 +631,7 @@ function create_page() {
   }).catch(error => {
     console.log(error)
     console.error(`An error occurred: ${error}`);
-    set_progress_message(`Error: ${error}. Data is ${JSON.stringify(data)}`)
+    set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`)
   });
 
 }

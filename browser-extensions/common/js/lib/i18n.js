@@ -45,7 +45,6 @@ var domains = {
         "url_athleteeventresultshistory": "results/athleteeventresultshistory/",
         "table_all_results": "All Results",
         "link_view_stats_for_all_parkruns": "View stats for all parkruns by this athlete",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "View stats for all parkruns by this athlete",
         "link_all": "All",
         // These variables contain text we output, so need translating by someone
         "text_see_challenge_progress": "See challenge progress",
@@ -93,7 +92,6 @@ var domains = {
         //"table_all_results": "Wszystkie rezultaty",
         "table_all_results": "Ukończone edycje parkrun",
         "link_view_stats_for_all_parkruns": "Zobacz statystyki uczestnika ze wszystkich biegów parkrun",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Zobacz wyniki tego zawodnika ze wszystkich biegów",
         "text_volunteer_role_map": {
             "Przechowanie sprzętu": "Equipment Storage and Delivery",
             "Przechowując(a)y wyposażenie": "Equipment Storage and Delivery",
@@ -151,7 +149,6 @@ var domains = {
         // http://www.parkrun.it/results/athleteeventresultshistory?athleteNumber=3868619&eventNumber=0
         "table_all_results": "Tutti i risultati",
         "link_view_stats_for_all_parkruns": "Visualizza statistiche per tutti i parkruns di questo atleta",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Visualizza statistiche per tutti i parkruns di questo atleta",
         "text_volunteer_role_map": {
             "Addetto magazzino e forniture": "Equipment Storage and Delivery",
             "Addetto comunicazioni": "Communications Person",
@@ -192,14 +189,13 @@ var domains = {
         // https://www.parkrun.dk/parkrunner/3287153/all/
         "table_all_results": "Alle resultater",
         "link_view_stats_for_all_parkruns": "Se tal for alle parkruns løbet af denne løber",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Se tal for alle parkruns løbet af denne løber",
         "text_volunteer_role_map": {
             "Udstyr – opbevaring og levering": "Equipment Storage and Delivery",
             "Kommunikation": "Communications Person",
             "Hjælperkoordinering": "Volunteer Co-ordinator",
             "Skiltning": "Pre-event Setup",
             "Vejledning": "First Timers Welcome",
-            "Tegnsprogs tolk": "Sign Language Support",
+            "Tegnsprogstolk": "Sign Language Support",
             "Officials": "Marshal",
             "Gående bagtrop": "Tail Walker",
             "Løbsleder": "Run Director",
@@ -232,7 +228,6 @@ var domains = {
         // https://www.parkrun.se/parkrunner/3899897/all/
         "table_all_results": "Alla resultat",
         "link_view_stats_for_all_parkruns": "Se statistik för alla parkruns av denna löpare",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Se statistik för alla parkruns av denna löpare",
         "text_volunteer_role_map": {
             "Material - förvaring och leverans": "Equipment Storage and Delivery",
             "Kommunikationsansvarig": "Communications Person",
@@ -270,7 +265,40 @@ var domains = {
         // http://www.parkrun.fi/tampere/results/athletehistory/?athleteNumber=4064283
         // http://www.parkrun.fi/results/athleteresultshistory/?athleteNumber=4064283
         // https://www.parkrun.fi/parkrunner/4064283/all/
-        // It is all in English
+        // It in Finnish now
+        "table_all_results": "Kaikki tulokset",
+        "link_view_stats_for_all_parkruns": "Näytä tilastot tämän parkrunnerin kaikista tapahtumista",
+        // Volunteer roles are in Latvian
+        "text_volunteer_role_map": {
+            "Tapahtumavastaava": "Run Director",
+            "Ajanottaja": "Timekeeper",
+            "Polettien järjestäjä": "Token Sorting",
+            "Tulosten käsittelijä": "Results Processor",
+            "Kuvaaja": "Photographer",
+            "Tiedotus ja viestintä": "Communications Person",
+            "Liikenteenohjaaja": "Marshal",
+            "Tapahtumapaikan pystyttäminen": "Pre-event Setup",
+            "Tavaran varastointi ja toimitus": "Equipment Storage and Delivery",
+            "Muut": "Other",
+            "Viivakoodin skannaaja": "Barcode Scanning",
+            "Tapahtumapaikan purkaminen": "Post-event Close Down",
+            "Polettien jakaja": "Finish Tokens",
+            "Numeron tarkastaja": "Number Checker",
+            "Ensikertalaisten opastus": "First Timers Welcome",
+            "Maalin järjestäjä": "Funnel Manager",
+            // "": "Lead Bike",
+            "Polettien jakajan avustaja": "Finish Token Support",
+            "Takimmainen": "Tail Walker",
+            "Vapaaehtoisten koordinaattori": "Volunteer Co-ordinator",
+            "Raportin kirjoittaja": "Report Writer",
+            "Jänis": "Pacer (5k only)",
+            "Näkövammaisen avustaja": "VI Guide",
+            "Viittomakielen avustaja": "Sign Language Support",
+            "Alkulämmittelyn vetäjä": "Warm Up Leader (junior events only)",
+            "Parkkipaikkaohjaaja": "Car Park Marshal",
+            "Reitin tarkastaja": "Event Day Course Check",
+            // "parkwalker": "parkwalker"
+        }
     },
     "www.parkrun.fr": {
         // French pages
@@ -279,20 +307,19 @@ var domains = {
         // https://www.parkrun.fr/parkrunner/2769739/all/
         "table_all_results": "Toutes les participations",
         "link_view_stats_for_all_parkruns": "Consulter les stats de cet athlète tous parkruns confondus",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Consulter les stats de cet athlète tous parkruns confondus",
         // Volunteer roles are in FRENCH (A582667)
         "text_volunteer_role_map": {
             "Rangement & Mise à disposition de l'équipement": "Equipment Storage and Delivery",
             "Responsable communication": "Communications Person",
             "Coordinateur des bénévoles": "Volunteer Co-ordinator",
             "Balisage du parcours": "Pre-event Setup",
-            "Briefing des nouveaux participants": "First Timers Welcome",
+            "Accueil des nouveaux participants": "First Timers Welcome",
             "Assistance langage des signes": "Sign Language Support",
             "Aiguilleur": "Marshal",
             "Fermeur marcheur": "Tail Walker",
             "Responsable du run": "Run Director",
             "Vélo de tête": "Lead Bike",
-            "Lièvre": "Pacer (5k only)",
+            "Meneur d'allure": "Pacer (5k only)",
             "Guide déficient visuel": "VI Guide",
             "Photographe": "Photographer",
             "Responsable chrono": "Timekeeper",
@@ -307,7 +334,7 @@ var domains = {
             "Classement des jetons": "Token Sorting",
             "Rédacteur du compte-rendu": "Report Writer",
             "Autre": "Other",
-            "Leader d'échauffement": "Warm Up Leader (junior events only)",
+            "Responsable de l'échauffement": "Warm Up Leader (junior events only)",
             "Aiguilleur parking": "Car Park Marshal",
             "Verification du Parcours - Jour de l'évènement": "Event Day Course Check",
             "promeneur": "parkwalker"
@@ -320,7 +347,6 @@ var domains = {
         // https://www.parkrun.com.de/parkrunner/4099000/all/
         "table_all_results": "Alle Ergebnisse bei",
         "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
         // Volunteer roles are in GERMAN (A4029732)
         "text_volunteer_role_map": {
             "Ausrüstung Lagerung und Lieferung": "Equipment Storage and Delivery",
@@ -354,12 +380,44 @@ var domains = {
         }
     },
     "www.parkrun.no": {
-        // Norweigen pages
+        // Norwegian pages
         // http://www.parkrun.no/toyen/results/athletehistory/?athleteNumber=4370177
         // http://www.parkrun.no/results/athleteresultshistory/?athleteNumber=4370177
         // https://www.parkrun.no/parkrunner/4370177/all/
-        // It's all in English
-        // Volunteer roles are in ENGLISH
+        "table_all_results": "Alle resultater",
+        "link_view_stats_for_all_parkruns": "Se statistikken for alle parkrun for denne deltakeren ",
+        // Volunteer roles are in NORWEGIAN
+        "text_volunteer_role_map": {
+            "Utstyrslagring- og levering": "Equipment Storage and Delivery",
+            "Kommunikasjonsansvarlig": "Communications Person",
+            "Frivilligkoordinator": "Volunteer Co-ordinator",
+            "Opprigg": "Pre-event Setup",
+            "Velkomsttale for førstegangsdeltakere": "First Timers Welcome",
+            "Tegnspråkstøtte": "Sign Language Support",
+            "Løypevakt": "Marshal",
+            "Baktropp": "Tail Walker",
+            "Løpsansvarlig": "Run Director",
+            "Ledesyklist": "Lead Bike",
+            "Fartsholder": "Pacer (5k only)",
+            "Guide for svaksynte": "VI Guide",
+            "Foto": "Photographer",
+            "Tidtaker": "Timekeeper",
+            "Ekstra tidtaker": "Backup Timer",
+            "Målområdeansvarlig": "Funnel Manager",
+            "Brikkeutdeling": "Finish Tokens",
+            "Brikkeutdelingsstøtte": "Finish Token Support",
+            "Strekkodeskanner": "Barcode Scanning",
+            "Nummersjekk": "Number Checker",
+            "Nedrigg": "Post-event Close Down",
+            "Resultatbehandler": "Results Processor",
+            "Brikkesortering": "Token Sorting",
+            "Rapportforfatter": "Report Writer",
+            "(brukes ikke i dette parkrun-territoriet)": "Warm Up Leader (junior events only)",
+            "Annet": "Other",
+            "Parkeringsplassvakt": "Car Park Marshal",
+            "parkwalker": "parkwalker",
+            "Løypekontroll før start": "Event Day Course Check"
+        }
     },
     "www.parkrun.ru": {
         // Russian pages
@@ -367,7 +425,6 @@ var domains = {
         // http://www.parkrun.ru/results/athleteresultshistory/?athleteNumber=1551222
         // https://www.parkrun.ru/parkrunner/1551222/all/
         // Randomly partly in English
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Показать статистику этого спортсмена по всем забегам",
         "table_all_results": "Все результаты",
         // Volunteer roles are in RUSSIAN (A1551222)
         "text_volunteer_role_map": {
@@ -420,7 +477,6 @@ var domains = {
         // It's all in Japanese, nothing will work without translations!
         "table_all_results": "すべての結果",
         "link_view_stats_for_all_parkruns": "この登録者のすべてのparkrunの記録を見る。",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "この登録者のすべてのparkrunの記録を見る。",
         // Volunteer roles are in JAPANESE largely provided by Bill Steffancin (A4782624) via email
         "text_volunteer_role_map": {
             "ランディレクター": "Run Director",
@@ -458,7 +514,6 @@ var domains = {
     "www.parkrun.co.nl": {
         "table_all_results": "Alle resultaten",
         "link_view_stats_for_all_parkruns": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Bekijk de statistieken van alle parkruns voor deze parkrunner",
         // Volunteer roles are in DUTCH
         "text_volunteer_role_map": {
             "Evenementleider": "Run Director",
@@ -485,6 +540,7 @@ var domains = {
             "Pacer": "Pacer (5k only)",
             "Buddy slechtziende loper": "VI Guide",
             "Gebarentolk": "Sign Language Support",
+            "Warm-up leider": "Warm Up Leader",
             "Parkeerregelaar": "Car Park Marshal",
             "Routecontroleur": "Event Day Course Check",
             "parkwandelaar": "parkwalker"
@@ -494,7 +550,6 @@ var domains = {
         // Using German translation
         "table_all_results": "Alle Ergebnisse bei",
         "link_view_stats_for_all_parkruns": "Statistiken für alle Läufe dieses Athleten ansehen",
-        "link_view_stats_for_all_parkruns_athleteeventhistory": "Statistiken für alle Läufe dieses Athleten ansehen",
         // Volunteer roles are in GERMAN (A4029732)
         "text_volunteer_role_map": {
             "Ausrüstung Lagerung und Lieferung": "Equipment Storage and Delivery",
@@ -528,6 +583,41 @@ var domains = {
             "parkwanderer": "parkwalker"
         }
     },
+    "www.parkrun.lt": {
+        "table_all_results": "Visi rezultatai",
+        "link_view_stats_for_all_parkruns": "Peržiūrėkite šio parkrun dalyvio/-ės statistikos santrauką",
+        // Volunteer roles are in Latvian
+        "text_volunteer_role_map": {
+            "Renginio Vadovas": "Run Director",
+            "Laiko Matuotojas": "Timekeeper",
+            "Žetonų Rūšiavimas": "Token Sorting",
+            "Rezultatų Įvedėjas": "Results Processor",
+            "Fotografas": "Photographer",
+            "Komunikacijų Savanoris": "Communications Person",
+            "Savanoris (Maršalas)": "Marshal",
+            "Pasiruošimas Prieš Renginį": "Pre-event Setup",
+            "Įrangos Sandėliavimas ir Pristatymas": "Equipment Storage and Delivery",
+            "Kita": "Other",
+            "Brūkšninio Kodo Skenavimas": "Barcode Scanning",
+            "Renginio Užbaigimo Procedūros": "Post-event Close Down",
+            "Finišo Žetonai": "Finish Tokens",
+            "Numerių Tikrintojas": "Number Checker",
+            "Pirmąkart Dalyvaujančiųjų Pasveikinimas": "First Timers Welcome",
+            "Srauto Valdytojas": "Funnel Manager",
+            // "": "Lead Bike",
+            "Finišo Žetonų Pagalba": "Finish Token Support",
+            // "Tail Walker": "Tail Walker",
+            "Savanorių Koordinatorius": "Volunteer Co-ordinator",
+            "Bėgimo Ataskaitos Rengėjas": "Report Writer",
+            "Laiko Vedlys": "Pacer (5k only)",
+            "Regėjimo Negalios Gidas": "VI Guide",
+            "Gestų Kalbos Pagalba": "Sign Language Support",
+            "Apšilimo Vedlys": "Warm Up Leader",
+            "Automobilių Parkingo Maršalas": "Car Park Marshal",
+            "Renginio Dienos Trasos Patikra": "Event Day Course Check",
+            // "parkwalker": "parkwalker"
+        }
+    }
 }
 
 function get_localised_value(param, domain=location.host) {

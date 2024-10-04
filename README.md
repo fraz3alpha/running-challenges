@@ -14,13 +14,6 @@ alphabet), 'Tourist' (running 20 or more different parkruns), and many more.
 The `/website` folder containers a Jekyll-based website. You can build and serve the website
 locally for testing by running a bash script (Linux and Mac only).
 
-1. Download the git submodule which contains additional Running Challenges data (the build fails without this). From the root of the project:
-  
-    `cd running-challenges-data`
-  
-    `git submodule update --init --recursive`
-  
-    `cd ..`
 1. From the root of the project, run the bash script:
 
     `./build/website/build-local-and-run.sh`
@@ -127,16 +120,17 @@ roles, and they will need adding in in a few places:
 
 It is impossible to add a new country until the new website is made live, and there are events on the map.
 
-- Find the website URLs for the 3 pages the extension modifies. They seem to follow the english spelling these days:
-  - "*://www.parkrun.jp/results/athleteeventresultshistory/*"
-  - "*://www.parkrun.jp/results/athleteresultshistory/*"
-  - "*://www.parkrun.jp/*/results/athletehistory/*"
+- Find the website URLs for the 2 pages the extension modifies. They seem to follow the english spelling these days, and are only available through the 'parkrunner' URLS, that replaced the older 'athlete' based ones:
+  - "*://www.parkrun.org.uk/parkrunner/*/all/"
+  - "*://www.parkrun.org.uk/parkrunner/*/"
   Each of these needs to be added to the `manifest.json` file for all the supported browsers.
-- Look in the volunteer rosters and attempt to find the translations to add to the `i18n.js` (internationalisation) file
+- Look in the volunteer rosters and attempt to find the translations to add to the `i18n.js` (internationalisation) file - unless it has changed, look at https://www.parkrun.org.uk/parkrunner/88720/, as they have done nearly everything.
 - Add the ISO code for the country to the flag map in `challenges.js`
 - Add the ISO code to the list of flags for the website under the `flags.yml` data file.
 - Get the flag from https://emojipedia.org/twitter/twemoji-2.6/ as described in the flags README.
 - Add the country code and country name to `background.js`
+- Update `browser-extensions/common/js/tests/ui-test/update.sh` with the new parkrun domain, and run the script to pull in new test files
+- Add the new country to the Github actions test list: `.github/workflows/build-extension.yml`
 
 # Version numbers
 

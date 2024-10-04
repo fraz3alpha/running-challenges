@@ -32,6 +32,9 @@ flags:
   - shortname: jp
     name: Japan
 
+  - shortname: lt
+    name: Lithuania
+
   - shortname: my
     name: Malaysia
 
