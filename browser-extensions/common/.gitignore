@@ -1,0 +1,10 @@
+# Allow copying built files into common for a faster development feedback
+# cycle.
+/css/third-party/
+/images/badges/
+/images/flags/
+/images/logo/
+/js/lib/third-party/
+/js/lib/version.js
+/manifest.json
+/web-ext-artifacts/
