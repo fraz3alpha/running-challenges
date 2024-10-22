@@ -543,7 +543,7 @@ function drawExplorerMap(divId, data) {
 
         // Get the location of the country mid-point, according to parkrun
         var lat_lon = [+countryInfo.lat, +countryInfo.lon]
-        // Get the current regions id for later use by the on click callback function
+        // Get the current country id for later use by the on click callback function
         var countryId = countryInfo.id
 
         // If we haven't run any events, we omit the pie chart, so centre the
@@ -1134,15 +1134,12 @@ function get_explorer_flag(country, visited) {
 
 }
 
-// This is a very complicated table to draw. And given that we've had to rip out some bits
-// now that parkrun HQ doesn't allocate parkruns in to a region, this might be overly complex,
-// if it even works at all
 function drawExplorerDataTable(table, data) {
   // Use the common function to see what countries we have visited
   const countryCompletionInfo = calculateCountryCompletionInfo(data)
   console.log(countryCompletionInfo)
 
-  // First of all, add a row with the world stats on, which is the top level region
+  // First of all, add a row with the world stats on, which is the top level
   // Generate a total for the current completion
   var worldEventsCount = 0
   var worldEventsCompletedCount = 0
