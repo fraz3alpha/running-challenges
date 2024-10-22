@@ -462,7 +462,6 @@ function drawExplorerMap(divId, data) {
       map: r_map,
       countryCompletionInfo: countryCompletionInfo,
       layers: {
-        subregions: [],
         events: []
       }
   }
@@ -645,19 +644,7 @@ function zoomMapToCountryExtents(map_data, data, countryId) {
 function showCountryEvents(map_data, data, countryId, depth) {
   console.log('Click for countryId: '+countryId+' depth='+depth)
 
-  // Remove any existing subregions at or below our depth
-  var regions_layer_key = 'subregions'
-  if (regions_layer_key in map_data.layers) {
-    while (map_data.layers[regions_layer_key].length > depth) {
-      var layer = map_data.layers[regions_layer_key].pop()
-      // console.log('Removed '+layer)
-      map_data.map.removeLayer(layer)
-    }
-  }
-  // ... and pop a fresh layer onto the stack
-  map_data.layers[regions_layer_key].push(new L.featureGroup());
-
-  // Remove any existing subregion events ...
+  // Remove any existing lower events ...
   var events_layer_key = 'events'
   if (events_layer_key in map_data.layers) {
     while (map_data.layers[events_layer_key].length > depth) {
@@ -679,10 +666,6 @@ function showCountryEvents(map_data, data, countryId, depth) {
   });
 
   // Icon for an event we have run
-  var event_run_icon = L.ExtraMarkers.icon({
-    markerColor: 'green-light',
-    shape: 'circle'
-  });
 
   // Icon for an event we have not run
   var event_not_run_icon = L.ExtraMarkers.icon({
@@ -761,12 +744,10 @@ function create_challenge_map(map_id, challenge_data, data) {
 
 }
 
-function create_challenge_map_voronoi(divId, challenge_data, data) {
-
+function create_challenge_map_voronoi(_divId, challenge_data, data) {
   // Get a summary of the completion data
-  var countryCompletionInfo = calculateCountryCompletionInfo(data)
 
-  var map_element_id = "challenge_map_"+challenge_data.shortname
+  const map_element_id = "challenge_map_"+challenge_data.shortname
 
   $('div[id^="challenge_map_"]').each(function() {
     $(this).empty().hide()
@@ -805,15 +786,6 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
   // Allow it to be fullscreen
   r_map.addControl(new L.Control.Fullscreen());
 
-  var map_data = {
-      map: r_map,
-      countryCompletionInfo: countryCompletionInfo,
-      layers: {
-        subregions: [],
-        events: []
-      }
-  }
-
   // Set the openstreetmap tiles
   var tilelayer_openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -824,7 +796,6 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
   var cellRenderer = function(vmap, data) {
 
     var filtered_points = []
-    var user_data = data.user_data
     var geo_data = data.geo_data
     var events = data.geo_data.data.events
     var parkrun_results = data.parkrun_results
