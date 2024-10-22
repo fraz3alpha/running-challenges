@@ -72,25 +72,20 @@ function add_table_break_row(table, title, help) {
 
 function add_challenges_to_table(table, challenge_results_type, data) {
   // console.log(data)
-   var ui_challenge_generation_duration = 0
+  var ui_challenge_generation_duration = 0
 
-   data.challenge_results[challenge_results_type].forEach(function (challenge) {
-       // console.log("Generating table rows for " + challenge.shortname)
-       var start_time = new Date()
-       if (challenge.shortname == 'regionnaire') {
-          //  generate_regionnaire_table_entry(challenge, table, data)
-       } else {
-           generate_standard_table_entry(challenge, table, data)
-       }
-       var duration = new Date() - start_time
-       ui_challenge_generation_duration += duration
-       // console.log("Completed generating table rows for " + challenge.shortname + " in " + duration + "ms")
+  data.challenge_results[challenge_results_type].forEach(function (challenge) {
+    // console.log("Generating table rows for " + challenge.shortname)
+    const start_time = new Date()
+    generate_standard_table_entry(challenge, table, data)
+    const duration = new Date() - start_time
+    ui_challenge_generation_duration += duration
+    // console.log("Completed generating table rows for " + challenge.shortname + " in " + duration + "ms")
+  });
 
-   });
+  // console.log("Completed generating challenge table rows in " + ui_challenge_generation_duration + "ms")
 
-   // console.log("Completed generating challenge table rows in " + ui_challenge_generation_duration + "ms")
-
-   return table
+  return table
 }
 
 function get_tbody_header(challenge) {
@@ -197,44 +192,39 @@ function get_challenge_header_row(challenge, data) {
     return main_row
 }
 
-function generateRegionnaireTableEntry(table, data) {
-  // We can only do this if we have geo data
-  
-  var challenge = {
+function generateExplorerTableEntry(table, data) {
+  const challenge = {
     "name": "parkrun Explorer",
-    "shortname": "regionnaire"
+    "shortname": "explorer"
   }
 
-  var challenge_tbody_header = get_tbody_header(challenge)
-  var challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
+  const challenge_tbody_header = get_tbody_header(challenge)
+  const challenge_tbody_detail = get_tbody_content(challenge, data.user_data)
 
   // Create the header row and add it to the tbody that exists to hold
   // the title row
-  var main_row = get_challenge_header_row(challenge, data)
+  const main_row = get_challenge_header_row(challenge, data)
   challenge_tbody_header.append(main_row)
 
   if (data.geo_data === undefined) {
     // When there is no geo data, just put a row in saying there is nothing to go on.
-    var infoRow = $("<tr/>").append($('<td colspan="4" align="center">No parkrun event location information, unable to generate regionnaire results</td>'))
+    var infoRow = $("<tr/>").append($('<td colspan="4" align="center">No parkrun event location information, unable to generate explorer results</td>'))
     challenge_tbody_detail.append(infoRow)
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
   } else {
     // Create a row to hold a map
-    var regionnaireMapId = 'regionnaire_map'
-    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+regionnaireMapId+'" style="height:400px; width:400"></div></td>'))
+    var explorerMapId = 'explorer_map'
+    var map_row = $("<tr/>").append($('<td colspan="4"><div id="'+explorerMapId+'" style="height:400px; width:400"></div></td>'))
     challenge_tbody_detail.append(map_row)
 
-    // draw_regionnaire_data_table(challenge_tbody_detail, challenge)
-    drawRegionnaireDataTable(challenge_tbody_detail, data)
+    drawExplorerDataTable(challenge_tbody_detail, data)
 
     table.append(challenge_tbody_header)
     table.append(challenge_tbody_detail)
 
-    drawRegionnaireMap(regionnaireMapId, data)
-
-    // create_regionnaire_map(regionnaire_map_id, data, challenge)
+    drawExplorerMap(explorerMapId, data)
   }
 }
 
@@ -446,7 +436,7 @@ function createVoronoiMapPrototype() {
 
 }
 
-function drawRegionnaireMap(divId, data) {
+function drawExplorerMap(divId, data) {
 
   // Get a summary of the completion data
   var countryCompletionInfo = calculateCountryCompletionInfo(data)
@@ -463,7 +453,7 @@ function drawRegionnaireMap(divId, data) {
   // Creating the Voronoi Map prototype on the L. object.
   createVoronoiMapPrototype();
 
-  console.log("Initialising the regionnaire map container")
+  console.log("Initialising the explorer map container")
   var r_map = L.map(divId).setView(default_centre, 2);
   // Allow it to be fullscreen
   r_map.addControl(new L.Control.Fullscreen());
@@ -485,7 +475,7 @@ function drawRegionnaireMap(divId, data) {
 
   // Add the Voronoi layer
 
-  var regionnaireCellRenderer = function(vmap, data) {
+  const explorerCellRenderer = function(vmap, data) {
 
     var events = data.geo_data.data.events
     var completed_events = {}
@@ -517,8 +507,8 @@ function drawRegionnaireMap(divId, data) {
     return filtered_points
   }
 
-  console.log("Creating voronoi map with cell renderer = "+regionnaireCellRenderer)
-  var voronoi_layer = L.voronoiLayer(data, regionnaireCellRenderer)
+  console.log("Creating voronoi map with cell renderer = "+explorerCellRenderer)
+  var voronoi_layer = L.voronoiLayer(data, explorerCellRenderer)
   voronoi_layer.addTo(r_map)
 
   // Icons
@@ -803,12 +793,6 @@ function create_challenge_map_voronoi(divId, challenge_data, data) {
   }
 
   console.log("Centre: "+map_centre_lat_lon)
-
-  console.log("Creating prototype")
-  // Creating the Voronoi Map prototype on the L. object.
-  // I don't think we need to do this again, and we have already done it with the regionnaire map stuff
-  // createVoronoiMapPrototype();
-
   console.log("Initialising the challenge voronoi map container for id="+map_element_id)
   var r_map = L.map(map_element_id).setView(map_centre_lat_lon, 2);
 
@@ -1159,7 +1143,7 @@ function get_parkrun_popup(event_name, event_info, custom_options) {
   return popup
 }
 
-function get_regionnaire_flag(country, visited) {
+function get_explorer_flag(country, visited) {
 
   var flag_icon = get_flag_image_src(country)
 
@@ -1182,61 +1166,53 @@ function get_regionnaire_flag(country, visited) {
 // This is a very complicated table to draw. And given that we've had to rip out some bits
 // now that parkrun HQ doesn't allocate parkruns in to a region, this might be overly complex,
 // if it even works at all
-function drawRegionnaireDataTable(table, data) {
-
+function drawExplorerDataTable(table, data) {
   // Use the common function to see what countries we have visited
-  var countryCompletionInfo = calculateCountryCompletionInfo(data)
+  const countryCompletionInfo = calculateCountryCompletionInfo(data)
   console.log(countryCompletionInfo)
 
   // First of all, add a row with the world stats on, which is the top level region
   // Generate a total for the current completion
   var worldEventsCount = 0
   var worldEventsCompletedCount = 0
-  $.each(countryCompletionInfo, function(countryName, countryInfo) {
+  $.each(countryCompletionInfo, function (countryName, countryInfo) {
     worldEventsCount += countryInfo.childEventsCount
     worldEventsCompletedCount += countryInfo.childEventsCompletedCount
   })
 
-  var worldCompletionFractionString = worldEventsCompletedCount +"/"+ worldEventsCount
+  const worldCompletionFractionString = worldEventsCompletedCount + "/" + worldEventsCount
 
   var row = $("<tr/>")
-  row.append($("<td/>").append(get_regionnaire_flag("World", true)))
+  row.append($("<td/>").append(get_explorer_flag("World", true)))
   row.append($("<td/>").append($("<b/>").text("World")))
   row.append($("<td/>"))
   row.append($("<td/>").text(worldCompletionFractionString))
   table.append(row)
 
-  var alphabeticallySortedCountries = Object.keys(countryCompletionInfo).sort()
+  const alphabeticallySortedCountries = Object.keys(countryCompletionInfo).sort()
   console.log(alphabeticallySortedCountries)
 
-  $.each(alphabeticallySortedCountries, function(idx, countryName) {
-    var countryInfo = countryCompletionInfo[countryName]
-    var countryId = countryInfo["id"]
+  $.each(alphabeticallySortedCountries, function (idx, countryName) {
+    const countryInfo = countryCompletionInfo[countryName]
     // Only show those countries with open events (we have to assume they're active)
     if (countryInfo.childEventsCount > 0) {
       // Determine how complete this country is...
       console.log(`${countryInfo.childEventsCount} events for ${countryName}`)
       var countryCompletionPercentage = countryInfo.childEventsCompletedCount / countryInfo.childEventsCount
-      var countryCompletionFractionString = countryInfo.childEventsCompletedCount +"/"+ countryInfo.childEventsCount
+      var countryCompletionFractionString = countryInfo.childEventsCompletedCount + "/" + countryInfo.childEventsCount
 
       var row = $("<tr/>")
-      var regionnaire_country_class = "regionnaire-country-"+countryId
-      var regionnaire_parent_region_class_country = "regionnaire-parent-region-id-"+countryId
-
-      // We fade out the regionnaire flag if it hasn't been visited, with
-      // get_regionnaire_flag's second argumemt being a true/false value of whether
+      // We fade out the explorer flag if it hasn't been visited, with
+      // get_explorer_flag's second argumemt being a true/false value of whether
       // you have been. By stating whether the completion percentage is above zero
       // we can calculate this on the fly
-      row.append($("<td/>").append(get_regionnaire_flag(countryName, countryCompletionPercentage > 0)).append($("<a/>").attr("name", countryName)))
+      row.append($("<td/>").append(get_explorer_flag(countryName, countryCompletionPercentage > 0)).append($("<a/>").attr("name", countryName)))
       row.append($("<td/>").append($("<b/>").text(countryName)))
       row.append($("<td/>"))
       row.append($("<td/>").text(countryCompletionFractionString))
       table.append(row)
-
     }
-
   })
-
 }
 
 function generate_standard_table_entry(challenge, table, data) {

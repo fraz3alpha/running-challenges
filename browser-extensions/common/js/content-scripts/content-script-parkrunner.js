@@ -446,7 +446,7 @@ function add_flags(div_id, data) {
             // Find out when it was first run and make a nice string
             var first_run = country.firstRanOn.toISOString().split("T")[0]
 
-            var regionnaire_link = $("<a/>").attr("href", "#regionnaire")
+            var explorer_link = $("<a/>").attr("href", "#explorer")
 
             var img = $('<img>');
             img.attr('src', get_flag_image_src(country.name))
@@ -460,8 +460,8 @@ function add_flags(div_id, data) {
             // at some point. So now lets make it 2px all round
             img.attr('style', 'padding-left:2px; padding-right:2px; padding-bottom:2px; padding-top:2px')
 
-            regionnaire_link.append(img)
-            flags_div.append(regionnaire_link)
+            explorer_link.append(img)
+            flags_div.append(explorer_link)
 
             if (index_counter > 0 && index_counter % 8 == 0) {
                 flags_div.append($('<br/>'))
@@ -494,8 +494,8 @@ function add_challenge_results(div_id, data) {
   // Add the results if we have them
   if (data.info.has_challenge_results) {
 
-    // Add the regionnaire table on it's own, before the challenges, always
-    generateRegionnaireTableEntry(results_table, data)
+    // Add the explorer table on its own, before the challenges, always
+    generateExplorerTableEntry(results_table, data)
 
     if (data.info.has_challenge_running_results) {
       add_challenges_to_table(results_table, 'running_results', data)

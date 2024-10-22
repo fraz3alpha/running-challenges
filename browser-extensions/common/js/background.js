@@ -122,40 +122,15 @@ function getCountryNameFromId(id) {
 }
 
 function get_cache_summary() {
-
-  var summary = {
-    'regions': '<missing>',
-    'events': '<missing>',
-    'countries': '<missing>',
-    'event_status': '<missing>',
+  return {
+    'events': Object.keys(cache?.data?.events)?.length ?? '<missing>',
+    'countries': Object.keys(cache?.data?.countries)?.length ?? '<missing>',
     'data': {
       'events': {
-        'updated_at': cache.events.updated_at
-      },
-    }
-  }
-
-  if (cache.data !== undefined) {
-
-    if ('regions' in cache.data) {
-      summary.regions = Object.keys(cache.data.regions).length
-    }
-    if ('events' in cache.data) {
-      summary.events = Object.keys(cache.data.events).length
-    }
-    if ('countries' in cache.data) {
-      summary.countries = Object.keys(cache.data.countries).length
-    }
-    if ('event_status' in cache.data) {
-      if (cache.data.event_status !== undefined) {
-        summary.event_status = Object.keys(cache.data.event_status).length
+        'updated_at': cache?.events?.updated_at ?? '<no data>'
       }
     }
-
   }
-
-  return summary
-
 }
 
 function clear_cache() {
@@ -397,16 +372,13 @@ function update_cache_data(data_events) {
   // Build up our new data
   var data = {
     'valid': false,
-    'regions': {},
     'events': {},
     'countries': {},
-    'event_status': undefined,
     'data_fetch_status': {
       'events': cache.events.last_status
     }
   }
 
-  // Replace the complicated events/regions parsing with a single call
   parse_events(data, data_events)
 
   // Update the global cache

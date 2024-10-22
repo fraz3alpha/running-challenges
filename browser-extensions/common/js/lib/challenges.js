@@ -241,13 +241,6 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
 
   }
 
-  // if (data.parkrun_results && data.geo_data) {
-  //   challenge_data.push(challenge_by_region(data, {
-  //     "shortname": "regionnaire",
-  //     "name": "Regionnaire",
-  //     "help": "Run all the parkrun locations in a geographical region."}))
-  // }
-
   if (data.parkrun_results && data.geo_data) {
       challenge_data.push(challenge_record_breaker(data, {
         "shortname": "record-breaker",
@@ -1343,13 +1336,9 @@ function get_flag_image_src(country) {
 }
 
 function generate_global_tourism_data(parkrun_results, geo_data) {
-    // Generate essentially the same results as the regionnaire challenge all over again
     // console.log("generate_global_tourism_data()")
     var global_tourism = []
-
-
-
-    regions = geo_data.data.regions
+    const regions = geo_data.data.regions
     events_completed_map = group_results_by_event(parkrun_results)
     sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
 
@@ -1365,8 +1354,6 @@ function generate_global_tourism_data(parkrun_results, geo_data) {
             "first_visited": top_level_country.first_ran_on,
             "icon": get_flag_image_src(top_level_country.name)
         }
-
-        var child_events = find_region_child_events(top_level_country)
 
         if (top_level_country.child_events_completed_count > 0) {
             country_info["visited"] = true
@@ -2191,16 +2178,6 @@ function get_user_data(data) {
   return data.user_data
 }
 
-function has_user_data_athlete_id(data) {
-  return has_it = false
-  if (has_user_data(data)) {
-    if (get_user_data(data).athlete_number !== undefined) {
-      has_it = true
-    }
-  }
-  return has_it
-}
-
 function get_user_data_athlete_id(data) {
   return get_user_data(data).athlete_number
 }
@@ -2831,34 +2808,6 @@ function challenge_obsessive(data, params) {
     return update_data_object(o)
 }
 
-function unroll_regions(sorted_region_heirachy) {
-
-  summary = {}
-  iterate_unroll_regions(summary, sorted_region_heirachy, 0)
-  return summary
-
-}
-
-function iterate_unroll_regions(summary, region, parent_id) {
-
-  summary[region.id] = {
-    name: region.name,
-    parent_id: parent_id,
-    complete: region.complete,
-    completed_on: region.completed_on,
-    child_regions: region.child_regions.map(r => r.id),
-    child_events: region.child_events,
-    child_events_completed: region.child_events_completed,
-    // Recursive data, for all child regions and their children, downloads
-    recursive_child_events_completed: region.child_events_completed_count,
-    recursive_child_events_count: region.child_events_total,
-  }
-  region.child_regions.forEach(function(sub_region) {
-    iterate_unroll_regions(summary, sub_region, region.id)
-  })
-
-}
-
 function calculateCountryCompletionInfo(data) {
 
   var countryCompletionInfo = {}
@@ -2968,30 +2917,6 @@ function calculate_child_regions(regions, events_completed_map, parent_region) {
 
 }
 
-function generate_regionnaire_detail_info(region, depth) {
-    var details = []
-
-    prefix = Array(depth).join("- ")
-
-    if (region["child_events_total"] > 0) {
-        details.push({
-                "subpart": prefix + region["name"],
-                "info": region["child_events_completed_count"] + "/" + region["child_events_total"],
-                "complete": region["child_events_completed_count"] == region["child_events_total"],
-                "completed_on": null
-        })
-    }
-
-    region["child_regions"].forEach(function(child_region) {
-        sub_region_info = generate_regionnaire_detail_info(child_region, depth+1);
-        sub_region_info.forEach(function (array_entry) {
-            details.push(array_entry)
-        })
-    })
-
-    return details
-}
-
 function challenge_by_region(data, params) {
 
   var parkrun_results = data.parkrun_results
@@ -3009,9 +2934,7 @@ function challenge_by_region(data, params) {
 
     o.regions = sorted_region_heirachy
 
-    o.unrolled_regions = unroll_regions(sorted_region_heirachy)
-
-    o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
+   o.subparts_detail = []
 
     // Work out of any regions have been completed
     o.subparts_detail.forEach(function (detail) {
