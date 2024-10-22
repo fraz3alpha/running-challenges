@@ -65,8 +65,8 @@ function get_debug_div() {
 }
 
 function append_message(message) {
-  var date_str = new Date()
-  get_debug_div().prepend($('<p/>').text(date_str+": "+message))
+  const date_str = new Date()
+  get_debug_div().prepend($(`<p id="${date_str}"/>`).text(date_str+": "+message))
 }
 
 // Code to run when the document's DOM is ready
