@@ -182,23 +182,10 @@ function update_cache(force_update=false) {
 
 function update_geo_data_stats() {
     console.log('update_geo_data_stats()')
-    var s_last_update = "-"
-    var s_known_regions = "0"
-    var s_known_countries = "0"
-    var s_geo_data_bytes = "0"
-
-    if (geo_data !== null) {
-        s_last_update = geo_data.updated;
-        s_known_countries = Object.keys(geo_data.data.countries).length;
-        s_known_regions = Object.keys(geo_data.data.regions).length;
-        s_geo_data_bytes =  JSON.stringify(geo_data).length;
-    }
-
-    $('#cached_geo_updated').text(s_last_update)
-    $('#cached_geo_regions').text(s_known_regions)
-    $('#cached_geo_countries').text(s_known_countries)
-    $('#cached_geo_bytes').text(s_geo_data_bytes)
-
+    $('#cached_geo_updated').text(geo_data?.updated)
+    $('#cached_geo_events').text(Object.keys(geo_data?.data?.events).length)
+    $('#cached_geo_countries').text(Object.keys(geo_data.data.countries).length)
+    $('#cached_geo_bytes').text(JSON.stringify(geo_data).length)
 }
 
 function update_home_parkrun_dropdown() {
