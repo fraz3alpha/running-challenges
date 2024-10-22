@@ -1,5 +1,5 @@
 
-var buttons = [
+const buttons = [
   {
     name: "Reset",
     action: "debug-reset"
@@ -37,19 +37,19 @@ function initial_page_setup() {
 }
 
 function create_buttons(div) {
-  $.each(buttons, function(index, action_type) {
-    append_message("Creating '"+action_type.name+"'")
+  $.each(buttons, function (index, action_type) {
+    append_message("Creating '" + action_type.name + "'")
     var b = $('<button/>',
       {
-          text: action_type.name,
-          click: function () {
-            append_message(action_type.action)
-            browser.runtime.sendMessage({'action': action_type.action}).then(function (response) {
-                if (response && 'msg' in response) {
-                    append_message(response.msg)
-                }
-            });
-          }
+        text: action_type.name,
+        click: function () {
+          append_message(action_type.action)
+          browser.runtime.sendMessage({ 'action': action_type.action }).then(function (response) {
+            if (response && 'msg' in response) {
+              append_message(response.msg)
+            }
+          });
+        }
       })
     div.append(b)
   })
@@ -66,10 +66,8 @@ function get_debug_div() {
 
 function append_message(message) {
   const date_str = new Date()
-  get_debug_div().prepend($(`<p id="${date_str}"/>`).text(date_str+": "+message))
+  get_debug_div().prepend($(`<p id="${date_str}"/>`).text(date_str + ": " + message))
 }
 
 // Code to run when the document's DOM is ready
-$( document ).ready(function() {
-    initial_page_setup()
-});
+$(() => { initial_page_setup(); });
