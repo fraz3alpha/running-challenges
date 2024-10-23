@@ -164,9 +164,9 @@ function get_challenge_header_row(challenge, data) {
     var challenge_map_link = ''
     if (has_geo_data(data) && challenge.has_map === true) {
         challenge_map_link = $('<span/>').attr("id", challenge_map_link_id).html("<span style=\"cursor: default\">show map</span>").click(function() {
-        console.log(challenge_map_id)
-        console.log(challenge)
-        console.log(challenge.nearest_qualifying_events)
+        // console.log(challenge_map_id)
+        // console.log(challenge)
+        // console.log(challenge.nearest_qualifying_events)
         create_challenge_map(challenge_map_id, challenge, data)
       })
     }
@@ -276,12 +276,12 @@ function createVoronoiMapPrototype() {
       console.log('Voronoi Layer - initialize()')
       this._data = data
       // We may have been passed a custom cell renderer
-      console.log(cellRenderer)
+      // console.log(cellRenderer)
       this._cellRenderer = cellRenderer
     },
 
     onAdd: function(map) {
-      console.log('Voronoi Layer - onAdd()')
+      // console.log('Voronoi Layer - onAdd()')
         // var nw_point = map.latLngToLayerPoint(bounds.getNorthWest())
         // Store the map
         this._map = map
@@ -366,7 +366,7 @@ function createVoronoiMapPrototype() {
       var voronoi_polygons = voronoi_data.polygons()
 
       var zoomScaleOptions = zoomLevelToScaleOptions(vmap.getZoom())
-      console.log(zoomScaleOptions)
+      // console.log(zoomScaleOptions)
 
       $.each(voronoi_polygons, function(index, cell) {
 
@@ -506,7 +506,7 @@ function drawExplorerMap(divId, data) {
     return filtered_points
   }
 
-  console.log("Creating voronoi map with cell renderer = "+explorerCellRenderer)
+  // console.log("Creating voronoi map with cell renderer = "+explorerCellRenderer)
   var voronoi_layer = L.voronoiLayer(data, explorerCellRenderer)
   voronoi_layer.addTo(r_map)
 
@@ -732,7 +732,7 @@ var challenge_maps = {}
 
 function create_challenge_map(map_id, challenge_data, data) {
 
-  console.log(challenge_data)
+  // console.log(challenge_data)
 
   if (challenge_data.map_type == "standard") {
     create_challenge_map_standard(map_id, challenge_data, data)
@@ -853,7 +853,7 @@ function create_challenge_map_voronoi(_divId, challenge_data, data) {
     return filtered_points
   }
 
-  console.log("Creating voronoi map with cell renderer = "+cellRenderer)
+  // console.log("Creating voronoi map with cell renderer = "+cellRenderer)
   var voronoi_layer = L.voronoiLayer(data, cellRenderer)
   voronoi_layer.addTo(r_map)
 }
@@ -1137,7 +1137,7 @@ function get_explorer_flag(country, visited) {
 function drawExplorerDataTable(table, data) {
   // Use the common function to see what countries we have visited
   const countryCompletionInfo = calculateCountryCompletionInfo(data)
-  console.log(countryCompletionInfo)
+  // console.log(countryCompletionInfo)
 
   // First of all, add a row with the world stats on, which is the top level
   // Generate a total for the current completion
@@ -1195,7 +1195,7 @@ function generate_standard_table_entry(challenge, table, data) {
 
     // Create a row to hold a map, and hide it
     if (challenge.has_map === true) {
-      console.log("Creating map for " + challenge.shortname)
+      //console.log("Creating map for " + challenge.shortname)
       var map_row = $("<tr/>").append($('<td colspan="4"><div id="challenge_map_'+challenge.shortname+'" style="height:400; width:400"></div></td>'))
       challenge_tbody_detail.append(map_row)
     }
@@ -1277,7 +1277,6 @@ function add_stats_table(div, data) {
 
 function isChallengeHidden(challengeShortname, userData) {
   var isHidden = false
-  console.log("userData: "+JSON.stringify(userData))
   if (userData !== undefined) {
     if (userData["challengeMetadata"] !== undefined && challengeShortname in userData["challengeMetadata"]) {
       if ("hidden" in userData.challengeMetadata[challengeShortname]) {
@@ -1296,7 +1295,7 @@ function saveHiddenPreference(challengeName, isHidden) {
     challengeMetadata: {}
   }).then((items) => {
     // Items contains the whole object, of which the key we asked for is a sub-item
-    console.log(items)
+    // console.log(items)
 
     // If the challenge already exists in the object, then set the hidden property
     if (challengeName in items.challengeMetadata) {

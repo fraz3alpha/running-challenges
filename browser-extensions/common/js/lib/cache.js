@@ -86,8 +86,7 @@ function clear_cache_by_name(name) {
 }
 
 function parse_events(data, events_data) {
-  console.log('parse_events()')
-  console.log(events_data)
+  console.log(`parse_events: ${JSON.stringify(events_data, null, 2)}`)
 
   if (data === undefined) {
     return
@@ -189,6 +188,8 @@ function addEventToCountryData(data, country_name, event_id, event_name) {
 }
 
 function get_geo_data(notify_func, freshen = false) {
+  console.log('Wednesday, 2024-10-23 paj ' + JSON.stringify(localStorage, null, 2));
+
   const now = new Date()
 
   // Work out if any of the files in 'cache' need updating

@@ -1,4 +1,3 @@
-
 const buttons = [
   {
     name: "Reset",
@@ -37,7 +36,7 @@ function initial_page_setup() {
 }
 
 function create_buttons(div) {
-  $.each(buttons, function (index, action_type) {
+  $.each(buttons, function (_index, action_type) {
     append_message("Creating '" + action_type.name + "'")
     var b = $('<button/>',
       {
@@ -66,7 +65,7 @@ function get_debug_div() {
 
 function append_message(message) {
   const date_str = new Date()
-  get_debug_div().prepend($(`<p id="${date_str}"/>`).text(date_str + ": " + message))
+  get_debug_div().prepend($(`<text id="${date_str}" title="${date_str}"/>`).text(JSON.stringify(message, null, 2)))
 }
 
 // Code to run when the document's DOM is ready

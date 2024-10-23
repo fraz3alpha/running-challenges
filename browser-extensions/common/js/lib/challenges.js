@@ -7,33 +7,33 @@
  */
 
 volunteer_roles_map = [
-    {"shortname": "equipment-storage", "name": "Equipment Storage and Delivery"},
-    {"shortname": "comms-person", "name": "Communications Person"},
-    {"shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator"},
-    {"shortname": "event-day-course-check", "name": "Event Day Course Check"},
-    {"shortname": "setup", "name": "Pre-event Setup"},
-    {"shortname": "car-park-marshal", "name": "Car Park Marshal"},
-    {"shortname": "first-timers-welcome", "name": "First Timers Welcome"},
-    {"shortname": "sign-language", "name": "Sign Language Support"},
-    {"shortname": "marshal", "name": "Marshal"},
-    {"shortname": "parkwalker", "name": "parkwalker"},
-    {"shortname": "tail-walker", "name": "Tail Walker"},
-    {"shortname": "run-director", "name": "Run Director"},
-    {"shortname": "lead-bike", "name": "Lead Bike"},
-    {"shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"]},
-    {"shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"]},
-    {"shortname": "photographer", "name": "Photographer"},
-    {"shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"]},
-    {"shortname": "funnel-manager", "name": "Funnel Manager"},
-    {"shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"]},
-    {"shortname": "barcode-scanning", "name": "Barcode Scanning"},
-    {"shortname": "manual-entry", "name": "Number Checker"},
-    {"shortname": "close-down", "name": "Post-event Close Down"},
-    {"shortname": "results-processing", "name": "Results Processor"},
-    {"shortname": "token-sorting", "name": "Token Sorting"},
-    {"shortname": "report-writer", "name": "Report Writer"},
-    {"shortname": "other", "name": "Other"},
-    {"shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"]}
+  { "shortname": "equipment-storage", "name": "Equipment Storage and Delivery" },
+  { "shortname": "comms-person", "name": "Communications Person" },
+  { "shortname": "volunteer-coordinator", "name": "Volunteer Co-ordinator" },
+  { "shortname": "event-day-course-check", "name": "Event Day Course Check" },
+  { "shortname": "setup", "name": "Pre-event Setup" },
+  { "shortname": "car-park-marshal", "name": "Car Park Marshal" },
+  { "shortname": "first-timers-welcome", "name": "First Timers Welcome" },
+  { "shortname": "sign-language", "name": "Sign Language Support" },
+  { "shortname": "marshal", "name": "Marshal" },
+  { "shortname": "parkwalker", "name": "parkwalker" },
+  { "shortname": "tail-walker", "name": "Tail Walker" },
+  { "shortname": "run-director", "name": "Run Director" },
+  { "shortname": "lead-bike", "name": "Lead Bike" },
+  { "shortname": "pacer", "name": "Pacer", "matching-roles": ["Pacer (5k only)"] },
+  { "shortname": "vi-guide", "name": "Guide Runner", "matching-roles": ["VI Guide"] },
+  { "shortname": "photographer", "name": "Photographer" },
+  { "shortname": "timer", "name": "Timer", "matching-roles": ["Timekeeper", "Backup Timer"] },
+  { "shortname": "funnel-manager", "name": "Funnel Manager" },
+  { "shortname": "finish-tokens", "name": "Finish Tokens & Support", "matching-roles": ["Finish Tokens", "Finish Token Support"] },
+  { "shortname": "barcode-scanning", "name": "Barcode Scanning" },
+  { "shortname": "manual-entry", "name": "Number Checker" },
+  { "shortname": "close-down", "name": "Post-event Close Down" },
+  { "shortname": "results-processing", "name": "Results Processor" },
+  { "shortname": "token-sorting", "name": "Token Sorting" },
+  { "shortname": "report-writer", "name": "Report Writer" },
+  { "shortname": "other", "name": "Other" },
+  { "shortname": "warm-up-leader", "name": "Warm Up Leader", "matching-roles": ["Warm Up Leader (junior events only)", "Warm Up Leader"] }
 ]
 
 function group_volunteer_data(volunteer_data) {
@@ -43,16 +43,16 @@ function group_volunteer_data(volunteer_data) {
 
   volunteer_roles_map.forEach(function (role) {
     grouped_volunteer_data[role["name"]] = 0
-    if (role["matching-roles"] !== undefined){
-        for (var i=0; i<role["matching-roles"].length; i++) {
-            if (role["matching-roles"][i] in volunteer_data) {
-                grouped_volunteer_data[role["name"]] += volunteer_data[role["matching-roles"][i]]
-            }
+    if (role["matching-roles"] !== undefined) {
+      for (var i = 0; i < role["matching-roles"].length; i++) {
+        if (role["matching-roles"][i] in volunteer_data) {
+          grouped_volunteer_data[role["name"]] += volunteer_data[role["matching-roles"][i]]
         }
+      }
     } else {
       if (role.name in volunteer_data) {
-          // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
-          grouped_volunteer_data[role["name"]] = volunteer_data[role.name]
+        // console.log("Completed "+role.name+" "+volunteer_data[role.name]+" times")
+        grouped_volunteer_data[role["name"]] = volunteer_data[role.name]
       }
     }
   })
@@ -121,13 +121,15 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
           }
         ]
       },
-      "help": "Run at different parkrun events all over the world! Get badges along your journey at 20,25,50,75,100, and 250 different events."}))
+      "help": "Run at different parkrun events all over the world! Get badges along your journey at 20,25,50,75,100, and 250 different events."
+    }))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "alphabeteer",
       "name": "Alphabeteer",
       "data": "abcdefghijklmnopqrstuvwyz",
-      "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."}))
-    challenge_data.push(challenge_single_parkrun_count(data, 
+      "help": "Run at parkrun locations starting with each letter of the English alphabet (except X)."
+    }))
+    challenge_data.push(challenge_single_parkrun_count(data,
       {
         "shortname": "double-ton",
         "name": "Tons of runs",
@@ -148,66 +150,76 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
     challenge_data.push(challenge_stopwatch_bingo(data, {
       "shortname": "stopwatch-bingo",
       "name": "Stopwatch Bingo",
-      "help": " Collect all the seconds from 00 to 59 in your finishing times."}))
+      "help": " Collect all the seconds from 00 to 59 in your finishing times."
+    }))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "pirates",
       "name": "Pirates!",
       "data": "cccccccr",
-      "help": "Run seven Cs and an R (say it out loud)."}))
+      "help": "Run seven Cs and an R (say it out loud)."
+    }))
     challenge_data.push(challenge_start_letters(data, {
       "shortname": "stayin-alive",
       "name": "Stayin' Alive",
       "data": "bgbgbg",
-      "help": "Run three Bees and three Gees."}))
+      "help": "Run three Bees and three Gees."
+    }))
     challenge_data.push(challenge_words(data, {
       "shortname": "compass-club",
       "name": "Compass Club",
-      "data": ["north","south","east","west"],
-      "help": " Run at a parkrun named after each of the four compass points."}))
+      "data": ["north", "south", "east", "west"],
+      "help": " Run at a parkrun named after each of the four compass points."
+    }))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "full-ponty",
       "name": "The Full Ponty",
-      "data": ["Pontefract","Pontypool","Pontypridd","Pont y Bala"],
-      "help": "Run at all the parkruns named ponty... or ponte..."}))
+      "data": ["Pontefract", "Pontypool", "Pontypridd", "Pont y Bala"],
+      "help": "Run at all the parkruns named ponty... or ponte..."
+    }))
     challenge_data.push(challenge_parkruns(data, {
       "shortname": "pilgrimage",
       "name": "Bushy Pilgrimage",
       "data": ["Bushy Park"],
-      "help": "Run at Bushy parkrun, where it all began."}))
+      "help": "Run at Bushy parkrun, where it all began."
+    }))
     // Note for the dates, the month is zero indexed (0-11), the day of the month is (1-31)
     challenge_data.push(challenge_on_dates(data, {
       "shortname": "christmas-day",
       "name": "Christmas Day",
       "data": [
-        {"month": 11, "day": 25}
+        { "month": 11, "day": 25 }
       ],
-      "help": "Run a parkrun on the 25th of December."}))
+      "help": "Run a parkrun on the 25th of December."
+    }))
     challenge_data.push(challenge_nyd_double(data, {
       "shortname": "nyd-double",
-      "name":  "NYD Double",
-      "help": "Run two parkruns on one New Year's Day."}))
+      "name": "NYD Double",
+      "help": "Run two parkruns on one New Year's Day."
+    }))
     challenge_data.push(challenge_groundhog_day(data, {
       "shortname": "groundhog-day",
       "name": "Groundhog Day",
-      "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."}))
+      "help": "Finish with the same time at the same parkrun location on two consecutive parkruns."
+    }))
     challenge_data.push(challenge_on_dates(data, {
       "shortname": "all-weather-runner",
       "name": "All Weather Runner",
       "data": [
-        {"month": 0},
-        {"month": 1},
-        {"month": 2},
-        {"month": 3},
-        {"month": 4},
-        {"month": 5},
-        {"month": 6},
-        {"month": 7},
-        {"month": 8},
-        {"month": 9},
-        {"month": 10},
-        {"month": 11},
+        { "month": 0 },
+        { "month": 1 },
+        { "month": 2 },
+        { "month": 3 },
+        { "month": 4 },
+        { "month": 5 },
+        { "month": 6 },
+        { "month": 7 },
+        { "month": 8 },
+        { "month": 9 },
+        { "month": 10 },
+        { "month": 11 },
       ],
-      "help": "Run in each month of the year."}))
+      "help": "Run in each month of the year."
+    }))
     // Pass in the current athlete info
     challenge_data.push(challenge_name_badge(data, {
       "shortname": "name-badge",
@@ -215,7 +227,7 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
       "data": thisAthleteInfo,
       "help": "Spell out your registered name with parkruns."
     }))
-    challenge_data.push(challenge_obsessive(data, 
+    challenge_data.push(challenge_obsessive(data,
       {
         "shortname": "obsessive-gold",
         "name": "parkrun Obsessive",
@@ -242,33 +254,33 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
   }
 
   if (data.parkrun_results && data.geo_data) {
-      challenge_data.push(challenge_record_breaker(data, {
-        "shortname": "record-breaker",
-        "name": "Record Breaker",
-        "collapsible": true,
-        "help": "Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.",
-        "stages": [
-          {
-            "distance_km": 33,
-            "name": "33",
-            "badge_icon": "runner-record-breaker-33",
-            "events": {}
-          },
-          {
-            "distance_km": 45,
-            "name": "45",
-            "badge_icon": "runner-record-breaker-45",
-            "events": {}
-          },
-          {
-            "distance_km": 78,
-            "name": "78",
-            "badge_icon": "runner-record-breaker-78",
-            "events": {}
-          }
-        ]
-      
-      }))
+    challenge_data.push(challenge_record_breaker(data, {
+      "shortname": "record-breaker",
+      "name": "Record Breaker",
+      "collapsible": true,
+      "help": "Run all the parkrun events within 33km, 45km, and 78km of your average parkrun location.",
+      "stages": [
+        {
+          "distance_km": 33,
+          "name": "33",
+          "badge_icon": "runner-record-breaker-33",
+          "events": {}
+        },
+        {
+          "distance_km": 45,
+          "name": "45",
+          "badge_icon": "runner-record-breaker-45",
+          "events": {}
+        },
+        {
+          "distance_km": 78,
+          "name": "78",
+          "badge_icon": "runner-record-breaker-78",
+          "events": {}
+        }
+      ]
+
+    }))
   } else {
     console.log("Unable to process record breaker challenge")
   }
@@ -309,23 +321,23 @@ function challenge_record_breaker(data, params) {
   eventsByDistance = computeDistanceToParkrunsFromEvent(geoData, reference_parkrun)
 
   // Sort the list of events by distance
-  var sortedEvents = Object.keys(eventsByDistance).sort(function(a, b) {
+  var sortedEvents = Object.keys(eventsByDistance).sort(function (a, b) {
     return eventsByDistance[a] - eventsByDistance[b]
   })
 
   // Order the challenges by distance (could be a static list, but lets be flexible)
-  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function (a, b) {
     return a.distance_km - b.distance_km
   })
-  console.log(awardsInOrderOfDistance)
+  // console.log(awardsInOrderOfDistance)
 
   // Associate each event with the smallest distance
-  $.each(sortedEvents, function(idx, eventName){
+  $.each(sortedEvents, function (idx, eventName) {
 
     var eventDistance = eventsByDistance[eventName]
     var eventDistanceAward = undefined
 
-    for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
+    for (idx = 0; idx < awardsInOrderOfDistance.length; idx++) {
       distanceAward = awardsInOrderOfDistance[idx]
       if (eventDistance <= awards[distanceAward].distance_km) {
         // Mark that we've found the tightest fitting award, and return it
@@ -341,11 +353,11 @@ function challenge_record_breaker(data, params) {
     }
   })
 
-  console.log(awards)
+  // console.log(awards)
 
   // Iterate through each award, starting with the smallest distance, and then going through
   // each event in distance order
-  
+
   // Keep track of whether all events have been completed up to this point
   var allPreviousCompleted = true
   var currentBadge = undefined
@@ -353,16 +365,16 @@ function challenge_record_breaker(data, params) {
   var mostRecentAward = undefined
 
   console.log(awardsInOrderOfDistance)
-  $.each(awardsInOrderOfDistance, function(idx, award) {
+  $.each(awardsInOrderOfDistance, function (idx, award) {
 
-    console.log(idx + " " + award)
+    // console.log(idx + " " + award)
 
     var award_info = awards[award]
     mostRecentAward = award_info
 
-    console.log("Processing "+award+" with details "+JSON.stringify(award_info))
+    console.log("Processing " + award + " with details " + JSON.stringify(award_info))
 
-    $.each(award_info.events, function(eventName, event_data){
+    $.each(award_info.events, function (eventName, event_data) {
 
       // Find out when we first ran this event, if we have.
       runEvent = hasRunEvent(parkrunResults, eventName)
@@ -407,7 +419,7 @@ function challenge_record_breaker(data, params) {
     // We can use this to add the badge for this subpart to the table
     if (mostRecentAward !== undefined) {
       //console.log("Adding badge to the last entry: " + JSON.stringify(o.subparts_detail))
-      o.subparts_detail[o.subparts_detail.length-1].badge = {
+      o.subparts_detail[o.subparts_detail.length - 1].badge = {
         "name": award_info.name,
         "badge_icon": award_info.badge_icon
       }
@@ -420,7 +432,7 @@ function challenge_record_breaker(data, params) {
       o.partial_completion_name = award_info.name
       o.partial_completion_badge_icon = award_info.badge_icon
     } else {
-      console.log("Failed to get record breaker badge for "+JSON.stringify(award_info))
+      console.log("Failed to get record breaker badge for " + JSON.stringify(award_info))
     }
 
     // Set the badge icon to the last badge in the set
@@ -430,7 +442,7 @@ function challenge_record_breaker(data, params) {
 
   if (currentBadge !== undefined) {
     o.badgesAwarded = currentBadge
-    console.log("Current record breaker badge is "+JSON.stringify(currentBadge))
+    console.log("Current record breaker badge is " + JSON.stringify(currentBadge))
   }
 
   // If we have still completed everything, then we can say this challenge is complete
@@ -484,7 +496,7 @@ function challenge_record_breaker(data, params) {
 
 function hasRunEvent(parkrunResults, eventName) {
   runEvent = undefined
-  for (idx=0; idx<parkrunResults.length; idx++) {
+  for (idx = 0; idx < parkrunResults.length; idx++) {
     parkrunResult = parkrunResults[idx]
     if (parkrunResult.name == eventName) {
       runEvent = parkrunResult
@@ -497,14 +509,14 @@ function hasRunEvent(parkrunResults, eventName) {
 function getDistanceAward(eventDistance, distanceAwards) {
 
   // Order the challenges by distance (could be a static list, but lets be flexible)
-  var awardsInOrderOfDistance = Object.keys(awards).sort(function(a,b){
+  var awardsInOrderOfDistance = Object.keys(awards).sort(function (a, b) {
     return a.distance - b.distance
   })
 
-  console.log(awardsInOrderOfDistance)
+  // console.log(awardsInOrderOfDistance)
 
   award = undefined
-  for (idx=0; idx<awardsInOrderOfDistance.length; idx++) {
+  for (idx = 0; idx < awardsInOrderOfDistance.length; idx++) {
     distanceAward = awardsInOrderOfDistance[idx]
     if (eventDistance <= distanceAwards[distanceAward].distance) {
       // Mark that we've found the tightest fitting award, and return it
@@ -518,7 +530,7 @@ function getDistanceAward(eventDistance, distanceAwards) {
 function orderParkrunEventsByDistance(eventDistances) {
 
   // Sort the list of events by distance
-  var sortedEvents = Object.keys(event_distances).sort(function(a, b) {
+  var sortedEvents = Object.keys(event_distances).sort(function (a, b) {
     return event_distances[a] - event_distances[b]
   })
 
@@ -549,18 +561,18 @@ function generate_volunteer_challenge_data(data) {
 
     // Populate the results with the above
     volunteer_roles_map.forEach(function (role) {
-        var this_role_data = create_data_object(role, "volunteer")
-        this_role_data.summary_text = ""
-        this_role_data.subparts_completed_count = volunteer_roles[role["name"]]
-        if (this_role_data.subparts_completed_count > 0) {
-            this_role_data.summary_text = "x"+this_role_data.subparts_completed_count
-            this_role_data.complete = true
-        } else {
-            this_role_data.summary_text = '-'
-        }
+      var this_role_data = create_data_object(role, "volunteer")
+      this_role_data.summary_text = ""
+      this_role_data.subparts_completed_count = volunteer_roles[role["name"]]
+      if (this_role_data.subparts_completed_count > 0) {
+        this_role_data.summary_text = "x" + this_role_data.subparts_completed_count
+        this_role_data.complete = true
+      } else {
+        this_role_data.summary_text = '-'
+      }
 
-        update_data_object(this_role_data)
-        volunteer_challenge_data.push(this_role_data)
+      update_data_object(this_role_data)
+      volunteer_challenge_data.push(this_role_data)
     })
   }
 
@@ -577,13 +589,13 @@ function calculate_great_circle_distance(point1, point2) {
   var R = 6371; // km
   var φ1 = point1.lat * Math.PI / 180;
   var φ2 = point2.lat * Math.PI / 180;
-  var Δφ = (point2.lat-point1.lat) * Math.PI / 180;
-  var Δλ = (point2.lon-point1.lon) * Math.PI / 180;
+  var Δφ = (point2.lat - point1.lat) * Math.PI / 180;
+  var Δλ = (point2.lon - point1.lon) * Math.PI / 180;
 
-  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-        Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) *
+    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   var d = R * c;
 
@@ -663,7 +675,7 @@ function generate_stat_total_distance_ran(parkrun_results) {
   return {
     "display_name": "Total parkrun distance",
     "help": "The total distance achieved from adding up 5k for a parkrun, and 2k for a junior parkrun.",
-    "value": total_distance_ran+"km"
+    "value": total_distance_ran + "km"
   }
 }
 
@@ -680,13 +692,13 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
     runs_per_year[parkrun_event.date_obj.getUTCFullYear()] += 1
   })
   // Sort years by number of runs descending
-  var best_year_sorted = Object.keys(runs_per_year).sort(function(a, b) {
-      return runs_per_year[b] - runs_per_year[a]
+  var best_year_sorted = Object.keys(runs_per_year).sort(function (a, b) {
+    return runs_per_year[b] - runs_per_year[a]
   })
   // Find all the years with the maximum value
   var best_years = []
   if (best_year_sorted.length > 0) {
-    best_year_sorted.forEach(function (year){
+    best_year_sorted.forEach(function (year) {
       if (runs_per_year[year] == runs_per_year[best_year_sorted[0]]) {
         best_years.push(year)
       }
@@ -714,12 +726,12 @@ function generate_stat_p_index(parkrun_results) {
     event_attendance_tally[parkrun_event.name] += 1
   })
   // Sort events by number of runs descending
-  var event_attendance_sorted = Object.keys(event_attendance_tally).sort(function(a, b) {
-      return event_attendance_tally[b] - event_attendance_tally[a]
+  var event_attendance_sorted = Object.keys(event_attendance_tally).sort(function (a, b) {
+    return event_attendance_tally[b] - event_attendance_tally[a]
   })
   // Iterate through the events, and as long as the numbers of times we have
   // run at the even is greater than the index value, increment the p-index
-  event_attendance_sorted.forEach(function(event_name, index) {
+  event_attendance_sorted.forEach(function (event_name, index) {
     if (event_attendance_tally[event_name] > index) {
       p_index += 1
     }
@@ -739,13 +751,13 @@ function generate_stat_v_index(volunteer_data) {
   volunteer_roles = group_volunteer_data(volunteer_data)
 
   var v_index = 0
-  var descending_tally = Object.keys(volunteer_roles).sort(function(a, b) {
+  var descending_tally = Object.keys(volunteer_roles).sort(function (a, b) {
     return volunteer_roles[b] - volunteer_roles[a]
   })
   // Iterate through the roles, and as long as the number of times we have
   // volunteered in the role is greater than the index value, increment the
   // v-index
-  descending_tally.forEach(function(role_name, index) {
+  descending_tally.forEach(function (role_name, index) {
     // console.log("index: " + index + " is " + role_name + " which has been completed " + volunteer_roles[role_name] + " times")
     if (volunteer_roles[role_name] > index) {
       v_index += 1
@@ -770,7 +782,7 @@ function generate_stat_wilson_index(parkrun_results) {
   // Iterate through the maximum set of event numbers they could have, and check
   // if each is in the object, we stop when we can't find one
   var index
-  for (index=1; index<Object.keys(event_numbers_visited).length; index++) {
+  for (index = 1; index < Object.keys(event_numbers_visited).length; index++) {
     if (index in event_numbers_visited) {
       wilson_index += 1
     } else {
@@ -863,7 +875,7 @@ function generate_stat_tourist_quotient(parkrun_results) {
 
   var event_count = Object.keys(events_run).length
   if (parkrun_results.length > 0) {
-    tourist_quotient =  (100 * event_count / parkrun_results.length).toFixed(2) + "%"
+    tourist_quotient = (100 * event_count / parkrun_results.length).toFixed(2) + "%"
   }
 
   return {
@@ -893,11 +905,11 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
     if (event_streak.includes(parkrun_event.name)) {
 
       var f = 0
-      var filteredElements = event_streak.some(function(item, index) {
-         f = index; return item == parkrun_event.name
+      var filteredElements = event_streak.some(function (item, index) {
+        f = index; return item == parkrun_event.name
       })
 
-      event_streak.splice(0,f+1)
+      event_streak.splice(0, f + 1)
 
     }
 
@@ -905,7 +917,7 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
     // existing entries in the list above.
     event_streak.push(parkrun_event.name)
     if (event_streak.length >= t_streak) {
-	  t_date = parkrun_event.datelink
+      t_date = parkrun_event.datelink
       t_last = parkrun_event.eventlink
       t_streak = event_streak.length
     }
@@ -1019,11 +1031,11 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
   var value = "None"
   var url_link = undefined
   if (count > 0) {
-    var lat_av = (lat_sum/count).toFixed(5)
-    var lon_av = (lon_sum/count).toFixed(5)
-    value =  lat_av + "," + lon_av
+    var lat_av = (lat_sum / count).toFixed(5)
+    var lon_av = (lon_sum / count).toFixed(5)
+    value = lat_av + "," + lon_av
     // Provide a link to an openstreetmap with a marker in the location
-    url_link = "https://www.openstreetmap.org/?mlat="+lat_av+"&mlon="+lon_av+"#map=9/"+lat_av+"/"+lon_av
+    url_link = "https://www.openstreetmap.org/?mlat=" + lat_av + "&mlon=" + lon_av + "#map=9/" + lat_av + "/" + lon_av
   }
 
   return {
@@ -1037,7 +1049,7 @@ function generate_stat_average_parkrun_location(parkrun_results, geo_data) {
 
 // Calculate average parkrun location
 function calculate_average_parkrun_location(parkrun_results, geo_data) {
-var lat_sum = 0
+  var lat_sum = 0
   var lon_sum = 0
   var count = 0
   var lat_av = ''
@@ -1057,11 +1069,11 @@ var lat_sum = 0
   })
 
   if (count > 0) {
-    lat_av = (lat_sum/count)
-    lon_av = (lon_sum/count)
+    lat_av = (lat_sum / count)
+    lon_av = (lon_sum / count)
     average_location = {
-      "lat" : lat_av,
-      "lon" : lon_av
+      "lat": lat_av,
+      "lon": lon_av
     }
   }
 
@@ -1099,7 +1111,7 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
   if (average_parkrun_event_name !== undefined) {
 
     var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
-    
+
     average_parkrun_stat_info = {
       "display_name": "Average parkrun event",
       "help": "The nearest parkrun event to your average parkrun location.",
@@ -1119,7 +1131,7 @@ function calculate_average_parkrun_event_name(parkrun_results, geo_data) {
   if (average_parkrun_location !== undefined) {
 
     // For each parkrun event, get the event's information, which includes its lon and lat.
-    Object.keys(geo_data.data.events).forEach(function(event_name) {
+    Object.keys(geo_data.data.events).forEach(function (event_name) {
       var event_location_info = geo_data.data.events[event_name]
       // For each parkrun event, calculate the 3D distance between the event and the user's average parkrun location
       var distance = calculate_great_circle_distance(event_location_info, average_parkrun_location)
@@ -1183,10 +1195,10 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   })
   var event_distances = {}
 
-  
+
   // Remove the JQuery dependency
   // $.each(geo_data.data.events, function (event_name, event_info) {
-  Object.keys(geo_data.data.events).forEach(function(event_name) {
+  Object.keys(geo_data.data.events).forEach(function (event_name) {
     var event_info = geo_data.data.events[event_name]
     if (!(event_name in events_run)) {
       if (event_info.lat && event_info.lon) {
@@ -1196,11 +1208,11 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   })
 
   // Sort the list of events not done by distance
-  var sorted_events = Object.keys(event_distances).sort(function(a, b) {
-      return event_distances[a] - event_distances[b]
+  var sorted_events = Object.keys(event_distances).sort(function (a, b) {
+    return event_distances[a] - event_distances[b]
   })
 
-  var statInfo =  {
+  var statInfo = {
     "display_name": "Nearest event not done yet (NENDY)",
     "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
     "value": "No more events available"
@@ -1209,7 +1221,7 @@ function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, hom
   if (sorted_events.length > 0) {
     var nendy_name = sorted_events[0]
     var nendy = geo_data.data.events[nendy_name]
-    statInfo.value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
+    statInfo.value = nendy.name + ", " + nendy.country_name + " - " + Math.round(event_distances[nendy_name]) + "km away"
     statInfo["url"] = get_parkrun_page_url(geo_data, nendy.name)
   }
 
@@ -1272,7 +1284,7 @@ function generate_stats(data) {
 
   // Stats that need the user data available, and we are on their page (i.e. has
   // to be the person who has installed the plugin)
-  console.log("Should we add the NENDY? - is_our_page:"+is_our_page(data) + " has_geo_data:"+has_geo_data(data))
+  console.log("Should we add the NENDY? - is_our_page:" + is_our_page(data) + " has_geo_data:" + has_geo_data(data))
   if (data.info.has_parkrun_results && has_geo_data(data) && is_our_page(data) && data.info.has_home_parkrun) {
     stats['furthest_travelled'] = generate_stat_furthest_travelled(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
     stats['nearest_event_not_done_yet'] = generate_stat_nearest_event_not_done_yet(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
@@ -1295,40 +1307,40 @@ function get_initial_letter(event_name) {
 function get_flag_image_src(country) {
   // Mapping countries to flag image files
   var flag_map = {
-      "New Zealand": "nz",
-      "Australia": "au",
-      "Austria": "at",
-      "Canada": "ca",
-      "Denmark": "dk",
-      "Finland": "fi",
-      "France": "fr",
-      "Germany": "de",
-      "Iceland": "is",
-      "Ireland": "ie",
-      "Italy": "it",
-      "Japan": "jp",
-      "Lithuania": "lt",
-      "Malaysia": "my",
-      "Namibia": "na",
-      "Netherlands": "nl",
-      "New Zealand": "nz",
-      "Norway": "no",
-      "Poland": "pl",
-      "Russia": "ru",
-      "Singapore": "sg",
-      "South Africa": "za",
-      "Swaziland": "sz",
-      "Sweden": "se",
-      "UK": "gb",
-      "USA": "us",
-      "Zimbabwe": "zw",
-      "World": "world"
+    "New Zealand": "nz",
+    "Australia": "au",
+    "Austria": "at",
+    "Canada": "ca",
+    "Denmark": "dk",
+    "Finland": "fi",
+    "France": "fr",
+    "Germany": "de",
+    "Iceland": "is",
+    "Ireland": "ie",
+    "Italy": "it",
+    "Japan": "jp",
+    "Lithuania": "lt",
+    "Malaysia": "my",
+    "Namibia": "na",
+    "Netherlands": "nl",
+    "New Zealand": "nz",
+    "Norway": "no",
+    "Poland": "pl",
+    "Russia": "ru",
+    "Singapore": "sg",
+    "South Africa": "za",
+    "Swaziland": "sz",
+    "Sweden": "se",
+    "UK": "gb",
+    "USA": "us",
+    "Zimbabwe": "zw",
+    "World": "world"
   }
 
   var flag_src = browser.runtime.getURL("/images/flags/flag-unknown.png")
 
   if (country in flag_map) {
-    flag_src = browser.runtime.getURL("/images/flags/"+flag_map[country]+".png")
+    flag_src = browser.runtime.getURL("/images/flags/" + flag_map[country] + ".png")
   }
 
   return flag_src
@@ -1336,64 +1348,64 @@ function get_flag_image_src(country) {
 }
 
 function create_data_object(params, category) {
-    var o = {
-        "shortname": params.shortname,
-        "name": params.name,
-        "help": params.help,
-        "start_time": new Date(),
-        "complete": false,
-        "completed_on": null,
-        "subparts": [],
-        "subparts_completed_count": 0,
-        "subparts_detail": [],
-        "badge_icon": category+"-"+params.shortname,
-        // Which events have contributed to this challenge?
-        // - a list of names
-        "completed_qualifying_events": {},
-        // Which are the closest events that could contribute to this challenge
-        // in order to complete it
-        // - a list of names
-        "nearest_qualifying_events": {},
-        // All of the qualifying events for this challenge
-        // - a list of names
-        "all_qualifying_events": {},
-        // Whether this challenge has something you can map
-        "has_map": false,
-        "map_type": "standard",
-        // Where the reference home parkrun is, if available
-        "home_parkrun": undefined
-    }
-    return o
+  var o = {
+    "shortname": params.shortname,
+    "name": params.name,
+    "help": params.help,
+    "start_time": new Date(),
+    "complete": false,
+    "completed_on": null,
+    "subparts": [],
+    "subparts_completed_count": 0,
+    "subparts_detail": [],
+    "badge_icon": category + "-" + params.shortname,
+    // Which events have contributed to this challenge?
+    // - a list of names
+    "completed_qualifying_events": {},
+    // Which are the closest events that could contribute to this challenge
+    // in order to complete it
+    // - a list of names
+    "nearest_qualifying_events": {},
+    // All of the qualifying events for this challenge
+    // - a list of names
+    "all_qualifying_events": {},
+    // Whether this challenge has something you can map
+    "has_map": false,
+    "map_type": "standard",
+    // Where the reference home parkrun is, if available
+    "home_parkrun": undefined
+  }
+  return o
 }
 
 function update_data_object(o) {
-    o['stop_time'] = new Date()
-    o['duration'] = o.stop_time - o.start_time
+  o['stop_time'] = new Date()
+  o['duration'] = o.stop_time - o.start_time
 
-    // Only set the subparts_count if we have not calculated it already.
-    // Some challenges have more data stored in the subparts than is possible to get
-    // so this will allow them to decide on their own how many parts there are.
-    if (o["subparts_count"] === undefined) {
-      o['subparts_count'] = o.subparts.length
-    }
-    // console.log("Completed data for " + o.shortname + " in " + o['duration'] + "ms")
-    return o
+  // Only set the subparts_count if we have not calculated it already.
+  // Some challenges have more data stored in the subparts than is possible to get
+  // so this will allow them to decide on their own how many parts there are.
+  if (o["subparts_count"] === undefined) {
+    o['subparts_count'] = o.subparts.length
+  }
+  // console.log("Completed data for " + o.shortname + " in " + o['duration'] + "ms")
+  return o
 }
 
 // Group all parkruns completed by event
 function group_results_by_event(parkrun_results) {
 
-    events = {}
-    parkrun_results.forEach(function (parkrun_event) {
-        // Create an empty list if we haven"t seen this parkrun before
-        if (!(parkrun_event.name in events)) {
-            events[parkrun_event.name] = []
-        }
-        // Append this instance to the appropriate event list
-        events[parkrun_event.name].push(parkrun_event)
-    });
+  events = {}
+  parkrun_results.forEach(function (parkrun_event) {
+    // Create an empty list if we haven"t seen this parkrun before
+    if (!(parkrun_event.name in events)) {
+      events[parkrun_event.name] = []
+    }
+    // Append this instance to the appropriate event list
+    events[parkrun_event.name].push(parkrun_event)
+  });
 
-    return events
+  return events
 }
 
 function event_contains_word(event_name, word) {
@@ -1406,12 +1418,12 @@ function group_global_events_by_containing_word(geo_data, words) {
 
   var events = {}
 
-  $.each(words, function(index, word) {
+  $.each(words, function (index, word) {
     events[word] = []
   })
 
   $.each(geo_data.data.events, function (event_name, event_info) {
-    $.each(words, function(index, word) {
+    $.each(words, function (index, word) {
       if (event_contains_word(event_name, word)) {
         events[word].push(event_info)
       }
@@ -1427,7 +1439,7 @@ function group_global_events_by_initial_letter(geo_data) {
   var events = {}
 
   // $.each(geo_data.data.events, function (event_name, event_info) {
-  Object.keys(geo_data.data.events).forEach(function(event_name) {
+  Object.keys(geo_data.data.events).forEach(function (event_name) {
     var event_info = geo_data.data.events[event_name]
 
     // 'shortname' sorts by URL name, 'name' sorts by actual name
@@ -1455,7 +1467,7 @@ function sort_events_by_distance(events, from_location) {
   // Only process those events with locations - they should all have locations,
   // but if they don't, there isn't a lot we can do
   events_with_location_info = []
-  $.each(events, function(event_name, event_info) {
+  $.each(events, function (event_name, event_info) {
     if (event_info.lat && event_info.lon) {
       events_with_location_info.push({
         "name": event_name,
@@ -1466,8 +1478,8 @@ function sort_events_by_distance(events, from_location) {
     }
   })
 
-  sorted_events = events_with_location_info.sort(function(event_a, event_b) {
-      return event_a.distance - event_b.distance
+  sorted_events = events_with_location_info.sort(function (event_a, event_b) {
+    return event_a.distance - event_b.distance
   })
 
   // console.log(sorted_events)
@@ -1488,7 +1500,7 @@ function sort_grouped_events_by_distance(grouped_events, from_location) {
     // Only process those events with locations - they should all have locations,
     // but if they don't, there isn't a lot we can do
     events_with_location_info = []
-    $.each(event_list, function(index, event) {
+    $.each(event_list, function (index, event) {
       if (event.lat && event.lon) {
         events_with_location_info.push(event)
       }
@@ -1496,8 +1508,8 @@ function sort_grouped_events_by_distance(grouped_events, from_location) {
 
     // Sort the list of places with locations by their distance from the
     // from_location provided
-    sorted_events[group] = events_with_location_info.sort(function(event_a, event_b) {
-        return calculate_great_circle_distance(event_a, from_location) - calculate_great_circle_distance(event_b, from_location)
+    sorted_events[group] = events_with_location_info.sort(function (event_a, event_b) {
+      return calculate_great_circle_distance(event_a, from_location) - calculate_great_circle_distance(event_b, from_location)
     })
   })
 
@@ -1572,7 +1584,7 @@ function challenge_name_badge(data, params) {
   // Create an object containing how many of each letter is available, so that we can work out if that is 
   // enough for our name.
   var groupedEventsByInitialLetterCount = {}
-  Object.keys(groupedEventsByInitialLetter).forEach(function(initialLetter) {
+  Object.keys(groupedEventsByInitialLetter).forEach(function (initialLetter) {
     groupedEventsByInitialLetterCount[initialLetter] = groupedEventsByInitialLetter[initialLetter].length
   })
   // console.log(groupedEventsByInitialLetterCount)
@@ -1593,7 +1605,7 @@ function challenge_name_badge(data, params) {
 
   if (pageAthleteInfo !== undefined && pageAthleteInfo.name !== undefined) {
     pageAthleteInfo.name = pageAthleteInfo.name.replace(/ *\([^)]*\) */g, "").trim();
-    for(var i=0; i< pageAthleteInfo.name.length; i++) {
+    for (var i = 0; i < pageAthleteInfo.name.length; i++) {
       var letter = pageAthleteInfo.name[i].toLowerCase()
       // console.log(letter)
       if (letter != " ") {
@@ -1645,40 +1657,40 @@ function challenge_name_badge(data, params) {
     parkrun_results.forEach(function (parkrun_event) {
 
       if (!(checked_parkruns.includes(parkrun_event.name))) {
-          initial_letter = parkrun_event.name[0].toLowerCase()
-          // Skips those parkruns that aren't going to match any of the subparts
-          if (o.subparts.includes(initial_letter)) {
-              // Loop through all the letters we are looking for
-              for (i=0; i<o.subparts.length; i++) {
-                  // Find a matching subpart that hasn't yet been filled in
-                  if (o.subparts_detail[i].info == "-" && o.subparts[i] == initial_letter) {
-                      // Add the event
-                      p = Object.create(parkrun_event)
-                      p.subpart = initial_letter
-                      p.name = p.eventlink
-                      p.info = p.datelink
-                      o.subparts_detail[i] = p
-                      o.subparts_completed_count += 1
-                      if (!(parkrun_event.name in o.completed_qualifying_events)) {
-                        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-                      }
-
-                      if (o.subparts_count == o.subparts_completed_count) {
-                          o.complete = true
-                          o.completed_on = p.date
-                      }
-                      // Get out of the for loop
-                      break
-                  }
+        initial_letter = parkrun_event.name[0].toLowerCase()
+        // Skips those parkruns that aren't going to match any of the subparts
+        if (o.subparts.includes(initial_letter)) {
+          // Loop through all the letters we are looking for
+          for (i = 0; i < o.subparts.length; i++) {
+            // Find a matching subpart that hasn't yet been filled in
+            if (o.subparts_detail[i].info == "-" && o.subparts[i] == initial_letter) {
+              // Add the event
+              p = Object.create(parkrun_event)
+              p.subpart = initial_letter
+              p.name = p.eventlink
+              p.info = p.datelink
+              o.subparts_detail[i] = p
+              o.subparts_completed_count += 1
+              if (!(parkrun_event.name in o.completed_qualifying_events)) {
+                o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
               }
-          }
 
-          // Lets not process this parkrun again, even if we have run it more than once
-          checked_parkruns.push(parkrun_event.name)
+              if (o.subparts_count == o.subparts_completed_count) {
+                o.complete = true
+                o.completed_on = p.date
+              }
+              // Get out of the for loop
+              break
+            }
+          }
+        }
+
+        // Lets not process this parkrun again, even if we have run it more than once
+        checked_parkruns.push(parkrun_event.name)
       }
 
     })
-	
+
     // Group and sort the qualifying events
     grouped_events = {}
     sorted_grouped_events = {}
@@ -1688,50 +1700,50 @@ function challenge_name_badge(data, params) {
         sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, home_parkrun)
       }
     }
-	
-	console.log("number of subparts:" + o.subparts.length)
+
+    console.log("number of subparts:" + o.subparts.length)
     // Add in all the missing ones
-    for (i=0; i< o.subparts.length; i++) {
-		console.log(o.subparts_detail[i])
-		if (o.subparts_detail[i].info == "-") {
+    for (i = 0; i < o.subparts.length; i++) {
+      // console.log(o.subparts_detail[i])
+      if (o.subparts_detail[i].info == "-") {
 
-            // if (grouped_events !== undefined) {
-            // Add those events for this letter
-            if (o.subparts[i] in grouped_events) {
-              $.each(grouped_events[o.subparts[i]], function (index, event) {
-                // Don't add them if they are already there
-                if (!(event.name in o.all_qualifying_events)) {
-                  details = get_parkrun_event_details(data, event.name)
-                  if (has_lat_lon(details)) {
-                    o.all_qualifying_events[event.name] = details
-					console.log(event.name)
-                  }
-                }
-              })
-            }
-            // }
-
-            // If this is our page (i.e. the athlete id in our profile matches
-            // that of this page), then we can try and work out which are closest
-            if (is_our_page(data)) {
-              // console.log(sorted_grouped_events)
-              // if (sorted_grouped_events !== undefined) {
-              if (o.subparts[i] in sorted_grouped_events) {
-                // Add the first on that we haven't already added
-                $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
-                  // Only add it, and break out of the loop, if it is new
-                  if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
-                    o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-                    // Break out
-                    return false
-                  }
-                })
+        // if (grouped_events !== undefined) {
+        // Add those events for this letter
+        if (o.subparts[i] in grouped_events) {
+          $.each(grouped_events[o.subparts[i]], function (index, event) {
+            // Don't add them if they are already there
+            if (!(event.name in o.all_qualifying_events)) {
+              details = get_parkrun_event_details(data, event.name)
+              if (has_lat_lon(details)) {
+                o.all_qualifying_events[event.name] = details
+                console.log(event.name)
               }
             }
-            // }
+          })
         }
+        // }
+
+        // If this is our page (i.e. the athlete id in our profile matches
+        // that of this page), then we can try and work out which are closest
+        if (is_our_page(data)) {
+          // console.log(sorted_grouped_events)
+          // if (sorted_grouped_events !== undefined) {
+          if (o.subparts[i] in sorted_grouped_events) {
+            // Add the first on that we haven't already added
+            $.each(sorted_grouped_events[o.subparts[i]], function (index, event) {
+              // Only add it, and break out of the loop, if it is new
+              if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
+                o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
+                // Break out
+                return false
+              }
+            })
+          }
+        }
+        // }
+      }
     }
-	
+
   }
 
   return update_data_object(o)
@@ -1749,377 +1761,377 @@ function challenge_start_letters(data, params) {
     home_parkrun = user_data.home_parkrun_info
   }
 
-    var letters = params.data
+  var letters = params.data
 
-    var o = create_data_object(params, "runner")
-    o.has_map = true
+  var o = create_data_object(params, "runner")
+  o.has_map = true
 
-    // Add all the subparts to the list
-    for (i=0; i<letters.length; i++) {
-        // Store each one as the parts we need to do
-        o.subparts.push(letters[i])
-        // Create placeholders for each contributing result
-        o.subparts_detail.push(null)
-    }
+  // Add all the subparts to the list
+  for (i = 0; i < letters.length; i++) {
+    // Store each one as the parts we need to do
+    o.subparts.push(letters[i])
+    // Create placeholders for each contributing result
+    o.subparts_detail.push(null)
+  }
 
-    checked_parkruns = []
+  checked_parkruns = []
 
-    parkrun_results.forEach(function (parkrun_event) {
+  parkrun_results.forEach(function (parkrun_event) {
 
-        if (!(checked_parkruns.includes(parkrun_event.name))) {
-            initial_letter = parkrun_event.name[0].toLowerCase()
-            // Skips those parkruns that aren't going to match at all
-            if (o.subparts.includes(initial_letter)) {
-                // Loop through all the letters we are looking for
-                for (i=0; i<o.subparts.length; i++) {
-                    // Find a matching subpart that hasn't yet been filled in
-                    if (o.subparts_detail[i] == null && o.subparts[i] == initial_letter) {
-                        // Add the event
-                        p = Object.create(parkrun_event)
-                        p.subpart = initial_letter
-                        p.name = p.eventlink
-                        p.info = p.datelink
-                        o.subparts_detail[i] = p
-                        o.subparts_completed_count += 1
-                        if (!(parkrun_event.name in o.completed_qualifying_events)) {
-                          o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-                        }
-
-                        if (o.subparts.length == o.subparts_completed_count) {
-                            o.complete = true
-                            o.completed_on = p.date
-                        }
-                        // Get out of the for loop
-                        break
-                    }
-                }
+    if (!(checked_parkruns.includes(parkrun_event.name))) {
+      initial_letter = parkrun_event.name[0].toLowerCase()
+      // Skips those parkruns that aren't going to match at all
+      if (o.subparts.includes(initial_letter)) {
+        // Loop through all the letters we are looking for
+        for (i = 0; i < o.subparts.length; i++) {
+          // Find a matching subpart that hasn't yet been filled in
+          if (o.subparts_detail[i] == null && o.subparts[i] == initial_letter) {
+            // Add the event
+            p = Object.create(parkrun_event)
+            p.subpart = initial_letter
+            p.name = p.eventlink
+            p.info = p.datelink
+            o.subparts_detail[i] = p
+            o.subparts_completed_count += 1
+            if (!(parkrun_event.name in o.completed_qualifying_events)) {
+              o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
             }
 
-            // Lets not process this parkrun again, even if we have run it more than once
-            checked_parkruns.push(parkrun_event.name)
+            if (o.subparts.length == o.subparts_completed_count) {
+              o.complete = true
+              o.completed_on = p.date
+            }
+            // Get out of the for loop
+            break
+          }
         }
-    })
-
-    // Group and sort the qualifying events
-    grouped_events = {}
-    sorted_grouped_events = {}
-    if (geo_data) {
-      grouped_events = group_global_events_by_initial_letter(geo_data)
-      if (home_parkrun) {
-        sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, home_parkrun)
       }
+
+      // Lets not process this parkrun again, even if we have run it more than once
+      checked_parkruns.push(parkrun_event.name)
     }
+  })
 
-    // Add in all the missing ones
-    for (i=0; i< o.subparts.length; i++) {
-        if (o.subparts_detail[i] == null) {
-            o.subparts_detail[i] = {
-                "subpart": o.subparts[i],
-                "info": "-"
+  // Group and sort the qualifying events
+  grouped_events = {}
+  sorted_grouped_events = {}
+  if (geo_data) {
+    grouped_events = group_global_events_by_initial_letter(geo_data)
+    if (home_parkrun) {
+      sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, home_parkrun)
+    }
+  }
+
+  // Add in all the missing ones
+  for (i = 0; i < o.subparts.length; i++) {
+    if (o.subparts_detail[i] == null) {
+      o.subparts_detail[i] = {
+        "subpart": o.subparts[i],
+        "info": "-"
+      }
+
+
+      // if (grouped_events !== undefined) {
+      // Add those events for this letter
+      if (o.subparts[i] in grouped_events) {
+        $.each(grouped_events[o.subparts[i]], function (index, event) {
+          // Don't add them if they are already there
+          if (!(event.name in o.all_qualifying_events)) {
+            details = get_parkrun_event_details(data, event.name)
+            if (has_lat_lon(details)) {
+              o.all_qualifying_events[event.name] = details
             }
+          }
+        })
+      }
+      // }
 
-
-            // if (grouped_events !== undefined) {
-            // Add those events for this letter
-            if (o.subparts[i] in grouped_events) {
-              $.each(grouped_events[o.subparts[i]], function (index, event) {
-                // Don't add them if they are already there
-                if (!(event.name in o.all_qualifying_events)) {
-                  details = get_parkrun_event_details(data, event.name)
-                  if (has_lat_lon(details)) {
-                    o.all_qualifying_events[event.name] = details
-                  }
-                }
-              })
+      // If this is our page (i.e. the athlete id in our profile matches
+      // that of this page), then we can try and work out which are closest
+      if (is_our_page(data)) {
+        // console.log(sorted_grouped_events)
+        // if (sorted_grouped_events !== undefined) {
+        if (o.subparts[i] in sorted_grouped_events) {
+          // Add the first on that we haven't already added
+          $.each(sorted_grouped_events[o.subparts[i]], function (index, event) {
+            // Only add it, and break out of the loop, if it is new
+            if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
+              o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
+              // Break out
+              return false
             }
-            // }
-
-            // If this is our page (i.e. the athlete id in our profile matches
-            // that of this page), then we can try and work out which are closest
-            if (is_our_page(data)) {
-              // console.log(sorted_grouped_events)
-              // if (sorted_grouped_events !== undefined) {
-              if (o.subparts[i] in sorted_grouped_events) {
-                // Add the first on that we haven't already added
-                $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
-                  // Only add it, and break out of the loop, if it is new
-                  if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.completed_qualifying_events)) {
-                    o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-                    // Break out
-                    return false
-                  }
-                })
-              }
-            }
-            // }
+          })
         }
+      }
+      // }
     }
+  }
 
-    // console.log(o)
+  // console.log(o)
 
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 function challenge_words(data, params) {
 
   var parkrun_results = data.parkrun_results
-    var word_array = params.data
+  var word_array = params.data
 
-    var o = create_data_object(params, "runner")
-    o.has_map = true
+  var o = create_data_object(params, "runner")
+  o.has_map = true
 
-    // Add all the subparts to the list
-    word_array.forEach(function (word) {
-        // Store each one as the parts we need to do
-        o.subparts.push(word.toLowerCase())
-        // Create placeholders for each contributing result
-        o.subparts_detail.push(null)
-    })
+  // Add all the subparts to the list
+  word_array.forEach(function (word) {
+    // Store each one as the parts we need to do
+    o.subparts.push(word.toLowerCase())
+    // Create placeholders for each contributing result
+    o.subparts_detail.push(null)
+  })
 
-    // Group and sort the qualifying events
-    // If we don't have the data, then the objects will be empty, and the checking
-    // code will iterate over an empty objection
-    grouped_events = {}
-    sorted_grouped_events = {}
-    if (has_geo_data(data)) {
-      grouped_events = group_global_events_by_containing_word(geo_data, o.subparts)
-      if (data.info.has_home_parkrun && is_our_page(data)) {
-        sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, data.user_data.home_parkrun_info)
+  // Group and sort the qualifying events
+  // If we don't have the data, then the objects will be empty, and the checking
+  // code will iterate over an empty objection
+  grouped_events = {}
+  sorted_grouped_events = {}
+  if (has_geo_data(data)) {
+    grouped_events = group_global_events_by_containing_word(geo_data, o.subparts)
+    if (data.info.has_home_parkrun && is_our_page(data)) {
+      sorted_grouped_events = sort_grouped_events_by_distance(grouped_events, data.user_data.home_parkrun_info)
+    }
+  }
+
+  checked_parkruns = []
+
+  parkrun_results.forEach(function (parkrun_event) {
+
+    if (!(checked_parkruns.includes(parkrun_event.name))) {
+      // Loop through all the words we are looking for
+      for (i = 0; i < o.subparts.length; i++) {
+        // Find a matching subpart that hasn't yet been filled in
+        if (o.subparts_detail[i] == null && parkrun_event.name.toLowerCase().indexOf(o.subparts[i]) != -1) {
+          // Add the event
+          p = Object.create(parkrun_event)
+          p.subpart = o.subparts[i]
+          p.name = p.eventlink
+          p.info = p.datelink
+          o.subparts_detail[i] = p
+          o.subparts_completed_count += 1
+
+          if (!(parkrun_event.name in o.completed_qualifying_events)) {
+            o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+          }
+
+          if (o.subparts.length == o.subparts_completed_count) {
+            o.complete = true
+            o.completed_on = p.date
+          }
+          // Get out of the for loop
+          break
+        }
+      }
+
+
+      // Lets not process this parkrun again, even if we have run it more than once
+      checked_parkruns.push(parkrun_event.name)
+    }
+  })
+
+  // Add in all the missing ones
+  for (i = 0; i < o.subparts.length; i++) {
+    if (o.subparts_detail[i] == null) {
+      o.subparts_detail[i] = {
+        "subpart": o.subparts[i],
+        "info": "-"
+      }
+
+      // If this is our page, and hence we know where the home parkrun is,
+      // find out the closest event to complete this sub-part
+      if (o.subparts[i] in sorted_grouped_events) {
+        $.each(sorted_grouped_events[o.subparts[i]], function (index, event) {
+          if (!(event.name in o.nearest_qualifying_events)) {
+            o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
+            // Break out of the .each loop after we have found the closest
+            return false
+          }
+        })
+      }
+
+      if (o.subparts[i] in grouped_events) {
+        // If we haven't added this event to the closest collection, then add it
+        // to the all collection
+        $.each(grouped_events[o.subparts[i]], function (index, event) {
+          if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.all_qualifying_events)) {
+            o.all_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
+          }
+        })
       }
     }
+  }
 
-    checked_parkruns = []
-
-    parkrun_results.forEach(function (parkrun_event) {
-
-        if (!(checked_parkruns.includes(parkrun_event.name))) {
-            // Loop through all the words we are looking for
-            for (i=0; i<o.subparts.length; i++) {
-                // Find a matching subpart that hasn't yet been filled in
-                if (o.subparts_detail[i] == null && parkrun_event.name.toLowerCase().indexOf(o.subparts[i]) != -1) {
-                    // Add the event
-                    p = Object.create(parkrun_event)
-                    p.subpart = o.subparts[i]
-                    p.name = p.eventlink
-                    p.info = p.datelink
-                    o.subparts_detail[i] = p
-                    o.subparts_completed_count += 1
-
-                    if (!(parkrun_event.name in o.completed_qualifying_events)) {
-                      o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-                    }
-
-                    if (o.subparts.length == o.subparts_completed_count) {
-                        o.complete = true
-                        o.completed_on = p.date
-                    }
-                    // Get out of the for loop
-                    break
-                }
-            }
-
-
-            // Lets not process this parkrun again, even if we have run it more than once
-            checked_parkruns.push(parkrun_event.name)
-        }
-    })
-
-    // Add in all the missing ones
-    for (i=0; i< o.subparts.length; i++) {
-        if (o.subparts_detail[i] == null) {
-            o.subparts_detail[i] = {
-                "subpart": o.subparts[i],
-                "info": "-"
-            }
-
-            // If this is our page, and hence we know where the home parkrun is,
-            // find out the closest event to complete this sub-part
-            if (o.subparts[i] in sorted_grouped_events) {
-              $.each(sorted_grouped_events[o.subparts[i]], function(index, event) {
-                if (!(event.name in o.nearest_qualifying_events)) {
-                  o.nearest_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-                  // Break out of the .each loop after we have found the closest
-                  return false
-                }
-              })
-            }
-
-            if (o.subparts[i] in grouped_events) {
-              // If we haven't added this event to the closest collection, then add it
-              // to the all collection
-              $.each(grouped_events[o.subparts[i]], function(index, event) {
-                if (!(event.name in o.nearest_qualifying_events) && !(event.name in o.all_qualifying_events)) {
-                  o.all_qualifying_events[event.name] = get_parkrun_event_details(data, event.name)
-                }
-              })
-            }
-        }
-    }
-
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 function challenge_parkruns(data, params) {
 
   var parkrun_results = data.parkrun_results
-    var parkrun_array = params.data
+  var parkrun_array = params.data
 
-    var o = create_data_object(params, "runner")
-    o.has_map = true
+  var o = create_data_object(params, "runner")
+  o.has_map = true
 
-    // Add all the subparts to the list
-    parkrun_array.forEach(function (parkrun_name) {
-        // Store each one as the parts we need to do
-        o.subparts.push(parkrun_name)//.toLowerCase())
-        // Create placeholders for each contributing result
-        o.subparts_detail.push(null)
-    })
+  // Add all the subparts to the list
+  parkrun_array.forEach(function (parkrun_name) {
+    // Store each one as the parts we need to do
+    o.subparts.push(parkrun_name)//.toLowerCase())
+    // Create placeholders for each contributing result
+    o.subparts_detail.push(null)
+  })
 
-    events = group_results_by_event(parkrun_results)
+  events = group_results_by_event(parkrun_results)
 
-    Object.keys(events).forEach(function (parkrun_name) {
+  Object.keys(events).forEach(function (parkrun_name) {
 
-        if (o.subparts.includes(parkrun_name)) {
-            subparts_index = o.subparts.indexOf(parkrun_name)
+    if (o.subparts.includes(parkrun_name)) {
+      subparts_index = o.subparts.indexOf(parkrun_name)
 
-            p = Object.create(events[parkrun_name][0])
-            p.subpart = o.subparts[subparts_index]
-            p.name = p.eventlink
-            p.info = p.datelink
-            o.subparts_detail[subparts_index] = p
-            o.subparts_completed_count += 1
-            if (!(parkrun_name in o.completed_qualifying_events)) {
-              o.completed_qualifying_events[parkrun_name] = get_parkrun_event_details(data, parkrun_name)
-            }
+      p = Object.create(events[parkrun_name][0])
+      p.subpart = o.subparts[subparts_index]
+      p.name = p.eventlink
+      p.info = p.datelink
+      o.subparts_detail[subparts_index] = p
+      o.subparts_completed_count += 1
+      if (!(parkrun_name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[parkrun_name] = get_parkrun_event_details(data, parkrun_name)
+      }
 
-            if (o.subparts.length == o.subparts_completed_count) {
-                o.complete = true
-                o.completed_on = p.date
-            }
-        }
-    })
-
-    // Add in all the missing ones
-    for (i=0; i< o.subparts.length; i++) {
-        if (o.subparts_detail[i] == null) {
-            o.subparts_detail[i] = {
-                "subpart": o.subparts[i],
-                "info": "-"
-            }
-            // Add all of the missing events to the 'all' collection, as it doesn't
-            // really make a lot of sense for them to be in the 'closest' set,
-            // as they are all the closest
-            if (has_geo_data(data)) {
-              o.all_qualifying_events[o.subparts[i]] = get_parkrun_event_details(data, o.subparts[i])
-            }
-        }
+      if (o.subparts.length == o.subparts_completed_count) {
+        o.complete = true
+        o.completed_on = p.date
+      }
     }
+  })
 
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Add in all the missing ones
+  for (i = 0; i < o.subparts.length; i++) {
+    if (o.subparts_detail[i] == null) {
+      o.subparts_detail[i] = {
+        "subpart": o.subparts[i],
+        "info": "-"
+      }
+      // Add all of the missing events to the 'all' collection, as it doesn't
+      // really make a lot of sense for them to be in the 'closest' set,
+      // as they are all the closest
+      if (has_geo_data(data)) {
+        o.all_qualifying_events[o.subparts[i]] = get_parkrun_event_details(data, o.subparts[i])
+      }
+    }
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 // Complete x different parkruns (20 and 100 are standard)
 function challenge_tourist(data, params) {
 
-    var o = create_data_object(params, "runner")
+  var o = create_data_object(params, "runner")
 
-    distinct_parkruns_completed = {}
+  distinct_parkruns_completed = {}
 
-    $.each(data.parkrun_results, function(index, parkrun_event) {
-      if (!(parkrun_event.name in distinct_parkruns_completed)) {
-        o.subparts_completed_count += 1
-        // Add it in for the next complete subpart
-        p = Object.create(parkrun_event)
-        p.subpart = o.subparts_completed_count
-        p.name = p.eventlink
-        p.info = p.datelink
-        o.subparts_detail.push(p)
+  $.each(data.parkrun_results, function (index, parkrun_event) {
+    if (!(parkrun_event.name in distinct_parkruns_completed)) {
+      o.subparts_completed_count += 1
+      // Add it in for the next complete subpart
+      p = Object.create(parkrun_event)
+      p.subpart = o.subparts_completed_count
+      p.name = p.eventlink
+      p.info = p.datelink
+      o.subparts_detail.push(p)
 
-        // Add to the events done list, so that we can map them
-        if (!(parkrun_event.name in o.completed_qualifying_events)) {
-          o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-        }
-
-        distinct_parkruns_completed[parkrun_event.name] = true
+      // Add to the events done list, so that we can map them
+      if (!(parkrun_event.name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
       }
-    });
 
-    var distinctParkrunsCompleteCount = Object.keys(distinct_parkruns_completed).length
+      distinct_parkruns_completed[parkrun_event.name] = true
+    }
+  });
 
-    var badgesAwarded = []
+  var distinctParkrunsCompleteCount = Object.keys(distinct_parkruns_completed).length
 
-    var gotAllBadges = true
+  var badgesAwarded = []
 
-    // Iterate through each stage, and see if we can award any badges for full or partial completion
-    $.each(params.data.stages, function(index, stage){
-      if (Array.isArray(stage.count)) {
-        // This is a badge where you can get incremental completion
-        var currentBadge = undefined
-        $.each(stage.count, function(countIndex, countInfo){
-          // If we have crossed the threshold for this partial badge, add the details.
-          // This assumes that they are ordered by increasing value.
+  var gotAllBadges = true
 
-          // Define this badge once so we can award it, or add it to a row
-          thisBadge = {
-            "name": countInfo.name,
-            "badge_icon": countInfo.badge_icon
-          }
-          if (distinctParkrunsCompleteCount >= countInfo.count) {
-            console.log("Awarding the badge for "+countInfo.name)
-            // Set the subpart detail to include the badge was awarded at this point
-            o.subparts_detail[countInfo.count-1]["badge"] = thisBadge
-            // Note this this badge was awarded
-            currentBadge = thisBadge
-          } else {
-            console.log("Failed to get the badge for "+countInfo.name + " needed "+countInfo.count+", got "+distinctParkrunsCompleteCount)
-            gotAllBadges = false
-            // Add an empty subpart line so that people can see the badges they can still get
-            o.subparts_detail.push({
-              "subpart": countInfo.count,
-              "badge": thisBadge
-            })
-          }
-        })
-        // Find the last badge we matched, and add that to the list of ones added by this challenge.
-        if (currentBadge !== undefined) {
-          badgesAwarded.push(currentBadge)
+  // Iterate through each stage, and see if we can award any badges for full or partial completion
+  $.each(params.data.stages, function (index, stage) {
+    if (Array.isArray(stage.count)) {
+      // This is a badge where you can get incremental completion
+      var currentBadge = undefined
+      $.each(stage.count, function (countIndex, countInfo) {
+        // If we have crossed the threshold for this partial badge, add the details.
+        // This assumes that they are ordered by increasing value.
+
+        // Define this badge once so we can award it, or add it to a row
+        thisBadge = {
+          "name": countInfo.name,
+          "badge_icon": countInfo.badge_icon
         }
-      } else {
-        currentBadge = {
-          "name": stage.name,
-          "badge_icon": stage.badge_icon
-        }
-        // This badge has a single target to hit, see if we have done so.
-        if (distinctParkrunsCompleteCount >= stage.count) {
-          console.log("Awarding the badge for "+stage.name)
-          badgesAwarded.push(currentBadge)
+        if (distinctParkrunsCompleteCount >= countInfo.count) {
+          console.log("Awarding the badge for " + countInfo.name)
           // Set the subpart detail to include the badge was awarded at this point
-          o.subparts_detail[stage.count-1]["badge"] = currentBadge
+          o.subparts_detail[countInfo.count - 1]["badge"] = thisBadge
+          // Note this this badge was awarded
+          currentBadge = thisBadge
         } else {
-          console.log("Failed to get the badge for "+stage.name + " needed "+stage.count+", got "+distinctParkrunsCompleteCount)
+          console.log("Failed to get the badge for " + countInfo.name + " needed " + countInfo.count + ", got " + distinctParkrunsCompleteCount)
           gotAllBadges = false
           // Add an empty subpart line so that people can see the badges they can still get
           o.subparts_detail.push({
-            "subpart": stage.count,
-            "badge": currentBadge
+            "subpart": countInfo.count,
+            "badge": thisBadge
           })
         }
+      })
+      // Find the last badge we matched, and add that to the list of ones added by this challenge.
+      if (currentBadge !== undefined) {
+        badgesAwarded.push(currentBadge)
       }
-    })
-
-    o.badgesAwarded = badgesAwarded
-
-    if (gotAllBadges) {
-      o.complete = true
+    } else {
+      currentBadge = {
+        "name": stage.name,
+        "badge_icon": stage.badge_icon
+      }
+      // This badge has a single target to hit, see if we have done so.
+      if (distinctParkrunsCompleteCount >= stage.count) {
+        console.log("Awarding the badge for " + stage.name)
+        badgesAwarded.push(currentBadge)
+        // Set the subpart detail to include the badge was awarded at this point
+        o.subparts_detail[stage.count - 1]["badge"] = currentBadge
+      } else {
+        console.log("Failed to get the badge for " + stage.name + " needed " + stage.count + ", got " + distinctParkrunsCompleteCount)
+        gotAllBadges = false
+        // Add an empty subpart line so that people can see the badges they can still get
+        o.subparts_detail.push({
+          "subpart": stage.count,
+          "badge": currentBadge
+        })
+      }
     }
+  })
 
-    console.log(o)
+  o.badgesAwarded = badgesAwarded
 
-    // Return an object representing this challenge
-    return update_data_object(o)
+  if (gotAllBadges) {
+    o.complete = true
+  }
+
+  // console.log(o)
+
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 // Return true if the athlete id for this page matches what is stored in the user data
@@ -2173,54 +2185,54 @@ function challenge_stopwatch_bingo(data, params) {
 
   var parkrun_results = data.parkrun_results
 
-    var o = create_data_object(params, "runner")
+  var o = create_data_object(params, "runner")
 
-    // Add all the subparts to the list
-    for (i=0; i<60; i++) {
-        number_string = i.toString()
-        if (i < 10) {
-            number_string = "0"+number_string
-        }
-        o.subparts.push(number_string)
-        o.subparts_detail[number_string] = null
+  // Add all the subparts to the list
+  for (i = 0; i < 60; i++) {
+    number_string = i.toString()
+    if (i < 10) {
+      number_string = "0" + number_string
+    }
+    o.subparts.push(number_string)
+    o.subparts_detail[number_string] = null
+  }
+
+  parkrun_results.forEach(function (parkrun_event) {
+    // Take the last 2 characters of the time
+    seconds = parkrun_event.time.substr(parkrun_event.time.length - 2)
+    // Convert them to a number to get the index in our array
+    subparts_detail_index = parseInt(seconds)
+    if (o.subparts_detail[subparts_detail_index] == null) {
+      o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
+      o.subparts_detail[subparts_detail_index].subpart = seconds
+      o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
+      o.subparts_detail[subparts_detail_index].info = parkrun_event.time
+      o.subparts_completed_count += 1
+
+      if (!(parkrun_event.name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+      }
+
+      if (o.subparts.length == o.subparts_completed_count) {
+        o.complete = true
+        o.completed_on = parkrun_event.date
+      }
     }
 
-    parkrun_results.forEach(function (parkrun_event) {
-        // Take the last 2 characters of the time
-        seconds = parkrun_event.time.substr(parkrun_event.time.length - 2)
-        // Convert them to a number to get the index in our array
-        subparts_detail_index = parseInt(seconds)
-        if (o.subparts_detail[subparts_detail_index] == null) {
-            o.subparts_detail[subparts_detail_index] = Object.create(parkrun_event)
-            o.subparts_detail[subparts_detail_index].subpart = seconds
-            o.subparts_detail[subparts_detail_index].name = parkrun_event.eventlink
-            o.subparts_detail[subparts_detail_index].info = parkrun_event.time
-            o.subparts_completed_count += 1
+  });
 
-            if (!(parkrun_event.name in o.completed_qualifying_events)) {
-              o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-            }
-
-            if (o.subparts.length == o.subparts_completed_count) {
-                o.complete = true
-                o.completed_on = parkrun_event.date
-            }
-        }
-
-    });
-
-    // Add in all the missing ones
-    for (i=0; i< o.subparts_detail.length; i++) {
-        if (o.subparts_detail[i] == null) {
-            o.subparts_detail[i] = {
-                "subpart": o.subparts[i],
-                "info": "-"
-            }
-        }
+  // Add in all the missing ones
+  for (i = 0; i < o.subparts_detail.length; i++) {
+    if (o.subparts_detail[i] == null) {
+      o.subparts_detail[i] = {
+        "subpart": o.subparts[i],
+        "info": "-"
+      }
     }
+  }
 
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 // Complete 100 or 200 parkruns at the same venue - tons of runs challenge
@@ -2268,19 +2280,19 @@ function challenge_single_parkrun_count(data, params) {
 
   var subBadgesAvailable = []
 
-  $.each(stages, function(index, tonMilestone) {
+  $.each(stages, function (index, tonMilestone) {
     subBadgesAvailable.push({
       "awarded": false
     })
   })
-  console.log("parkruns completed: " + parkruns_completed)
+  console.log("parkruns completed: " + JSON.stringify(parkruns_completed))
   // Now look at which completed parkruns have reached
   // the 'ton' milestones
   Object.keys(parkruns_completed).sort().forEach(function (name) {
     var currentBadge = undefined
-    for(var index = 0; index < stages.length; index++){
+    for (var index = 0; index < stages.length; index++) {
       var tonMilestone = stages[index]
-    //$.each(stages, function(index, tonMilestone) {
+      //$.each(stages, function(index, tonMilestone) {
       if (parkruns_completed[name].count >= tonMilestone.count) {
         currentBadge = {
           "index": index,
@@ -2290,83 +2302,83 @@ function challenge_single_parkrun_count(data, params) {
         }
       }
     }
-      if (currentBadge !== undefined) {
-        // Award a badge for this parkrun event
-        o.subparts_detail.push({
-          "name": name,
-          "date": name,
-          "info": parkruns_completed[name].count,
-          "subpart": currentBadge.name+" ("+currentBadge.count+"+)",
-          "badge": currentBadge
-        })
-        // Ensure that we add the badge at the top
-        subBadgesAvailable[currentBadge.index].awarded = true
-      }
-    })
-
-    // Change the summary to indicate number of times completed
-    if (o.subparts_detail.length > 0) {
-      o.summary_text = "x"+o.subparts_detail.length
+    if (currentBadge !== undefined) {
+      // Award a badge for this parkrun event
+      o.subparts_detail.push({
+        "name": name,
+        "date": name,
+        "info": parkruns_completed[name].count,
+        "subpart": currentBadge.name + " (" + currentBadge.count + "+)",
+        "badge": currentBadge
+      })
+      // Ensure that we add the badge at the top
+      subBadgesAvailable[currentBadge.index].awarded = true
     }
+  })
 
-    // Award the badges to be displayed at the top
-    $.each(subBadgesAvailable, function(index, subBadge) {
-      if (subBadge.awarded == true) {
-        badgesAwarded.push({
-          "name": stages[index].name,
-          "badge_icon": stages[index].badge_icon
-        })
-      }
-    })
-    o.badgesAwarded = badgesAwarded
-
-    if (max_parkrun !== undefined){
-      if (badgesAwarded.length == 0) {
-        o.subparts_detail.push({
-          "name": max_parkrun.name,
-          "info": max_count,
-          "subpart": "Highest so far"
-        })
-      }
-    }
-
-    // Display the badges above what the parkrunner has, so they can see
-    // what is still to come. i.e. if they have nothing, show all badges,
-    // if they have 100, show 200, if  they already have 200
-    // they then don't need hints and that'll do :)
-
-    // Find the highest ones they have.
-    var maxBadgeAwarded = -1
-    $.each(subBadgesAvailable, function(index, subBadge) {
-      if (subBadge.awarded) {
-        maxBadgeAwarded = index
-      }
-    })
-    console.log("parkrunner has achieved max ton level of " + maxBadgeAwarded)
-
-    // Add the badge for any higher badges than the ones they have
-    $.each(stages, function(index, tonMilestone) {
-      if (index > maxBadgeAwarded) {
-        o.subparts_detail.push({
-          // "subpart": count+"+",
-          "badge": {
-            "name": tonMilestone.name,
-            "badge_icon": tonMilestone.badge_icon
-          },
-          "subpart": tonMilestone.name+" ("+tonMilestone.count+"+)",
-          "name": "-"
-        })
-      }
-    })
-
-    // If they have been awarded the maximum badge, then give them a tick
-    if (maxBadgeAwarded == stages.length-1) {
-      o.complete = true
-    }
-
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Change the summary to indicate number of times completed
+  if (o.subparts_detail.length > 0) {
+    o.summary_text = "x" + o.subparts_detail.length
   }
+
+  // Award the badges to be displayed at the top
+  $.each(subBadgesAvailable, function (index, subBadge) {
+    if (subBadge.awarded == true) {
+      badgesAwarded.push({
+        "name": stages[index].name,
+        "badge_icon": stages[index].badge_icon
+      })
+    }
+  })
+  o.badgesAwarded = badgesAwarded
+
+  if (max_parkrun !== undefined) {
+    if (badgesAwarded.length == 0) {
+      o.subparts_detail.push({
+        "name": max_parkrun.name,
+        "info": max_count,
+        "subpart": "Highest so far"
+      })
+    }
+  }
+
+  // Display the badges above what the parkrunner has, so they can see
+  // what is still to come. i.e. if they have nothing, show all badges,
+  // if they have 100, show 200, if  they already have 200
+  // they then don't need hints and that'll do :)
+
+  // Find the highest ones they have.
+  var maxBadgeAwarded = -1
+  $.each(subBadgesAvailable, function (index, subBadge) {
+    if (subBadge.awarded) {
+      maxBadgeAwarded = index
+    }
+  })
+  console.log("parkrunner has achieved max ton level of " + maxBadgeAwarded)
+
+  // Add the badge for any higher badges than the ones they have
+  $.each(stages, function (index, tonMilestone) {
+    if (index > maxBadgeAwarded) {
+      o.subparts_detail.push({
+        // "subpart": count+"+",
+        "badge": {
+          "name": tonMilestone.name,
+          "badge_icon": tonMilestone.badge_icon
+        },
+        "subpart": tonMilestone.name + " (" + tonMilestone.count + "+)",
+        "name": "-"
+      })
+    }
+  })
+
+  // If they have been awarded the maximum badge, then give them a tick
+  if (maxBadgeAwarded == stages.length - 1) {
+    o.complete = true
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
+}
 
 
 function challenge_on_dates(data, params) {
@@ -2393,15 +2405,15 @@ function challenge_on_dates(data, params) {
       // ui
       $.each(challenge_dates, function (index, this_challenge_date) {
 
-        subpart_name = this_challenge_date.month+"/"+this_challenge_date.day
+        subpart_name = this_challenge_date.month + "/" + this_challenge_date.day
         if (this_challenge_date.month !== undefined && this_challenge_date.day === undefined) {
           subpart_name = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')[this_challenge_date.month]
         } else if (this_challenge_date.month === undefined && this_challenge_date.day !== undefined) {
-          subpart_name = this_challenge_date.day+"st/nd/rd/th"
+          subpart_name = this_challenge_date.day + "st/nd/rd/th"
         }
 
         o.subparts_detail[index] = {
-            "subpart": subpart_name
+          "subpart": subpart_name
         }
 
       })
@@ -2422,7 +2434,7 @@ function challenge_on_dates(data, params) {
         var applicable_day = false
 
         // Check if the month matches (getUTCMonth() - 0-11)
-        if (this_challenge_date.month !== undefined ) {
+        if (this_challenge_date.month !== undefined) {
           if (this_challenge_date.month == parkrun_event.date_obj.getUTCMonth()) {
             // console.log("Event matches the month for : " + JSON.stringify(this_challenge_date))
             applicable_month = true
@@ -2433,7 +2445,7 @@ function challenge_on_dates(data, params) {
         }
 
         // Check if the day of the month matches (getUTCDate() - 1-31)
-        if (this_challenge_date.day !== undefined ) {
+        if (this_challenge_date.day !== undefined) {
           if (this_challenge_date.day == parkrun_event.date_obj.getUTCDate()) {
             // console.log("Event matches the day for : " + JSON.stringify(this_challenge_date))
             applicable_day = true
@@ -2457,8 +2469,8 @@ function challenge_on_dates(data, params) {
   // Work out how many times we have completed the challenge by looking at
   // how many events have been added for each subpart
   var completion_count = undefined;
-  console.log(o.subparts)
-  o.subparts.forEach(function(events_for_this_date) {
+  // console.log(o.subparts)
+  o.subparts.forEach(function (events_for_this_date) {
     if (completion_count === undefined) {
       completion_count = events_for_this_date.length
     } else {
@@ -2477,20 +2489,20 @@ function challenge_on_dates(data, params) {
   // achieved this challenge. If it is a string of dates, it's nearly impossible
   // to do that in a sensible manner
   if (o.subparts.length == 1) {
-    o.subparts[0].forEach(function(parkrun_event) {
+    o.subparts[0].forEach(function (parkrun_event) {
       o.subparts_detail.push({
-          "name": parkrun_event.eventlink,
-          "date": parkrun_event.datelink,
-          "info": parkrun_event.datelink,
-          "subpart": o.subparts_detail.length + 1
+        "name": parkrun_event.eventlink,
+        "date": parkrun_event.datelink,
+        "info": parkrun_event.datelink,
+        "subpart": o.subparts_detail.length + 1
       })
     })
   } else {
     // If there is more than one date, then lets list them all
-    $.each(challenge_dates, function(index, matching_date) {
+    $.each(challenge_dates, function (index, matching_date) {
 
       if (o.subparts[index].length > 0) {
-        o.subparts_detail[index].name = "x"+o.subparts[index].length
+        o.subparts_detail[index].name = "x" + o.subparts[index].length
         o.subparts_detail[index].date = o.subparts[index][0].datelink
         o.subparts_detail[index].info = o.subparts[index][0].datelink
       }
@@ -2498,15 +2510,15 @@ function challenge_on_dates(data, params) {
   }
   // If there are no subparts listed, make it a dash
   if (o.subparts_detail.length == 0) {
-      o.subparts_detail.push({
-          "subpart": o.subparts_detail.length + 1,
-          "info": "-"
-      })
+    o.subparts_detail.push({
+      "subpart": o.subparts_detail.length + 1,
+      "info": "-"
+    })
   }
 
   // Change the summary to indicate number of times completed
   if (o.subparts_completed_count > 0) {
-      o.summary_text = "x"+o.subparts_completed_count
+    o.summary_text = "x" + o.subparts_completed_count
   }
 
   // Return an object representing this challenge
@@ -2517,253 +2529,253 @@ function challenge_on_dates(data, params) {
 function challenge_nyd_double(data, params) {
 
   var parkrun_results = data.parkrun_results
-    var o = create_data_object(params, "runner")
-    o.subparts = ["1"]
-    o.summary_text = "0"
+  var o = create_data_object(params, "runner")
+  o.subparts = ["1"]
+  o.summary_text = "0"
 
-    o.has_map = true
-    if (has_home_parkrun(data) && is_our_page(data)) {
-      o.home_parkrun = get_home_parkrun(data)
+  o.has_map = true
+  if (has_home_parkrun(data) && is_our_page(data)) {
+    o.home_parkrun = get_home_parkrun(data)
+  }
+
+  var previous_parkrun = null
+
+  parkrun_results.forEach(function (parkrun_event) {
+    // Take the first 6 characters of the date to get the '01/01/' part
+    day_month = parkrun_event.date.substr(0, 6)
+
+    if (previous_parkrun != null && day_month == "01/01/" && parkrun_event.date == previous_parkrun.date) {
+
+      o.subparts_detail.push({
+        "name": parkrun_event.eventlink + " and " + previous_parkrun.eventlink,
+        "date": parkrun_event.datelink,
+        "info": parkrun_event.datelink,
+        "subpart": o.subparts_detail.length + 1
+      })
+
+      // Add to the events done list, so that we can map them
+      if (!(parkrun_event.name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+      }
+      if (!(previous_parkrun.name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[previous_parkrun.name] = get_parkrun_event_details(data, previous_parkrun.name)
+      }
+
+      o.subparts_completed_count += 1
+      // Mark it complete the first time it occurs
+      if (!o.complete) {
+        o.complete = true
+        o.completed_on = parkrun_event.date
+      }
+
     }
 
-    var previous_parkrun = null
+    previous_parkrun = parkrun_event
 
-    parkrun_results.forEach(function (parkrun_event) {
-        // Take the first 6 characters of the date to get the '01/01/' part
-        day_month = parkrun_event.date.substr(0, 6)
+  });
 
-        if (previous_parkrun != null && day_month == "01/01/" && parkrun_event.date == previous_parkrun.date) {
+  if (o.subparts_detail.length == 0) {
+    o.subparts_detail.push({
+      "subpart": o.subparts_detail.length + 1,
+      "info": "-"
+    })
+  }
 
-            o.subparts_detail.push({
-                "name": parkrun_event.eventlink+" and "+previous_parkrun.eventlink,
-                "date": parkrun_event.datelink,
-                "info": parkrun_event.datelink,
-                "subpart": o.subparts_detail.length + 1
-            })
+  // Change the summary to indicate number of times completed
+  if (o.subparts_completed_count > 0) {
+    o.summary_text = "x" + o.subparts_completed_count
+  }
 
-            // Add to the events done list, so that we can map them
-            if (!(parkrun_event.name in o.completed_qualifying_events)) {
-              o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-            }
-            if (!(previous_parkrun.name in o.completed_qualifying_events)) {
-              o.completed_qualifying_events[previous_parkrun.name] = get_parkrun_event_details(data, previous_parkrun.name)
-            }
-
-            o.subparts_completed_count += 1
-            // Mark it complete the first time it occurs
-            if (!o.complete) {
-                o.complete = true
-                o.completed_on = parkrun_event.date
-            }
-
-        }
-
-        previous_parkrun = parkrun_event
-
-    });
-
-    if (o.subparts_detail.length == 0) {
-        o.subparts_detail.push({
-            "subpart": o.subparts_detail.length + 1,
-            "info": "-"
-        })
-    }
-
-    // Change the summary to indicate number of times completed
-    if (o.subparts_completed_count > 0) {
-        o.summary_text = "x"+o.subparts_completed_count
-    }
-
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 function challenge_groundhog_day(data, params) {
 
   var parkrun_results = data.parkrun_results
-    var o = create_data_object(params, "runner")
-    o.subparts = ["1"]
-    o.summary_text = "0"
-    o.has_map = true
-    if (has_home_parkrun(data) && is_our_page(data)) {
-      o.home_parkrun = get_home_parkrun(data)
+  var o = create_data_object(params, "runner")
+  o.subparts = ["1"]
+  o.summary_text = "0"
+  o.has_map = true
+  if (has_home_parkrun(data) && is_our_page(data)) {
+    o.home_parkrun = get_home_parkrun(data)
+  }
+
+  var previous_parkrun = null
+
+  parkrun_results.forEach(function (parkrun_event) {
+
+    if (previous_parkrun != null && parkrun_event.time == previous_parkrun.time && parkrun_event.name == previous_parkrun.name) {
+
+      o.subparts_detail.push({
+        "name": parkrun_event.eventlink,
+        "date": previous_parkrun.date + " and " + parkrun_event.date,
+        "info": parkrun_event.time + " on " + previous_parkrun.datelink + " and " + parkrun_event.datelink,
+        "subpart": o.subparts_detail.length + 1
+      })
+
+      // Add to the events done list, so that we can map them
+      if (!(parkrun_event.name in o.completed_qualifying_events)) {
+        o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
+      }
+
+      o.subparts_completed_count += 1
+      // Mark it complete the first time it occurs
+      if (!o.complete) {
+        o.complete = true
+        o.completed_on = parkrun_event.date
+      }
+
     }
 
-    var previous_parkrun = null
+    previous_parkrun = parkrun_event
 
-    parkrun_results.forEach(function (parkrun_event) {
+  });
 
-        if (previous_parkrun != null && parkrun_event.time == previous_parkrun.time && parkrun_event.name == previous_parkrun.name) {
+  if (o.subparts_detail.length == 0) {
+    o.subparts_detail.push({
+      "subpart": o.subparts_detail.length + 1,
+      "info": "-"
+    })
+  }
 
-            o.subparts_detail.push({
-                "name": parkrun_event.eventlink,
-                "date": previous_parkrun.date+" and "+parkrun_event.date,
-                "info": parkrun_event.time+" on "+previous_parkrun.datelink+" and "+parkrun_event.datelink,
-                "subpart": o.subparts_detail.length + 1
-            })
+  // Change the summary to indicate number of times completed
+  if (o.subparts_completed_count > 0) {
+    o.summary_text = "x" + o.subparts_completed_count
+  }
 
-            // Add to the events done list, so that we can map them
-            if (!(parkrun_event.name in o.completed_qualifying_events)) {
-              o.completed_qualifying_events[parkrun_event.name] = get_parkrun_event_details(data, parkrun_event.name)
-            }
-
-            o.subparts_completed_count += 1
-            // Mark it complete the first time it occurs
-            if (!o.complete) {
-                o.complete = true
-                o.completed_on = parkrun_event.date
-            }
-
-        }
-
-        previous_parkrun = parkrun_event
-
-    });
-
-    if (o.subparts_detail.length == 0) {
-        o.subparts_detail.push({
-            "subpart": o.subparts_detail.length + 1,
-            "info": "-"
-        })
-    }
-
-    // Change the summary to indicate number of times completed
-    if (o.subparts_completed_count > 0) {
-        o.summary_text = "x"+o.subparts_completed_count
-    }
-
-    // Return an object representing this challenge
-    return update_data_object(o)
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 function challenge_obsessive(data, params) {
 
-    var parkrun_results = data.parkrun_results
-    var stages = params.stages
+  var parkrun_results = data.parkrun_results
+  var stages = params.stages
 
-    var o = create_data_object(params, "runner")
-    o.subparts = ["1"]
-    o.summary_text = "0"
+  var o = create_data_object(params, "runner")
+  o.subparts = ["1"]
+  o.summary_text = "0"
 
-    var badgesAwarded = []
+  var badgesAwarded = []
 
-    by_year = {}
+  by_year = {}
 
-    parkrun_results.forEach(function (parkrun_event) {
-        // Take the first 6 characters of the date to get the '01/01/' part
-        year = parkrun_event.date.substr(6, 4)
+  parkrun_results.forEach(function (parkrun_event) {
+    // Take the first 6 characters of the date to get the '01/01/' part
+    year = parkrun_event.date.substr(6, 4)
 
-        if (!(year in by_year)) {
-            by_year[year] = []
-        }
-
-        by_year[year].push(parkrun_event)
-
-    })
-
-    // We now have an object showing us how many parkruns were attended in each year.
-    // Until such a time as volunteering can be allocated in this way, this just means 
-    // running and getting a result.
-
-    console.log(by_year)
-
-    var subBadgesAvailable = []
-
-    $.each(stages, function(index, obsessiveMilestone) {
-      subBadgesAvailable.push({
-        "awarded": false
-      })
-    })
-
-    // Now lets look at each year for which we have data, and see if the different milestones 
-    // have been reached.
-    Object.keys(by_year).sort().forEach(function (year) {
-      var currentBadge = undefined
-      $.each(stages, function(index, obsessiveMilestone) {
-        if (by_year[year].length >= obsessiveMilestone.count) {
-          currentBadge = {
-            "index": index,
-            "name": obsessiveMilestone.name,
-            "count": obsessiveMilestone.count,
-            "badge_icon": obsessiveMilestone.badge_icon
-          }
-        }
-      })
-      if (currentBadge !== undefined) {
-        // Award a badge for this year
-        o.subparts_detail.push({
-          "name": year,
-          "date": year,
-          "info": by_year[year].length,
-          "subpart": currentBadge.name+" ("+currentBadge.count+"+)",
-          "badge": currentBadge
-        })
-        // Ensure that we add the badge at the top
-        subBadgesAvailable[currentBadge.index].awarded = true
-      }
-
-    })
-
-    // Change the summary to indicate number of times completed
-    if (o.subparts_detail.length > 0) {
-      o.summary_text = "x"+o.subparts_detail.length
+    if (!(year in by_year)) {
+      by_year[year] = []
     }
 
-    // Award the badges to be displayed at the top
-    $.each(subBadgesAvailable, function(index, subBadge) {
-      if (subBadge.awarded == true) {
-        badgesAwarded.push({
-          "name": stages[index].name,
-          "badge_icon": stages[index].badge_icon
-        })
+    by_year[year].push(parkrun_event)
+
+  })
+
+  // We now have an object showing us how many parkruns were attended in each year.
+  // Until such a time as volunteering can be allocated in this way, this just means 
+  // running and getting a result.
+
+  console.log(`by year: ${JSON.stringify(by_year)}`)
+
+  var subBadgesAvailable = []
+
+  $.each(stages, function (index, obsessiveMilestone) {
+    subBadgesAvailable.push({
+      "awarded": false
+    })
+  })
+
+  // Now lets look at each year for which we have data, and see if the different milestones 
+  // have been reached.
+  Object.keys(by_year).sort().forEach(function (year) {
+    var currentBadge = undefined
+    $.each(stages, function (index, obsessiveMilestone) {
+      if (by_year[year].length >= obsessiveMilestone.count) {
+        currentBadge = {
+          "index": index,
+          "name": obsessiveMilestone.name,
+          "count": obsessiveMilestone.count,
+          "badge_icon": obsessiveMilestone.badge_icon
+        }
       }
     })
-
-    o.badgesAwarded = badgesAwarded
-
-
-    // Display the badges above what the parkrunner has, so they can see
-    // what is still to come. i.e. if they have nothing, show all 3 badges,
-    // if they have bronze, show silver+gold, have silver, show gold, if 
-    // they already have gold, they then don't need hints and that'll do :)
-
-    // Find the highest ones they have.
-    var maxBadgeAwarded = -1
-    $.each(subBadgesAvailable, function(index, subBadge) {
-      if (subBadge.awarded) {
-        maxBadgeAwarded = index
-      }
-    })
-    console.log("parkrunner has achieved max obsessive level of " + maxBadgeAwarded)
-
-    // Add the badge for any higher badges than the ones they have
-    $.each(stages, function(index, obsessiveMilestone) {
-      if (index > maxBadgeAwarded) {
-        o.subparts_detail.push({
-          // "subpart": count+"+",
-          "badge": {
-            "name": obsessiveMilestone.name,
-            "badge_icon": obsessiveMilestone.badge_icon
-          },
-          "subpart": obsessiveMilestone.name+" ("+obsessiveMilestone.count+"+)",
-          "name": "-"
-        })
-      }
-    })
-
-    // If they have been awarded the maximum badge, then give them a tick
-    if (maxBadgeAwarded == stages.length-1) {
-      o.complete = true
+    if (currentBadge !== undefined) {
+      // Award a badge for this year
+      o.subparts_detail.push({
+        "name": year,
+        "date": year,
+        "info": by_year[year].length,
+        "subpart": currentBadge.name + " (" + currentBadge.count + "+)",
+        "badge": currentBadge
+      })
+      // Ensure that we add the badge at the top
+      subBadgesAvailable[currentBadge.index].awarded = true
     }
 
-    // Return an object representing this challenge
-    return update_data_object(o)
+  })
+
+  // Change the summary to indicate number of times completed
+  if (o.subparts_detail.length > 0) {
+    o.summary_text = "x" + o.subparts_detail.length
+  }
+
+  // Award the badges to be displayed at the top
+  $.each(subBadgesAvailable, function (index, subBadge) {
+    if (subBadge.awarded == true) {
+      badgesAwarded.push({
+        "name": stages[index].name,
+        "badge_icon": stages[index].badge_icon
+      })
+    }
+  })
+
+  o.badgesAwarded = badgesAwarded
+
+
+  // Display the badges above what the parkrunner has, so they can see
+  // what is still to come. i.e. if they have nothing, show all 3 badges,
+  // if they have bronze, show silver+gold, have silver, show gold, if 
+  // they already have gold, they then don't need hints and that'll do :)
+
+  // Find the highest ones they have.
+  var maxBadgeAwarded = -1
+  $.each(subBadgesAvailable, function (index, subBadge) {
+    if (subBadge.awarded) {
+      maxBadgeAwarded = index
+    }
+  })
+  console.log("parkrunner has achieved max obsessive level of " + maxBadgeAwarded)
+
+  // Add the badge for any higher badges than the ones they have
+  $.each(stages, function (index, obsessiveMilestone) {
+    if (index > maxBadgeAwarded) {
+      o.subparts_detail.push({
+        // "subpart": count+"+",
+        "badge": {
+          "name": obsessiveMilestone.name,
+          "badge_icon": obsessiveMilestone.badge_icon
+        },
+        "subpart": obsessiveMilestone.name + " (" + obsessiveMilestone.count + "+)",
+        "name": "-"
+      })
+    }
+  })
+
+  // If they have been awarded the maximum badge, then give them a tick
+  if (maxBadgeAwarded == stages.length - 1) {
+    o.complete = true
+  }
+
+  // Return an object representing this challenge
+  return update_data_object(o)
 }
 
 function calculateCountryCompletionInfo(data) {
   var countryCompletionInfo = {}
   // Pre-populate information about each country
-  $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
+  $.each(data.geo_data.data.countries, function (countryName, countryInfo) {
     // Initialise an information object for the country
     countryCompletionInfo[countryName] = {
       "name": countryName,
@@ -2780,7 +2792,7 @@ function calculateCountryCompletionInfo(data) {
   const groupedResults = group_results_by_event(data.parkrun_results)
   // console.log(groupedResults)
 
-  $.each(groupedResults, function(eventName, eventAttendance){
+  $.each(groupedResults, function (eventName, eventAttendance) {
     // Find extra information from the events data
     if (eventName in data.geo_data.data.events) {
       var eventInfo = data.geo_data.data.events[eventName]
