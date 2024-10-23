@@ -360,7 +360,7 @@ function createVoronoiMapPrototype() {
       // For reference:
       // https://github.com/zetter/voronoi-maps/blob/master/lib/voronoi_map.js
 
-      var cell_group = document.createElement("g")
+      var cell_group = document.createElementNS('http://www.w3.org/2000/svg', "g")
       cell_group.setAttribute("transform", "translate(" + (-top_left.x) + "," + (-top_left.y) + ")")
 
       var voronoi_polygons = voronoi_data.polygons()
@@ -377,7 +377,7 @@ function createVoronoiMapPrototype() {
         }
 
         // Create an icon to represent the parkrun event
-        var item_circle = document.createElement("circle")
+        var item_circle = document.createElementNS('http://www.w3.org/2000/svg', "circle")
         
         item_circle.setAttribute("cx", cell.data.x)
         item_circle.setAttribute("cy", cell.data.y)
@@ -389,7 +389,7 @@ function createVoronoiMapPrototype() {
         // If we are zoomed in enough, maybe add some text
         var item_text = undefined
         if (zoomScaleOptions.eventNameVisible) {
-          item_text = document.createElement("text")
+          item_text = document.createElementNS('http://www.w3.org/2000/svg', "text")
           item_text.setAttribute("x", cell.data.x)
           item_text.setAttribute("y", cell.data.y + zoomScaleOptions.eventPointRadius + 8) // Move the text down below the point, plus some padding
           item_text.setAttribute("text-anchor", "middle")
@@ -402,7 +402,7 @@ function createVoronoiMapPrototype() {
         // Create a shape to represent the voronoi area associated with this parkrun event
         // It will be filled if the parkrun has been completed
 
-        var item_path = document.createElement("path")
+        var item_path = document.createElementNS('http://www.w3.org/2000/svg', "path")
         item_path.setAttribute("d", "M " + get_voronoi_poly(cell).join(" L ") + " Z")
         item_path.setAttribute("stroke", "gray")
         item_path.setAttribute("stroke-width", zoomScaleOptions.pathLineWidth)
