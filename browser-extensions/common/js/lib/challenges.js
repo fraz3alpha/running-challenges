@@ -2143,14 +2143,8 @@ function has_this_athlete_id(data) {
   return data.athlete_id !== undefined
 }
 
-// Return true if there is valid geo data available
 function has_geo_data(data) {
-  geo_data = get_geo_data(data)
-  return geo_data !== undefined
-}
-
-function get_geo_data(data) {
-  return data.geo_data
+  return data.geo_data !== undefined
 }
 
 // Return true if there is a home parkrun set
