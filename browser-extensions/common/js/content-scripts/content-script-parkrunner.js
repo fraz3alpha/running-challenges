@@ -546,18 +546,21 @@ function create_page() {
     // console.log("Here is the stored items, fetched with a promise:")
     // console.log(items)
 
-    // Now lets fetch the geo data
+    // Now let's fetch the geo data
+    const EVENTS_URL = 'https://images.parkrun.com/events.json';
     set_progress_message("Loading geo data")
-    return browser.runtime.sendMessage({data: "geo"});
-  }).then((results) => {
+    return fetch(EVENTS_URL)
+  }).then((response) => {
+    return response.json();
+  }).then((json) => {
     set_progress_message("Loaded geo data")
     console.log('Loaded geo data was:')
-    console.log(results.geo)
-    set_progress_message(JSON.stringify(results))
+    update_cache_data(json)
+    set_progress_message(JSON.stringify(cache))
     // The return packet will normally be valid even if the geo data is not contained
     // within, so we do some sanity check here
-    if (results.geo && results.geo.data && results.geo.data.valid) {
-      loaded_geo_data = results.geo
+    if (cache && cache.data && cache.data.valid) {
+      loaded_geo_data = cache
     } else {
       console.log('Geo data rejected')
       set_progress_message("geo data rejected")
