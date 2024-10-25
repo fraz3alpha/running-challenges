@@ -86,13 +86,13 @@ function parsePageAthleteInfo() {
   //   <div id="main">
   //   <div id="primary">
   //     <div id="content" role="main">
-  //         <a href='https://contra-movement.com/?utm_source=parkrun&utm_medium=web&utm_campaign=dec_19'> 
+  //         <a href='https://contra-movement.com/?utm_source=parkrun&utm_medium=web&utm_campaign=dec_19'>
   //           <picture>
   //               <source media='(min-width: 767px)' srcset='https://images.parkrun.com/blogs.dir/3/files/2019/12/1100x100_gif.gif'>
-  //                 <img src='https://images.parkrun.com/blogs.dir/3/files/2019/12/767x250_bau_gif.gif' 
-  //                   alt='CONTRA December 2019' 
+  //                 <img src='https://images.parkrun.com/blogs.dir/3/files/2019/12/767x250_bau_gif.gif'
+  //                   alt='CONTRA December 2019'
   //                   style='width:auto;margin-bottom: 20px;'>
-  //             </picture> 
+  //             </picture>
   //         </a><?xml version="1.0"?>
   // <h2>Andrew TAYLOR - 202 runs at All Events<br/>202 parkruns total
   //       </h2>
@@ -341,7 +341,7 @@ function get_running_badge(result) {
   var badge_info = undefined
   // console.log(result)
 
-  // If this challenge uses the badgesAwarded mechanism, then see if there are 
+  // If this challenge uses the badgesAwarded mechanism, then see if there are
   // any
   if (result.badgesAwarded !== undefined) {
     if (result.badgesAwarded.length > 0) {
@@ -552,7 +552,7 @@ function create_page() {
       } else {
         throw new Error('Geo data rejected');
       }
-      return fetch_volunteer_data();
+      return fetch_volunteer_data(get_athlete_id());
     })
     .then(results => {
       set_progress_message("Loaded volunteer data");
@@ -605,45 +605,74 @@ function load_saved_data() {
   return browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]);
 }
 
-function fetch_geo_data() {
-  const EVENTS_URL = 'https://images.parkrun.com/events.json';
-  set_progress_message("Loading geo data");
-  return fetch(EVENTS_URL).then(response => response.json());
+function fetch_with_cache(url, cacheKey, responseType = 'json') {
+  const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  const cacheTimestampKey = `${cacheKey}_timestamp`;
+
+  set_progress_message(`Loading data from ${url}`);
+
+  return browser.storage.local.get([cacheKey, cacheTimestampKey])
+    .then(cache => {
+      const now = Date.now();
+      if (cache[cacheKey] && cache[cacheTimestampKey] && (now - cache[cacheTimestampKey] < CACHE_DURATION)) {
+        set_progress_message(`Using cached data for ${url}`);
+        return cache[cacheKey];
+      } else {
+        return fetch(url)
+          .then(response => response[responseType]())
+          .then(data => {
+            const cacheData = {};
+            cacheData[cacheKey] = data;
+            cacheData[cacheTimestampKey] = now;
+            browser.storage.local.set(cacheData);
+            return data;
+          });
+      }
+    });
 }
 
-function fetch_volunteer_data() {
-  const volunteerDataUrl = `https://${location.host}/parkrunner/${get_athlete_id()}`;
-  set_progress_message("Loading volunteer data");
-  return fetch(volunteerDataUrl)
-    .then(response => response.text());
+function fetch_geo_data() {
+  const GEO_DATA_URL = 'https://images.parkrun.com/events.json';
+  const CACHE_KEY = 'geo_data';
+  return fetch_with_cache(GEO_DATA_URL, CACHE_KEY);
+}
+
+function fetch_volunteer_data(athleteId) {
+  const VOLUNTEER_DATA_URL = `https://${location.host}/parkrunner/${athleteId}/`;
+  const CACHE_KEY = `volunteer_data_${athleteId}`;
+  return fetch_with_cache(VOLUNTEER_DATA_URL, CACHE_KEY, 'text');
 }
 
 function get_athlete_id() {
-  // Very basic method to get only the parameter we care about
-  var page_parameters = window.location.search
-  var athlete_id = undefined
+  const pathname = window.location.pathname;
+  const searchParams = new URLSearchParams(window.location.search);
 
-  if (window.location.pathname.startsWith('/parkrunner')) {
-    athlete_id = window.location.pathname.match('parkrunner\/([0-9]+)\/all')[1]
-  } else if (page_parameters.includes('athleteNumber=')) {
-    athlete_id = page_parameters.split('athleteNumber=')[1].split('&')[0]
+  let athlete_id;
+
+  if (pathname.startsWith('/parkrunner')) {
+    const match = pathname.match(/parkrunner\/(\d+)/);
+    if (match) {
+      athlete_id = match[1];
+    }
+  } else if (searchParams.has('athleteNumber')) {
+    athlete_id = searchParams.get('athleteNumber');
   }
 
-  console.log('Athlete ID: ' + athlete_id)
-  return athlete_id
+  console.log(`Athlete ID: ${athlete_id}`);
+  return athlete_id;
 }
 
 function modifyStyle(img) {
   // Shush, don't tell anyone and spoil the surprise
-  today = new Date()
+  today = new Date();
   // getMonth is zero indexed. getDate is 1 indexed.
   if (today.getMonth() == 3 && today.getDate() == 1) {
-    r = Math.floor(Math.random() * 4)
+    r = Math.floor(Math.random() * 4);
     if (r > 0) {
-      img.attr('style', "transform:rotate(" + r * 90 + "deg);")
+      img.attr('style', "transform:rotate(" + r * 90 + "deg);");
     }
   }
 }
 
 // Run our code and render the page
-create_page()
+create_page();
