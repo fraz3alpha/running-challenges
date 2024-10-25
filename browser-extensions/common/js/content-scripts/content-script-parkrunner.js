@@ -510,6 +510,35 @@ function add_challenge_results(div_id, data) {
 }
 
 function create_page() {
+  const id_map = create_skeleton();
+
+  let loaded_user_data = {};
+  let loaded_geo_data;
+  let parsed_volunteer_data;
+  let parsed_results_data;
+
+  parse_athlete_info();
+
+  parsed_results_data = parse_results();
+  if (!parsed_results_data || parsed_results_data.length === 0) {
+    set_progress_message("No results detected, no challenge data will be compiled");
+    return;
+  }
+
+  load_data()
+    .then(data => {
+      loaded_user_data = data.loaded_user_data;
+      loaded_geo_data = data.loaded_geo_data;
+      return load_volunteer_data();
+    })
+    .then(volunteer_data => {
+      parsed_volunteer_data = volunteer_data;
+      process_data_and_update_ui(id_map, parsed_results_data, parsed_volunteer_data, loaded_geo_data, loaded_user_data);
+    })
+    .catch(handle_error);
+}
+
+function create_skeleton() {
   const id_map = {
     "messages": "running_challenges_messages_div",
     "badges": "running_challenges_badges_div",
@@ -517,88 +546,92 @@ function create_page() {
     "main": "running_challenges_main_div",
     "stats": "running_challenges_stats_div"
   };
-
   create_skeleton_elements(id_map);
+  return id_map;
+}
 
-  let loaded_user_data = {};
-  let loaded_geo_data;
-  let parsed_volunteer_data;
-  let parsed_results_data;
-
+function parse_athlete_info() {
   set_progress_message("Parsing Athlete Info");
-  const parsedPageAthleteInfo = parsePageAthleteInfo();
+  parsePageAthleteInfo();
   set_progress_message("Parsed Athlete Info");
+}
 
+function parse_results() {
   set_progress_message("Parsing Results");
-  parsed_results_data = parse_results_table();
-  if (!parsed_results_data || parsed_results_data.length === 0) {
-    set_progress_message("No results detected, no challenge data will be compiled");
-    return;
-  }
+  const parsed_results_data = parse_results_table();
   set_progress_message("Parsed Results");
+  return parsed_results_data;
+}
 
+function load_data() {
   set_progress_message("Loading saved data");
-  load_saved_data()
+  return load_saved_data()
     .then(items => {
       set_progress_message("Loaded saved data");
-      loaded_user_data = items;
-      return fetch_geo_data();
-    })
-    .then(json => {
-      set_progress_message("Loaded geo data");
-      update_cache_data(json);
-      if (cache && cache.data && cache.data.valid) {
-        loaded_geo_data = cache;
-      } else {
-        throw new Error('Geo data rejected');
-      }
-      return fetch_volunteer_data(get_athlete_id());
-    })
+      const loaded_user_data = items;
+      return fetch_geo_data().then(json => {
+        set_progress_message("Loaded geo data");
+        update_cache_data(json);
+        if (cache && cache.data && cache.data.valid) {
+          return { loaded_user_data, loaded_geo_data: cache };
+        } else {
+          throw new Error('Geo data rejected');
+        }
+      });
+    });
+}
+
+function load_volunteer_data() {
+  return fetch_volunteer_data(get_athlete_id())
     .then(results => {
       set_progress_message("Loaded volunteer data");
-      parsed_volunteer_data = parse_volunteer_table(results);
-      set_progress_message("All done");
-
-      const data = {
-        'parkrun_results': parsed_results_data,
-        'volunteer_data': parsed_volunteer_data,
-        'geo_data': loaded_geo_data,
-        'user_data': loaded_user_data,
-        'info': {}
-      };
-
-      set_progress_message(JSON.stringify(data));
-      updateSummaryInfo(data, get_athlete_id());
-
-      data.challenge_results = {
-        "running_results": generate_running_challenge_data(data, parsedPageAthleteInfo),
-        "volunteer_results": generate_volunteer_challenge_data(data)
-      };
-
-      data.info.has_challenge_results = !!data.challenge_results;
-      data.info.has_challenge_running_results = !!data.challenge_results.running_results;
-      data.info.has_challenge_volunteer_results = !!data.challenge_results.volunteer_results;
-      data.info.has_volunteer_data = !!data.volunteer_data;
-
-      data.stats = generate_stats(data);
-      data.info.has_stats = !!data.stats;
-
-      add_badges(id_map["badges"], data);
-      add_flags(id_map["flags"], data);
-      add_challenge_results(id_map["main"], data);
-      add_stats(id_map["stats"], data);
-
-      const errors = [];
-      if (!has_geo_data(data)) {
-        errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !');
-      }
-
-      set_complete_progress_message(errors);
-    })
-    .catch(error => {
-      console.error(`An error occurred: ${error}`);
-      set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`);
+      return parse_volunteer_table(results);
     });
+}
+
+function process_data_and_update_ui(id_map, parsed_results_data, parsed_volunteer_data, loaded_geo_data, loaded_user_data) {
+  set_progress_message("All done");
+
+  const data = {
+    'parkrun_results': parsed_results_data,
+    'volunteer_data': parsed_volunteer_data,
+    'geo_data': loaded_geo_data,
+    'user_data': loaded_user_data,
+    'info': {}
+  };
+
+  set_progress_message(JSON.stringify(data));
+  updateSummaryInfo(data, get_athlete_id());
+
+  data.challenge_results = {
+    "running_results": generate_running_challenge_data(data, parsePageAthleteInfo()),
+    "volunteer_results": generate_volunteer_challenge_data(data)
+  };
+
+  data.info.has_challenge_results = !!data.challenge_results;
+  data.info.has_challenge_running_results = !!data.challenge_results.running_results;
+  data.info.has_challenge_volunteer_results = !!data.challenge_results.volunteer_results;
+  data.info.has_volunteer_data = !!data.volunteer_data;
+
+  data.stats = generate_stats(data);
+  data.info.has_stats = !!data.stats;
+
+  add_badges(id_map["badges"], data);
+  add_flags(id_map["flags"], data);
+  add_challenge_results(id_map["main"], data);
+  add_stats(id_map["stats"], data);
+
+  const errors = [];
+  if (!has_geo_data(data)) {
+    errors.push('! Unable to fetch parkrun event location data: Stats, Challenges, and Maps requiring locations are not available !');
+  }
+
+  set_complete_progress_message(errors);
+}
+
+function handle_error(error) {
+  console.error(`An error occurred: ${error}`);
+  set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`);
 }
 
 function load_saved_data() {
