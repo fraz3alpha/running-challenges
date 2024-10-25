@@ -563,24 +563,6 @@ function parse_results() {
   return parsed_results_data;
 }
 
-function load_data() {
-  set_progress_message("Loading saved data");
-  return load_saved_data()
-    .then(items => {
-      set_progress_message("Loaded saved data");
-      const loaded_user_data = items;
-      return fetch_geo_data().then(json => {
-        set_progress_message("Loaded geo data");
-        update_cache_data(json);
-        if (cache && cache.data && cache.data.valid) {
-          return { loaded_user_data, loaded_geo_data: cache };
-        } else {
-          throw new Error('Geo data rejected');
-        }
-      });
-    });
-}
-
 function load_volunteer_data() {
   return fetch_volunteer_data(get_athlete_id())
     .then(results => {
@@ -634,41 +616,6 @@ function handle_error(error) {
   set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`);
 }
 
-function load_saved_data() {
-  return browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]);
-}
-
-function fetch_with_cache(url, cacheKey, responseType = 'json') {
-  const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-  const cacheTimestampKey = `${cacheKey}_timestamp`;
-
-  set_progress_message(`Loading data from ${url}`);
-
-  return browser.storage.local.get([cacheKey, cacheTimestampKey])
-    .then(cache => {
-      const now = Date.now();
-      if (cache[cacheKey] && cache[cacheTimestampKey] && (now - cache[cacheTimestampKey] < CACHE_DURATION)) {
-        set_progress_message(`Using cached data for ${url}`);
-        return cache[cacheKey];
-      } else {
-        return fetch(url)
-          .then(response => response[responseType]())
-          .then(data => {
-            const cacheData = {};
-            cacheData[cacheKey] = data;
-            cacheData[cacheTimestampKey] = now;
-            browser.storage.local.set(cacheData);
-            return data;
-          });
-      }
-    });
-}
-
-function fetch_geo_data() {
-  const GEO_DATA_URL = 'https://images.parkrun.com/events.json';
-  const CACHE_KEY = 'geo_data';
-  return fetch_with_cache(GEO_DATA_URL, CACHE_KEY);
-}
 
 function fetch_volunteer_data(athleteId) {
   const VOLUNTEER_DATA_URL = `https://${location.host}/parkrunner/${athleteId}/`;
@@ -709,3 +656,4 @@ function modifyStyle(img) {
 
 // Run our code and render the page
 create_page();
+

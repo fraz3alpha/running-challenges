@@ -17,6 +17,59 @@ var cache = {
   'updated_at': undefined
 };
 
+function fetch_with_cache(url, cacheKey, responseType = 'json') {
+  const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  const cacheTimestampKey = `${cacheKey}_timestamp`;
+
+  console.log(`Loading data from ${url}`);
+
+  return browser.storage.local.get([cacheKey, cacheTimestampKey])
+    .then(cache => {
+      const now = Date.now();
+      if (cache[cacheKey] && cache[cacheTimestampKey] && (now - cache[cacheTimestampKey] < CACHE_DURATION)) {
+        console.log(`Using cached data for ${url}`);
+        return cache[cacheKey];
+      } else {
+        return fetch(url)
+          .then(response => response[responseType]())
+          .then(data => {
+            const cacheData = {};
+            cacheData[cacheKey] = data;
+            cacheData[cacheTimestampKey] = now;
+            browser.storage.local.set(cacheData);
+            return data;
+          });
+      }
+    });
+}
+
+function load_data() {
+  console.log("Loading saved data");
+  return load_saved_data()
+    .then(items => {
+      console.log("Loaded saved data");
+      const loaded_user_data = items;
+      return fetch_geo_data().then(json => {
+        console.log("Loaded geo data");
+        update_cache_data(json);
+        if (cache && cache.data && cache.data.valid) {
+          return { loaded_user_data, loaded_geo_data: cache };
+        } else {
+          throw new Error('Geo data rejected');
+        }
+      });
+    });
+}
+
+function load_saved_data() {
+  return browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]);
+}
+
+function fetch_geo_data() {
+  const GEO_DATA_URL = 'https://images.parkrun.com/events.json';
+  const CACHE_KEY = 'geo_data';
+  return fetch_with_cache(GEO_DATA_URL, CACHE_KEY);
+}
 
 
 function getCountryNameFromId(id) {
