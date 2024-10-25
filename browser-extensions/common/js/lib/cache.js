@@ -43,7 +43,26 @@ function fetch_with_cache(url, cacheKey, responseType = 'json') {
     });
 }
 
-function load_data() {
+function clear_all_cache() {
+  const cacheKeys = [
+    'geo_data',
+    'geo_data_timestamp',
+    // 'home_parkrun_info',
+    // 'athlete_number',
+    'challengeMetadata'
+  ];
+
+  return browser.storage.local.remove(cacheKeys)
+    .then(() => {
+      console.log('All cache items cleared');
+    });
+}
+
+function load_data(force_update = false) {
+  if (force_update) {
+    console.log("Forcing update of data");
+    clear_all_cache();
+  }
   console.log("Loading saved data");
   return load_saved_data()
     .then(items => {
@@ -70,7 +89,6 @@ function fetch_geo_data() {
   const CACHE_KEY = 'geo_data';
   return fetch_with_cache(GEO_DATA_URL, CACHE_KEY);
 }
-
 
 function getCountryNameFromId(id) {
   // Countries that no longer exists in the data are 
@@ -111,31 +129,6 @@ function getCountryNameFromId(id) {
   }
   // console.log("Returning: "+countryName+" for id="+id)
   return countryName
-}
-
-function get_cache_summary() {
-  return {
-    'events': Object.keys(cache?.data?.events)?.length ?? '<missing>',
-    'countries': Object.keys(cache?.data?.countries)?.length ?? '<missing>',
-    'data': {
-      'events': {
-        'updated_at': cache?.events?.updated_at ?? '<no data>'
-      }
-    }
-  }
-}
-
-function clear_cache() {
-  clear_cache_by_name("events")
-}
-
-function clear_cache_by_name(name) {
-  if (name in cache) {
-    cache[name].raw_data = undefined
-    cache[name].updated_at = undefined
-    cache[name].last_update_attempt = undefined
-    regenerate_cache_data()
-  }
 }
 
 function parse_events(data, events_data) {
@@ -241,112 +234,6 @@ function addEventToCountryData(data, country_name, event_id, event_name) {
   data.countries[country_name]["child_event_names"].push(event_name)
 }
 
-function get_geo_data(notify_func, freshen = false) {
-  const now = new Date()
-
-  // Work out if any of the files in 'cache' need updating
-  // and construct a parallel ajax call to fetch whichever ones we need
-  // this allows for easy extension in the future by adding data sources
-  // with not a lot of code changes
-  var data_sources = ['events']
-  var ajax_calls = []
-  // Make a note if any deferred ajax calls are created
-  var update_needed = false
-  $.each(data_sources, function (_index, page) {
-    // console.log('.ajax - '+page+' - freshen='+freshen)
-    // Check if see if the data is:
-    // not yet available (1), or never updated (2), or expired (3), or we want a fresh copy (4)
-    if (cache[page].enabled && (
-      cache[page].raw_data === undefined || // 1
-      cache[page].updated_at === undefined || // 2
-      cache[page].updated_at < (now - cache[page].max_age) || // 3
-      freshen // 4
-    )
-    ) {
-      update_needed = true
-      // console.log('.ajax - '+page+' update needed')
-      // Add the call to the list with the configured parameters
-      // This will return the entire page
-      ajax_calls.push($.Deferred(function (defer) {
-        $.ajax({
-          url: cache[page].url,
-          dataType: cache[page].datatype,
-          timeout: cache[page].timeout,
-          success: function (result) {
-            // console.log('Fresh fetch of '+cache[page].url)
-            cache[page].raw_data = result
-            cache[page].updated_at = new Date()
-            cache[page].last_status = {
-              "success": true
-            }
-            defer.resolve(result)
-          },
-          error: function (xhr, status, error) {
-            // console.log("Error fetching "+cache[page].url+": "+error+" - "+status)
-            cache[page].last_status = {
-              "success": false,
-              "returnStatus": status,
-              "error": error,
-              "message": JSON.stringify(arguments) + "" + xhr.responseText
-            }
-            defer.resolve(undefined)
-          }
-        })
-      }))
-    } else {
-      // Add a call that only returns the previously returned data
-      // This means we can do the same things in the when function
-      // console.log('.ajax - '+page+' posting cached request response, expires in '+
-      //     Math.round((cache[page].max_age - (now - cache[page].updated_at))/1000)+'s')
-      ajax_calls.push($.Deferred(function (defer) {
-        defer.resolve(cache[page].raw_data)
-      }))
-    }
-  })
-
-  if (update_needed) {
-    // console.log('Updated required, executing deferred AJAX requests')
-    // We always have two calls, but often the calls contain the cached data, rather than freshly
-    // retrieved data.
-    $.when(ajax_calls[0], ajax_calls[1]).done(
-      // 20191117 - data_geo replaced with data_events 
-      function (data_events) {
-
-        // We absolutely need the events data, without which we can't do
-        // anything.
-        if (data_events === undefined) {
-          // See if we have a previous one to fall back on
-          if (cache.events.raw_data === undefined) {
-            // If not, send something back
-            console.log('No data to go on, sending back some debug information!')
-            // notify_geo_data(notify_func)
-            // return
-          } else {
-            // Else make the best use of what we had previously
-            console.log('Using previously obtained raw data')
-            data_events = cache.events.raw_data
-          }
-        } else {
-          console.log('Fresh data available')
-        }
-
-        update_cache_data(data_events)
-
-        notify_geo_data(notify_func)
-      }
-    )
-  } else {
-    // Just return the cached data
-    console.log('Returning cached data for Geo Data')
-    notify_geo_data(notify_func)
-  }
-
-}
-
-function regenerate_cache_data() {
-  update_cache_data(cache.events.raw_data)
-}
-
 function update_cache_data(data_events) {
   if (data_events === undefined) {
     cache.data = {
@@ -378,21 +265,3 @@ function update_cache_data(data_events) {
 
   return data
 }
-
-function notify_geo_data(f) {
-  if (f !== undefined) {
-    if (cache.data !== undefined) {
-      // console.log('Notifying caller with cached data ('+JSON.stringify(cache.data).length+' bytes), last updated at ' + cache.updated_at)
-      f({
-        'data': cache.data,
-        'updated': cache.updated_at !== undefined ? cache.updated_at.toString() : undefined
-      })
-    } else {
-      f({
-        'data': null,
-        'updated': 'never'
-      })
-    }
-  }
-}
-
