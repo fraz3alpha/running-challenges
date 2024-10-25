@@ -1,3 +1,9 @@
+const getBrowserAPI = () => {
+  return (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.getURL) ? chrome : browser;
+};
+
+const browserAPI = getBrowserAPI();
+
 // The data will be updated when there is no data, or it is over the
 // configured age
 var cache = {

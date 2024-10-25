@@ -349,7 +349,7 @@ function get_running_badge(result) {
       $.each(result.badgesAwarded, function (index, badge) {
         badge_info.push({
           "name": badge.name,
-          "icon": browser.runtime.getURL("/images/badges/" + badge.badge_icon + ".png"),
+          "icon": browserAPI.runtime.getURL("/images/badges/" + badge.badge_icon + ".png"),
           // The link just goes to the top of the main table for the challenge, not the specific row.
           "link": "#" + result.shortname,
           "shortname": badge.badge_icon
@@ -360,14 +360,14 @@ function get_running_badge(result) {
     if (result.complete == true) {
       badge_info = {
         "name": result.name,
-        "icon": browser.runtime.getURL("/images/badges/" + result.badge_icon + ".png"),
+        "icon": browserAPI.runtime.getURL("/images/badges/" + result.badge_icon + ".png"),
         "link": "#" + result.shortname,
         "shortname": result.badge_icon
       }
     } else if (result.partial_completion == true) {
       badge_info = {
         "name": result.partial_completion_name,
-        "icon": browser.runtime.getURL("/images/badges/" + result.partial_completion_badge_icon + ".png"),
+        "icon": browserAPI.runtime.getURL("/images/badges/" + result.partial_completion_badge_icon + ".png"),
         "link": "#" + result.shortname,
         "shortname": result.partial_completion_badge_icon
       }
@@ -384,18 +384,18 @@ function get_volunteer_badge(result) {
   if (result.complete == true) {
     badge_info = {
       "name": result.name,
-      "icon": browser.runtime.getURL("/images/badges/" + result.badge_icon + ".png"),
+      "icon": browserAPI.runtime.getURL("/images/badges/" + result.badge_icon + ".png"),
       "link": "#" + result.shortname,
       "shortname": result.badge_icon
     }
     if (result.subparts_completed_count >= 25) {
-      badge_info.icon = browser.runtime.getURL("/images/badges/" + result.badge_icon + "-3-stars.png")
+      badge_info.icon = browserAPI.runtime.getURL("/images/badges/" + result.badge_icon + "-3-stars.png")
       badge_info.name += " (25+ times)"
     } else if (result.subparts_completed_count >= 10) {
-      badge_info.icon = browser.runtime.getURL("/images/badges/" + result.badge_icon + "-2-stars.png")
+      badge_info.icon = browserAPI.runtime.getURL("/images/badges/" + result.badge_icon + "-2-stars.png")
       badge_info.name += " (10+ times)"
     } else if (result.subparts_completed_count >= 5) {
-      badge_info.icon = browser.runtime.getURL("/images/badges/" + result.badge_icon + "-1-star.png")
+      badge_info.icon = browserAPI.runtime.getURL("/images/badges/" + result.badge_icon + "-1-star.png")
       badge_info.name += " (5+ times)"
     }
   }
