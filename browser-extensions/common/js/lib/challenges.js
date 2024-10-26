@@ -296,7 +296,9 @@ function challenge_record_breaker(data, params) {
   geoData = data.geo_data
   user_data = data.user_data
 
-  var reference_parkrun_name = calculate_average_parkrun_event_name(parkrunResults, geoData)
+  const reference_parkrun_name = user_data?.home_parkrun_info?.name ??
+    calculate_average_parkrun_event_name(parkrunResults, geoData) ??
+    'Bushy Park';
   var reference_parkrun = geoData.data.events[reference_parkrun_name]
 
   var o = create_data_object(params, "runner")
