@@ -1,9 +1,5 @@
 const browserAPI = (typeof chrome !== "undefined") ? chrome : browser;
 
-browserAPI.runtime.onInstalled.addListener(() => {
-  console.log("Extension installed");
-});
-
 browserAPI.action.onClicked.addListener(handleClicked);
 
 function handleClicked(_tab) {
