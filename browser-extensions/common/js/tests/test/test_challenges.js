@@ -269,10 +269,11 @@ describe("challenges.js", function() {
 
             // Use the special '__get__' accessor to get your private function.
             var generate_stat_average_parkrun_event = challenges.__get__('generate_stat_average_parkrun_event');
+            const homeParkrun = getParkrunEventInfo("Winchester")
 
             it("should return \"None\" if you haven't run any events", function() {
                 var parkrunResults = []
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
                 assert.equal(r.value, "None")
                 assert.equal(r.url, undefined)
             })
@@ -281,8 +282,8 @@ describe("challenges.js", function() {
                 var parkrunResults = [
                     createParkrunResult({name: "Winchester"})
                 ]
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-                assert.equal(r.value, "Winchester")
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Winchester - 0km away")
                 assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
             })
             
@@ -292,8 +293,8 @@ describe("challenges.js", function() {
                     createParkrunResult({name: "Winchester"}),
                     createParkrunResult({name: "Winchester"})
                 ]
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-                assert.equal(r.value, "Winchester")
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
+                assert.equal(r.value, "Winchester - 0km away")
                 assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
             })
 
@@ -305,8 +306,8 @@ describe("challenges.js", function() {
                 ]
                 // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
                 var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
-                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData)
-                assert.equal(r.value, "Bushy Park")
+                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData, homeParkrun)
+                assert.equal(r.value, "Bushy Park - 78km away")
                 assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
             })
 
