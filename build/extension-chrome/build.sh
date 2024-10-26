@@ -59,7 +59,7 @@ for i in patches/chrome/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < $
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
 # zip -r extension.zip js/ html/ images/ css/ manifest.json
-web-ext lint
+# web-ext lint # Firefox won't verify a Chrome-compatible MV3 file :(
 web-ext build
 
 # Rename built package with the browser in the name
