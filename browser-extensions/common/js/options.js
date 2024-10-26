@@ -2,41 +2,42 @@ var geo_data;
 var saved_options = {}
 
 function initial_page_setup() {
+    // Attach the save function to the 'Save' button
+    $('#save').click(function () {
+        save_user_configuration()
+    })
+    // Watch for changes to the athlete id textbox
+    $('#athlete_number').bind('keyup change', function () {
+        on_change_athlete_number()
+    })
+    // Attach the clear-cache function to the 'Update Cache' button
+    $('#update_cache').click(function () {
+        update_cache(true)
+    })
+    // Attach the handler to update the parkrun home country when the select
+    // dropdown is changed
+    $('#athlete_home_parkrun').change(function () {
+        update_home_parkrun_country()
+    })
+
+    // Attach handler to catch when the beta checkbox is enabled, which
+    // will allow us to set the extra information text
+    // $('#enable_beta_features').change(function() {
+    //     on_change_enable_beta_features()
+    // })
+    $('#enable_beta_features').hide()
+    $('#enable_beta_features_label').hide()
+    $('#enable_beta_features_extra_comment').hide()
+
+    // Hide the debug elements by default, only showing them if you set the
+    // athlete number to 'testing'
+    show_debug_elements(false)
+    
     load_data().then((data) => {
         console.log(`Loaded options: ${JSON.stringify(data, null, 2)}`)
         geo_data = data.loaded_geo_data;
         saved_options = data.loaded_user_data;
 
-        // Attach the save function to the 'Save' button
-        $('#save').click(function () {
-            save_user_configuration()
-        })
-        // Watch for changes to the athlete id textbox
-        $('#athlete_number').bind('keyup change', function () {
-            on_change_athlete_number()
-        })
-        // Attach the clear-cache function to the 'Update Cache' button
-        $('#update_cache').click(function () {
-            update_cache(true)
-        })
-        // Attach the handler to update the parkrun home country when the select
-        // dropdown is changed
-        $('#athlete_home_parkrun').change(function () {
-            update_home_parkrun_country()
-        })
-
-        // Attach handler to catch when the beta checkbox is enabled, which
-        // will allow us to set the extra information text
-        // $('#enable_beta_features').change(function() {
-        //     on_change_enable_beta_features()
-        // })
-        $('#enable_beta_features').hide()
-        $('#enable_beta_features_label').hide()
-        $('#enable_beta_features_extra_comment').hide()
-
-        // Hide the debug elements by default, only showing them if you set the
-        // athlete number to 'testing'
-        show_debug_elements(false)
         update_geo_data_stats();
         populate_user_configuration();
     })
