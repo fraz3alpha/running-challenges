@@ -1095,7 +1095,7 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 }
 
 // Which is the closest parkrun to your average parkrun location?
-function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
+function generate_stat_average_parkrun_event(parkrun_results, geo_data, home_parkrun_info) {
   // Calculate average parkrun for user
 
   var average_parkrun_stat_info = {
@@ -1106,14 +1106,15 @@ function generate_stat_average_parkrun_event(parkrun_results, geo_data) {
 
   var average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
 
-  if (average_parkrun_event_name !== undefined) {
+  if (average_parkrun_event_name) {
+    const distance = Math.round(calculate_great_circle_distance(geo_data.data.events[average_parkrun_event_name], home_parkrun_info));
 
     var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
     
     average_parkrun_stat_info = {
       "display_name": "Average parkrun event",
       "help": "The nearest parkrun event to your average parkrun location.",
-      "value": average_parkrun_event_name,
+      "value": `${average_parkrun_event_name} - ${distance}km away`,
       "url": url_link
     }
   }
@@ -1277,7 +1278,7 @@ function generate_stats(data) {
     stats['total_distance_travelled'] = generate_stat_total_distance_travelled(data.parkrun_results, data.geo_data)
     stats['total_countries_visited'] = generate_stat_total_countries_visited(data.parkrun_results, data.geo_data)
     stats['average_parkrun_location'] = generate_stat_average_parkrun_location(data.parkrun_results, data.geo_data)
-    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data)
+    stats['average_parkrun_event'] = generate_stat_average_parkrun_event(data.parkrun_results, data.geo_data, data.user_data.home_parkrun_info)
   }
 
   // Stats that need the user data available, and we are on their page (i.e. has
