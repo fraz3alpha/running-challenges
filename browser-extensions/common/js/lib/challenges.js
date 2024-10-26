@@ -1096,29 +1096,24 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 
 // Which is the closest parkrun to your average parkrun location?
 function generate_stat_average_parkrun_event(parkrun_results, geo_data, home_parkrun_info) {
-  // Calculate average parkrun for user
-
-  var average_parkrun_stat_info = {
-    "display_name": "Average parkrun event",
-    "help": "The nearest parkrun event to your average parkrun location.",
-    "value": "None"
-  }
-
-  var average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data)
+  const average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data);
+  const display_name = "Average parkrun event";
+  const help = home_parkrun_info.lat && home_parkrun_info.lon ?
+    "The nearest parkrun event to your home parkrun location" :
+    "The nearest parkrun event to your average parkrun location (or Bushy if you're yet to start)";
+  let value = 'None';
+  let url;
 
   if (average_parkrun_event_name) {
-    const distance = Math.round(calculate_great_circle_distance(geo_data.data.events[average_parkrun_event_name], home_parkrun_info));
-
-    var url_link = get_parkrun_page_url(geo_data, average_parkrun_event_name)
-    
-    average_parkrun_stat_info = {
-      "display_name": "Average parkrun event",
-      "help": "The nearest parkrun event to your average parkrun location.",
-      "value": `${average_parkrun_event_name} - ${distance}km away`,
-      "url": url_link
-    }
+    const distance = home_parkrun_info ?
+      Math.round(calculate_great_circle_distance(geo_data.data.events[average_parkrun_event_name], home_parkrun_info)) :
+      0;
+    const distanceAway = distance ? `${distance}km away` : null;
+    value = [average_parkrun_event_name, distanceAway].filter(Boolean).join(' - ');
+    url = get_parkrun_page_url(geo_data, average_parkrun_event_name);
   }
-  return average_parkrun_stat_info
+
+  return { display_name, help, value, url };
 }
 
 function calculate_average_parkrun_event_name(parkrun_results, geo_data) {

@@ -265,55 +265,58 @@ describe("challenges.js", function() {
 
         })
 
-        describe("generate_stat_average_parkrun_event", function() {
-
-            // Use the special '__get__' accessor to get your private function.
+        describe("generate_stat_average_parkrun_event", function () {
             var generate_stat_average_parkrun_event = challenges.__get__('generate_stat_average_parkrun_event');
-            const homeParkrun = getParkrunEventInfo("Winchester")
+            const homeParkrun = getParkrunEventInfo("Winchester");
 
-            it("should return \"None\" if you haven't run any events", function() {
-                var parkrunResults = []
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
-                assert.equal(r.value, "None")
-                assert.equal(r.url, undefined)
-            })
+            it("should return 'None' if no events have been run", function () {
+                var parkrunResults = [];
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun);
+                assert.equal(r.value, "None");
+                assert.equal(r.url, undefined);
+                assert.equal(r.help, "The nearest parkrun event to your home parkrun location")
+            });
 
-            it("should return \"Winchester\" if you have only run at Winchester once", function() {
+            it("should handle no home parkrun", function () {
+                var parkrunResults = [createParkrunResult({ name: "Winchester" })];
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, {});
+                assert.equal(r.value, "Winchester");
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester");
+                assert.equal(r.help, "The nearest parkrun event to your average parkrun location (or Bushy if you're yet to start)")
+            });
+
+            it("should return 'Winchester' if only run there once", function () {
+                var parkrunResults = [createParkrunResult({ name: "Winchester" })];
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun);
+                assert.equal(r.value, "Winchester");
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester");
+                assert.equal(r.help, "The nearest parkrun event to your home parkrun location")});
+
+            it("should return 'Winchester' if run there multiple times", function () {
                 var parkrunResults = [
-                    createParkrunResult({name: "Winchester"})
-                ]
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
-                assert.equal(r.value, "Winchester - 0km away")
-                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-            })
-            
-            it("should return \"Winchester\" if you have only run there Winchester, but been there multiple times", function() {
+                    createParkrunResult({ name: "Winchester" }),
+                    createParkrunResult({ name: "Winchester" }),
+                    createParkrunResult({ name: "Winchester" })
+                ];
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun);
+                assert.equal(r.value, "Winchester");
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester");
+                assert.equal(r.help, "The nearest parkrun event to your home parkrun location")
+            });
+
+            it("should return 'Bushy Park' if run there most often", function () {
                 var parkrunResults = [
-                    createParkrunResult({name: "Winchester"}),
-                    createParkrunResult({name: "Winchester"}),
-                    createParkrunResult({name: "Winchester"})
-                ]
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, homeParkrun)
-                assert.equal(r.value, "Winchester - 0km away")
-                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-            })
-
-            it("should return \"Bushy Park\" if you have run there most often", function() {
-                var parkrunResults = [
-                    createParkrunResult({name: "Bushy Park"}),
-                    createParkrunResult({name: "Bushy Park"}),
-                    createParkrunResult({name: "Winchester"})
-                ]
-                // Filter the events to just Bushy Park and Winchester so that we definitely know which it will pick
-                var filteredGeoData = filterGeoData(geoData, {"events": ["Bushy Park", "Winchester"]})
-                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData, homeParkrun)
-                assert.equal(r.value, "Bushy Park - 78km away")
-                assert.equal(r.url, "https://www.parkrun.org.uk/bushy")
-            })
-
-        })
-
-    })
+                    createParkrunResult({ name: "Bushy Park" }),
+                    createParkrunResult({ name: "Bushy Park" }),
+                    createParkrunResult({ name: "Winchester" })
+                ];
+                var filteredGeoData = filterGeoData(geoData, { "events": ["Bushy Park", "Winchester"] });
+                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData, homeParkrun);
+                assert.equal(r.value, "Bushy Park - 78km away");
+                assert.equal(r.url, "https://www.parkrun.org.uk/bushy");
+                assert.equal(r.help, "The nearest parkrun event to your home parkrun location")});
+        });
+    });
 
     describe("challenges", function() {
 
