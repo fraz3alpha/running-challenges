@@ -32,15 +32,8 @@ function initial_page_setup() {
     // Hide the debug elements by default, only showing them if you set the
     // athlete number to 'testing'
     show_debug_elements(false)
-    
-    load_data().then((data) => {
-        console.log(`Loaded options: ${JSON.stringify(data, null, 2)}`)
-        geo_data = data.loaded_geo_data;
-        saved_options = data.loaded_user_data;
 
-        update_geo_data_stats();
-        populate_user_configuration();
-    })
+    load_user_configuration();
 }
 
 function on_change_athlete_number() {
@@ -112,6 +105,17 @@ function save_user_configuration() {
         setTimeout(() => {
             status.text('');
         }, 750);
+    });
+}
+
+function load_user_configuration() {
+    load_data().then((data) => {
+        console.log(`Loaded options: ${JSON.stringify(data, null, 2)}`);
+        geo_data = data.loaded_geo_data;
+        saved_options = data.loaded_user_data;
+
+        update_geo_data_stats();
+        populate_user_configuration();
     });
 }
 
