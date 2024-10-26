@@ -59,7 +59,6 @@
         "js/lib/i18n.js",
         "js/lib/challenges.js",
         "js/lib/challenges_ui.js",
-        "js/lib/cache.js",
         "js/content-scripts/content-script-parkrunner.js"
       ],
       "css": [

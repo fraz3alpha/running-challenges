@@ -613,7 +613,7 @@ function process_data_and_update_ui(id_map, parsed_results_data, parsed_voluntee
 
 function handle_error(error) {
   console.error(`An error occurred: ${error}`);
-  set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data)}`);
+  set_progress_message(`Error: ${error}. Stack: ${error.stack}. Data is ${JSON.stringify(data ?? undefined)}`);
 }
 
 
