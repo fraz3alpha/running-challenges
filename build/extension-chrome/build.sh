@@ -46,9 +46,6 @@ cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 # Write out the version file
 echo "var extensionVersion = \"${EXTENSION_BUILD_VERSION}\"" > ${TMP_BUILD_DIR}/js/lib/version.js
 
-# Copy the extras libraries and code for Chrome
-cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
-
 # Copy the metadata
 cp browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
 
