@@ -14,6 +14,11 @@
   "icons": {
     "128": "images/logo/logo-128x128.png"
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{70afe5fd-82a7-4300-9b3e-06ac0bd1c92d}"
+    }
+  },
   "content_scripts": [
     {
       "matches": [
