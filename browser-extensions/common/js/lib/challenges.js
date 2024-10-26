@@ -1098,7 +1098,7 @@ function get_parkrun_page_url(geo_data, parkrun_name) {
 function generate_stat_average_parkrun_event(parkrun_results, geo_data, home_parkrun_info) {
   const average_parkrun_event_name = calculate_average_parkrun_event_name(parkrun_results, geo_data);
   const display_name = "Average parkrun event";
-  const help = home_parkrun_info.lat && home_parkrun_info.lon ?
+  const help = home_parkrun_info?.lat && home_parkrun_info?.lon ?
     "The nearest parkrun event to your home parkrun location" :
     "The nearest parkrun event to your average parkrun location (or Bushy if you're yet to start)";
   let value = 'None';

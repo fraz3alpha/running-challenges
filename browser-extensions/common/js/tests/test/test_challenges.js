@@ -277,6 +277,14 @@ describe("challenges.js", function() {
                 assert.equal(r.help, "The nearest parkrun event to your home parkrun location")
             });
 
+            it("should handle no home parkrun data at all", function () {
+                var parkrunResults = [createParkrunResult({ name: "Winchester" })];
+                var r = generate_stat_average_parkrun_event(parkrunResults, geoData, undefined);
+                assert.equal(r.value, "Winchester");
+                assert.equal(r.url, "https://www.parkrun.org.uk/winchester");
+                assert.equal(r.help, "The nearest parkrun event to your average parkrun location (or Bushy if you're yet to start)")
+            });
+
             it("should handle no home parkrun", function () {
                 var parkrunResults = [createParkrunResult({ name: "Winchester" })];
                 var r = generate_stat_average_parkrun_event(parkrunResults, geoData, {});
