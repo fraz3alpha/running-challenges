@@ -1325,10 +1325,10 @@ function get_flag_image_src(country) {
       "World": "world"
   }
 
-  var flag_src = browser.runtime.getURL("/images/flags/flag-unknown.png")
+  var flag_src = browserAPI.runtime.getURL("/images/flags/flag-unknown.png")
 
   if (country in flag_map) {
-    flag_src = browser.runtime.getURL("/images/flags/"+flag_map[country]+".png")
+    flag_src = browserAPI.runtime.getURL("/images/flags/"+flag_map[country]+".png")
   }
 
   return flag_src

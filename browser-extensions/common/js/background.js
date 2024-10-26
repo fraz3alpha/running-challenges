@@ -1,19 +1,26 @@
+const browserAPI = (typeof chrome !== "undefined") ? chrome : browser;
 
-// This captures the click on the icon in the toolbar
-browser.browserAction.onClicked.addListener(handleClicked);
+browserAPI.runtime.onInstalled.addListener(() => {
+  console.log("Extension installed");
+});
+
+browserAPI.action.onClicked.addListener(handleClicked);
 
 function handleClicked(_tab) {
+  console.log("Extension clicked");
   // We want to check if an Athlete Number has been provided,
   // if so let's display their results page
-  browser.storage.local.get({
-    athlete_number: undefined,
+  browserAPI.storage.local.get({
+    athlete_number: '',
     home_parkrun_info: {}
   }).then((items) => handleStoredItems(items));
 }
 
 function handleStoredItems(items) {
+  console.log(`handleStoredItems(${JSON.stringify(items)})`);
   if (!items.athlete_number) {
-    browser.runtime.openOptionsPage();
+    console.log("No athlete number set, opening options page");
+    browserAPI.runtime.openOptionsPage();
     return;
   }
 
@@ -24,7 +31,8 @@ function handleStoredItems(items) {
     local_url = home_parkrun_info.local_url;
   }
 
+  console.log(`Opening results page for athlete ${items.athlete_number}`);
   const results_url = `https://${local_url}/parkrunner/${items.athlete_number}/all`;
-  browser.tabs.create({ url: results_url });
+  browserAPI.tabs.create({ url: results_url });
 }
 

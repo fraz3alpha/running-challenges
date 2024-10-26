@@ -105,7 +105,7 @@ function save_user_configuration() {
 
     console.log(`Saving: ${JSON.stringify(saved_data)}`);
 
-    browser.storage.local.set(saved_data).then(() => {
+    browserAPI.storage.local.set(saved_data).then(() => {
         const status = $('#status');
         status.text('Options saved.');
         setTimeout(() => {
@@ -212,7 +212,7 @@ function update_home_parkrun_dropdown() {
         });
 
         // Set the home parkrun we know about if we have it in the list, else default to 'Not Set'
-        home_parkrun_select.val(saved_options.home_parkrun_info.name || NOT_SET_OPTION.value);
+        home_parkrun_select.val(saved_options?.home_parkrun_info?.name ?? NOT_SET_OPTION.value);
     } else {
         // If the user has set their home parkrun already, then add it into the list anyway and select that
         if (saved_options.home_parkrun_info.name) {

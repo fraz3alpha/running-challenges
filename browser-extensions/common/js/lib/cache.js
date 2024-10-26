@@ -1,6 +1,8 @@
-const getBrowserAPI = () => {
-  return (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.getURL) ? chrome : browser;
-};
+function getBrowserAPI() {
+  const api = (typeof chrome !== "undefined") ? chrome : browser;
+  console.log(`getBrowserAPI() ==> ${typeof api}`);
+  return api;
+}
 
 const browserAPI = getBrowserAPI();
 
@@ -29,7 +31,7 @@ function fetch_with_cache(url, cacheKey, responseType = 'json') {
 
   console.log(`Loading data from ${url}`);
 
-  return browser.storage.local.get([cacheKey, cacheTimestampKey])
+  return getBrowserAPI().storage.local.get([cacheKey, cacheTimestampKey])
     .then(cache => {
       const now = Date.now();
       if (cache[cacheKey] && cache[cacheTimestampKey] && (now - cache[cacheTimestampKey] < CACHE_DURATION)) {
@@ -42,7 +44,7 @@ function fetch_with_cache(url, cacheKey, responseType = 'json') {
             const cacheData = {};
             cacheData[cacheKey] = data;
             cacheData[cacheTimestampKey] = now;
-            browser.storage.local.set(cacheData);
+            browserAPI.storage.local.set(cacheData);
             return data;
           });
       }
@@ -58,7 +60,7 @@ function clear_all_cache() {
     'challengeMetadata'
   ];
 
-  return browser.storage.local.remove(cacheKeys)
+  return browserAPI.storage.local.remove(cacheKeys)
     .then(() => {
       console.log('All cache items cleared');
     });
@@ -87,7 +89,7 @@ function load_data(force_update = false) {
 }
 
 function load_saved_data() {
-  return browser.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]);
+  return browserAPI.storage.local.get(["home_parkrun_info", "athlete_number", "challengeMetadata"]);
 }
 
 function fetch_geo_data() {
