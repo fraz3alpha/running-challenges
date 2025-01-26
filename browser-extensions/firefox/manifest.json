@@ -161,8 +161,7 @@
         "/images/flags/*.png",
         "/html/*.html",
         "/css/*"
-      ],
-      "use_dynamic_url": true
+      ]
     }
   ],
   "permissions": [
@@ -172,7 +171,6 @@
     "page": "html/options.html"
   },
   "background": {
-    "service_worker": "js/background.js",
     "scripts": ["js/background.js"]
   }
 }
