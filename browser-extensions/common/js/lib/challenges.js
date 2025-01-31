@@ -241,13 +241,6 @@ function generate_running_challenge_data(data, thisAthleteInfo) {
 
   }
 
-  // if (data.parkrun_results && data.geo_data) {
-  //   challenge_data.push(challenge_by_region(data, {
-  //     "shortname": "regionnaire",
-  //     "name": "Regionnaire",
-  //     "help": "Run all the parkrun locations in a geographical region."}))
-  // }
-
   if (data.parkrun_results && data.geo_data) {
       challenge_data.push(challenge_record_breaker(data, {
         "shortname": "record-breaker",
@@ -1332,60 +1325,14 @@ function get_flag_image_src(country) {
       "World": "world"
   }
 
-  var flag_src = browser.runtime.getURL("/images/flags/flag-unknown.png")
+  var flag_src = browserAPI.runtime.getURL("/images/flags/flag-unknown.png")
 
   if (country in flag_map) {
-    flag_src = browser.runtime.getURL("/images/flags/"+flag_map[country]+".png")
+    flag_src = browserAPI.runtime.getURL("/images/flags/"+flag_map[country]+".png")
   }
 
   return flag_src
 
-}
-
-function generate_global_tourism_data(parkrun_results, geo_data) {
-    // Generate essentially the same results as the regionnaire challenge all over again
-    // console.log("generate_global_tourism_data()")
-    var global_tourism = []
-
-
-
-    regions = geo_data.data.regions
-    events_completed_map = group_results_by_event(parkrun_results)
-    sorted_region_heirachy = calculate_child_regions(regions, events_completed_map, "World")
-
-    sorted_region_heirachy.child_regions.sort().forEach(function(top_level_country) {
-        // Skip the world
-        if (top_level_country.name == "World") {
-            return
-        }
-
-        var country_info = {
-            "name": top_level_country.name,
-            "visited": false,
-            "first_visited": top_level_country.first_ran_on,
-            "icon": get_flag_image_src(top_level_country.name)
-        }
-
-        var child_events = find_region_child_events(top_level_country)
-
-        if (top_level_country.child_events_completed_count > 0) {
-            country_info["visited"] = true
-        }
-        global_tourism.push(country_info)
-    })
-    return global_tourism
-}
-
-function find_region_child_events(region, events=[]) {
-    // Add the direct child events of this region
-    region.child_events.forEach(function (region_event) {
-        events.push(region_event)
-    })
-    // Further query all the child regions of this region
-    region.child_regions.forEach(function (child_region) {
-        find_region_child_events(child_region, events)
-    })
-    return events
 }
 
 function create_data_object(params, category) {
@@ -1494,7 +1441,6 @@ function group_global_events_by_initial_letter(geo_data) {
   return events
 
 }
-
 
 function sort_events_by_distance(events, from_location) {
 
@@ -2176,11 +2122,9 @@ function challenge_tourist(data, params) {
     return update_data_object(o)
 }
 
-// Just return true for now
-// Return true if the athlete id for this page match what is stored in the user data
+// Return true if the athlete id for this page matches what is stored in the user data
 function is_our_page(data) {
-  // return has_user_data_athlete_id(data) && has_this_athlete_id(data) && get_user_data_athlete_id(data) == get_this_athlete_id(data) 
-  return (data.info !== undefined && data.info.is_our_page)
+  return data?.info?.is_our_page ?? false
 }
 
 function has_user_data(data) {
@@ -2191,16 +2135,6 @@ function get_user_data(data) {
   return data.user_data
 }
 
-function has_user_data_athlete_id(data) {
-  return has_it = false
-  if (has_user_data(data)) {
-    if (get_user_data(data).athlete_number !== undefined) {
-      has_it = true
-    }
-  }
-  return has_it
-}
-
 function get_user_data_athlete_id(data) {
   return get_user_data(data).athlete_number
 }
@@ -2209,24 +2143,13 @@ function has_this_athlete_id(data) {
   return data.athlete_id !== undefined
 }
 
-function get_this_athlete_id(data) {
-  return data.athlete_id
-}
-
-// Return true if there is valid geo data available
 function has_geo_data(data) {
-  geo_data = get_geo_data(data)
-  return geo_data !== undefined
-}
-
-function get_geo_data(data) {
-  return data.geo_data
+  return data.geo_data !== undefined
 }
 
 // Return true if there is a home parkrun set
 function has_home_parkrun(data) {
-  home_parkrun = get_home_parkrun(data)
-  return home_parkrun !== undefined
+  return !!get_home_parkrun(data)
 }
 
 function get_home_parkrun(data) {
@@ -2831,36 +2754,7 @@ function challenge_obsessive(data, params) {
     return update_data_object(o)
 }
 
-function unroll_regions(sorted_region_heirachy) {
-
-  summary = {}
-  iterate_unroll_regions(summary, sorted_region_heirachy, 0)
-  return summary
-
-}
-
-function iterate_unroll_regions(summary, region, parent_id) {
-
-  summary[region.id] = {
-    name: region.name,
-    parent_id: parent_id,
-    complete: region.complete,
-    completed_on: region.completed_on,
-    child_regions: region.child_regions.map(r => r.id),
-    child_events: region.child_events,
-    child_events_completed: region.child_events_completed,
-    // Recursive data, for all child regions and their children, downloads
-    recursive_child_events_completed: region.child_events_completed_count,
-    recursive_child_events_count: region.child_events_total,
-  }
-  region.child_regions.forEach(function(sub_region) {
-    iterate_unroll_regions(summary, sub_region, region.id)
-  })
-
-}
-
 function calculateCountryCompletionInfo(data) {
-
   var countryCompletionInfo = {}
   // Pre-populate information about each country
   $.each(data.geo_data.data.countries, function(countryName, countryInfo) {
@@ -2877,8 +2771,8 @@ function calculateCountryCompletionInfo(data) {
   })
   // Iterate through each event that has been completed by athlete
 
-  var groupedResults = group_results_by_event(data.parkrun_results)
-  console.log(groupedResults)
+  const groupedResults = group_results_by_event(data.parkrun_results)
+  // console.log(groupedResults)
 
   $.each(groupedResults, function(eventName, eventAttendance){
     // Find extra information from the events data
@@ -2893,138 +2787,17 @@ function calculateCountryCompletionInfo(data) {
       countryEntry.visited = true
 
       // Stash the date we first ran at this event
-      var eventFirstRunDate = eventAttendance[0].date_obj
+      const eventFirstRunDate = eventAttendance[0].date_obj
 
-      // Find out if this was the ealiest we ever ran in this country
+      // Find out if this was the earliest we ever ran in this country
       if (countryEntry.firstRanOn === undefined || eventFirstRunDate < countryEntry.firstRanOn) {
         countryEntry.firstRanOn = eventFirstRunDate
       }
 
     } else {
-      // We don't know where this event was, perhaps it has closed
+      // console.log(`We don't know about ${eventName}, attended on ${eventAttendance[0].date_obj}. Perhaps it is closed?`)
     }
   })
 
   return countryCompletionInfo
-}
-
-function calculate_child_regions(regions, events_completed_map, parent_region) {
-
-    var region_info = {
-        'name': parent_region,
-        "id": regions[parent_region]["id"],
-        "complete": false,
-        "completed_on": null,
-        "child_regions": [],
-        "child_events": [],
-        "child_events_total": 0,
-        "child_events_completed": {},
-        "child_events_completed_count": 0,
-        "first_ran_on": null
-    }
-
-    // child_region_info = []
-    if (regions[parent_region].child_region_names.length == 0) {
-        // No sub regions
-    } else {
-        regions[parent_region].child_region_names.sort().forEach(function (region_name) {
-            child_region_parkrun_info = calculate_child_regions(regions, events_completed_map, region_name)
-            region_info["child_regions"].push(child_region_parkrun_info)
-            region_info["child_events_total"] += child_region_parkrun_info["child_events_total"]
-            region_info["child_events_completed_count"] += child_region_parkrun_info["child_events_completed_count"]
-            if (region_info.first_ran_on == null ||
-                (child_region_parkrun_info.first_ran_on != null &&
-                    child_region_parkrun_info.first_ran_on < region_info.first_ran_on)) {
-                region_info.first_ran_on = child_region_parkrun_info.first_ran_on
-            }
-            // child_region_info.push(child_region_parkrun_info)
-        })
-    }
-
-    region_info["child_events_total"] += regions[parent_region].child_event_names.length
-    if (regions[parent_region].child_event_names.length > 0) {
-        regions[parent_region].child_event_names.sort().forEach(function (event_name) {
-            // Work out if we have completed this parkrun
-            // Lets just say yes for now
-            region_info["child_events"].push(event_name)
-            if (event_name in events_completed_map) {
-                region_info["child_events_completed_count"] += 1
-                // Add the first completed run at this event to our list
-                region_info["child_events_completed"][event_name] = events_completed_map[event_name][0]
-                first_run_date = events_completed_map[event_name][0].date_obj
-                if (region_info.first_ran_on == null ||
-                    first_run_date < region_info.first_ran_on) {
-                    region_info.first_ran_on = first_run_date
-                }
-            }
-        })
-    }
-
-    // Now that we have processed everything below, see if we have completed
-    // this region
-    region_info["complete"] = (region_info["child_events_completed_count"] == region_info["child_events_total"])
-
-    return region_info
-
-}
-
-function generate_regionnaire_detail_info(region, depth) {
-    var details = []
-
-    prefix = Array(depth).join("- ")
-
-    if (region["child_events_total"] > 0) {
-        details.push({
-                "subpart": prefix + region["name"],
-                "info": region["child_events_completed_count"] + "/" + region["child_events_total"],
-                "complete": region["child_events_completed_count"] == region["child_events_total"],
-                "completed_on": null
-        })
-    }
-
-    region["child_regions"].forEach(function(child_region) {
-        sub_region_info = generate_regionnaire_detail_info(child_region, depth+1);
-        sub_region_info.forEach(function (array_entry) {
-            details.push(array_entry)
-        })
-    })
-
-    return details
-}
-
-function challenge_by_region(data, params) {
-
-  var parkrun_results = data.parkrun_results
-  var geo_data = data.geo_data
-
-    var o = create_data_object(params, "runner")
-    o.summary_text = ""
-
-    regions = geo_data.data.regions
-    // Sort all of the completed parkruns by event so that we can pick out which
-    // has been run, and when that was
-    o.events_completed_map = group_results_by_event(parkrun_results)
-    sorted_region_heirachy = calculate_child_regions(regions, o.events_completed_map, "World")
-    // console.log(sorted_region_heirachy)
-
-    o.regions = sorted_region_heirachy
-
-    o.unrolled_regions = unroll_regions(sorted_region_heirachy)
-
-    o.subparts_detail = generate_regionnaire_detail_info(sorted_region_heirachy, 0)
-
-    // Work out of any regions have been completed
-    o.subparts_detail.forEach(function (detail) {
-        if (detail.complete) {
-            o.subparts_completed_count += 1
-            o.complete = true
-        }
-    })
-
-    if (o.subparts_completed_count > 0) {
-        o.summary_text = "x"+o.subparts_completed_count
-    }
-
-    // Return an object representing this challenge
-    return update_data_object(o)
 }

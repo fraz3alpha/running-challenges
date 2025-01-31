@@ -26,7 +26,7 @@ if (athlete_id !== undefined) {
         var challenge_link = $("<a/>").attr("href", url)
 
         var icon =  $('<img/>')
-        icon.attr('src', browser.runtime.getURL("/images/logo/logo-128x128.png"))
+        icon.attr('src', browserAPI.runtime.getURL("/images/logo/logo-128x128.png"))
         icon.attr('alt', get_localised_value("text_running_challenges"))
         icon.attr('title', get_localised_value("text_running_challenges"))
         icon.attr('height', 24)

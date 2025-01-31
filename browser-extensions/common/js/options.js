@@ -1,25 +1,25 @@
-var geo_data = null
+var geo_data;
 var saved_options = {}
 
 function initial_page_setup() {
-
     // Attach the save function to the 'Save' button
-    $('#save').click(function() {
+    $('#save').click(function () {
         save_user_configuration()
     })
     // Watch for changes to the athlete id textbox
-    $('#athlete_number').bind('keyup change', function() {
+    $('#athlete_number').bind('keyup change', function () {
         on_change_athlete_number()
     })
     // Attach the clear-cache function to the 'Update Cache' button
-    $('#update_cache').click(function() {
+    $('#update_cache').click(function () {
         update_cache(true)
     })
     // Attach the handler to update the parkrun home country when the select
     // dropdown is changed
-    $('#athlete_home_parkrun').change(function() {
+    $('#athlete_home_parkrun').change(function () {
         update_home_parkrun_country()
     })
+
     // Attach handler to catch when the beta checkbox is enabled, which
     // will allow us to set the extra information text
     // $('#enable_beta_features').change(function() {
@@ -33,23 +33,11 @@ function initial_page_setup() {
     // athlete number to 'testing'
     show_debug_elements(false)
 
-    // Load the user configuration so that we can display it
-    load_user_configuration()
-
-    // Fetch all the parkrun statistics so that we populate things like the
-    // home parkrun dropdown, and the cache information
-    update_cache()
-
+    load_user_configuration();
 }
 
 function on_change_athlete_number() {
-    var athlete_number = $('#athlete_number').val();
-    // Special case if the contents is now 'testing', we show the hidden debug info
-    if (athlete_number == 'testing') {
-        show_debug_elements(true)
-    } else {
-        show_debug_elements(false)
-    }
+    show_debug_elements($('#athlete_number').val() === 'testing');
 }
 
 // function on_change_enable_beta_features() {
@@ -61,30 +49,20 @@ function on_change_athlete_number() {
 //   }
 // }
 
-function show_debug_elements(visible=false) {
-    // A set of element IDs that will be shown/hidden depending on whether
-    // we are in a debug mode, as determined by the parameter to this function
-    var debug_elements = [
-        "debug_parkrun_info",
-        "debug_home_parkrun_info"
-    ]
-    $.each(debug_elements, function(index, id) {
-        // Find the element IDs and show or hide them as appropriate
-        if (visible) {
-            $('#'+id).show()
-        } else {
-            $('#'+id).hide()
-        }
-    })
+function show_debug_elements(visible = false) {
+    // Toggle visibility of debug elements based on the parameter
+    ["debug_parkrun_info", "debug_home_parkrun_info"].forEach(id => {
+        $(`#${id}`).toggle(visible);
+    });
 }
 
 function get_home_parkrun_info(parkrun_event_name) {
     // Look up extra pieces of information for this parkrun, if available
-    console.log('looking up info for home parkrun '+parkrun_event_name)
+    console.log('looking up info for home parkrun ' + parkrun_event_name)
     if (geo_data != null && geo_data.data != null) {
         if (parkrun_event_name in geo_data.data.events) {
             home_event_info = geo_data.data.events[parkrun_event_name]
-            console.log('Found info for '+parkrun_event_name+': '+JSON.stringify(home_event_info))
+            console.log('Found info for ' + parkrun_event_name + ': ' + JSON.stringify(home_event_info))
             // Attempting to find country website URL
             if ("country_name" in home_event_info) {
                 var country_info = geo_data.data.countries[home_event_info["country_name"]]
@@ -108,52 +86,90 @@ function get_home_parkrun_info(parkrun_event_name) {
 function save_user_configuration() {
     console.log('save_user_configuration()')
 
-    var athlete_number = $('#athlete_number').val();
-    var athlete_home_parkrun = $('#athlete_home_parkrun').val();
-    // var enable_beta_features_checked = $('#enable_beta_features').prop('checked');
+    const athlete_number = $('#athlete_number').val();
+    const athlete_home_parkrun = $('#athlete_home_parkrun').val();
 
-    // Build up our information that we want to save.
-    // Fetch the home parkrun info
-    var saved_data = {
-        athlete_number: athlete_number,
-        home_parkrun_info: get_home_parkrun_info(athlete_home_parkrun),
-        // enable_beta_features: enable_beta_features_checked
-    }
+    const saved_data = {
+        athlete_number,
+        home_parkrun_info: get_home_parkrun_info(athlete_home_parkrun, null),
+    };
 
-    // Store it on the page for future use
-    saved_options = saved_data
-    update_home_parkrun_country()
+    saved_options = saved_data;
+    update_home_parkrun_country();
 
-    console.log('Saving: '+JSON.stringify(saved_data))
+    console.log(`Saving: ${JSON.stringify(saved_data)}`);
 
-    browser.storage.local.set(saved_data).then(function() {
-        // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = 'Options saved.';
-        setTimeout(function() {
-            status.textContent = '';
+    browserAPI.storage.local.set(saved_data).then(() => {
+        const status = $('#status');
+        status.text('Options saved.');
+        setTimeout(() => {
+            status.text('');
         }, 750);
     });
 }
 
 function load_user_configuration() {
-    console.log('load_user_configuration()')
-    var restored_options = null
-    browser.storage.local.get({
-        athlete_number: '',
-        home_parkrun_info: {},
-        // enable_beta_features: false
-    }).then(function(items) {
-        // Store it on the page for future use
-        saved_options = items
-        console.log('Loaded: '+JSON.stringify(items))
-        $('#athlete_number').val(items.athlete_number);
-        // Update the home parkrun dropdown with the loaded value, if present
-        update_home_parkrun_dropdown()
-        // update_enable_beta_features_checkbox(items.enable_beta_features)
+    load_data().then((data) => {
+        console.log(`Loaded options: ${JSON.stringify(data, null, 2)}`);
+        geo_data = data.loaded_geo_data;
+        saved_options = data.loaded_user_data;
 
+        update_geo_data_stats();
+        populate_user_configuration();
     });
 }
+
+function populate_user_configuration() {
+    console.log('populate_user_configuration()')
+    $('#athlete_number').val(saved_options.athlete_number);
+    update_home_parkrun_dropdown();
+}
+
+const NOT_SET = 'Not Set';
+
+const NOT_SET_OPTION = {
+    value: NOT_SET,
+    text: NOT_SET
+};
+
+function createNotSetOption() {
+    return $('<option/>', NOT_SET_OPTION);
+}
+
+function update_home_parkrun_dropdown() {
+    console.log('update_home_parkrun_dropdown()');
+    const home_parkrun_select = $("#athlete_home_parkrun");
+
+    // Clear all the existing options and add the 'Not Set' option
+    home_parkrun_select.empty().append(createNotSetOption());
+
+    if (geo_data) {
+        // Iterate over all the available events that we know about
+        Object.keys(geo_data.data.events).sort().forEach(event_name => {
+            const event_o = geo_data.data.events[event_name];
+            // Create and append an option for this event
+            home_parkrun_select.append($('<option/>', {
+                value: event_o.name,
+                text: event_o.name
+            }));
+        });
+
+        // Set the home parkrun we know about if we have it in the list, else default to 'Not Set'
+        home_parkrun_select.val(saved_options.home_parkrun_info.name || NOT_SET_OPTION.value);
+    } else {
+        // If the user has set their home parkrun already, then add it into the list anyway and select that
+        if (saved_options.home_parkrun_info.name) {
+            home_parkrun_select.append($('<option/>', {
+                value: saved_options.home_parkrun_info.name,
+                text: saved_options.home_parkrun_info.name
+            })).val(saved_options.home_parkrun_info.name);
+        } else {
+            home_parkrun_select.val(NOT_SET_OPTION.value);
+        }
+    }
+    update_home_parkrun_country();
+}
+
 
 // function update_enable_beta_features_checkbox(enabled) {
 //   if (enabled) {
@@ -165,116 +181,70 @@ function load_user_configuration() {
 //   on_change_enable_beta_features()
 // }
 
-function update_cache(force_update=false) {
+function update_cache(force_update = true) {
     console.log('update_cache()')
-    // Send a message to the background page to request the geo data
-    browser.runtime.sendMessage({data: "geo", freshen: force_update}).then(function (response) {
-        if (response !== null && 'geo' in response) {
-            // Save the data on the page for future use
-            geo_data = response.geo
-            // Update the parts of the UI that show information relating to,
-            // or based on, the geo data
-            update_geo_data_stats()
-            update_home_parkrun_dropdown()
-        }
+    load_data(force_update).then((data) => {
+        geo_data = data.loaded_geo_data;
+        update_geo_data_stats();
+        populate_user_configuration();
     });
 }
 
 function update_geo_data_stats() {
     console.log('update_geo_data_stats()')
-    var s_last_update = "-"
-    var s_known_regions = "0"
-    var s_known_countries = "0"
-    var s_geo_data_bytes = "0"
-
-    if (geo_data !== null) {
-        s_last_update = geo_data.updated;
-        s_known_countries = Object.keys(geo_data.data.countries).length;
-        s_known_regions = Object.keys(geo_data.data.regions).length;
-        s_geo_data_bytes =  JSON.stringify(geo_data).length;
-    }
-
-    $('#cached_geo_updated').text(s_last_update)
-    $('#cached_geo_regions').text(s_known_regions)
-    $('#cached_geo_countries').text(s_known_countries)
-    $('#cached_geo_bytes').text(s_geo_data_bytes)
-
+    $('#cached_geo_updated').text(geo_data?.updated_at)
+    $('#cached_geo_events').text(Object.keys(geo_data?.data?.events)?.length)
+    $('#cached_geo_countries').text(Object.keys(geo_data?.data?.countries)?.length)
+    $('#cached_geo_bytes').text(JSON.stringify(geo_data)?.length)
 }
 
 function update_home_parkrun_dropdown() {
-    console.log('update_home_parkrun_dropdown()')
+    console.log('update_home_parkrun_dropdown()');
+    const home_parkrun_select = $("#athlete_home_parkrun");
 
-    var home_parkrun_select = $("#athlete_home_parkrun")
+    // Clear all the existing options and add the 'Not Set' option
+    home_parkrun_select.empty().append(createNotSetOption());
 
-    var not_set_option = $('<option/>',
-    {
-        value: 'Not Set',
-        text: "Not Set"
-    })
-
-    // Clear all the existing keys
-    home_parkrun_select.empty()
-    home_parkrun_select.append(not_set_option)
-
-    if (geo_data !== null) {
-
+    if (geo_data) {
         // Iterate over all the available events that we know about
-        Object.keys(geo_data.data.events).sort().forEach(function (event_name) {
-            event_o = geo_data.data.events[event_name]
-            // Create a suitable option for this event
-            var select_option = $('<option/>', {
-                value: event_o.name
-            })
-            select_option.text(event_o.name)
-            home_parkrun_select.append(select_option)
-        })
+        Object.keys(geo_data.data.events).sort().forEach(event_name => {
+            const event_o = geo_data.data.events[event_name];
+            // Create and append an option for this event
+            home_parkrun_select.append($('<option/>', {
+                value: event_o.name,
+                text: event_o.name
+            }));
+        });
 
-        // Set the home parkrun we know about if we have it in the list, else
-        // default to Not Set
-        if ("name" in saved_options.home_parkrun_info) {
-            home_parkrun_select.val(saved_options.home_parkrun_info.name)
-        } else {
-            home_parkrun_select.val('Not Set')
-        }
-
+        // Set the home parkrun we know about if we have it in the list, else default to 'Not Set'
+        home_parkrun_select.val(saved_options?.home_parkrun_info?.name ?? NOT_SET_OPTION.value);
     } else {
-
-        // If the user has set their home parkrun already, then add it into the
-        // list anyway and select that
-        if ("name" in saved_options.home_parkrun_info) {
-            var existing_home_parkrun_option = $('<option/>',
-            {
+        // If the user has set their home parkrun already, then add it into the list anyway and select that
+        if (saved_options.home_parkrun_info.name) {
+            home_parkrun_select.append($('<option/>', {
                 value: saved_options.home_parkrun_info.name,
                 text: saved_options.home_parkrun_info.name
-            })
-            home_parkrun_select.append(existing_home_parkrun_option)
-            home_parkrun_select.val(saved_options.home_parkrun_info.name)
+            })).val(saved_options.home_parkrun_info.name);
         } else {
-            home_parkrun_select.val('Not Set')
+            home_parkrun_select.val(NOT_SET_OPTION.value);
         }
-
     }
-    update_home_parkrun_country()
+    update_home_parkrun_country();
 }
 
 function update_home_parkrun_country() {
-    console.log('update_home_parkrun_country()')
-    var h_parkrun = $("#athlete_home_parkrun").val()
-    var h_parkrun_div = $("#athlete_home_country_div")
+    console.log('update_home_parkrun_country()');
+    const h_parkrun = $("#athlete_home_parkrun").val();
+    const h_parkrun_div = $("#athlete_home_country_div");
 
-    var p_info = get_home_parkrun_info(h_parkrun)
-    console.log(p_info)
-    if ('country_name' in p_info) {
-        h_parkrun_div.text(p_info.country_name)
-    } else {
-        h_parkrun_div.text("Unknown")
-    }
+    const p_info = get_home_parkrun_info(h_parkrun);
+    console.log(p_info);
+    h_parkrun_div.text(p_info.country_name || NOT_SET);
 
-    $("#home_parkrun_info").text(JSON.stringify(p_info, null, 4))
-
+    $("#home_parkrun_info").text(JSON.stringify(p_info, null, 2));
 }
 
 // Code to run when the document's DOM is ready
-$( document ).ready(function() {
-    initial_page_setup()
+$(document).ready(function () {
+    initial_page_setup();
 });

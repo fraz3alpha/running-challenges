@@ -1,66 +1,65 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Running Challenges",
   "description": "Adds challenge progress information to your parkrun results page.",
   "version": "REPLACE_EXTENSION_BUILD_VERSION.REPLACE_EXTENSION_BUILD_ID",
 
-  "content_security_policy": "default-src 'self'; connect-src https://www.parkrun.org.uk https://running-challenges.co.uk https://images.parkrun.com",
-
-  "browser_action": {
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; connect-src https://www.parkrun.org.uk https://running-challenges.co.uk https://images.parkrun.com"
+  },
+  "action": {
     "default_icon": "images/logo/logo-128x128.png"
   },
-
   "icons": {
-      "128": "images/logo/logo-128x128.png"
+    "128": "images/logo/logo-128x128.png"
   },
-
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "{70afe5fd-82a7-4300-9b3e-06ac0bd1c92d}"
     }
   },
-
   "content_scripts": [
     {
       "matches": [
-          "*://www.parkrun.org.uk/parkrunner/*/all/",
-          "*://www.parkrun.com.au/parkrunner/*/all/",
-          "*://www.parkrun.co.nz/parkrunner/*/all/",
-          "*://www.parkrun.ca/parkrunner/*/all/",
-          "*://www.parkrun.ie/parkrunner/*/all/",
-          "*://www.parkrun.co.za/parkrunner/*/all/",
-          "*://www.parkrun.us/parkrunner/*/all/",
-          "*://www.parkrun.sg/parkrunner/*/all/",
-          "*://www.parkrun.pl/parkrunner/*/all/",
-          "*://www.parkrun.it/parkrunner/*/all/",
-          "*://www.parkrun.dk/parkrunner/*/all/",
-          "*://www.parkrun.se/parkrunner/*/all/",
-          "*://www.parkrun.fi/parkrunner/*/all/",
-          "*://www.parkrun.fr/parkrunner/*/all/",
-          "*://www.parkrun.lt/parkrunner/*/all/",
-          "*://www.parkrun.no/parkrunner/*/all/",
-          "*://www.parkrun.com.de/parkrunner/*/all/",
-          "*://www.parkrun.ru/parkrunner/*/all/",
-          "*://www.parkrun.my/parkrunner/*/all/",
-          "*://www.parkrun.jp/parkrunner/*/all/",
-          "*://www.parkrun.co.nl/parkrunner/*/all/",
-          "*://www.parkrun.co.at/parkrunner/*/all/"
+        "*://www.parkrun.ca/parkrunner/*/all/",
+        "*://www.parkrun.co.at/parkrunner/*/all/",
+        "*://www.parkrun.co.nl/parkrunner/*/all/",
+        "*://www.parkrun.co.nz/parkrunner/*/all/",
+        "*://www.parkrun.co.za/parkrunner/*/all/",
+        "*://www.parkrun.com.au/parkrunner/*/all/",
+        "*://www.parkrun.com.de/parkrunner/*/all/",
+        "*://www.parkrun.dk/parkrunner/*/all/",
+        "*://www.parkrun.fi/parkrunner/*/all/",
+        "*://www.parkrun.fr/parkrunner/*/all/",
+        "*://www.parkrun.ie/parkrunner/*/all/",
+        "*://www.parkrun.it/parkrunner/*/all/",
+        "*://www.parkrun.jp/parkrunner/*/all/",
+        "*://www.parkrun.lt/parkrunner/*/all/",
+        "*://www.parkrun.my/parkrunner/*/all/",
+        "*://www.parkrun.no/parkrunner/*/all/",
+        "*://www.parkrun.org.uk/parkrunner/*/all/",
+        "*://www.parkrun.pl/parkrunner/*/all/",
+        "*://www.parkrun.ru/parkrunner/*/all/",
+        "*://www.parkrun.se/parkrunner/*/all/",
+        "*://www.parkrun.sg/parkrunner/*/all/",
+        "*://www.parkrun.us/parkrunner/*/all/"
       ],
       "js": [
-          "js/lib/version.js",
-          "js/lib/third-party/jquery/jquery-3.6.0.js",
-          "js/lib/third-party/leaflet/leaflet-1.3.1.js",
-          "js/lib/third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js",
-          "js/lib/third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js",
-          "js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js",
-          "js/lib/third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js",
-          "js/lib/third-party/leaflet-piechart/leaflet-piechart-0.1.2.js",
-          "js/lib/third-party/d3-voronoi/d3-voronoi.js",
-          "js/lib/i18n.js",
-          "js/lib/challenges.js",
-          "js/lib/challenges_ui.js",
-          "js/content-scripts/content-script-parkrunner.js"
+        "js/lib/version.js",
+        "js/lib/third-party/jquery/jquery-3.6.0.js",
+        "js/lib/third-party/leaflet/leaflet-1.3.1.js",
+        "js/lib/third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js",
+        "js/lib/third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js",
+        "js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js",
+        "js/lib/third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js",
+        "js/lib/third-party/leaflet-piechart/leaflet-piechart-0.1.2.js",
+        "js/lib/third-party/d3-voronoi/d3-voronoi.js",
+        "js/lib/cache.js",
+        "js/lib/i18n.js",
+        "js/lib/challenges.js",
+        "js/lib/challenges_ui.js",
+        "js/content-scripts/content-script-parkrunner.js"
       ],
       "css": [
         "css/third-party/leaflet/leaflet.css",
@@ -70,83 +69,110 @@
         "css/third-party/leaflet-extramarkers/leaflet.extra-markers.css"
       ],
       "run_at": "document_end"
-  },
-  {
-    "matches": [
-      "*://www.parkrun.org.uk/parkrunner/*/",
-      "*://www.parkrun.com.au/parkrunner/*/",
-      "*://www.parkrun.co.nz/parkrunner/*/",
-      "*://www.parkrun.ca/parkrunner/*/",
-      "*://www.parkrun.ie/parkrunner/*/",
-      "*://www.parkrun.co.za/parkrunner/*/",
-      "*://www.parkrun.us/parkrunner/*/",
-      "*://www.parkrun.sg/parkrunner/*/",
-      "*://www.parkrun.pl/parkrunner/*/",
-      "*://www.parkrun.it/parkrunner/*/",
-      "*://www.parkrun.dk/parkrunner/*/",
-      "*://www.parkrun.se/parkrunner/*/",
-      "*://www.parkrun.fi/parkrunner/*/",
-      "*://www.parkrun.fr/parkrunner/*/",
-      "*://www.parkrun.lt/parkrunner/*/",
-      "*://www.parkrun.no/parkrunner/*/",
-      "*://www.parkrun.com.de/parkrunner/*/",
-      "*://www.parkrun.ru/parkrunner/*/",
-      "*://www.parkrun.my/parkrunner/*/",
-      "*://www.parkrun.jp/parkrunner/*/",
-      "*://www.parkrun.co.nl/parkrunner/*/"
-    ],
-    "exclude_matches": [
-      "*://www.parkrun.org.uk/parkrunner/*/all/",
-      "*://www.parkrun.com.au/parkrunner/*/all/",
-      "*://www.parkrun.co.nz/parkrunner/*/all/",
-      "*://www.parkrun.ca/parkrunner/*/all/",
-      "*://www.parkrun.ie/parkrunner/*/all/",
-      "*://www.parkrun.co.za/parkrunner/*/all/",
-      "*://www.parkrun.us/parkrunner/*/all/",
-      "*://www.parkrun.sg/parkrunner/*/all/",
-      "*://www.parkrun.pl/parkrunner/*/all/",
-      "*://www.parkrun.it/parkrunner/*/all/",
-      "*://www.parkrun.dk/parkrunner/*/all/",
-      "*://www.parkrun.se/parkrunner/*/all/",
-      "*://www.parkrun.fi/parkrunner/*/all/",
-      "*://www.parkrun.fr/parkrunner/*/all/",
-      "*://www.parkrun.lt/parkrunner/*/all/",
-      "*://www.parkrun.no/parkrunner/*/all/",
-      "*://www.parkrun.com.de/parkrunner/*/all/",
-      "*://www.parkrun.ru/parkrunner/*/all/",
-      "*://www.parkrun.my/parkrunner/*/all/",
-      "*://www.parkrun.jp/parkrunner/*/all/",
-      "*://www.parkrun.co.nl/parkrunner/*/all/"
-    ],
-    "js": [
-      "js/lib/third-party/jquery/jquery-3.6.0.js",
-      "js/lib/i18n.js",
-      "js/content-scripts/content-script-parkrunner-summary.js"
-    ],
-    "run_at": "document_end"
-  }
+    },
+    {
+      "matches": [
+        "*://www.parkrun.ca/parkrunner/*",
+        "*://www.parkrun.co.at/parkrunner/*",
+        "*://www.parkrun.co.nl/parkrunner/*",
+        "*://www.parkrun.co.nz/parkrunner/*",
+        "*://www.parkrun.co.za/parkrunner/*",
+        "*://www.parkrun.com.au/parkrunner/*",
+        "*://www.parkrun.com.de/parkrunner/*",
+        "*://www.parkrun.dk/parkrunner/*",
+        "*://www.parkrun.fi/parkrunner/*",
+        "*://www.parkrun.fr/parkrunner/*",
+        "*://www.parkrun.ie/parkrunner/*",
+        "*://www.parkrun.it/parkrunner/*",
+        "*://www.parkrun.jp/parkrunner/*",
+        "*://www.parkrun.lt/parkrunner/*",
+        "*://www.parkrun.my/parkrunner/*",
+        "*://www.parkrun.no/parkrunner/*",
+        "*://www.parkrun.org.uk/parkrunner/*",
+        "*://www.parkrun.pl/parkrunner/*",
+        "*://www.parkrun.ru/parkrunner/*",
+        "*://www.parkrun.se/parkrunner/*",
+        "*://www.parkrun.sg/parkrunner/*",
+        "*://www.parkrun.us/parkrunner/*"
+      ],
+      "exclude_matches": [
+        "*://www.parkrun.ca/parkrunner/*/all/",
+        "*://www.parkrun.co.at/parkrunner/*/all/",
+        "*://www.parkrun.co.nl/parkrunner/*/all/",
+        "*://www.parkrun.co.nz/parkrunner/*/all/",
+        "*://www.parkrun.co.za/parkrunner/*/all/",
+        "*://www.parkrun.com.au/parkrunner/*/all/",
+        "*://www.parkrun.com.de/parkrunner/*/all/",
+        "*://www.parkrun.dk/parkrunner/*/all/",
+        "*://www.parkrun.fi/parkrunner/*/all/",
+        "*://www.parkrun.fr/parkrunner/*/all/",
+        "*://www.parkrun.ie/parkrunner/*/all/",
+        "*://www.parkrun.it/parkrunner/*/all/",
+        "*://www.parkrun.jp/parkrunner/*/all/",
+        "*://www.parkrun.lt/parkrunner/*/all/",
+        "*://www.parkrun.my/parkrunner/*/all/",
+        "*://www.parkrun.no/parkrunner/*/all/",
+        "*://www.parkrun.org.uk/parkrunner/*/all/",
+        "*://www.parkrun.pl/parkrunner/*/all/",
+        "*://www.parkrun.ru/parkrunner/*/all/",
+        "*://www.parkrun.se/parkrunner/*/all/",
+        "*://www.parkrun.sg/parkrunner/*/all/",
+        "*://www.parkrun.us/parkrunner/*/all/"
+      ],
+      "js": [
+        "js/lib/third-party/jquery/jquery-3.6.0.js",
+        "js/lib/cache.js",
+        "js/lib/i18n.js",
+        "js/content-scripts/content-script-parkrunner-summary.js"
+      ],
+      "run_at": "document_end"
+    }
   ],
   "web_accessible_resources": [
-      "/images/badges/*.png",
-      "/images/logo/*.png",
-      "/images/maps/markers/*.png",
-      "/images/flags/*.png",
-      "/html/*.html",
-      "/css/*"
+    {
+      "matches": [
+        "https://www.parkrun.ca/*",
+        "https://www.parkrun.co.at/*",
+        "https://www.parkrun.co.nl/*",
+        "https://www.parkrun.co.nz/*",
+        "https://www.parkrun.co.za/*",
+        "https://www.parkrun.com.au/*",
+        "https://www.parkrun.com.de/*",
+        "https://www.parkrun.dk/*",
+        "https://www.parkrun.fi/*",
+        "https://www.parkrun.fr/*",
+        "https://www.parkrun.ie/*",
+        "https://www.parkrun.it/*",
+        "https://www.parkrun.jp/*",
+        "https://www.parkrun.lt/*",
+        "https://www.parkrun.my/*",
+        "https://www.parkrun.no/*",
+        "https://www.parkrun.org.uk/*",
+        "https://www.parkrun.pl/*",
+        "https://www.parkrun.ru/*",
+        "https://www.parkrun.se/*",
+        "https://www.parkrun.sg/*",
+        "https://www.parkrun.us/*"
+      ],
+      "resources": [
+        "/images/badges/*.png",
+        "/images/logo/*.png",
+        "/images/maps/markers/*.png",
+        "/images/flags/*.png",
+        "/html/*.html",
+        "/css/*"
+      ],
+      "use_dynamic_url": true
+    }
   ],
   "permissions": [
     "storage"
   ],
   "options_ui": {
-      "page": "html/options.html",
-      "chrome_style": true
+    "page": "html/options.html"
   },
   "background": {
-    "persistent": true,
-    "scripts": [
-        "js/lib/third-party/jquery/jquery-3.6.0.js",
-        "js/lib/i18n.js",
-        "js/background.js"
-    ]
+    "service_worker": "js/background.js",
+    "scripts": ["js/background.js"]
   }
 }

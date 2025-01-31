@@ -1,69 +1,77 @@
 <!DOCTYPE html>
-<html>
-<head><title>Running Challenges Options</title></head>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Challenges Options</title>
+</head>
+
 <body>
 
-<h4>General Options</h4>
-<p>
-<i>Add your athlete number to make the extension icon link directly to your profile page. Set your home parkrun to make the link point to your local parkrun website.</i><br/>
-Athlete Number: <b>A</b><input type="textbox" id="athlete_number" value=""/>
-</p>
-<p>
-Home parkrun: <span id="athlete_home_parkrun_div">
-<select id="athlete_home_parkrun">
-    <option value="Not Set">Not Set</option>
-</select>
-</span><br/>
-Home country: <span id="athlete_home_country_div">loading...</span>
-</p>
-<p>
-  <label id="enable_beta_features_label">
-    <input id="enable_beta_features" type="checkbox"/>
-    Enable beta features (New stuff! Please read the warning when you check this option)
-  </label>
+  <h4>General Options</h4>
+  <p>
+    <i>Add your athlete number to make the extension icon link directly to your profile page. Set your home parkrun to
+      make the link point to your local parkrun website.</i><br />
+    Athlete Number: <b>A</b><label>
+      <input type="textbox" id="athlete_number" title="athlete_number" value="" /></label>
+  </p>
+  <p>
+    Home parkrun: <span id="athlete_home_parkrun_div">
+      <select title="athlete_home_parkrun" id="athlete_home_parkrun">
+        <option value="Not Set">Not Set</option>
+      </select>
+    </span><br />
+    Home country: <span id="athlete_home_country_div">loading...</span>
+  </p>
+  <p>
+    <label id="enable_beta_features_label">
+      <input id="enable_beta_features" type="checkbox" />
+      Enable beta features (New stuff! Please read the warning when you check this option)
+    </label>
   <div id="enable_beta_features_extra_comment"><b>Beta features are enabled.</b>
     Features that are in development will be shown in your athlete profile page
     and elsewhere. We will endevour to mark features as such so that you know
     that they aren't a core tested part of the extension. If you have any problems,
     feel free to report it to us, and if they are causing you issues with the
     core functionality, please disable this option</div>
-</p>
+  </p>
 
-<button id="save">Save</button> <span id="status"></span>
+  <button id="save">Save</button> <span id="status"></span>
 
-<div id=debug_home_parkrun_info>
-<p>
-<h4>Home Parkrun Info</h4>
-Info: <span id='home_parkrun_info'>unknown</span><br/>
-</p>
-</div>
+  <div id=debug_home_parkrun_info>
+    <p>
+    <h4>Home Parkrun Info</h4>
+    Info: <span id='home_parkrun_info'>unknown</span><br />
+    </p>
+  </div>
 
-<div id=debug_parkrun_info>
-<p>
-<h4>Parkrun Info</h4>
-Last updated: <span id='cached_geo_updated'>unknown</span><br/>
-Known Events: <span id='cached_geo_events'>unknown</span><br/>
-Known Countries: <span id='cached_geo_countries'>unknown</span><br/>
-Known Regions: <span id='cached_geo_regions'>unknown</span><br/>
-Size (bytes): <span id='cached_geo_bytes'>unknown</span><br/>
-<button id="update_cache">Update Cache</button>
-</p>
-</div>
+  <div id=debug_parkrun_info>
+    <p>
+    <h4>Parkrun Info</h4>
+    Last updated: <span id='cached_geo_updated'>unknown</span><br />
+    Known Events: <span id='cached_geo_events'>unknown</span><br />
+    Known Countries: <span id='cached_geo_countries'>unknown</span><br />
+    Size (bytes): <span id='cached_geo_bytes'>unknown</span><br />
+    <button id="update_cache">Update Cache</button>
+    </p>
+  </div>
 
-<h4>Feedback</h4>
-<p>
+  <h4>Feedback</h4>
+  <p>
     If you have any feedback, please send it to TeamTCMakers@gmail.com
-</p>
+  </p>
 
-<p>
+  <p>
     <a href="/html/help.html">help</a> | <a href="/html/translations.html">translations</a>
-</p>
+  </p>
 
-<div id="debug"></div>
+  <div id="debug"></div>
 
-<script src="/js/lib/third-party/jquery/jquery-3.6.0.js"></script>
-<script src="/js/lib/third-party/browser-polyfill/browser-polyfill-76eeeac.js"></script>
-<script src="/js/options.js"></script>
+  <script src="/js/lib/third-party/jquery/jquery-3.6.0.js"></script>
+  <script src="/js/lib/cache.js"></script>
+  <script src="/js/options.js"></script>
 
 </body>
+
 </html>

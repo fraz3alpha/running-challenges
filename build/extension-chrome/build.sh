@@ -46,9 +46,6 @@ cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
 # Write out the version file
 echo "var extensionVersion = \"${EXTENSION_BUILD_VERSION}\"" > ${TMP_BUILD_DIR}/js/lib/version.js
 
-# Copy the extras libraries and code for Chrome
-cp -r browser-extensions/chrome/js ${TMP_BUILD_DIR}/
-
 # Copy the metadata
 cp browser-extensions/chrome/manifest.json ${TMP_BUILD_DIR}/
 
@@ -62,7 +59,7 @@ for i in patches/chrome/*.patch; do patch -p0 --directory "${TMP_BUILD_DIR}" < $
 # Move into the build directory and package everything up
 cd ${TMP_BUILD_DIR}
 # zip -r extension.zip js/ html/ images/ css/ manifest.json
-web-ext lint
+# web-ext lint # Firefox won't verify a Chrome-compatible MV3 file :(
 web-ext build
 
 # Rename built package with the browser in the name

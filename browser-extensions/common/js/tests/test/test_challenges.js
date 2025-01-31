@@ -43,9 +43,7 @@ var assert = require('assert');
 // Functions to add events
 
 function getGeoData() {
-
-    var data = {
-        "regions": {},
+    const data = {
         "events": {
             "Bushy Park": {
                 shortname: "bushy",
