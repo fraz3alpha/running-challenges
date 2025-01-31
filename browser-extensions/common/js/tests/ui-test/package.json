@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/fraz3alpha/playwright-testing#readme",
   "devDependencies": {
-    "@playwright/test": "^1.32.2"
+    "@playwright/test": "^1.50.1"
   }
 }
