@@ -12,6 +12,7 @@
 127.0.0.1 www.parkrun.fr
 127.0.0.1 www.parkrun.ie
 127.0.0.1 www.parkrun.it
+127.0.0.1 www.parkrun.lt
 127.0.0.1 www.parkrun.jp
 127.0.0.1 www.parkrun.my
 127.0.0.1 www.parkrun.no
