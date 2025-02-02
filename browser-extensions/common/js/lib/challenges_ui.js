@@ -396,7 +396,7 @@ function createVoronoiMapPrototype() {
           item_text.setAttribute("font-size", zoomScaleOptions.eventNameTextSize+"px")
           item_text.setAttribute("font-weight", "bold")
           item_text.setAttribute("dominant-baseline", "hanging") // Hang the text below
-          item_text.innerText = filtered_points[index].name
+          item_text.textContent = filtered_points[index].name
         }
 
         // Create a shape to represent the voronoi area associated with this parkrun event
