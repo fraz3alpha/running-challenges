@@ -21,7 +21,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   information to your parkrun results page so you can see your progress.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: RunChallenges
+twitter_username: ""
 github_username:  fraz3alpha
 
 # Build settings
