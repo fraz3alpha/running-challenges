@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-02-06T22:55:52+00:00</updated><id>/feed.xml</id><title type="html">Running Challenges</title><subtitle>Collect badges and complete challenges for running, jogging, walking, and volunteering at your weekly 5k parkrun. This browser extension adds extra information to your parkrun results page so you can see your progress.</subtitle><entry><title type="html">Bug fixes and adapting to the parkrun wiki going away (v1.4.0)</title><link href="/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html" rel="alternate" type="text/html" title="Bug fixes and adapting to the parkrun wiki going away (v1.4.0)" /><published>2023-06-28T00:00:00+01:00</published><updated>2023-06-28T00:00:00+01:00</updated><id>/2023/06/28/v1.4.0-fixes-and-wiki-gone-away</id><content type="html" xml:base="/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html"><![CDATA[<p>Things change, but we try and keep up (within some period of time, measured in months)</p>
+
+<h2 id="new-features">New Features</h2>
+
+<h3 id="added-parkwalker-role-badge">Added parkwalker role badge</h3>
+
+<p>The parkwalker role is a relatively new one, but by this point I think it has been around at least 6 months, so we aren’t exactly quick off the mark in including this… But now there is a badge for this role.</p>
+
+<p><a href="https://github.com/sneaker-net">‘sneaker-net’</a> first got the ball rolling on this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/364">#364</a>, thanks!</p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<h3 id="updated-the-colours-of-all-the-high-viz-badges">Updated the colours of all the high-viz badges</h3>
+
+<p>As the parkwalker role was added we took the opportunity to update all the colours of the high-viz vests to match the current colour scheme. The Run Director bib was at least 2 versions behind!</p>
+
+<h3 id="name-badge-fixed">Name Badge fixed</h3>
+
+<p>At some point parkrun changed the way the parkrunner name was displayed at the top of the page to suffix it with your parkrun number, e.g. A1309364, which got automatically picked up by this challenge, and made you need to gain an extra A (as you couldn’t get any numbers, these were skipped anyway).</p>
+
+<p><a href="https://github.com/solarisfire">Stephen Greenham</a> fixed this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/370">#370</a>, thanks!</p>
+
+<h3 id="parkrunpl-fixed">parkrun.pl fixed</h3>
+
+<p>A few things seemed to have changed on the Polish site, including the name of the results table, and some of the translations. The results table name resulted in a massive fail parsing the page and the extension did not handle this well, the translations were just missing badges.</p>
+
+<h3 id="removed-the-dependency-on-the-parkrun-wiki">Removed the Dependency on the parkrun Wiki</h3>
+
+<p>It seems the wiki is on the way out, and there is less and less there. In our case we relied on a table that was published there which said whether an event was live or not (effectively, had it had at least one event), and we used that to omit events that were on the map, but hadn’t started, from anything we calculated. 
+Without this data you might find that new parkruns pop up and you’ll have gaps in your explorer map for events that you couldn’t have run, or similarly a NENDY of an even that hasn’t started. In the grand scheme of keeping things simple, we’ll just have to accept this now, and live with it. The wiki page was often flakey anyway, and often was being regenerated which led to frequent error messages popping up, so hopefully now at least it will go back to being pretty stable.</p>
+
+<p><a href="https://github.com/johnsyweb">Pete Johns</a> fixed this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/389">#389</a>, thanks!</p>
+
+<h3 id="warm-up-volunteer-badge-fixed">Warm up Volunteer badge fixed</h3>
+
+<p>This volunteer role changed from “Warm Up Leader (junior events only)” to “Warm Up Leader”, so needed an alias adding - it’s now back.</p>
+
+<h3 id="fixed-error-when-no-the-parkrunner-hadnt-run-any-events">Fixed error when no the parkrunner hadn’t run any events</h3>
+
+<p>We’ve got <a href="https://github.com/LukeWoodward">Luke Woodward</a> to thank for this fix, after he provided us with the changes required via <a href="https://github.com/fraz3alpha/running-challenges/pull/383">#383</a>. It turned out that if a parkrunner didn’t have any results against their name, the extension broke trying to print some debug information - and now it doesn’t. Thanks Luke!</p>
+
+<h2 id="general-improvements">General Improvements</h2>
+
+<p>We added a way to reliably tests all the parkrun sites with a locally saved copy of several parkrunners (mostly Andy, but also some others) against each build of the extension, so hopefully we can make sure that all the volunteer role translations are correct, and we don’t lose any badges. It’s still a work in progress, but we have something to work from now - and it has already proved its worth while fixing the Polish parkrun site, and some others we found were incorrect!</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below (the Firefox version will be likely a little delayed):</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[Things change, but we try and keep up (within some period of time, measured in months)]]></summary></entry><entry><title type="html">Bug fixes for results ordering (v1.3.1)</title><link href="/2022/06/05/v1.3.1-bug-fixes.html" rel="alternate" type="text/html" title="Bug fixes for results ordering (v1.3.1)" /><published>2022-06-05T00:00:00+01:00</published><updated>2022-06-05T00:00:00+01:00</updated><id>/2022/06/05/v1.3.1-bug-fixes</id><content type="html" xml:base="/2022/06/05/v1.3.1-bug-fixes.html"><![CDATA[<p>Something broke yesterday! Firefox is back! Ooh, and a new feature!</p>
+
+<h2 id="return-of-the-fox">Return of the Fox</h2>
+
+<p>Firefox is back! We submitted a version of the extension to the Mozilla AddOns store and it was published, so it’s available again. Unfortunately we submitted version 1.3.0, which doesn’t contain these fixes, so until 1.3.1 appears there it will still be a little broken, but that’s progress!</p>
+
+<h2 id="new-feature">New Feature</h2>
+
+<h3 id="persist-hiding-challenge-data">Persist hiding challenge data</h3>
+
+<p>You have always been able to hide a challenge on a page by clicking the badge icon in the challenge header row, but it did not get saved in any way so would be back visible again if you refreshed the page - well, no longer!</p>
+
+<p><img src="/img/posts/persist-collapsed-challenges.png" alt="Persisted collapsed challenges" title="Persisted collapsed challenges" class="center-image image-border" /></p>
+
+<p>This also means that if you hide a challenge on one page, it will now be hidden on all parkrunner pages. If you aren’t interested in certain ones, or you think they take up too much space and can’t be bothered to scroll past them, you can hide them and just show the ones you have an interest in.</p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<h3 id="sort-parsed-events-into-chronological-order">Sort parsed events into chronological order</h3>
+
+<p>While we weren’t looking, parkrun HQ appear to have rolled out a change to reverse the order of the events listed on the parkrunner page. Initially this was newest first, but now it appears to be oldest first. This would be fine if it was consistent, but it appears that it hasn’t been for the past week or so. We presume that as web caches expire it switches between the old and new ordering, and it’s finally got to more and more of us.</p>
+
+<p>This showed up as various stats and challenges showing incorrect data, for example the number of years parkrunning ending up being zero, or the tourist events being listed in reverse order.</p>
+
+<p>Now we explicitly order the events by date, so we should be good whatever order they come out in.</p>
+
+<h3 id="firefox-deprecated-a-geturl-method">Firefox deprecated a getURL() method</h3>
+
+<p>Not a huge issue, and not one with a user-facing impact, but it floods the error log with messages and also comes up during the addon submission process, so we’ve switched to the replacement method to get it a bit cleaner.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below (the Firefox version will be likely a little delayed):</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[Something broke yesterday! Firefox is back! Ooh, and a new feature!]]></summary></entry><entry><title type="html">Record Breaker Challenge (v1.3.0)</title><link href="/2022/06/02/v1.3.0-record-breaker.html" rel="alternate" type="text/html" title="Record Breaker Challenge (v1.3.0)" /><published>2022-06-02T00:00:00+01:00</published><updated>2022-06-02T00:00:00+01:00</updated><id>/2022/06/02/v1.3.0-record-breaker</id><content type="html" xml:base="/2022/06/02/v1.3.0-record-breaker.html"><![CDATA[<p>A new challenge!…</p>
+
+<h2 id="new">New!</h2>
+
+<p>We have a new Record Breaker challenge, support for more parkrun websites after parkrun HQ’s changes to the website last year, and a few other tweaks.</p>
+
+<p>Big thanks to <a href="https://github.com/rboyatt">Russell Boyatt</a> and <a href="https://github.com/JazzyJ87">@JazzyJ87</a> who provided many of the changes in this release and are the main reason we have been able to do this update!</p>
+
+<h3 id="new-challenge-the-record-breaker-badge">New challenge: the Record Breaker badge</h3>
+
+<p><img src="/img/badges/runner-record-breaker-78.png" alt="Record Breaker challenge badge" title="Record Breaker challenge badge" class="center-image image-border" /></p>
+
+<p>This badge is awarded for running all of the parkruns within 33km, 45km, and 78km of your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of vinyl records.</p>
+
+<p>We had originally coded this up by using the home parkrun that you’ve set in the extension as the centre of the record. But this would mean that only you could see that you have completed the challenge (and badge). However, as we <a href="https://github.com/fraz3alpha/running-challenges/pull/203#issuecomment-1141483334">collaborated on this</a> with <a href="https://github.com/rboyatt">Russell Boyatt</a>, he made the very good point we could use the average parkrun location (which we already calculate), and then it would be possible for you to visit anyone’s parkrun page and see if they have a Record Breaker badge (without you having to know and set their home parkrun in the extension).</p>
+
+<p>We also use the voronoi map style to show the events for this challenge. This can, if there are enough parkruns nearby, end up with a pleasing archery target of coloured sections. Or, not, as the case may be: Andy’s average parkrun is currently on the south coast of England in Worthing, so it’s a lop-sided affair where colours bleed into the channel!</p>
+
+<p><img src="/img/posts/record-breaker-map.png" alt="Record Breaker badge" title="Record Breaker badge" class="center-image image-border" /></p>
+
+<h3 id="longest-tourism-streak-stat-update">Longest tourism streak stat update</h3>
+
+<p>The <em>Longest tourism streak</em> statistic now tells you which parkrun and which date it ends at, which we hope is useful.</p>
+
+<p>e.g.</p>
+
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>Longest tourism streak</td>
+        <td>17 parkruns (achieved Itchen Valley Country 29/02/2020)</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>Thanks to <a href="https://github.com/JazzyJ87">@JazzyJ87</a> for contributing the code for this update.</p>
+
+<h3 id="add-name-badge-map">Add Name Badge map</h3>
+
+<p>I think we just forgot to do it before, but the Name Badge challenge now has a map.</p>
+
+<p>Thanks again to <a href="https://github.com/JazzyJ87">@JazzyJ87</a> who <a href="https://github.com/fraz3alpha/running-challenges/pull/336">added this</a> as well.</p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<h3 id="non-english-parkrun-websites">Non-English parkrun Websites</h3>
+
+<p>We think we’ve fixed all the non-English parkrun websites. After parkrun HQ’s great website updates of late 2021, we fixed the English-language websites but not all the non-English websites. They should now all work.</p>
+
+<h3 id="skip-proceessing-profiles-with-no-runs">Skip proceessing profiles with no runs</h3>
+
+<p>It seems the parkrun website now displays a page differently if the parkrunner hasn’t completed any runs. This caused the extension to display an error. Rather than displaying an error, we now print a nice message.</p>
+
+<h3 id="volunteer-role-name-updates">Volunteer role name updates</h3>
+
+<p>The parkrun website changed the names of a couple of the volunteer roles to reflect the move away from focusing on “runs”. For example, “Run Report Writer” became “Report Writer”. This broke these volunteer stats and badges so that it looked like you hadn’t ever done those roles when you had, at least on the English websites. We’ve now fixed this so that the extension looks for the new volunteer role names. It seems that the non-English volunteer role names were already OK (perhaps because they had thought about this before a new country was started), but if any of those look like they aren’t working, let us know.</p>
+
+<p>Thanks to <a href="https://github.com/rboyatt">Russell Boyatt</a> who <a href="https://github.com/fraz3alpha/running-challenges/pull/334">contributed this fix</a>.</p>
+
+<h2 id="firefox">Firefox</h2>
+
+<p>We are going to attempt to re-submit the extension to the Mozilla Add-Ons store so that it works on Firefox again. We’ve no idea if it will pass their checks and we don’t understand the reasoning for it being rejected before, but we’ll see if we can get any more information out of them.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below (the Firefox version will only be available if the store stops rejecting our submission…):</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[A new challenge!…]]></summary></entry><entry><title type="html">What’s broken now (May 2022 Edition)</title><link href="/2022/05/15/whats-broken-now-may-2022-edition.html" rel="alternate" type="text/html" title="What’s broken now (May 2022 Edition)" /><published>2022-05-15T13:00:00+01:00</published><updated>2022-05-15T13:00:00+01:00</updated><id>/2022/05/15/whats-broken-now-may-2022-edition</id><content type="html" xml:base="/2022/05/15/whats-broken-now-may-2022-edition.html"><![CDATA[<p>There’s always something broken, but where are things at now?</p>
+
+<h2 id="which-parkrun-websites-currently-work">Which parkrun websites currently work?</h2>
+
+<p>The English language parkrun websites seem to work, ones that are shown in the local language still don’t - for example Finland works, because the site is in English, but Austria doesn’t as it’s German/Austrian German. I think we put a fix in for this, but possibly never released it.</p>
+
+<h2 id="which-browsers-does-the-extension-currently-work-on">Which browsers does the extension currently work on?</h2>
+
+<p>It seems to be Chrome and Edge at the moment. As you may be aware from previous posts, Firefox on Android was supported, but then Mozilla yanked support for any mobile extensions other than a select few. Unfortunately, while we weren’t looking, it seems that Firefox on a Desktop browser is no longer working because a reviewer went through and retrospectively rejected every single version we have ever released. So, it’s not available on Firefox at all any more! We think that is desktop rejection is fixable though - the review comment says we’ve done something we aren’t allowed to do, but to the best of our knowledge we haven’t done that, sooo… I guess we just resubmit it at some point in the future and ask for clarification?</p>
+
+<p>Here are the extension store links:</p>
+
+<ul>
+  <li><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif">Chrome</a></li>
+  <li><a href="https://microsoftedge.microsoft.com/addons/detail/running-challenges/cfofipfcckojdhjbganfgflkiebajegg">Edge</a></li>
+</ul>
+
+<h2 id="which-bits-of-the-extension-that-used-to-work-dont-any-more">Which bits of the extension that used to work, don’t any more?</h2>
+
+<p>There have been some website changes around volunteer naming, which means that a couple of volunteer roles don’t get picked up any more. We’ve documented this in an <a href="https://github.com/fraz3alpha/running-challenges/issues/328">issue</a>, and the two we know have changed are:</p>
+<ul>
+  <li>First Timers Briefing is now First Timers Welcome</li>
+  <li>Run Report Writer is now Report Writer
+We don’t know if they have changed in every language though, and that’s a harder thing to check!</li>
+</ul>
+
+<h2 id="any-progress-on-some-automated-tests">Any progress on some automated tests?</h2>
+
+<p>For the technical among you - Andy has been trying to get some automated tests running so that we can spot when things go bad, using a combination of Github Actions and Selenium to see if we can check that the extension is working on a regular basis. This seems to work in Chrome, but the reliability of loading an extension into a headless copy of Firefox in the Selenium framework either flat-out refuses to work, or is incredibly unreliable as to whether it does anything or not, so at the moment it’s essentially worthless.</p>
+
+<h2 id="anything-else-we-get-comments-about">Anything else we get comments about</h2>
+
+<ul>
+  <li>If you set your home parkrun in the extension you can still only select from the 5k events. We’ve had a few people ask about not being able to find  their local junior parkrun on the list. Also, some challenges do pick up junior parkruns, but not all. We’ve never had time yet to go back and rewrite the extension to intentionally include junior parkruns.</li>
+  <li>The Compass Club badge only looks for the compass points in English. We’ve had some parkrunners outside the UK trying to collect this badge (Milano Nord etc…), but the badge was never intended to be translateable. The badge simply picks up certain strings of letters (even the “west” in “Lowestoft); it’s not really looking for the compass points. We have no plans to change this.</li>
+  <li>parkrun has been going for so long now that some countries have come and gone, as have individual parkruns, and indeed the names of some parkruns have changed. The extension works on the <strong>current data</strong> displayed on the parkrun website, so it is only ever going to pick up the current state of affairs. This might cause things like:
+    <ul>
+      <li>Missing country badges if you’ve gone to only one parkrun in a country, but now that one has shutdown (e.g. Crissy Fields in the USA), so it’s no longer available on the map.</li>
+      <li>Missing parkrun initial letters if the parkrun you did has sinced changed its name (the extension has no knowledge of previous names or that a name has changed).</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="surely-the-new-team-member-can-do-javascript-now">Surely the new team member can do Javascript now?</h2>
+
+<p>You have to walk before you can run, and before you can program a computer you probably need to be able to type. Walking has been achieved, but so far effective communication is lacking, never mind typing, so no.</p>]]></content><author><name></name></author><category term="news" /><summary type="html"><![CDATA[There’s always something broken, but where are things at now?]]></summary></entry><entry><title type="html">Breaking website changes</title><link href="/2021/10/11/breaking-website-changes.html" rel="alternate" type="text/html" title="Breaking website changes" /><published>2021-10-11T21:00:00+01:00</published><updated>2021-10-11T21:00:00+01:00</updated><id>/2021/10/11/breaking-website-changes</id><content type="html" xml:base="/2021/10/11/breaking-website-changes.html"><![CDATA[<p>Your extension is broken, fix it, fix it, fix it!</p>
+
+<h2 id="ive-been-living-under-a-rock-what-has-broken">I’ve been living under a rock, what has broken?</h2>
+
+<p>On the 6th October 2021, parkrun started rolling out some changes to their website - this included moving the page that we add all the badges to and making it available at a different web address. The old page we used is still there, but it contains different data - so the extension doesn’t know what to do with it, and promptly spits out the helpful error: “Error Map container not found”.</p>
+
+<h2 id="when-will-it-be-fixed">When will it be fixed?</h2>
+
+<p>Soon. Probably in October.</p>
+
+<p>Many thanks to <a href="https://github.com/rboyatt">Russell Boyatt</a> who contributed some code to get most things back working again. We are testing his <a href="https://github.com/fraz3alpha/running-challenges/pull/305">changes</a> at the moment. We’ve also tried to write some tests to automatically check the extension loads on each parkrun site, as that is incredibly tedious to check and no-one has got time for that…</p>
+
+<p>Russell has also been busy getting the <a href="https://github.com/fraz3alpha/running-challenges/pull/308">changes</a> made to support the Austrian site that appeared recently, awesome work!</p>
+
+<p>We have very little free time at the moment and it’s a non-trivial task to release a new version of the extension - even after all the code has been written, so please bear with us.</p>
+
+<h2 id="i-would-like-to-know-whats-happening-with-the-extension-on-firefox-for-android">I would like to know what’s happening with the extension on Firefox for Android</h2>
+
+<p>This is still not available. It’s because the browser has restricted the number of extensions to a very small, carefully vetted list of extensions that have millions of users that they can spend hours making sure they aren’t doing anything against their policies - as and when their security model means they can accept community-created extensions again we’ll try and get our extension listed once more.</p>
+
+<h2 id="if-i-give-you-some-money-will-you-do-xyz">If I give you some money will you do XYZ</h2>
+
+<p>No, that’s not really how it works. We did this for a bit of fun, and we aren’t taking any money for it. We’ll mostly do things as time allows and if we find it interesting - if you have some cash that is burning a hole in your pocket go to <a href="https://www.parkrun.org.uk/shop/">the parkrun shop</a> and buy yourself something to support parkrun.</p>
+
+<p>If you have a regular supply of burning-a-hole-in-your-pocket money, or you just want a warm fuzzy feeling of keeping parkrun around, why not sign up to <a href="https://parkrunforever.com/about/">parkrun Forever</a> and make a regular donation?</p>
+
+<h2 id="any-progress-on-training-up-the-new-team-member">Any progress on training up the new team member?</h2>
+
+<p>Progress has been made on standing, but not on Javascript.</p>
+
+<h2 id="how-do-i-get-more-updates">How do I get more updates?</h2>
+
+<p>It’s a lot easier to write a quick Tweet than post something on this website, so head over to our Twitter account - <a href="https://twitter.com/RunChallenges">@RunChallenges</a> for all the latest updates. You don’t need a Twitter account to read our recent updates, and it always best to check there first before asking us directly - we’ll generally put a post out as soon as we notice something is broken.</p>]]></content><author><name></name></author><category term="news" /><summary type="html"><![CDATA[Your extension is broken, fix it, fix it, fix it!]]></summary></entry><entry><title type="html">2021 Update</title><link href="/2021/01/29/2021-update.html" rel="alternate" type="text/html" title="2021 Update" /><published>2021-01-29T13:00:00+00:00</published><updated>2021-01-29T13:00:00+00:00</updated><id>/2021/01/29/2021-update</id><content type="html" xml:base="/2021/01/29/2021-update.html"><![CDATA[<p>It’s 2021, there are still a very limited number of parkrun events happening around the world - so what’s happening with the Running Challenges extension?</p>
+
+<h2 id="hiatus">Hiatus</h2>
+
+<p>The last release of the extension was in February 2020, and a lot has happened since then. Most notably parkrun stopped worldwide in March, and - to be brutally honest - our enthusiasm to do work on the Running Challenges extension dropped dramatically, and we essentially shelved it while we worked out how to get our lives sorted.</p>
+
+<h2 id="issues-that-cropped-up">Issues that cropped up</h2>
+
+<p>The world of software moves fast, and web browsers are no exception these days - especially when it comes to security. Writing a piece of software so heavily dependent on the integration with another leaves you open to breaking changes that mean things stop working unless you keep up. As a result, the following things have happened while we weren’t looking:</p>
+
+<ul>
+  <li>
+    <p>Firefox on Android dropped support for the vast majority of extensions submitted to the the Add-Ons store - only a few highly vetted ones are now available as the powers-that-be take a harder line on ensuring that extensions meet security standards. This is time consuming and expensive work - but lots of developers are in the same boat as us, namely that their extension is no longer available, and there is nothing we can do about it. <a href="https://github.com/fraz3alpha/running-challenges/issues/276">Github issue 276</a></p>
+  </li>
+  <li>
+    <p>Chrome changed the security policy that broke fetching the volunteer data, so any users of the non-parkrun.org.uk site found it saying: <code class="highlighter-rouge">Error: [object Object]</code>. The workaround for this is to use the UK site for the moment. <a href="https://github.com/fraz3alpha/running-challenges/issues/277">Github issue 277</a></p>
+  </li>
+</ul>
+
+<h2 id="changes-at-home">Changes at home</h2>
+
+<p>The number of us here at Team-TC Towers has recently increased from 2 to 3, but unfortunately the new-hire isn’t so handy with Javascript - they are currently only proficient at filling a nappy and providing a background of screams and wails.
+We’ll have to teach them the ropes, but this will take a lot of our time, so there won’t be any updates to the extension for a while.</p>]]></content><author><name></name></author><category term="news" /><summary type="html"><![CDATA[It’s 2021, there are still a very limited number of parkrun events happening around the world - so what’s happening with the Running Challenges extension?]]></summary></entry><entry><title type="html">Name Badge challenge, tons of runs, parkrun Netherlands, and bug fixes (v1.1.1)</title><link href="/2020/02/16/v1.1.1-name-badge-tons-netherlands.html" rel="alternate" type="text/html" title="Name Badge challenge, tons of runs, parkrun Netherlands, and bug fixes (v1.1.1)" /><published>2020-02-16T19:00:00+00:00</published><updated>2020-02-16T19:00:00+00:00</updated><id>/2020/02/16/v1.1.1-name-badge-tons-netherlands</id><content type="html" xml:base="/2020/02/16/v1.1.1-name-badge-tons-netherlands.html"><![CDATA[<p>Loads of stuff in v1.1.1, both new and bugs fixes. Take a look…</p>
+
+<h2 id="new">New!</h2>
+
+<p>We have a new Name Badge challenge, support for parkrun Netherlands, and collapsed Single-ton and Double-ton challenges into a single Tons of Runs challenge.</p>
+
+<h3 id="new-challenge-the-name-badge">New challenge: the Name Badge</h3>
+
+<p><img src="/img/badges/runner-name-badge.png" alt="Name Badge challenge badge" title="Name Badge challenge badge" class="center-image image-border" /></p>
+
+<p>Run a parkrun for each letter in your name to complete the new Name Badge challenge. This challenge was suggested by <a href="https://twitter.com/FellFootparkrun/status/1227536074408439808">Fell Foot parkrun</a>. We take the name you registered with and list the letters in it. Then you run a parkrun that starts with each of the letters. That’s basically it:</p>
+
+<p><img src="/img/posts/my-name-is-laura.png" alt="Name Badge challenge table" title="Name Badge challenge table" class="center-image image-border" /></p>
+
+<p>Of course, if your name has an “X” or punctuation marks in it, you get those for free. Similarly, if you have multiple occurrences of the same letter and there aren’t enough different parkruns in the world starting with that letter, you’ll get the extra occurrences for free.</p>
+
+<p>Unfortunately, the challenge currently only works if your name contains latin characters and not, say, for Japanese names written in Kanji, nor Russian names written in Cyrillic letters. If you’re familiar with those languages and have an idea for a similar challenge that would work in non-latin languages, <a href="https://github.com/fraz3alpha/running-challenges/issues">let us know</a> and we’ll investigate whether it’s possible to add.</p>
+
+<h3 id="netherlands-support">Netherlands support</h3>
+
+<p><a href="https://twitter.com/parkrunnl">parkrun is coming to the Netherlands</a> so we’ve started to add Netherlands support to Running Challenges. Most obviously, this includes the flag, but also things like translations of volunteer roles so that we can calculate how many times parkrunners have volunteered at Netherlands events. Of course, we can’t properly test this until the events are live so there might be some updates to this later in the year…</p>
+
+<h3 id="tons-of-runs-challenge">Tons of runs challenge</h3>
+
+<p>Following on from our recent update that collapses the Obsessives badges into a single challenge, the Single-ton and Double-ton badges are now also a single challenge. You can get one badge per parkrun event. For example, when this runner has completed 200 runs at Basingstoke, she’ll have two 200 badges and zero 100 badges:</p>
+
+<p><img src="/img/posts/tonsofruns-1.png" alt="Tons of Runs challenge with two badges" title="Tons of Runs challenge with two badges" class="center-image image-border" /></p>
+
+<p>When you have neither badge, you can see which parkrun you’ve run at most often:</p>
+
+<p><img src="/img/posts/tonsofruns-2.png" alt="Tons of Runs challenge with no badges" title="Tons of Runs challenge with no badges" class="center-image image-border" /></p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<p>If anything hasn’t worked for you recently, we might have fixed it in this release, so see below.</p>
+
+<p>If something still doesn’t work, <a href="https://github.com/fraz3alpha/running-challenges/issues">create a new issue</a> for us (or just send an email/tweet if that’s easier) with as much detail as you can including, if you can, a screenshot, the address of the page where it’s not working, and your athlete ID so that we can test it ourselves.</p>
+
+<h3 id="timezone-fix-for-usa-parkrunners">Timezone fix for USA parkrunners</h3>
+
+<p>If you are a parkrunner in the USA, you might have noticed that some of your stats are inconsistent (e.g. parkruns this year or most parkruns in a year), you’ve apparently run a total of 14 times in the month of December when you can count only 11, you’ve been incorrectly awarded a Christmas Day badge when you’ve never run on Christmas Day, or your first parkrun is reported as having happened on a Friday. Something was clearly a bit off, but we’ve finally fixed it.</p>
+
+<p>Thanks hugely to Tim Keer, not only for reporting this problem way back last year (and others who reported it even longer ago), but also for then investigating the code and sending us a full explanation of what he’d found and how to fix it.</p>
+
+<h3 id="error-for-people-whove-run-at-a-single-parkrun-location">Error for people who’ve run at a single parkrun location</h3>
+
+<p>Several (many!) people have been in touch recently to let us know that they have been seeing this error when they open Running Challenges: <code class="highlighter-rouge">Error: TypeError: Cannot read property 'name' of undefined</code></p>
+
+<p>Turns out, it was because we did something wrong when calculating the furthest parkrun location that you’d run if you had run at just a single parkrun location. Obviously, that should mean your furthest parkrun location <em>is</em> that parkrun. And that’s what it does mean…<em>now</em>. Sorry about that.</p>
+
+<h3 id="parkrun-explorer-map-was-showing-non-live-parkrun-events">parkrun Explorer map was showing non-live parkrun events</h3>
+
+<p>It doesn’t now. parkruns that haven’t started yet are no longer included in the total available parkruns.</p>
+
+<h3 id="average-parkrun-event-when-no-5k-parkruns-are-completed">Average parkrun event when no 5k parkruns are completed</h3>
+
+<p>Previously, if you hadn’t completed any 5k parkruns, you might get an arbitrary parkrun listed in your stats table as the nearest event to your average parkrun location. Now, it more accurately shows “None”:</p>
+
+<p><img src="/img/posts/no-average-parkrun.png" alt="When you have no average parkrun" title="When you have no average parkrun" class="center-image image-border" /></p>
+
+<p>This is the case when you have run no parkruns at all or only 2k junior parkruns. We currently don’t properly support location-based stats or challenges for junior parkruns. It’s something <a href="https://github.com/fraz3alpha/running-challenges/issues/236">we’re looking at</a> but it’s not a simple update to implement.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below. :</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[Loads of stuff in v1.1.1, both new and bugs fixes. Take a look…]]></summary></entry><entry><title type="html">Freyne Club added and Tourism badge changes (v1.0.0)</title><link href="/2020/01/18/v1.0.0-freyne-club.html" rel="alternate" type="text/html" title="Freyne Club added and Tourism badge changes (v1.0.0)" /><published>2020-01-18T19:00:00+00:00</published><updated>2020-01-18T19:00:00+00:00</updated><id>/2020/01/18/v1.0.0-freyne-club</id><content type="html" xml:base="/2020/01/18/v1.0.0-freyne-club.html"><![CDATA[<p>Say hello to the new and improved Tourism and Obsessive Challenge tables, and the addition of the Freyne Club badge.</p>
+
+<h2 id="tourism-challenge">Tourism challenge?</h2>
+
+<p>The Tourist challenge and Cowell Club have now joined forces and are available under the single umbrella
+of the “Tourism” challenge. You still get awarded the same badges as before, but now they appear as milestones
+on your tourism journey, rather than as distinct challenge tables with their own separate lists of events.
+This has several benefits that help people out:</p>
+
+<ol>
+  <li>The Tourism challenge never stops: you can see all the unique parkrun events you have run, 
+and it doesn’t just stop when it reaches the number defined in the challenge (20,100, etc…).</li>
+  <li>We don’t have to repeat ourselves on the page: the Tourist Challenge (20 parkrun events) was a subset
+of the Cowell Club Challenge (100 parkrun events), so we were wasting 20+ table rows by repeating those 
+first 20 events.</li>
+  <li>It’s easy to add a new or different milestones.</li>
+</ol>
+
+<p>A picture describes it best, so here’s a screenshot from <a href="https://www.parkrun.org.uk/parkrunner/1309364/all/">a parkrunner</a> who has got their ‘Cow’ (Half Cowell), but hasn’t yet reached the lofty heights of the Cowell Club.</p>
+
+<p><img src="/img/posts/tourism-challenge-table.png" alt="Running Challenges Tourism Challenge Table" title="Running challenges table for the Tourism Challenge with incomplete badges" class="center-image image-border" /></p>
+
+<p>As you can see in the picture, the point at which a badge is awarded is denoted by including a small version
+of the badge at the start of that row.</p>
+
+<h3 id="freyne-club-250-different-events">Freyne club (250 different events)</h3>
+
+<p>The eagle-eyed among you may have noticed that there is another badge available beyond the Cowell Club at 100 events. 
+This is for joining the Freyne club for which you need to have visited 250 different events! Like the Cowell Club, this 
+was named by the parkrun tourist community by the first person to reach the milestone, <a href="https://www.parkrun.org.uk/parkrunner/5227/all/">Paul FREYNE</a>.</p>
+
+<p>Here is a larger version of the new badge. We’ve taken to calling it the <em>Freyne Train</em> :)</p>
+
+<p><img src="/img/badges/runner-freyne-club.png" alt="Running Challenges Freyne Club badge" title="Running Challenges Freyne Club badge" class="center-image" /></p>
+
+<h3 id="only-250-different-events-hasnt-someone-already-got-to-500">Only 250 different events? Hasn’t someone already got to 500?</h3>
+
+<p>As of right now, the only person to achieve 500 different events appears to be … <a href="https://www.parkrun.org.uk/parkrunner/5227/all/">Paul FREYNE</a>, he of the aforementioned 250 club fame.
+This is a feat that only a handful of people are ever likely to achieve, and to make a badge for it now seems excessive.
+If you’ve got the time, disposable income, and determination to get to that milestone, the personal satisfaction of 
+reaching that mark will have to be enough for now.</p>
+
+<h3 id="parkrun-obessive-improvements">parkrun Obessive improvements</h3>
+
+<p>The Obsessive badges were among the first challenges to be added to the extension, as counting up the number of
+events run per year is pretty straightforward. :) There are, however, two things that were not quite right about 
+this challenge:</p>
+
+<ol>
+  <li>
+    <p>We have always wanted to include volunteering in this count, not just running. We still can’t fix that yet because
+parkrun still doesn’t display any information on the website to say when or where you have volunteered.</p>
+  </li>
+  <li>
+    <p>Why do you get all 3 badges (Bronze, Silver, and Gold) for doing 50+ in a single year as that isn’t how medals 
+work… Well, this is something we can fix!</p>
+  </li>
+</ol>
+
+<p>The Obsessive challenge is now a single table and you can get at most one badge awarded per year. Additionally,
+you can now also see the badges that you haven’t got yet (in a similar way to the tourism challenge) so that 
+you can see what you are working towards.</p>
+
+<p><img src="/img/posts/obsessive-table.png" alt="Running Challenges Obsessive Challenge Table" title="Running challenges table for the Obsessive Challenge with incomplete badges" class="center-image image-border" /></p>
+
+<h3 id="whats-the-closest-parkrun-to-your-average-parkrun-location">What’s the closest parkrun to your average parkrun location?</h3>
+
+<p>Yes, we know that calculating your average parkrun location is a fairly useless stat but now we’ve extended it
+to work out which parkrun event is the closest to that location. So you can go run it, if you want. Just click 
+the parkrun’s name to find out more about it.</p>
+
+<h2 id="version-100">Version 1.0.0?</h2>
+
+<p>We have been releasing this extension as version 0.something for nearly two years. We decided that it’s clearly 
+working well enough to be worthly of a version 1 release! We’ll try and be a bit more logical with our numbering
+system in the future, and increase the second number whenever we add a new badge, stat, or challenge, or something 
+significant changes in the way things are displayed on the webpage.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below. :</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[Say hello to the new and improved Tourism and Obsessive Challenge tables, and the addition of the Freyne Club badge.]]></summary></entry><entry><title type="html">New parkrun Explorer map (v0.7.9)</title><link href="/2019/12/24/v0.7.9-released.html" rel="alternate" type="text/html" title="New parkrun Explorer map (v0.7.9)" /><published>2019-12-24T15:00:00+00:00</published><updated>2019-12-24T15:00:00+00:00</updated><id>/2019/12/24/v0.7.9-released</id><content type="html" xml:base="/2019/12/24/v0.7.9-released.html"><![CDATA[<p>Say hello to the new and improved parkrun explorer map!</p>
+
+<h2 id="the-parkrun-explorer-map">The parkrun explorer map?</h2>
+
+<p>Yes. You might remember this as being the map for the regionnaire challenge, but we’ve rebranded it and 
+added some more goodies for those people who generally want to plan their touristing and want to 
+visualise where they have run on a map. It now lives in-between the stats table and the challenge tables.</p>
+
+<h3 id="whats-changed">What’s changed?</h3>
+
+<p>We have computed what is called a “<a href="https://en.wikipedia.org/wiki/Voronoi_diagram">voronoi diagram</a>”. We 
+have divided the world into cells. If you are within a particular cell, you know where the 
+nearest parkrun is to that location. A picture is worth a thousand words, so here’s an example:</p>
+
+<p><img src="/img/posts/voronoi-1.png" alt="Running Challenges in the Chrome Web Store" title="Running challenges voronoi diagram of the South coast of England" class="center-image image-border" /></p>
+
+<p>A green cell shows that you have done the parkrun for that area. The circles representing the parkruns 
+are green for ones you have done, and black for the others.</p>
+
+<p>Zoom right in if you want to find out the name of the event you are looking at.</p>
+
+<p><img src="/img/posts/voronoi-2.png" alt="Running Challenges in the Chrome Web Store" title="Zoomed in Running challenges voronoi diagram around Cheshire" class="center-image image-border" /></p>
+
+<p>On the old map we found that having over a thousand markers showing every parkrun didn’t scale - 
+the map was overcrowded and slow to scroll and pan around. This new way seems to work much better.</p>
+
+<h3 id="do-we-have-regions-yet">Do we have regions yet?</h3>
+
+<p>Why not create your own region! Hopefully by colouring the cells in this way it should be easy to tell if you 
+have been to all the events in a particular area of the country / world - just look for the contiguous green 
+parts of the map!</p>
+
+<h3 id="can-i-play-blockbusters-across-the-country-with-it">Can I play Blockbusters across the country with it?</h3>
+
+<p>Yes. We think that would be an excellent idea.</p>
+
+<p>I’ll have a P please Bob - cue everyone heading off to <a href="https://www.parkrun.org.uk/penistone/">Penistone parkrun</a> :)</p>
+
+<h2 id="updated-japanese-and-polish-translations">Updated Japanese and Polish translations</h2>
+
+<p>When we added support for <a href="https://www.parkrun.jp/">parkrun.jp</a> no events had been run yet, and we didn’t know any
+of the volunteer translations! Now, thanks to <a href="https://www.parkrun.org.uk/parkrunner/4782624/all/">William Steffancin (A4782624)</a> we have example translations for most of the roles in Japan.</p>
+
+<p>Meanwhile, in Poland, parkrun HQ updated most (all?) of the volunteer roles names, probably to be more technically
+correct (the best kind of correct). Many thanks to <a href="https://github.com/sebiush">@sebuish</a> who has provided us with 
+an updated list. The purple badges should be showing correctly for Poland once more.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon - typically we
+have found it takes a few days for Chrome and Firefox to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below. :</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="chrome-extension" /><category term="firefox-addon" /><category term="release" /><summary type="html"><![CDATA[Say hello to the new and improved parkrun explorer map!]]></summary></entry><entry><title type="html">Special events map for 2019/2020</title><link href="/2019/12/19/special-events-map-for-2019-2020.html" rel="alternate" type="text/html" title="Special events map for 2019/2020" /><published>2019-12-19T22:00:00+00:00</published><updated>2019-12-19T22:00:00+00:00</updated><id>/2019/12/19/special-events-map-for-2019-2020</id><content type="html" xml:base="/2019/12/19/special-events-map-for-2019-2020.html"><![CDATA[<p>It’s that time of the year for the extra festive parkrun events!</p>
+
+<p>We were a bit late to the game and have missed the Thanksgiving extras,
+but there is still change to find your local event that is doing the 
+Christmas Day/Eve/Boxing Day or New Year’s Day parkruns!</p>
+
+<p>See <a href="/map">the map here</a>, and there is another link at the top
+of this page.</p>
+
+<p>As with last year, you can filter on the time as well as the day, so you can find
+the closest event to you that gets you the amount of sleep you like :)</p>
+
+<p>We think we’ve got all the countries, and have listed them under their English 
+translations, so you’l find Christmas Eve in Denmark and Boxing Day in Germany.
+Hopefully we’ve got them translated right!</p>
+
+<p>If you are interested in a New Year’s Day Double, don’t forget <a href="https://twitter.com/rikkiprince">Rikki Prince’s</a>
+amazing <a href="https://tailrun.uk/nyd/2020/">Double Finder Tool</a> to see which ones you
+might be able to do!</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>]]></content><author><name></name></author><category term="website" /><summary type="html"><![CDATA[It’s that time of the year for the extra festive parkrun events!]]></summary></entry></feed>

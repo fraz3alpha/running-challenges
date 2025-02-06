@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Bug fixes and adapting to the parkrun wiki going away (v1.4.0) | Running Challenges</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Bug fixes and adapting to the parkrun wiki going away (v1.4.0)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Things change, but we try and keep up (within some period of time, measured in months)" />
+<meta property="og:description" content="Things change, but we try and keep up (within some period of time, measured in months)" />
+<link rel="canonical" href="/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html" />
+<meta property="og:url" content="/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html" />
+<meta property="og:site_name" content="Running Challenges" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-06-28T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Bug fixes and adapting to the parkrun wiki going away (v1.4.0)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-06-28T00:00:00+01:00","datePublished":"2023-06-28T00:00:00+01:00","description":"Things change, but we try and keep up (within some period of time, measured in months)","headline":"Bug fixes and adapting to the parkrun wiki going away (v1.4.0)","mainEntityOfPage":{"@type":"WebPage","@id":"/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html"},"url":"/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Running Challenges" /><!-- Google tag (gtag.js) for the production website -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-40C839RGVJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-40C839RGVJ');
+</script>
+  
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Running Challenges</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/map/">parkrun Explorer Map</a><a class="page-link" href="/badges/">Badges &amp; Stats</a><a class="page-link" href="/faq/">FAQs</a><a class="page-link" href="/getstarted/">Get Started</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Bug fixes and adapting to the parkrun wiki going away (v1.4.0)</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-06-28T00:00:00+01:00" itemprop="datePublished">Jun 28, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Things change, but we try and keep up (within some period of time, measured in months)</p>
+
+<h2 id="new-features">New Features</h2>
+
+<h3 id="added-parkwalker-role-badge">Added parkwalker role badge</h3>
+
+<p>The parkwalker role is a relatively new one, but by this point I think it has been around at least 6 months, so we aren’t exactly quick off the mark in including this… But now there is a badge for this role.</p>
+
+<p><a href="https://github.com/sneaker-net">‘sneaker-net’</a> first got the ball rolling on this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/364">#364</a>, thanks!</p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<h3 id="updated-the-colours-of-all-the-high-viz-badges">Updated the colours of all the high-viz badges</h3>
+
+<p>As the parkwalker role was added we took the opportunity to update all the colours of the high-viz vests to match the current colour scheme. The Run Director bib was at least 2 versions behind!</p>
+
+<h3 id="name-badge-fixed">Name Badge fixed</h3>
+
+<p>At some point parkrun changed the way the parkrunner name was displayed at the top of the page to suffix it with your parkrun number, e.g. A1309364, which got automatically picked up by this challenge, and made you need to gain an extra A (as you couldn’t get any numbers, these were skipped anyway).</p>
+
+<p><a href="https://github.com/solarisfire">Stephen Greenham</a> fixed this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/370">#370</a>, thanks!</p>
+
+<h3 id="parkrunpl-fixed">parkrun.pl fixed</h3>
+
+<p>A few things seemed to have changed on the Polish site, including the name of the results table, and some of the translations. The results table name resulted in a massive fail parsing the page and the extension did not handle this well, the translations were just missing badges.</p>
+
+<h3 id="removed-the-dependency-on-the-parkrun-wiki">Removed the Dependency on the parkrun Wiki</h3>
+
+<p>It seems the wiki is on the way out, and there is less and less there. In our case we relied on a table that was published there which said whether an event was live or not (effectively, had it had at least one event), and we used that to omit events that were on the map, but hadn’t started, from anything we calculated. 
+Without this data you might find that new parkruns pop up and you’ll have gaps in your explorer map for events that you couldn’t have run, or similarly a NENDY of an even that hasn’t started. In the grand scheme of keeping things simple, we’ll just have to accept this now, and live with it. The wiki page was often flakey anyway, and often was being regenerated which led to frequent error messages popping up, so hopefully now at least it will go back to being pretty stable.</p>
+
+<p><a href="https://github.com/johnsyweb">Pete Johns</a> fixed this for us via <a href="https://github.com/fraz3alpha/running-challenges/pull/389">#389</a>, thanks!</p>
+
+<h3 id="warm-up-volunteer-badge-fixed">Warm up Volunteer badge fixed</h3>
+
+<p>This volunteer role changed from “Warm Up Leader (junior events only)” to “Warm Up Leader”, so needed an alias adding - it’s now back.</p>
+
+<h3 id="fixed-error-when-no-the-parkrunner-hadnt-run-any-events">Fixed error when no the parkrunner hadn’t run any events</h3>
+
+<p>We’ve got <a href="https://github.com/LukeWoodward">Luke Woodward</a> to thank for this fix, after he provided us with the changes required via <a href="https://github.com/fraz3alpha/running-challenges/pull/383">#383</a>. It turned out that if a parkrunner didn’t have any results against their name, the extension broke trying to print some debug information - and now it doesn’t. Thanks Luke!</p>
+
+<h2 id="general-improvements">General Improvements</h2>
+
+<p>We added a way to reliably tests all the parkrun sites with a locally saved copy of several parkrunners (mostly Andy, but also some others) against each build of the extension, so hopefully we can make sure that all the volunteer role translations are correct, and we don’t lose any badges. It’s still a work in progress, but we have something to work from now - and it has already proved its worth while fixing the Polish parkrun site, and some others we found were incorrect!</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below (the Firefox version will be likely a little delayed):</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>
+
+  </div><a class="u-url" href="/2023/06/28/v1.4.0-fixes-and-wiki-gone-away.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Running Challenges</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Running Challenges</li><li><a class="u-email" href="mailto:teamtcmakers@gmail.com">teamtcmakers@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/fraz3alpha"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">fraz3alpha</span></a></li><li><a href="https://www.twitter.com/RunChallenges"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">RunChallenges</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Collect badges and complete challenges for running, jogging, walking, and volunteering at your weekly 5k parkrun. This browser extension adds extra information to your parkrun results page so you can see your progress.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

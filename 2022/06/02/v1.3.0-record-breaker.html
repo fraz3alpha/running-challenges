@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Record Breaker Challenge (v1.3.0) | Running Challenges</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Record Breaker Challenge (v1.3.0)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A new challenge!…" />
+<meta property="og:description" content="A new challenge!…" />
+<link rel="canonical" href="/2022/06/02/v1.3.0-record-breaker.html" />
+<meta property="og:url" content="/2022/06/02/v1.3.0-record-breaker.html" />
+<meta property="og:site_name" content="Running Challenges" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-06-02T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Record Breaker Challenge (v1.3.0)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-06-02T00:00:00+01:00","datePublished":"2022-06-02T00:00:00+01:00","description":"A new challenge!…","headline":"Record Breaker Challenge (v1.3.0)","mainEntityOfPage":{"@type":"WebPage","@id":"/2022/06/02/v1.3.0-record-breaker.html"},"url":"/2022/06/02/v1.3.0-record-breaker.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Running Challenges" /><!-- Google tag (gtag.js) for the production website -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-40C839RGVJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-40C839RGVJ');
+</script>
+  
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Running Challenges</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/map/">parkrun Explorer Map</a><a class="page-link" href="/badges/">Badges &amp; Stats</a><a class="page-link" href="/faq/">FAQs</a><a class="page-link" href="/getstarted/">Get Started</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Record Breaker Challenge (v1.3.0)</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-06-02T00:00:00+01:00" itemprop="datePublished">Jun 2, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>A new challenge!…</p>
+
+<h2 id="new">New!</h2>
+
+<p>We have a new Record Breaker challenge, support for more parkrun websites after parkrun HQ’s changes to the website last year, and a few other tweaks.</p>
+
+<p>Big thanks to <a href="https://github.com/rboyatt">Russell Boyatt</a> and <a href="https://github.com/JazzyJ87">@JazzyJ87</a> who provided many of the changes in this release and are the main reason we have been able to do this update!</p>
+
+<h3 id="new-challenge-the-record-breaker-badge">New challenge: the Record Breaker badge</h3>
+
+<p><img src="/img/badges/runner-record-breaker-78.png" alt="Record Breaker challenge badge" title="Record Breaker challenge badge" class="center-image image-border" /></p>
+
+<p>This badge is awarded for running all of the parkruns within 33km, 45km, and 78km of your average parkrun location. For those of you too young to remember these things, but too old to know about the recent revival of vinyl, these are the speeds of various types of vinyl records.</p>
+
+<p>We had originally coded this up by using the home parkrun that you’ve set in the extension as the centre of the record. But this would mean that only you could see that you have completed the challenge (and badge). However, as we <a href="https://github.com/fraz3alpha/running-challenges/pull/203#issuecomment-1141483334">collaborated on this</a> with <a href="https://github.com/rboyatt">Russell Boyatt</a>, he made the very good point we could use the average parkrun location (which we already calculate), and then it would be possible for you to visit anyone’s parkrun page and see if they have a Record Breaker badge (without you having to know and set their home parkrun in the extension).</p>
+
+<p>We also use the voronoi map style to show the events for this challenge. This can, if there are enough parkruns nearby, end up with a pleasing archery target of coloured sections. Or, not, as the case may be: Andy’s average parkrun is currently on the south coast of England in Worthing, so it’s a lop-sided affair where colours bleed into the channel!</p>
+
+<p><img src="/img/posts/record-breaker-map.png" alt="Record Breaker badge" title="Record Breaker badge" class="center-image image-border" /></p>
+
+<h3 id="longest-tourism-streak-stat-update">Longest tourism streak stat update</h3>
+
+<p>The <em>Longest tourism streak</em> statistic now tells you which parkrun and which date it ends at, which we hope is useful.</p>
+
+<p>e.g.</p>
+
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>Longest tourism streak</td>
+        <td>17 parkruns (achieved Itchen Valley Country 29/02/2020)</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>Thanks to <a href="https://github.com/JazzyJ87">@JazzyJ87</a> for contributing the code for this update.</p>
+
+<h3 id="add-name-badge-map">Add Name Badge map</h3>
+
+<p>I think we just forgot to do it before, but the Name Badge challenge now has a map.</p>
+
+<p>Thanks again to <a href="https://github.com/JazzyJ87">@JazzyJ87</a> who <a href="https://github.com/fraz3alpha/running-challenges/pull/336">added this</a> as well.</p>
+
+<h2 id="bug-fixes">Bug fixes</h2>
+
+<h3 id="non-english-parkrun-websites">Non-English parkrun Websites</h3>
+
+<p>We think we’ve fixed all the non-English parkrun websites. After parkrun HQ’s great website updates of late 2021, we fixed the English-language websites but not all the non-English websites. They should now all work.</p>
+
+<h3 id="skip-proceessing-profiles-with-no-runs">Skip proceessing profiles with no runs</h3>
+
+<p>It seems the parkrun website now displays a page differently if the parkrunner hasn’t completed any runs. This caused the extension to display an error. Rather than displaying an error, we now print a nice message.</p>
+
+<h3 id="volunteer-role-name-updates">Volunteer role name updates</h3>
+
+<p>The parkrun website changed the names of a couple of the volunteer roles to reflect the move away from focusing on “runs”. For example, “Run Report Writer” became “Report Writer”. This broke these volunteer stats and badges so that it looked like you hadn’t ever done those roles when you had, at least on the English websites. We’ve now fixed this so that the extension looks for the new volunteer role names. It seems that the non-English volunteer role names were already OK (perhaps because they had thought about this before a new country was started), but if any of those look like they aren’t working, let us know.</p>
+
+<p>Thanks to <a href="https://github.com/rboyatt">Russell Boyatt</a> who <a href="https://github.com/fraz3alpha/running-challenges/pull/334">contributed this fix</a>.</p>
+
+<h2 id="firefox">Firefox</h2>
+
+<p>We are going to attempt to re-submit the extension to the Mozilla Add-Ons store so that it works on Firefox again. We’ve no idea if it will pass their checks and we don’t understand the reasoning for it being rejected before, but we’ll see if we can get any more information out of them.</p>
+
+<h2 id="how-do-i-get-all-of-this-great-stuff">How do I get all of this great stuff?</h2>
+
+<p>If you have already installed the extension it should update soon. Typically we
+have found it takes a few days to auto-update, but it should
+do so eventually.  If you haven’t yet joined the fun you can get it from one of
+the links below (the Firefox version will only be available if the store stops rejecting our submission…):</p>
+
+<p style="text-align: center;"><a href="https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"><img src="/img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt="Running Challenges in the Chrome Web Store" title="Running Challenges in the Chrome Web Store" /></a><a href="https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"><img src="/img/firefox_web_store-172x60.png" alt="Running Challenges in the Firefox Add-ons Web Store" title="Running Challenges in the Firefox Add-ons Web Store" /></a></p>
+
+  </div><a class="u-url" href="/2022/06/02/v1.3.0-record-breaker.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Running Challenges</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Running Challenges</li><li><a class="u-email" href="mailto:teamtcmakers@gmail.com">teamtcmakers@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/fraz3alpha"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">fraz3alpha</span></a></li><li><a href="https://www.twitter.com/RunChallenges"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">RunChallenges</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Collect badges and complete challenges for running, jogging, walking, and volunteering at your weekly 5k parkrun. This browser extension adds extra information to your parkrun results page so you can see your progress.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
