@@ -29,6 +29,15 @@ locally for testing by running a bash script (Linux and Mac only).
     Any changes you make to pages of the website should automatically get picked up when you refresh (F5) the page.
 1. To stop the local website running, press CTRL+C in the terminal.
 
+You might find you need to update the Gemfile.lock file occasionally.
+To do that I've run the following from within the `website` directory.
+```
+docker run -it -v `pwd`:/tmp/website-data jekyll/jekyll bash
+```
+and then inside the container run:
+```
+bundle update
+```
 
 ## Browser Extensions: Docker build
 
