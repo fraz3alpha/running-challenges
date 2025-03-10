@@ -4,6 +4,12 @@ webstore-img-link: "{{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58
 webstore-running-challenges-link: "https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif"
 webstore-running-challenges-reviews-link: "https://chrome.google.com/webstore/detail/running-challenges/kdapmdimgdebpgolimjnmcdlkbkddoif/reviews"
 
-firefox-: "{{ site.baseurl }}/img/firefox_web_store-172x60.png"
+firefox-img-link "{{ site.baseurl }}/img/firefox_web_store-172x60.png"
 firefox-running-challenges-link: "https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"
 firefox-running-challenges-reviews-link: "https://addons.mozilla.org/en-GB/firefox/addon/running-challenges/"
+
+# It seems Microsoft are no closer to creating a badge, or image, at least according to https://github.com/MicrosoftDocs/edge-developer/issues/659
+# so someone has created this one: https://gist.github.com/Liozon/cf898c47628bfecd9896f79e6c9a8db8
+edge-img-link: "{{ site.baseurl }}/img/edge-get-it-for-microsoft-edge.png"
+edge-running-challenges-link: "https://microsoftedge.microsoft.com/addons/detail/running-challenges/cfofipfcckojdhjbganfgflkiebajegg"
+edge-running-challenges-reviews-link: "https://microsoftedge.microsoft.com/addons/detail/running-challenges/cfofipfcckojdhjbganfgflkiebajegg"
