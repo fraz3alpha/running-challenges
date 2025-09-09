@@ -1,0 +1,99 @@
+version: 2
+updates:
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    # Allow both major and minor updates for actions
+    open-pull-requests-limit: 10
+    # Group updates by action to reduce PR noise
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    # Auto-merge minor updates for trusted actions
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    # Reviewers for action updates
+    reviewers:
+      - "fraz3alpha"
+    # Labels for action updates
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"
+
+  # Enable version updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/browser-extensions/common/js/tests"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    reviewers:
+      - "fraz3alpha"
+    labels:
+      - "dependencies"
+      - "npm"
+      - "automated"
+
+  # Enable version updates for npm dependencies in ui-test
+  - package-ecosystem: "npm"
+    directory: "/browser-extensions/common/js/tests/ui-test"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    reviewers:
+      - "fraz3alpha"
+    labels:
+      - "dependencies"
+      - "npm"
+      - "automated"
+
+  # Enable version updates for Ruby/Bundler dependencies
+  - package-ecosystem: "bundler"
+    directory: "/website"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    groups:
+      bundler-dependencies:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    reviewers:
+      - "fraz3alpha"
+    labels:
+      - "dependencies"
+      - "ruby"
+      - "bundler"
+      - "automated"

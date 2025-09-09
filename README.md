@@ -30,12 +30,30 @@ locally for testing by running a bash script (Linux and Mac only).
 1. To stop the local website running, press CTRL+C in the terminal.
 
 You might find you need to update the Gemfile.lock file occasionally.
-To do that I've run the following from within the `website` directory.
+
+## Updating Ruby Dependencies
+
+### Option 1: Using Dependabot (Recommended)
+Dependabot will automatically create pull requests for outdated Ruby dependencies. Check the [Dependencies tab](https://github.com/fraz3alpha/running-challenges/network/dependencies) or look for PRs labeled `dependencies` and `ruby`.
+
+### Option 2: Manual Update
+If you need to update manually, run from the `website` directory:
+
+```bash
+cd website
+bundle update
+git add Gemfile.lock
+git commit -m "chore: update Ruby dependencies"
 ```
+
+### Option 3: Using Docker (Legacy)
+If you prefer the Docker approach:
+```bash
+cd website
 docker run -it -v `pwd`:/tmp/website-data jekyll/jekyll bash
 ```
-and then inside the container run:
-```
+Then inside the container:
+```bash
 bundle update
 ```
 
@@ -101,14 +119,50 @@ Instead, for testing purposes, you have to install it as a [temporary installati
 
 # Automated builds
 
-This repository is integrated with TravisCI so that code pushed to the master
-branch in GitHub is built. This will update the website, and if a suitable tag
-is present, then a GitHub Release is created and a copy of the extension at that
-level is uploaded for further submission to the Chrome and Firefox extension/addon
-webstores.
+This repository uses GitHub Actions for continuous integration and deployment. The following workflows are configured:
 
-Each PR created, and when additional commits are pushed to existing PR branches,
-an additional build it run to build a copy of the website on staging.running-challenges.co.uk .
+## Production Website Build
+- **Trigger**: Push to `master` branch
+- **Action**: Builds and deploys the main website to `gh-pages` branch
+- **Workflow**: `.github/workflows/build-website.yml`
+
+## Staging Website Build
+- **Trigger**: Push to any branch except `master`, `gh-pages`, or `gh-pages-staging`
+- **Action**: Builds and deploys a staging version to `staging.running-challenges.co.uk`
+- **Workflow**: `.github/workflows/build-staging-website.yml`
+
+## Extension Build & Release
+- **Trigger**: Push to `master` branch or manual dispatch
+- **Action**: Builds Chrome and Firefox extensions, creates GitHub releases on version tags
+- **Workflow**: `.github/workflows/build-extension.yml`
+
+## Code Quality Analysis
+- **Trigger**: Push to `master` branch, pull requests, or manual dispatch
+- **Action**: Runs CodeQL security analysis
+- **Workflow**: `.github/workflows/codeql-analysis.yml`
+
+# Dependency Management
+
+This repository uses [Dependabot](https://docs.github.com/en/code-security/dependabot) to automatically keep dependencies up-to-date:
+
+## Automated Updates
+- **GitHub Actions**: All workflow actions are automatically updated weekly
+- **npm Dependencies**: Node.js packages in test directories are updated weekly
+- **Ruby/Bundler**: Jekyll and other Ruby gems are updated weekly
+- **Schedule**: Every Monday at 9:00 AM UTC
+
+## Configuration
+Dependabot is configured in `.github/dependabot.yml` and will:
+- Create pull requests for outdated dependencies
+- Group related updates to reduce PR noise
+- Assign appropriate labels (`dependencies`, `github-actions`, `npm`, `ruby`, `bundler`, `automated`)
+- Use consistent commit message format (`chore:` prefix)
+
+## Manual Updates
+If you need to update dependencies manually:
+- **GitHub Actions**: Edit workflow files in `.github/workflows/`
+- **npm**: Run `npm update` in the relevant test directories
+- **Ruby**: Run `bundle update` in the `website/` directory
 
 # Adding a new volunteer role
 
@@ -144,10 +198,10 @@ It is impossible to add a new country until the new website is made live, and th
 # Version numbers
 
 There hasn't been any real consistency in how the versions have been numbered, with the versions mostly going up
-a point release when something was changed. The only thing that has been consistent is that the last number has 
+a point release when something was changed. The only thing that has been consistent is that the last number has
 referred back to the Travis build that generated the release.
 
-To make this more consistent, from January 2020 the numbering, which follows the format 
+To make this more consistent, from January 2020 the numbering, which follows the format
 `<major>.<minor>.<patch>.<build-number>` will refer to:
 
 ### Major version
@@ -156,27 +210,26 @@ Something big has changed in the way the extension works. We may never go to ver
 
 ### Minor version
 
-A new challenge, stat, or badge has been added - or there has been a significant addition to the way the data is 
+A new challenge, stat, or badge has been added - or there has been a significant addition to the way the data is
 displayed on the webpage.
 
 ### Patch version
 
-Bug fixes or minor rendering changes 
+Bug fixes or minor rendering changes
 
 ### Build Number
 
-This will remain as it always has, including the Travis build number.
+This will remain as it always has, including the GitHub Actions build number.
 
 # Releasing a new version
 
 1. When everything has been tested and merged into master, tag master with the
-version in `build/version.sh`. This will trigger a Travis build to push the built
-zips to a Github release.
+version in `build/version.sh`. This will trigger a GitHub Actions workflow to build and create a GitHub release.
     ```
     git tag v0.7.5
     git push origin v0.7.5
     ```
-1. Watch the [Travis build](https://travis-ci.org/fraz3alpha/running-challenges) run.
+1. Watch the [GitHub Actions workflow](https://github.com/fraz3alpha/running-challenges/actions) run.
 1. Head over to the [releases](https://github.com/fraz3alpha/running-challenges/releases)
 tab in Github and find the release for the [version you tagged](https://github.com/fraz3alpha/running-challenges/releases/tag/v0.7.5).
 1. Edit the release with any information that you may want to include in release notes, or perhaps form the basis of the blog post.
