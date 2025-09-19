@@ -1171,49 +1171,49 @@ function generate_stat_furthest_travelled(parkrun_results, geo_data, home_parkru
   return stat_info
 }
 
-// Which is the closest parkrun you haven't done yet
+function formatEventWithDistance(event, distance, prefix = '') {
+  const roundedDistance = Math.round(distance)
+  return `${prefix}${event.name}, ${event.country_name} - ${roundedDistance}km away`
+}
+
 function generate_stat_nearest_event_not_done_yet(parkrun_results, geo_data, home_parkrun_info) {
-  // Find those parkrun events that have been completed
-  var events_run = {}
+  const display_name = "Nearest event not done yet (NENDY)"
+  let help = "The nearest parkrun event to your home parkrun that you have not done yet."
+  let value = "No more events available"
+  let url = undefined
 
-  parkrun_results.forEach(function (parkrun_event) {
-    if (!(parkrun_event.name in events_run)) {
-      events_run[parkrun_event.name] = true
-    }
-  })
-  var event_distances = {}
+  const completed_event_names = new Set(parkrun_results.map(parkrun_event => parkrun_event.name))
 
-  
-  // Remove the JQuery dependency
-  // $.each(geo_data.data.events, function (event_name, event_info) {
-  Object.keys(geo_data.data.events).forEach(function(event_name) {
-    var event_info = geo_data.data.events[event_name]
-    if (!(event_name in events_run)) {
-      if (event_info.lat && event_info.lon) {
-        event_distances[event_name] = calculate_great_circle_distance(event_info, home_parkrun_info)
-      }
-    }
-  })
+  const uncompleted_events_with_distances = Object.entries(geo_data.data.events)
+    .filter(([event_name, event_info]) =>
+      !completed_event_names.has(event_name) &&
+      event_info.lat &&
+      event_info.lon
+    )
+    .map(([event_name, event_info]) => ({
+      name: event_name,
+      event: event_info,
+      distance: calculate_great_circle_distance(event_info, home_parkrun_info)
+    }))
 
-  // Sort the list of events not done by distance
-  var sorted_events = Object.keys(event_distances).sort(function(a, b) {
-      return event_distances[a] - event_distances[b]
-  })
+  const nearest_events = uncompleted_events_with_distances
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 10)
 
-  var statInfo =  {
-    "display_name": "Nearest event not done yet (NENDY)",
-    "help": "The nearest parkrun event to your home parkrun that you have not done yet.",
-    "value": "No more events available"
+  if (nearest_events.length > 0) {
+    const nearest = nearest_events[0]
+
+    value = formatEventWithDistance(nearest.event, nearest.distance)
+    url = get_parkrun_page_url(geo_data, nearest.name)
+
+    const formatted_events = nearest_events
+      .map(({ event, distance }) => formatEventWithDistance(event, distance, ' - '))
+      .join("\n")
+
+    help += `\n\nTop ${nearest_events.length} nearest events not done yet:\n\n${formatted_events}`
   }
 
-  if (sorted_events.length > 0) {
-    var nendy_name = sorted_events[0]
-    var nendy = geo_data.data.events[nendy_name]
-    statInfo.value = nendy.name + ", " + nendy.country_name+ " - " + Math.round(event_distances[nendy_name]) + "km away"
-    statInfo["url"] = get_parkrun_page_url(geo_data, nendy.name)
-  }
-
-  return statInfo
+  return { display_name, help, value, url }
 }
 
 // How many times has your name appeared on the volunteer roster (note, not the
