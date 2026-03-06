@@ -31,6 +31,8 @@ completion statistics! - N.B. If you have filled in your athlete ID and home par
 the extension will take you to your profile when you click the newly-added
 Running Challenges icon/menu item.
 
+**Or use the userscript (iPhone, iPad, or desktop):** Install a userscript manager (e.g. [Tampermonkey]({{ site.data.userscript_managers.tampermonkey_chrome }}), [Violentmonkey]({{ site.data.userscript_managers.violentmonkey_chrome }}), [Userscripts]({{ site.data.userscript_managers.userscripts_ios }}) for iOS, or [Stay]({{ site.data.userscript_managers.stay_ios }})), then open the [Running Challenges userscript]({{ site.baseurl }}/assets/js/running-challenges.user.js) to install it. See [userscript installation](#userscript-tampermonkey-violentmonkey-userscripts-or-stay) below for step-by-step instructions.
+
 Enjoy!
 
 ## Detailed instructions
@@ -42,6 +44,20 @@ on where you want to add the extension:
   - [Chrome for PC/Mac](#chrome-for-pcmac)
   - [Firefox for PC/Mac](#firefox-for-pcmac)
   - [Firefox for Android (phone or tablet)](#firefox-for-android-phone-or-tablet)
+  - [Userscript (iPhone, iPad, or desktop)](#userscript-tampermonkey-violentmonkey-userscripts-or-stay)
+
+### Userscript (Tampermonkey, Violentmonkey, Userscripts, or Stay)
+
+If you can't install the Chrome or Firefox extension (for example on **iPhone or iPad**), or you prefer to use a userscript, you can run Running Challenges via a userscript manager. The script is the same as the extension and works on parkrun results pages.
+
+1. **Install a userscript manager** (pick one for your device):
+   - **Chrome (desktop):** [Tampermonkey]({{ site.data.userscript_managers.tampermonkey_chrome }}), [Violentmonkey]({{ site.data.userscript_managers.violentmonkey_chrome }}), or [Stay]({{ site.data.userscript_managers.stay_chrome }})
+   - **Firefox (desktop):** [Tampermonkey]({{ site.data.userscript_managers.tampermonkey_firefox }}) or [Violentmonkey]({{ site.data.userscript_managers.violentmonkey_firefox }})
+   - **iPhone or iPad (Safari):** [Userscripts]({{ site.data.userscript_managers.userscripts_ios }}) or [Stay]({{ site.data.userscript_managers.stay_ios }}) from the App Store
+
+2. **Install the Running Challenges userscript:** Open this link in your browser (while the userscript manager is installed): [Running Challenges userscript]({{ site.baseurl }}/assets/js/running-challenges.user.js). Your manager will prompt you to add the script; confirm to install.
+
+3. **Use it:** Visit any parkrun parkrunner "All results" page (e.g. your own). The badges and challenges will appear as with the extension. The extension can infer your athlete ID and home parkrun from the page; you can also set options via the extension's options page if you have it installed, or the script will use sensible defaults from the page.
 
 ### Chrome for PC/Mac
 

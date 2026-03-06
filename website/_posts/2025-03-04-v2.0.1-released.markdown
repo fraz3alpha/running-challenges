@@ -1,0 +1,48 @@
+---
+layout: post
+title:  "v2.0.1 released – userscript, home parkrun inference, and UI tweaks"
+date:   2025-03-04 12:00:00 +0000
+categories:
+  - chrome-extension
+  - firefox-addon
+  - release
+---
+
+Version 2.0.1 is out with a proper userscript build, smarter home parkrun detection, and some UI improvements.
+
+## Userscript for Tampermonkey and iOS
+
+If you can’t install the browser extension (for example on iPhone or iPad), you can now use the **userscript** instead. The script is built from the same code as the extension and shares the same version number (2.0.1). Install a userscript manager—e.g. [Tampermonkey]({{ site.data.userscript_managers.tampermonkey_chrome }}) or [Violentmonkey]({{ site.data.userscript_managers.violentmonkey_chrome }}) on desktop, or [Userscripts]({{ site.data.userscript_managers.userscripts_ios }}) or [Stay]({{ site.data.userscript_managers.stay_ios }}) on iOS—then open the script on our website to install it. The [getting started](/getstarted/) page has step-by-step instructions.
+
+![Parkrun profile with Running Challenges badges on iOS (Safari with userscript)]({{ site.baseurl }}/img/posts/ios-userscript-parkrun-profile-v2.0.1.png "Parkrun profile with Running Challenges badges on iOS"){: .center-image .image-border}
+*Running Challenges badges and milestones on a parkrun profile page in Safari on iPhone, using the userscript.*
+
+## Extension improvements
+
+### Home parkrun and athlete ID from the page
+
+When you haven’t set a home parkrun in options, the extension now infers it from your results. It uses your most recent events so the choice stays relevant. Athlete ID is also inferred from the parkrun page when possible, so the extension can work even when the page URL doesn’t include it in the usual way.
+
+### Challenge map layout
+
+Challenge rows that can show a map no longer reserve a large empty space before you click “show map”. The map area only gets height when the map is actually displayed, so the page is easier to scroll.
+
+### Volunteer Challenges heading
+
+The “Volunteer Challenges” section now has a stable heading ID so it behaves better with assistive tech and our own screenshot tooling.
+
+## Website
+
+- The site now has a favicon.
+- The home page and get started flow mention the userscript and iOS-friendly install path.
+- Screenshots used on the site have been refreshed to match the current extension UI.
+
+## How do I get it?
+
+If you already have the extension installed, it should update automatically within a few days. To install fresh or use the userscript:
+
+[![Running Challenges in the Chrome Web Store]({{ site.baseurl }}/img/ChromeWebStore_BadgeWBorder_v2_206x58.png "Running Challenges in the Chrome Web Store")]({{ site.data.webstore.webstore-running-challenges-link }})[![Running Challenges in the Firefox Add-ons Web Store]({{ site.baseurl }}/img/firefox_web_store-172x60.png "Running Challenges in the Firefox Add-ons Web Store")]({{ site.data.webstore.firefox-running-challenges-link }})
+{: style="text-align: center;"}
+
+[Install as a userscript]({{ site.baseurl }}/assets/js/running-challenges.user.js) ([Tampermonkey]({{ site.data.userscript_managers.tampermonkey_chrome }}), [Violentmonkey]({{ site.data.userscript_managers.violentmonkey_chrome }}), [Userscripts]({{ site.data.userscript_managers.userscripts_ios }}) for iOS, [Stay]({{ site.data.userscript_managers.stay_ios }}))
+{: style="text-align: center;"}

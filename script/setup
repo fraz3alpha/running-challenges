@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+export PATH="${ROOT_DIR}/node_modules/.bin:${PATH}"
+
+echo "Running script/setup"
+
+"$ROOT_DIR/script/bootstrap"
+eval "$(mise activate bash)" 2>/dev/null || true
+
+# shellcheck source=build/version.sh
+source "$ROOT_DIR/build/version.sh"
+export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
+
+echo "Building extensions (Chrome and Firefox)..."
+pnpm --filter running-challenges-extension run build:extension
+
+echo "script/setup completed successfully."
+echo "You can now run ./script/server to launch Firefox with the extension installed."
+

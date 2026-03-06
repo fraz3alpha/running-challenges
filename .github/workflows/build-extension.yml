@@ -3,83 +3,74 @@ name: Extension Builder
 # Run this workflow every time a new commit pushed to your repository
 on:
   push:
-    branches: 
+    branches:
       - master
   pull_request:
 
 jobs:
-
   test-javascript-libraries:
     name: Test the Javascript libraries
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-        working-directory: browser-extensions/common/js/tests
-
     steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure node v20
-        uses: actions/setup-node@v4
+      - name: Install toolchain with mise
+        uses: jdx/mise-action@v3
         with:
-          node-version: '20'
+          install: true
 
-      - name: Install test framework dependencies
-        run: npm install
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Run tests
-        run: npm run test-with-coverage
+      - name: Install Playwright Browsers
+        run: pnpm --filter running-challenges-chrome-ui-testing exec playwright install --with-deps chromium
 
-  # Set the job key. The key is displayed as the job name
-  # when a job name is not provided
+      - name: Run script/cibuild
+        run: ./script/cibuild
+        shell: bash
+
   build-extension:
-    # Name the Job
     name: Build the extension
-    # Set the type of machine to run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browser: ["chrome", "firefox"]
 
     steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure node v20
-        uses: actions/setup-node@v4
+      - name: Install toolchain with mise
+        uses: jdx/mise-action@v3
         with:
-          node-version: '20'
+          install: true
 
-      - name: Install web-ext tooling
-        run: npm install -g web-ext
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
 
-      # Runs a script
-      - name: Build ${{ matrix.browser }} Extension
+      - name: Build extensions (Chrome and Firefox)
         run: |
-          echo "Building extension for ${{ matrix.browser }} at `date`"
-          # Make the build script executable
-          chmod +x ./build/extension-${{ matrix.browser }}/build.sh
-          # Build the extension
-          ./build/extension-${{ matrix.browser }}/build.sh
-        shell: bash
+          source build/version.sh
+          export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
+          pnpm --filter running-challenges-extension run build:extension
         env:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
-      - name: Upload build extension package
+      - name: Upload Chrome extension package
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.browser }}-extension-package
-          path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
+          name: chrome-extension-package
+          path: browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip
+
+      - name: Upload Firefox extension package
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension-package
+          path: browser-extensions/firefox/build/web-ext-artifacts/running_challenges-firefox-*.zip
 
   integration-test:
     name: UI Testing
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - build-extension
       - test-javascript-libraries
     strategy:
@@ -112,10 +103,9 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js/tests/ui-test
+        working-directory: browser-extensions/extension/src/js/tests/ui-test
 
     steps:
-
       # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v4
@@ -124,38 +114,20 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v4
         with:
-          path: browser-extensions/common/js/tests/ui-test/extension-binaries
+          path: browser-extensions/extension/src/js/tests/ui-test/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
 
       - name: Configure node v20
-        uses: actions/setup-node@v4
+        uses: jdx/mise-action@v3
         with:
-          node-version: '20'
+          install: true
 
       - name: Install Required OS packages
         run: |
           sudo apt-get update && \
           sudo apt-get install -y xvfb unzip
-
-      - name: Start up the supporting nginx services
-        run: |
-
-          echo "Creating a certificate"
-          cd ./supporting-data/nginx/cert/
-          bash generate.sh
-          cd -
-
-          echo "Starting up docker compose services"
-          docker compose -f "./supporting-data/docker-compose-gh-actions.yml" up --force-recreate -d
-
-          # Give nginx a moment to have fully come up
-          sleep 1
-
-          # Make the changes to /etc/hosts so that the tests reference the above containers.
-          echo "Append to /etc/hosts to use this nginx"
-          sudo bash -c 'cat ./supporting-data/etc-hosts.txt >> /etc/hosts'
 
       - name: Unpack extension
         run: |
@@ -163,15 +135,19 @@ jobs:
           cd extension-binaries/chrome-extension-package
           unzip *.zip
 
-      - name: Install Node dependencies
-        run: npm ci
+      - name: Install pnpm dependencies
+        working-directory: ${{ github.workspace }}
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Browsers
-        run: |
-          npx playwright install --with-deps chromium
+        working-directory: ${{ github.workspace }}
+        run: pnpm --filter running-challenges-chrome-ui-testing exec playwright install --with-deps chromium
 
+      # Full suite includes "Leaflet markers load with icons", which guards against
+      # regressions when moving Leaflet (or other third-party assets) to pnpm.
       - name: Run Playwright tests
-        run: xvfb-run npx playwright test
+        working-directory: ${{ github.workspace }}
+        run: xvfb-run pnpm --filter running-challenges-chrome-ui-testing run test
         env:
           COUNTRY_HOSTNAME: "${{ matrix.country_hostname }}"
 
@@ -182,10 +158,23 @@ jobs:
         if: always()
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
-          path: |
-            browser-extensions/common/js/tests/ui-test/playwright-report/
-            browser-extensions/common/js/tests/ui-test/screenshot.png
+          path: browser-extensions/extension/src/js/tests/ui-test/playwright-report/
           retention-days: 30
+
+      # Debug artefacts for inspecting UI test failures (screenshots + page HTML)
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ui-tests-screenshots-${{ matrix.country_hostname }}
+          path: browser-extensions/extension/src/js/tests/ui-test/test-results/
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ui-tests-html-${{ matrix.country_hostname }}
+          path: browser-extensions/extension/src/js/tests/ui-test/playwright-debug/
+          retention-days: 7
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
   # Assuming they are successful, we will push them somewhere they can be used.
@@ -194,7 +183,7 @@ jobs:
   publish-extension:
     name: Push the build extensions somewhere
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - integration-test
     # if: startsWith(github.ref, 'refs/tags/v')
 
@@ -246,7 +235,6 @@ jobs:
             })
             */
         # if: startsWith(github.ref, 'refs/tags/v')
- 
 
       # - id: get-branch-version-tag
       #   uses: actions/github-script@v7
@@ -258,7 +246,6 @@ jobs:
       #       }
       #       core.setOutput('version_tag', version_tag)
       #   if: startsWith(github.ref, 'refs/tags/v')
-
       - run: echo "branch version tag is ${{steps.get-branch-version-tag.outputs.version_tag}}"
         # if: startsWith(github.ref, 'refs/tags/v')
 

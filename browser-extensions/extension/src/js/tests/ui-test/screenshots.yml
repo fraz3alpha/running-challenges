@@ -1,0 +1,44 @@
+# Website screenshots to capture. Each entry loads the URL (live parkrun site)
+# with the Chrome extension loaded, then captures the area between top and bottom.
+#
+# filename: path from repo root (e.g. images/screenshots/name.png)
+# url: full parkrun parkrunner "all" page URL
+# top: CSS selector for the top of the capture area
+# bottom: CSS selector for the bottom of the capture area
+
+screenshots:
+  - filename: images/screenshots/runner_page.png
+    url: https://www.parkrun.org.uk/parkrunner/1386351/all/
+    top: "#content > h2"
+    bottom: "#results"
+
+  - filename: images/screenshots/screenshot-01-badges.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#content > h2"
+    bottom: "#running_challenges_flags_div"
+
+  - filename: images/screenshots/screenshot-02-table.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#challenge_tbody_header_compass-club"
+    bottom: "#challenge_tbody_header_full-ponty"
+
+  - filename: images/screenshots/screenshot-03-badges-inc-volunteer.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#content > h2"
+    bottom: "#results"
+
+  - filename: images/screenshots/screenshot-04-volunteer-challenges.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#running_challenges_volunteer_challenges_heading"
+    bottom: "#challenge_tbody_header_warm-up-leader"
+
+  - filename: images/screenshots/screenshot-06-badges-inc-flags.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#running_challenges_flags_div"
+    bottom: "#running_challenges_messages_div"
+
+  - filename: images/screenshots/screenshot-08-badges-including-flags-v2.png
+    url: https://www.parkrun.org.uk/parkrunner/1309364/all/
+    top: "#content > h2"
+    bottom: "#results"
+

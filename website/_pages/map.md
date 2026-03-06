@@ -6,9 +6,9 @@ javascript_libs:
   - third-party/leaflet/leaflet-1.3.1.js
   - third-party/jquery/jquery-3.6.0.js
   - third-party/d3-voronoi/d3-voronoi.js
-  - third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.4.js
-  - third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.5.js
-  - third-party/leaflet-fullscreen/leaflet-fullscreen-1.0.1.js
+  - third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.6.js
+  - third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.6.js
+  - third-party/leaflet-fullscreen/leaflet-fullscreen-1.1.0.js
   - third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
   - leaflet-slidemenu/leaflet-sidemenu.js
 javascript_onload:

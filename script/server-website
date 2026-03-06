@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+echo "Running script/server-website"
+
+# Optional first argument overrides JEKYLL_PORT for this run.
+if [[ "${1-}" != "" ]]; then
+  export JEKYLL_PORT="$1"
+fi
+
+PORT_DISPLAY="${JEKYLL_PORT:-4000}"
+echo "Starting local website on http://localhost:${PORT_DISPLAY}/"
+# Show LAN URL for access from other devices (e.g. phone on same LAN)
+if command -v ipconfig >/dev/null 2>&1; then
+  LAN_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true)
+elif command -v hostname >/dev/null 2>&1; then
+  LAN_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || true)
+fi
+if [[ -n "${LAN_IP:-}" ]]; then
+  echo "Access from other devices (same network): http://${LAN_IP}:${PORT_DISPLAY}/"
+fi
+
+./build/website/build-local-and-run.sh

@@ -1,7 +1,11 @@
-#!/bin/bash -xe
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Build Firefox add-on
-./build/extension-firefox/build.sh
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$ROOT_DIR"
 
-# Build Chrome extension
-./build/extension-chrome/build.sh
+# shellcheck source=build/version.sh
+source build/version.sh
+export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
+
+pnpm --filter running-challenges-extension run build:extension

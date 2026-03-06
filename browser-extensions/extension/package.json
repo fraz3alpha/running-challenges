@@ -1,0 +1,26 @@
+{
+  "name": "running-challenges-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build tooling for the Running Challenges browser extension",
+  "scripts": {
+    "build:extension": "node scripts/build-extension.mjs",
+    "build:userscript": "node scripts/build-userscript.mjs",
+    "lint:extension:chrome": "web-ext lint --self-hosted --source-dir ../chrome/build --ignore-files js/lib/third-party/**",
+    "lint:extension:firefox": "web-ext lint --self-hosted --source-dir ../firefox/build --ignore-files js/lib/third-party/**"
+  },
+  "dependencies": {
+    "d3-voronoi": "1.1.4",
+    "jquery": "3.6.0",
+    "leaflet": "1.3.1",
+    "leaflet-canvasicon": "0.1.6",
+    "leaflet-extra-markers": "1.0.6",
+    "leaflet.fullscreen": "1.1.0",
+    "leaflet.markercluster": "1.3.0",
+    "leaflet-piechart": "git+https://github.com/sashakavun/leaflet-piechart.git#29fcbb6be4c5e303cf3d0b94ea95997549afffa9"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "web-ext": "^9.3.0"
+  }
+}

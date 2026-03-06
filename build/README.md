@@ -1,9 +1,3 @@
-
 # Required build dependencies
 
-- `gnu-sed`
-
-  If running on a Mac, you need to install `gnu-sed`, e.g. with `brew install gnu-sed`,
-  otherwise the `-i` command does not work as expected.
-  The build scripts will automatically alias to this version if it detects you
-  are on a Mac.
+The build scripts are written to use standard Unix tools (`bash`, `sed`, etc.) and should work on both macOS and Linux without additional packages. If you run into portability issues with your sed implementation, please open an issue with details of your platform and error message.

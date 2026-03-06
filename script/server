@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+eval "$(mise activate bash)" 2>/dev/null || true
+
+DEFAULT_PARKRUN_URL="https://www.parkrun.com.au/parkrunner/1001388/all/"
+
+REQUESTED_URL="${1:-${PARKRUN_URL:-$DEFAULT_PARKRUN_URL}}"
+
+echo "Running script/server"
+echo "Target parkrun URL: ${REQUESTED_URL}"
+
+"$ROOT_DIR/script/update"
+
+echo "Starting Chrome with web-ext (via pnpm exec)..."
+(
+  cd "$ROOT_DIR"
+  pnpm --filter running-challenges-extension exec web-ext run \
+    -v \
+    -u "${REQUESTED_URL}" \
+    --target=chromium \
+    --source-dir "${ROOT_DIR}/browser-extensions/chrome/build"
+) &
+
+echo "Starting Firefox with web-ext (via pnpm exec)..."
+cd "$ROOT_DIR"
+exec pnpm --filter running-challenges-extension exec web-ext run \
+  -v \
+  -u "${REQUESTED_URL}" \
+  --source-dir "${ROOT_DIR}/browser-extensions/firefox/build"
+

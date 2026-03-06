@@ -4,7 +4,7 @@ name: Staging Website Builder
 concurrency: staging-website-build
 
 # Run this workflow every time a new commit is pushed to any branch apart from the production one (master)
-on: 
+on:
   push:
     branches-ignore:
       - master
@@ -28,10 +28,10 @@ jobs:
       - name: 📂 Checkout code
         uses: actions/checkout@v4
 
-      - name: 💎 setup ruby
-        uses: ruby/setup-ruby@v1
+      - name: 💎 setup ruby with mise
+        uses: jdx/mise-action@v3
         with:
-          ruby-version: 3.1
+          install: true
 
       - name: Sanitise branch name
         shell: bash
@@ -40,6 +40,9 @@ jobs:
           SANITISED_BRANCH_NAME=$(echo -n ${{ github.ref_name }} | tr "/" "_")
           echo "sanitised branch name: ${SANITISED_BRANCH_NAME}"
           echo "sanitised-branch-name=${SANITISED_BRANCH_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
 
       # Prepare the website directory
       - name: Copy dependencies to Website directory
@@ -71,11 +74,12 @@ jobs:
 
       # Then we need to prune any directories that don't match to currently active branches
 
+      # Deploy steps only run on the canonical repo; forks build but do not deploy (no token).
       # Get the latest copy of the repo
       # We need to set a token here, otherwise it uses the default one that won't have permission to push
       - name: Checkout code
         uses: actions/checkout@v4
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: github.repository == 'fraz3alpha/running-challenges' && github.actor != 'dependabot[bot]'
         with:
           repository: fraz3alpha/running-challenges-staging
           ref: gh-pages
@@ -84,7 +88,7 @@ jobs:
 
       - name: Reconcile branches
         id: reconcile-branches
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: github.repository == 'fraz3alpha/running-challenges' && github.actor != 'dependabot[bot]'
         run: |
           git ls-remote --heads | awk '{print $2}' | awk -F 'refs/heads/' '{print $2}' | sort > running-challenges-branches.txt
           echo "All branches: $(cat running-challenges-branches.txt)"
@@ -124,7 +128,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: github.repository == 'fraz3alpha/running-challenges' && github.actor != 'dependabot[bot]'
         with:
           personal_token: ${{ secrets.RUNNING_CHALLENGES_STAGING_GITHUB_API_TOKEN }}
           external_repository: fraz3alpha/running-challenges-staging

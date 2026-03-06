@@ -1,0 +1,4 @@
+packages:
+  - "browser-extensions/extension"
+  - "browser-extensions/extension/src/js/tests"
+  - "browser-extensions/extension/src/js/tests/ui-test"

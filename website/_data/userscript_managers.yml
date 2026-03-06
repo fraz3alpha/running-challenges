@@ -1,0 +1,10 @@
+# Userscript manager install links for Running Challenges userscript installation.
+# Used on Get Started and home page.
+
+tampermonkey_chrome: "https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo"
+tampermonkey_firefox: "https://addons.mozilla.org/en-GB/firefox/addon/tampermonkey/"
+violentmonkey_chrome: "https://chromewebstore.google.com/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag"
+violentmonkey_firefox: "https://addons.mozilla.org/en-GB/firefox/addon/violentmonkey/"
+userscripts_ios: "https://apps.apple.com/app/userscripts/id1463298887"
+stay_ios: "https://apps.apple.com/app/stay-for-safari/id1591620171"
+stay_chrome: "https://chromewebstore.google.com/detail/stay-for-browser/hpbebebpjajeiadiakgckpahmhkbkpoa"

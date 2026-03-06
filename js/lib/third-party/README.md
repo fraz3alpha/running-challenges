@@ -4,23 +4,18 @@ The following third-party libraries have been used in this extension (this
 information exists in under each [third-party library folder](https://github.com/fraz3alpha/running-challenges/tree/master/js/lib/third-party),
 but is summarised here for ease of use):
 
-- jquery v3.3.1 - https://github.com/jquery/jquery/archive/3.3.1.zip
-- leaflet v1.3.1 - https://github.com/Leaflet/Leaflet/archive/v1.3.1.zip
-- d3-voronoi v1.1.2 - https://github.com/d3/d3-voronoi/releases/download/v1.1.2/d3-voronoi.zip
+- jquery v3.6.0 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/jquery/dist` (no vendored copy).
+- leaflet v1.3.1 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/leaflet/dist` (JS, CSS, images; no vendored copy).
+- d3-voronoi v1.1.4 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/d3-voronoi/dist` (no vendored copy).
 
-The LeafletJS library is extensible, and the following additional libraries have been used:
+The LeafletJS library is extensible. The following are from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules` (no vendored copy):
 
-- canvasicon v0.1.4 - https://github.com/sashakavun/leaflet-canvasicon/archive/0.1.4.zip
-- extramarkers v1.0.5 - https://github.com/coryasilva/Leaflet.ExtraMarkers/archive/v1.0.5.zip
-- fullscreen v1.0.1 - https://github.com/Leaflet/Leaflet.fullscreen/archive/v1.0.2.zip
-- markercluster v1.3.0 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
-- piechart v0.1.2 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
+- leaflet-extra-markers v1.0.6 (JS + CSS/images; CSS URL rewrite in extension build)
+- leaflet.fullscreen v1.1.0 (JS + CSS + icons)
+- leaflet.markercluster v1.3.0 (JS + CSS)
 
-The following libraries require CSS patches to fix the image paths in order to
-work under the extension/addon packaging system. The patch files can be found
-under the [patches](https://github.com/fraz3alpha/running-challenges/tree/master/patches)
-directory:
+- leaflet-canvasicon v0.1.6 — from pnpm; extension and website build copy from `node_modules/leaflet-canvasicon`.
+- leaflet-piechart v0.1.3 — from pnpm (GitHub: sashakavun/leaflet-piechart#29fcbb6be4c5e303cf3d0b94ea95997549afffa9); extension and website build copy from `node_modules/leaflet-piechart`.
 
-- leaflet
-- leaflet / extramarkers
-- leaflet / fullscreen
+Third-party CSS (Leaflet, leaflet-extramarkers, etc.) is copied from pnpm in the
+extension build; extension URL rewriting for assets is done in the build script.

@@ -1,0 +1,12 @@
+[tools]
+node = "20"
+pnpm = "10"
+ruby = "3.4"
+
+[tasks.bundle-install]
+description = "Install website gem dependencies (uses Bundler version in website/Gemfile.lock)"
+run = "cd website && bundle install"
+
+[tasks.bundle-update-bundler]
+description = "Update website/Gemfile.lock to the installed Bundler version (run after gem install bundler)"
+run = "cd website && bundle update --bundler"
